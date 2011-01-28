@@ -1,0 +1,56 @@
+<!ENTITY  imagegrabber_options "Imagegrabber-Optionen">
+
+<!ENTITY  file_saving_options "Datei-Speicheroptionen">
+<!ENTITY  general "Allgemein">
+<!ENTITY  embedded_images "Embedded Images">
+<!ENTITY  host_file "Host File">
+<!ENTITY  host_options "Hostoptionen">
+<!ENTITY  debugging "Fehlersuche (Debugging)">
+
+<!ENTITY  what_to_do_if_file_exists_in_target_location "Was soll geschehen, wenn eine Datei bereits am Zielort vorhanden ist?">
+<!ENTITY  rename_file "Datei umbenennen">
+<!ENTITY  skip_file "Datei überspringen">
+<!ENTITY  overwrite_file "Datei überschreiben">
+<!ENTITY  autorename_imagevenue_and_fapomatic_files "Imagevenue- und Fapomatic-Dateien automatisch umbenennen">
+<!ENTITY  create_a_subdirectory_with_document_title_inside_the_target_directory "Separate Unterordner mit Dokumenttitel im Zielordner erstellen">
+<!ENTITY  prefix_directories_to_uniquely_and_chronologically_identify_them "Ordner zur eindeutigen und chronologischen Identifizierung mit einem Präfix versehen">
+<!ENTITY  create_separate_directories_for_each_page_when_using_thread_sucker "Beim Einsatz des Threadsaugers separate Ordner pro Seite erzeugen">
+<!ENTITY  prefix_filenames_to_reflect_page_order "Dateinamen zur Beibehaltung der Seiten-Bildreihenfolge mit einem Präfix versehen">
+
+<!ENTITY  show_the_download_directory_box "Downloadordner-Auswahlfenster anzeigen (wenn nicht markiert, wird der zuletzt genutzte Ordner verwendet)">
+<!ENTITY  show_the_image_grabber_menu_in_the_tools_menu "ImageGrabber-Menü im Extras-Menü anzeigen (wenn nicht markiert, erscheint das Menü in der Hauptmenüleiste)">
+<!ENTITY  remove_duplicate_links "Identische Links (auch seitenübergreifend) entfernen">
+<!ENTITY  even_across_multiple_pages "über mehrere Seiten">
+<!ENTITY  close_download_window "Download-Fenster schließen, wenn alle Downloads abgeschlossen sind">
+<!ENTITY  keep_download_window_contents "Keep Download Window Contents (even after closed)">
+
+<!ENTITY  download_embedded_images "Download eingebettete Bilder">
+<!ENTITY  enter_the_minimum_width_and_height_that_will_be_considered_for_downloading "Geben Sie die minimale Breite und Höhe, die für das Herunterladen berücksichtigt werden.">
+<!ENTITY  image_width "Breite:">
+<!ENTITY  image_height "Höhe:">
+<!ENTITY  enter_the_minimum_file_size "Geben Sie die minimale Dateigröße, dass für das Herunterladen berücksichtigt werden.">
+<!ENTITY  setting_this_value_to_zero_disables_this_filter "(Wenn Sie diesen Wert auf Null deaktiviert diese Filter)">
+<!ENTITY  file_size_filter "File size:">
+<!ENTITY  kilobytes "KB">
+<!ENTITY  the_file_size_filter_is_the_only_one_used "Hinweis: die Größe der Datei-Filter ist der einzige, in der threadsucker Modus.">
+
+<!ENTITY  host_file_update "Host-Datei zu aktualisieren:">
+<!ENTITY  enable_automatic_update "Aktivieren Sie die automatische Aktualisierung">
+<!ENTITY  suppress_confirmation_dialog "Unterdrückt Bestätigungsdialog">
+<!ENTITY  merge_behavior "Merge Verhalten:">
+<!ENTITY  merge_host_file_ask "Fragen">
+<!ENTITY  merge_host_file_overwrite "Überschreiben aktuellen hosts und fügen Sie neue hosts">
+<!ENTITY  merge_host_file_add "Fügen Sie nur neue Wirte">
+
+<!ENTITY  max_simultaneous_http_requests "Maximalzahl gleichzeitiger HTTP-Anfragen">
+<!ENTITY  max_number_of_retries_for_each_link "Maximale Wiederholungen pro Link">
+<!ENTITY  request_timeout_before_retry "Anfragewartezeit vor Neuversuch (in Sekunden)">
+
+<!ENTITY  disclaimer "Achtung:">
+<!ENTITY  disclaimer_line1 "Beim Aktivieren/Deaktivieren der folgenden Optionen muss Firefox neu gestartet werden, damit die Änderungen in Kraft treten.">
+<!ENTITY  disclaimer_line2 "Die Optionen sollten nur vorübergehend zum Protokollieren eines bestimmten Ereignisses aktiviert und anschließend gleich wieder deaktiviert werden.">
+<!ENTITY  disclaimer_line3 "Bleiben die Optionen aktiviert, wird Firefox ausgebremst und verbraucht viel Speicher und Festplattenspeicherplatz.">
+<!ENTITY  enable_console_logging "Konsolenprotokollierung aktivieren">
+<!ENTITY  enable_debugging_logging "Fehlersucheprotokollierung aktivieren">
+<!ENTITY  clear_log "Protokoll löschen">
+<!ENTITY  copy_log_to_local_folder "Protokoll in lokalen Ordner kopieren">
