@@ -126,7 +126,7 @@ function toggleEnableState() {
 	<tabpanel id="genopts">
 		<vbox>
 		<checkbox id="cb_showDLDir" preference="showDLDir" label="&show_the_download_directory_box;"/>
-		<checkbox id="cb_showInTools" preference="showInTools" label="&show_the_image_grabber_menu_in_the_tools_menu;" onclick="alert('alert: this requires a restart of firefox');"/>
+		<checkbox id="cb_showInTools" preference="showInTools" label="&show_the_image_grabber_menu_in_the_tools_menu;" onclick="alert('&alert_restart;');"/>
 		<checkbox id="cb_removeDupLinks" preference="removeDupLinks" label="&remove_duplicate_links;" onclick="toggleEnableState(this.id, false, 'cb_removeDupLinksXpages');"/>
 		<checkbox id="cb_removeDupLinksXpages" preference="removeDupLinksXpages" label="&even_across_multiple_pages;" class="indent" persist="disabled"/>
 		<checkbox id="cb_autoCloseWindow" preference="autocb_autoCloseWindow" label="&close_download_window;"/>

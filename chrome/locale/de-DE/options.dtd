@@ -19,6 +19,7 @@
 
 <!ENTITY  show_the_download_directory_box "Downloadordner-Auswahlfenster anzeigen (wenn nicht markiert, wird der zuletzt genutzte Ordner verwendet)">
 <!ENTITY  show_the_image_grabber_menu_in_the_tools_menu "ImageGrabber-Menü im Extras-Menü anzeigen (wenn nicht markiert, erscheint das Menü in der Hauptmenüleiste)">
+<!ENTITY  alert_restart "alert: this requires a restart of Firefox">
 <!ENTITY  remove_duplicate_links "Identische Links (auch seitenübergreifend) entfernen">
 <!ENTITY  even_across_multiple_pages "über mehrere Seiten">
 <!ENTITY  close_download_window "Download-Fenster schließen, wenn alle Downloads abgeschlossen sind">

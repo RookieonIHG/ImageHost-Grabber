@@ -327,7 +327,7 @@ ihg_Functions.requestObj.prototype = {
 					if (typeof(req.regexp) == "string" && req.regexp.match(/Embedded Image/)) {
 						var contLength = this.getResponseHeader("Content-Length");
 						if (contLength && contLength < req.minFileSize) { 
-							req.abort("File too short (< " + req.minFileSize/1024 + "KB)");
+							req.abort(document.getElementById("imagegrabber-strings").getFormattedString("file_too_short", [req.minFileSize/1024]));
 							ihg_Functions.clearFromWin(req.uniqID, true);
 							return;
 							}

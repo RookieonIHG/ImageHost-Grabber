@@ -662,7 +662,6 @@ ihg_Functions.read_locale_strings = function read_locale_strings() {
 	ihg_Globals.strings.cant_find_new_host = ihg_Globals.strbundle.getString("cant_find_new_host");
 	ihg_Globals.strings.file_already_exists = ihg_Globals.strbundle.getString("file_already_exists");
 	ihg_Globals.strings.starting_download = ihg_Globals.strbundle.getString("starting_download");
-	ihg_Globals.strings.download_of = ihg_Globals.strbundle.getString("download_of");
 	ihg_Globals.strings.download_did_not_complete = ihg_Globals.strbundle.getString("download_did_not_complete");
 	ihg_Globals.strings.error_from_server = ihg_Globals.strbundle.getString("error_from_server");
 	ihg_Globals.strings.file_not_good = ihg_Globals.strbundle.getString("file_not_good");
