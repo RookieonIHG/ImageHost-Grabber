@@ -296,7 +296,7 @@ onChannelRedirect: function (aOldChannel, aNewChannel, aFlags) {
 		ihg_Functions.updateDownloadProgress(null, this.reqObj.uniqID, null, (curProgress/maxProgress) * 100, ihg_Globals.strings.downloading + " " + curProgress + " " + ihg_Globals.strings.of + " " + maxProgress + "...");
 
 		var req_timeout = ihg_Globals.reqTimeout;  // timeout is in milliseconds
-		this.callwrapper = new ihg_Functions.CCallWrapper(this, req_timeout, 'retry', "download of" + this.reqObj.uniqID);
+		this.callwrapper = new ihg_Functions.CCallWrapper(this, req_timeout, 'retry', "download of " + this.reqObj.uniqID);
 		ihg_Functions.CCallWrapper.asyncExecute(this.callwrapper);
 	},
 

@@ -19,6 +19,7 @@
 
 <!ENTITY  show_the_download_directory_box "Kaydedilecek Yeri Sor(Bu Seçenek Isaretsizse Son Indirme Klasörü Kullanilir)">
 <!ENTITY  show_the_image_grabber_menu_in_the_tools_menu "Araçlar Menüsünde Image Grabber Menüsünü Göster(Bu Seçenek Isaretsizse Ana Menüde Konumlanir)">
+<!ENTITY  alert_restart "alert: this requires a restart of Firefox">
 <!ENTITY  remove_duplicate_links "Ayni linkleri sil">
 <!ENTITY  even_across_multiple_pages "Farkli sayfalardan bile olsa">
 <!ENTITY  close_download_window "Bütün indirmeler bittikten sonra indirme penceresini kapat">
