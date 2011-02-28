@@ -26,3 +26,9 @@
 <!ENTITY  max_requests.tooltiptext "Max. simultaneous HTTP requests">
 <!ENTITY  max_retries "Her denemeler:">
 <!ENTITY  max_retries.tooltiptext "Max. number of retries for each link">
+<!ENTITY  window_options "Window options">
+<!ENTITY  save_session_on_exit "Save session on exit">
+<!ENTITY  session "Session">
+<!ENTITY  load_saved_session "Load a saved session">
+<!ENTITY  export_session_file "Export a session file">
+<!ENTITY  reinit_session "Re-initialize session">

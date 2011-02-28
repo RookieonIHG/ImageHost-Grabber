@@ -131,7 +131,7 @@ function exportSession() {
 	var rv = fp.show();
 	if (rv == nsIFilePicker.returnCancel) return null;
 
-	var copyToDir = ihg_Functions.setDownloadDir("Pick a folder to copy the session file to.", null);
+	var copyToDir = ihg_Functions.setDownloadDir(ihg_Globals.strings.pick_folder_to_copy_session, null);
 
 	if (!copyToDir) return;
 
@@ -143,11 +143,11 @@ function exportSession() {
 		fp.file.copyTo(newDir, null);
 	}
 	catch(e) {
-		alert("Failed to copy session file.");
+		alert(ihg_Globals.strings.failed_to_copy_session);
 		return;
 	}
 
-	alert("Session file successfully copied.");
+	alert(ihg_Globals.strings.session_file_sucessfully_copied);
 }
 
 

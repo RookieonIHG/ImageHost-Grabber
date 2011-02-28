@@ -61,24 +61,24 @@ onunload="onUnLoad();">
 <script type="application/x-javascript" src="chrome://imagegrabber/content/interfaces/downloads.js" />
 
 <hbox>
-	<button label="Window options" type="menu">
+	<button label="&window_options;" type="menu">
 		<menupopup>
 			<checkbox label="&suppress_popup;" id="cbSupPop" persist="checked"/>
-			<checkbox label="Save session on exit" id="cbAutoSaveSession" persist="checked" />
+			<checkbox label="&save_session_on_exit;" id="cbAutoSaveSession" persist="checked" />
 			<checkbox label="&auto_clear_finished;" id="cbAutoClear" persist="checked" oncommand="autoClearForm();"/>
 		</menupopup>
 	</button>
 	<button label="&clear_all_finished;" oncommand="clear_form();setFocus();" />
-	<button label="Session" type="menu">
+	<button label="&session;" type="menu">
 		<menupopup>
 			<menuitem label="&stop_all_sessions;" onclick="killme();setFocus();"/>
 			<menuitem label="&revive_all_stopped_sessions;" onclick="reviveme();setFocus();"/>
 			<menuseparator />
 			<menuitem label="&save_session_to_cache;" onclick="saveSession();setFocus();"/>
-			<menuitem label="Load a saved session" onclick="loadSession();setFocus();"/>
-			<menuitem label="Export a session file" onclick="exportSession();setFocus();"/>
+			<menuitem label="&load_saved_session;" onclick="loadSession();setFocus();"/>
+			<menuitem label="&export_session_file;" onclick="exportSession();setFocus();"/>
 			<!--<menuseparator />
-			<menuitem label="Re-initialize session" onclick="reInitSession();setFocus();"/>-->
+			<menuitem label="&reinit_session;" onclick="reInitSession();setFocus();"/>-->
 		</menupopup>
 	</button>
 	<button label="&export_list;" oncommand="exportList();setFocus();"/>

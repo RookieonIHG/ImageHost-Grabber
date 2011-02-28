@@ -384,12 +384,12 @@ ihg_Functions.doStartDownload = function doStartDownload(reqObj, URLFile) {
 	
 	var aLocalFile = ihg_Functions.getOutputFile(reqObj, URLFile);
 	if (aLocalFile == null) {
-		reqObj.abort("Could not initialize target file.");
+		reqObj.abort(ihg_Globals.strings.could_not_initialize);
 		return;
 	}
 
 	if (!aLocalFile.parent.exists()) {
-		reqObj.abort("Target directory no longer exists.  Please re-initialize session.");
+		reqObj.abort(ihg_Globals.strings.target_directory_no_longer_exists);
 		return;
 	}
 

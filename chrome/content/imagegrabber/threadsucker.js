@@ -42,7 +42,7 @@ threadsucker_Globals.doc_req = null;
 ihg_Functions.leechThread = function leechThread(activeElement) {
 	if (activeElement) {
 		if (!activeElement.href) {
-			alert("You need to right click on a link to use this feature.");
+			alert(ihg_Globals.strings.need_to_right_click_on_link);
 			throw "IHG: In leechThread, invalid activeElement passed to function.";
 		}
 		threadsucker_Globals.threadURL = activeElement.href;

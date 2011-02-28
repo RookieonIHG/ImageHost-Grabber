@@ -26,3 +26,9 @@
 <!ENTITY  max_requests.tooltiptext "Máximo de descargas simultáneas">
 <!ENTITY  max_retries "Máx. reintentos:">
 <!ENTITY  max_retries.tooltiptext "Máximo de reintentos por cada enlace">
+<!ENTITY  window_options "Window options">
+<!ENTITY  save_session_on_exit "Save session on exit">
+<!ENTITY  session "Session">
+<!ENTITY  load_saved_session "Load a saved session">
+<!ENTITY  export_session_file "Export a session file">
+<!ENTITY  reinit_session "Re-initialize session">

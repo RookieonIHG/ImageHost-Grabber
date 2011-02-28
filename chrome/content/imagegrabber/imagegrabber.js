@@ -47,6 +47,7 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 		ihg_Globals.suckMode = false;
 
 		// Initialize variables if not already initialized
+		// WTF is feelItRex?
 		var feelItRex = ihg_Functions.initVars();
 		if (!feelItRex) {
 			ihg_Functions.LOG("In hostGrabber, call to function initVars failed for some reason.\n");
@@ -141,9 +142,9 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 
 
 ihg_Functions.finishUp = function finishUp(req_objs) {
-	// if this is the event for the window load, re-assign the variable
-	// pick something from the event class to identify it as an event
-	// the member "type" is sufficient
+	// if this is the event for the window load, re-assign the variable.
+	// pick something from the event class to identify it as an event.
+	// the member "type" is sufficient.
 	if (req_objs.type) req_objs = this.req_objs;
 
 	ihg_Functions.updateDownloadStatus(ihg_Globals.strings.running);
@@ -692,7 +693,12 @@ ihg_Functions.read_locale_strings = function read_locale_strings() {
 	ihg_Globals.strings.finished = ihg_Globals.strbundle.getString("finished");
 	ihg_Globals.strings.updated_hostf_found = ihg_Globals.strbundle.getString("updated_hostf_found");
 	ihg_Globals.strings.update_local_hostf = ihg_Globals.strbundle.getString("update_local_hostf");
-
+	ihg_Globals.strings.need_to_right_click_on_link = ihg_Globals.strbundle.getString("need_to_right_click_on_link");
+	ihg_Globals.strings.could_not_initialize = ihg_Globals.strbundle.getString("could_not_initialize");
+	ihg_Globals.strings.target_directory_no_longer_exists = ihg_Globals.strbundle.getString("target_directory_no_longer_exists");
+	ihg_Globals.strings.pick_folder_to_copy_session = ihg_Globals.strbundle.getString("pick_folder_to_copy_session");
+	ihg_Globals.strings.failed_to_copy_session = ihg_Globals.strbundle.getString("failed_to_copy_session");
+	ihg_Globals.strings.session_file_sucessfully_copied = ihg_Globals.strbundle.getString("session_file_sucessfully_copied");
 }
 
 
