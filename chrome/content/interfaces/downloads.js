@@ -195,6 +195,7 @@ function restart_child() {
 
 	for (var s = 0; s < daNodes.length; s++) {
 		var idx = daNodes[s].id;
+		req_objs[idx].reqURL = req_objs[idx].origURL;
 		req_objs[idx].curProgress = 0;
 		req_objs[idx].maxProgress = 0;
 		req_objs[idx].retryNum++;

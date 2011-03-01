@@ -406,7 +406,7 @@ ihg_Functions.setUpReq = function setUpReq(objLinks) {
 			req.regexp = host_func;
 			req.hostFunc = ihg_Functions.genericHostFunc;
 				
-			req.reqURL = inner_link;
+			req.reqURL = req.origURL = inner_link;
 			req.originatingPage = objLinks.originatingPage[i][j];
 			req.dirSave = dir_save;
 			req.retryNum = ihg_Globals.maxRetries;

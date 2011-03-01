@@ -33,6 +33,7 @@
 ihg_Functions.requestObj = function requestObj() {
 	// These are the properties that need to be set (by someone) for each instance of the class
 	this.uniqID = "";
+	this.origURL = "";
 	this.reqURL = "";
 	this.hostFunc = new Function();
 	this.hostID = null;
