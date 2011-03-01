@@ -579,6 +579,9 @@ ihg_Functions.getIGPrefs = function getIGPrefs() {
 	ihg_Globals.autoCloseWindow = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.autoclosewindow");
  	ihg_Functions.LOG("In " + myself + ", ihg_Globals.autoCloseWindow is equal to: " + ihg_Globals.autoCloseWindow + "\n");
 
+	ihg_Globals.useLastModFromHeader = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.uselastmodfromheader");
+ 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.useLastModFromHeader is equal to: " + ihg_Globals.useLastModFromHeader + "\n");
+
 	ihg_Functions.LOG("Exiting " + myself + "\n");
 	}
 

@@ -92,3 +92,5 @@ ihg_Globals.closeInterval = null;
 ihg_Globals.closeCountdown = null;
 
 ihg_Globals.autoCloseWindow = null;
+
+ihg_Globals.useLastModFromHeader = null;

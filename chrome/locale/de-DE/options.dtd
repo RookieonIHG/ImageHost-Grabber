@@ -16,6 +16,7 @@
 <!ENTITY  prefix_directories_to_uniquely_and_chronologically_identify_them "Ordner zur eindeutigen und chronologischen Identifizierung mit einem Präfix versehen">
 <!ENTITY  create_separate_directories_for_each_page_when_using_thread_sucker "Beim Einsatz des Threadsaugers separate Ordner pro Seite erzeugen">
 <!ENTITY  prefix_filenames_to_reflect_page_order "Dateinamen zur Beibehaltung der Seiten-Bildreihenfolge mit einem Präfix versehen">
+<!ENTITY  use_last_modified_header "Keep Last-Modified timestamp sent by the server for downloaded files">
 
 <!ENTITY  show_the_download_directory_box "Downloadordner-Auswahlfenster anzeigen (wenn nicht markiert, wird der zuletzt genutzte Ordner verwendet)">
 <!ENTITY  show_the_image_grabber_menu_in_the_tools_menu "ImageGrabber-Menü im Extras-Menü anzeigen (wenn nicht markiert, erscheint das Menü in der Hauptmenüleiste)">

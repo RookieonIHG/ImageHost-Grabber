@@ -28,3 +28,4 @@ pref("extensions.imagegrabber.hostfmergebehavior", "ask");
 pref("extensions.imagegrabber.autoclosewindow", false);
 pref("extensions.imagegrabber.removeduplinks", false);
 pref("extensions.imagegrabber.removeduplinksXpages", false);
+pref("extensions.imagegrabber.uselastmodfromheader", false);

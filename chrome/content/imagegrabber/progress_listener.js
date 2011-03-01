@@ -237,7 +237,20 @@ getInterface: function (aIID) {
 					return;
 				}
 			}
-			else ihg_Functions.updateDownloadProgress(null, this.reqObj.uniqID, null, null, ihg_Globals.strings.finished);
+			else {
+				ihg_Functions.updateDownloadProgress(null, this.reqObj.uniqID, null, null, ihg_Globals.strings.finished);
+			
+				if (ihg_Globals.useLastModFromHeader) {
+					try {
+						var remoteLastModStr = request.getResponseHeader("Last-Modified");
+						if (remoteLastModStr) {
+							var remoteLastMod = new Date(remoteLastModStr);
+							this.aFile.lastModifiedTime = remoteLastMod;
+							}
+						}
+					catch (e) { /* Last-Modified not available */ }
+				}
+			}
 
 			ihg_Functions.clearFromWin(this.reqObj.uniqID);
 

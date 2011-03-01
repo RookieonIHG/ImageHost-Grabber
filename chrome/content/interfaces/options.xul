@@ -37,6 +37,7 @@
 	<preference id="hostfUpdateConfirm" name="extensions.imagegrabber.hostfupdateconfirm" type="bool"/>
 	<preference id="hostfrg_mergeBehavior" name="extensions.imagegrabber.hostfmergebehavior" type="string"/>
 	<preference id="autocb_autoCloseWindow" name="extensions.imagegrabber.autoclosewindow" type="bool"/>
+	<preference id="useLastModFromHeader" name="extensions.imagegrabber.uselastmodfromheader" type="bool"/>
 </preferences>
 
 <script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/globals.js" />
@@ -119,7 +120,7 @@ function toggleEnableState() {
 		<checkbox id="cb_createDocSub" preference="createDocSub" label="&create_a_subdirectory_with_document_title_inside_the_target_directory;" onclick="toggleEnableState(this.id, false, 'cb_prefixDirs');"/>
 		<checkbox id="cb_prefixDirs" preference="prefixDirs" label="&prefix_directories_to_uniquely_and_chronologically_identify_them;" class="indent" persist="disabled"/>
 		<checkbox id="boolpref_createPageDirs" preference="createPageDirs" label="&create_separate_directories_for_each_page_when_using_thread_sucker;"/>
-		
+		<checkbox id="cb_useLastModFromHeader" preference="useLastModFromHeader" label="&use_last_modified_header;"/>
 		</vbox>
 	</tabpanel>
 	

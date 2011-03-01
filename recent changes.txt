@@ -119,5 +119,9 @@
 - altered the look of the download window to adjust for space
 - added an export session file feature to the download window
 
-1.6.6.
+1.6.6.20110228
 - added swf support
+- whatboyswant added to the threadsucker
+- feature added: keep Last-Modified timestamp sent by the server for downloaded files
+- made some modifications to the locale files
+- modified the retry to retry from the original url
