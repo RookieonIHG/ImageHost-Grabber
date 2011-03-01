@@ -328,7 +328,7 @@ ihg_Functions.requestObj.prototype = {
 						var contLength = this.getResponseHeader("Content-Length");
 						if (contLength && contLength < req.minFileSize) { 
 							req.abort(document.getElementById("imagegrabber-strings").getFormattedString("file_too_short", [req.minFileSize/1024]));
-							ihg_Functions.clearFromWin(req.uniqID, true);
+							setTimeout(function(){ ihg_Functions.clearFromWin(req.uniqID, true); }, 1000);
 							return;
 							}
 						}
