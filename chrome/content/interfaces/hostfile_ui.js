@@ -143,7 +143,7 @@ function initWindow() {
 	tb_searchPattern.addEventListener("keydown", handleKeyDown, false);
 	//document.onkeydown = handleKeyDown;
 	
-	window.addEventListener("resize", resizeResponseTextBox, false);
+	//window.addEventListener("resize", resizeResponseTextBox, false);
 	//resizeResponseTextBox();
 	loadHostFile();
 	}
@@ -198,12 +198,12 @@ function handleKeyDown(event) {
 function handleKeyUp(event) {
 	return event.keyCode;
 }
-
+/* 
 function resizeResponseTextBox() {
 	var rBoxThing = document.getElementById("tb_searchPattern");
 	rBoxThing.height = window.innerHeight - 212;
 	}
-
+ */
 function loadHostFile() {
 	hostfile_Globals.hostFileLoc = hostfile_Globals.prefManager.getCharPref("extensions.imagegrabber.hostfileloc");
 

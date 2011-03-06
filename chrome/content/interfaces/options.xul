@@ -80,7 +80,7 @@ function toggleEnableState() {
 	var controlElem = document.getElementById(controlId);
 		
 	var invertState = args[1];
-	var targetDisabled = invertState ? !controlElem.checked : controlElem.checked;
+	var targetDisabled = invertState ? controlElem.checked : !controlElem.checked;
 
 	for (var i = 2; i < args.length; i++) {
 		var targetId = args[i];
@@ -108,7 +108,7 @@ function toggleEnableState() {
 	<tabpanel id="fileopts">
 		<vbox>
 		<checkbox id="cb_prefixFileNames" preference="prefixFileName" label="&prefix_filenames_to_reflect_page_order;" 
-			onclick="toggleEnableState(this.id, true, 'rg_existBehavior');"/>
+			oncommand="toggleEnableState(this.id, true, 'rg_existBehavior');"/>
 		<groupbox id="gb_existBehavior"><caption label="&what_to_do_if_file_exists_in_target_location;"/>
 		<radiogroup id="rg_existBehavior" preference="fileExistBehavior" persist="disabled">
 			<radio label="&rename_file;" value="rename"/>
@@ -117,7 +117,7 @@ function toggleEnableState() {
 		</radiogroup>
 		</groupbox>
 		<checkbox preference="boolpref_autorename" label="&autorename_imagevenue_and_fapomatic_files;"/>
-		<checkbox id="cb_createDocSub" preference="createDocSub" label="&create_a_subdirectory_with_document_title_inside_the_target_directory;" onclick="toggleEnableState(this.id, false, 'cb_prefixDirs');"/>
+		<checkbox id="cb_createDocSub" preference="createDocSub" label="&create_a_subdirectory_with_document_title_inside_the_target_directory;" oncommand="toggleEnableState(this.id, false, 'cb_prefixDirs');"/>
 		<checkbox id="cb_prefixDirs" preference="prefixDirs" label="&prefix_directories_to_uniquely_and_chronologically_identify_them;" class="indent" persist="disabled"/>
 		<checkbox id="boolpref_createPageDirs" preference="createPageDirs" label="&create_separate_directories_for_each_page_when_using_thread_sucker;"/>
 		<checkbox id="cb_useLastModFromHeader" preference="useLastModFromHeader" label="&use_last_modified_header;"/>
@@ -128,7 +128,7 @@ function toggleEnableState() {
 		<vbox>
 		<checkbox id="cb_showDLDir" preference="showDLDir" label="&show_the_download_directory_box;"/>
 		<checkbox id="cb_showInTools" preference="showInTools" label="&show_the_image_grabber_menu_in_the_tools_menu;" onclick="alert('&alert_restart;');"/>
-		<checkbox id="cb_removeDupLinks" preference="removeDupLinks" label="&remove_duplicate_links;" onclick="toggleEnableState(this.id, false, 'cb_removeDupLinksXpages');"/>
+		<checkbox id="cb_removeDupLinks" preference="removeDupLinks" label="&remove_duplicate_links;" oncommand="toggleEnableState(this.id, false, 'cb_removeDupLinksXpages');"/>
 		<checkbox id="cb_removeDupLinksXpages" preference="removeDupLinksXpages" label="&even_across_multiple_pages;" class="indent" persist="disabled"/>
 		<checkbox id="cb_autoCloseWindow" preference="autocb_autoCloseWindow" label="&close_download_window;"/>
 		<checkbox id="cb_cacheDLWin" hidden="true" preference="cacheDLWin" label="&keep_download_window_contents;"/>
@@ -136,28 +136,45 @@ function toggleEnableState() {
 	</tabpanel>
 
 	<tabpanel id="tp_embeddedopts">
-			<vbox>
+		<vbox>
 			<checkbox id="cb_embImages" preference="downloadEmbeddedImages" label="&download_embedded_images;" 
-				onclick="toggleEnableState(this.id, false, 'lab_minEmbeddedWidth', 'lab_minEmbeddedHeight', 'lab_minSize');"/>
+				oncommand="toggleEnableState(this.id, false, 'lab_minEmbeddedWidth', 'lab_minEmbeddedHeight', 'lab_minSize');"/>
 			<label>&enter_the_minimum_width_and_height_that_will_be_considered_for_downloading;</label>
-			<label control="lab_minEmbeddedWidth">&image_width; </label><textbox preference="minEmbeddedWidth" id="lab_minEmbeddedWidth" persist="disabled"/>
-			<label control="lab_minEmbeddedHeight">&image_height; </label><textbox preference="minEmbeddedHeight" id="lab_minEmbeddedHeight" persist="disabled"/>
+			<grid>
+				<columns>
+					<column />
+					<column />
+				</columns>
+				<rows>
+					<row>
+						<label control="lab_minEmbeddedWidth">&image_width;</label>
+						<textbox id="lab_minEmbeddedWidth" type="number" size="3" hidespinbuttons="true" preference="minEmbeddedWidth" persist="disabled"/>
+						<label>px</label>
+					</row>
+					<row>
+						<label control="lab_minEmbeddedHeight">&image_height;</label>
+						<textbox id="lab_minEmbeddedHeight" type="number" size="3" hidespinbuttons="true" preference="minEmbeddedHeight" persist="disabled"/>
+						<label>px</label>
+					</row>
+				</rows>
+			</grid>
 			<separator height="10" />
 			<label>&enter_the_minimum_file_size;</label>
 			<label>&setting_this_value_to_zero_disables_this_filter;</label>
 			<hbox>
-			<label control="lab_minSize">&file_size_filter; </label><textbox preference="minFileSize" id="lab_minSize" persist="disabled"/>
-			<label>&kilobytes;</label>
+				<label control="lab_minSize">&file_size_filter;</label>
+				<textbox id="lab_minSize" type="number" size="3" hidespinbuttons="true" preference="minFileSize" persist="disabled"/>
+				<label>&kilobytes;</label>
 			</hbox>
 			<separator height="10" />
 			<label>&the_file_size_filter_is_the_only_one_used;</label>
-			</vbox>
+		</vbox>
 	</tabpanel>
 	
 	<tabpanel id="hostfopts">
 		<vbox>
 		<groupbox><caption label="&host_file_update;"/>
-		<checkbox id="cb_autoUpdate" preference="hostfcb_autoUpdate" label="&enable_automatic_update;" onclick="toggleEnableState(this.id, false, 'cb_suppressConfirm', 'rg_mergeBehavior');"/>
+		<checkbox id="cb_autoUpdate" preference="hostfcb_autoUpdate" label="&enable_automatic_update;" oncommand="toggleEnableState(this.id, false, 'cb_suppressConfirm', 'rg_mergeBehavior');"/>
 		<checkbox id="cb_suppressConfirm" preference="hostfUpdateConfirm" label="&suppress_confirmation_dialog;" class="indent" persist="disabled"/>
 		<groupbox class="indent"><caption label="&merge_behavior;"/>
 		<radiogroup id="rg_mergeBehavior" preference="hostfrg_mergeBehavior" persist="disabled">
@@ -171,22 +188,30 @@ function toggleEnableState() {
 	</tabpanel>
 
 	<tabpanel id="tp_hostops">
-		<vbox>
-		<hbox>
-			<label control="tb_textintpref">&max_simultaneous_http_requests;</label>
-			<textbox id="tb_textintpref" preference="intpref_maxthreads"/>
-		</hbox>
-
-		<hbox>
-			<label control="tb_textintpref3">&max_number_of_retries_for_each_link;</label>
-			<textbox id="tb_textintpref3" preference="numRetries"/>
-		</hbox>
-
-		<hbox>
-			<label control="tb_textintpref4">&request_timeout_before_retry;</label>
-			<textbox id="tb_textintpref4" preference="reqTimeout"/>
-		</hbox>
-		</vbox>
+		<grid>
+			<columns>
+				<column />
+				<column />
+				<column />
+			</columns>
+			<rows>
+				<row>
+					<label control="tb_textintpref">&max_simultaneous_http_requests;</label>
+					<scale min="1" max="20" preference="intpref_maxthreads" preference-editable="true" movetoclick="true"/>
+					<textbox id="tb_textintpref" type="number" size="1" hidespinbuttons="true" class="plain" readonly="true" preference="intpref_maxthreads"/>
+				</row>
+				<row>
+					<label control="tb_textintpref3">&max_number_of_retries_for_each_link;</label>
+					<scale min="1" max="10" preference="numRetries" preference-editable="true" movetoclick="true"/>
+					<textbox id="tb_textintpref3" type="number" size="1" hidespinbuttons="true" class="plain" readonly="true" preference="numRetries"/>
+				</row>
+				<row>
+					<label control="tb_textintpref4">&request_timeout_before_retry;</label>
+					<scale min="15" max="90" preference="reqTimeout" preference-editable="true" increment="5" movetoclick="true"/>
+					<textbox id="tb_textintpref4" type="number" size="1" hidespinbuttons="true" class="plain" readonly="true" preference="reqTimeout"/>
+				</row>
+			</rows>
+		</grid>
 	</tabpanel>
 
 	<tabpanel id="tp_debug">
@@ -198,8 +223,8 @@ function toggleEnableState() {
 		<separator height="15" />
 		<checkbox id="cb_enableConLog" preference="enableConLog" label="&enable_console_logging;" onclick="alert(ihg_Globals.strings.read_disclaimer);"/>
 		<checkbox id="cb_enableDebug" preference="enableDebug" label="&enable_debugging_logging;" onclick="alert(ihg_Globals.strings.read_disclaimer);"/>
-		<button id="but_clear" label="&clear_log;" onclick="ihg_Functions.clearLog();" />
-		<button id="but_copy" label="&copy_log_to_local_folder;" onclick="ihg_Functions.copyLog();" />
+		<button id="but_clear" label="&clear_log;" oncommand="ihg_Functions.clearLog();" />
+		<button id="but_copy" label="&copy_log_to_local_folder;" oncommand="ihg_Functions.copyLog();" />
 		</vbox>
 	</tabpanel>
 

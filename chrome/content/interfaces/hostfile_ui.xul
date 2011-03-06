@@ -15,57 +15,62 @@ onload="initWindow();">
 <script type="text/javascript"><![CDATA[
 ]]></script>
 
-<vbox>
-	<hbox>
-		<menulist flex="1" id="theList">
-			<menupopup>
-				<menuitem label="&select_host;"/>
-			</menupopup>
-		</menulist>
-	</hbox>
+<hbox>
+	<menulist flex="1" id="theList">
+		<menupopup>
+			<menuitem label="&select_host;"/>
+		</menupopup>
+	</menulist>
+</hbox>
 
-	<hbox>
-		<label control="tb_hostLabel" value="&host_label;"/>
-		<textbox flex="2" id="tb_hostLabel"/>
-		<label control="tb_hostMaxThreads" value="&host_max_threads;" tooltiptext="&host_max_threads.tooltiptext;"/>
-		<textbox type="number" min="0" max="15" size="2" id="tb_hostMaxThreads"/>
-	</hbox>
+<grid>
+	<columns>
+		<column />
+		<column flex="1" />
+	</columns>
+	<rows>
+		<row>
+			<label control="tb_hostLabel" value="&host_label;"/>
+			<hbox>
+				<textbox flex="1" id="tb_hostLabel"/>
+				<label control="tb_hostMaxThreads" value="&host_max_threads;" tooltiptext="&host_max_threads.tooltiptext;"/>
+				<textbox type="number" min="0" max="15" size="2" id="tb_hostMaxThreads"/>
+			</hbox>
+		</row>
+		<row>
+			<label control="tb_urlPattern" value="&url_pattern;"/>
+			<textbox id="tb_urlPattern"/>
+		</row>
+	</rows>
+</grid>
 
-	<hbox>
-		<label control="tb_urlPattern" value="&url_pattern;"/>
-		<textbox flex="2" id="tb_urlPattern"/>
-	</hbox>
-
-	<hbox>
-		<label control="tb_searchPattern" value="&search_pattern;"/>
-	</hbox>
-
-	<hbox>
-		<textbox multiline="true" height="200" flex="2" id="tb_searchPattern"/>
-	</hbox>
-
-	<separator/>
-
-	<hbox>
-		<button onclick="updateHostFile();" label="&update_file;"/>
-		<button onclick="addHost();" label="&add_host;"/>
-		<button onclick="deleteHost();" label="&delete_host;"/>
-		<spacer flex="1"/>
-		<button onclick="openDialog('chrome://imagegrabber/content/interfaces/hostf_servers_ui.xul');" label="&modify_hostf_servers;"/>
-	</hbox>
-
-	<separator/>
-
-	<hbox>
-		<button onclick="changeHostFile();" label="&pick_host_file;"/>
-		<button onclick="resetHostFileLoc();" label="&reset_to_default_host_file;"/>
-		<button onclick="mergeHostFile();" label="&merge_host_file;"/>
-		<button onclick="onlineHostF();" label="&update_from_online_host_file;"/>
-	</hbox>
-
-	<hbox>
-		<textbox flex="2" id="tb_hostFileLoc" />
-	</hbox>
-
+<vbox flex="1">
+	<label control="tb_searchPattern" value="&search_pattern;"/>
+	<textbox multiline="true" flex="1" height="200" id="tb_searchPattern"/>
 </vbox>
+
+<separator/>
+
+<hbox>
+	<button onclick="updateHostFile();" label="&update_file;"/>
+	<button onclick="addHost();" label="&add_host;"/>
+	<button onclick="deleteHost();" label="&delete_host;"/>
+	<spacer flex="1"/>
+	<button onclick="openDialog('chrome://imagegrabber/content/interfaces/hostf_servers_ui.xul');" label="&modify_hostf_servers;"/>
+</hbox>
+
+<separator/>
+
+<hbox>
+	<button onclick="changeHostFile();" label="&pick_host_file;"/>
+	<button onclick="resetHostFileLoc();" label="&reset_to_default_host_file;"/>
+	<spacer flex="1"/>
+	<button onclick="mergeHostFile();" label="&merge_host_file;"/>
+	<button onclick="onlineHostF();" label="&update_from_online_host_file;"/>
+</hbox>
+
+<hbox>
+	<textbox flex="1" id="tb_hostFileLoc" readonly="true"/>
+</hbox>
+
 </window>

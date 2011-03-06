@@ -78,7 +78,7 @@ HostFileService.prototype = {
 
 	}
 
-
+/* 
 function initWindow() {
 	window.addEventListener("resize", resizeResponseTextBox, false);
 	//resizeResponseTextBox();
@@ -89,7 +89,7 @@ function resizeResponseTextBox() {
 	var rBoxThing = document.getElementById("tb_searchPattern");
 	rBoxThing.height = window.innerHeight - 100;
 	}
-
+ */
 
 function loadHostFile() {
 	hostf_servers_Globals.hostFileObj = new HostFileService();

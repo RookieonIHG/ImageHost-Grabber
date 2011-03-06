@@ -1,22 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE window SYSTEM "chrome://imagegrabber/locale/req_details.dtd">
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<window title="&imagehost_grabber_request_details;" id="igRequestDetails" onload="startThing();"
+<window title="&imagehost_grabber_request_details;" id="igRequestDetails"
 width="910" height="480" persist="sizemode height width screenX screenY"
 xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 <script>
 const gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].getService(Components.interfaces.nsIClipboardHelper);
-
-function startThing() {
-	window.addEventListener("resize", resizeResponseTextBox, false);
-	resizeResponseTextBox();
-	}
-
-function resizeResponseTextBox() {
-	var rBoxThing = document.getElementById("responseText");
-	rBoxThing.height = window.innerHeight - 188;
-	}
 </script>
 
 <keyset>
@@ -36,9 +26,17 @@ function resizeResponseTextBox() {
 
 <spacer height="20"/>
 
-<hbox><label value="&request_url;"/><textbox flex="1" id="reqURL" readonly="true"/></hbox>
-<hbox><label value="&regular_expression;"/><textbox flex="1" id="regexp" readonly="true"/></hbox>
-<hbox><label value="&target_directory;"/><textbox flex="1" id="dirSave" readonly="true"/></hbox>
+<grid>
+	<columns>
+		<column />
+		<column flex="1" />
+	</columns>
+	<rows>
+		<row><label value="&request_url;"/><textbox id="reqURL" readonly="true"/></row>
+		<row><label value="&regular_expression;"/><textbox id="regexp" readonly="true"/></row>
+		<row><label value="&target_directory;"/><textbox id="dirSave" readonly="true"/></row>
+	</rows>
+</grid>
 
 <spacer height="20"/>
 
@@ -46,5 +44,10 @@ function resizeResponseTextBox() {
 	<hbox><label value="&http_ready_state;"/><textbox flex="1" id="readyState" readonly="true"/></hbox>
 	<hbox><label value="&http_status;"/><textbox flex="1" id="statusText" readonly="true"/></hbox>
 </hbox>
-<vbox><label value="&response_text;"/><textbox flex="1"  multiline="true"  id="responseText" readonly="true"/></vbox>
+
+<vbox flex="1">
+	<label value="&response_text;"/>
+	<textbox flex="1" multiline="true" id="responseText" readonly="true"/>
+</vbox>
+
 </window>

@@ -2,7 +2,7 @@
 <!DOCTYPE window SYSTEM "chrome://imagegrabber/locale/hostf_servers_ui.dtd">
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <window id="hostF_serversUI" title="&host_file_servers;" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
-onload="initWindow();">
+onload="loadHostFile();">
 
 <stringbundleset id="stringbundleset">
     <stringbundle id="imagegrabber-strings" src="chrome://imagegrabber/locale/imagegrabber.properties" />
@@ -15,17 +15,16 @@ onload="initWindow();">
 <script type="text/javascript"><![CDATA[
 ]]></script>
 
-<vbox>
-	<hbox>
-		<listbox height="200" flex="1" id="tb_searchPattern"/>
-	</hbox>
-
-	<separator/>
-
-	<hbox>
-		<button onclick="addHostFServer();" label="&add_host_file_server;"/>
-		<button onclick="delHostFServer();" label="&delete_host_file_server;"/>
-		<button onclick="updateHostFile();" label="&update_file;"/>
-	</hbox>
+<vbox flex="1">
+	<listbox height="200" flex="1" id="tb_searchPattern"/>
 </vbox>
+
+<separator/>
+
+<hbox>
+	<button onclick="addHostFServer();" label="&add_host_file_server;"/>
+	<button onclick="delHostFServer();" label="&delete_host_file_server;"/>
+	<button onclick="updateHostFile();" label="&update_file;"/>
+</hbox>
+
 </window>
