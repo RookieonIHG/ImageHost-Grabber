@@ -125,3 +125,8 @@
 - feature added: keep Last-Modified timestamp sent by the server for downloaded files
 - made some modifications to the locale files
 - modified the retry to retry from the original url
+
+1.6.6.20110311
+- Made some locale changes
+- Added Rookie's 1 second timeout before clearing "File too short"
+- Added tab feature in host file editor

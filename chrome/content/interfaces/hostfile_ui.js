@@ -178,7 +178,7 @@ function handleKeyDown(event) {
 		for (var i = 0; i < indices.length; i++) {
 			if (indices[i].start <= selIdx && indices[i].end >= selIdx) {
 				var spacing = lines[i].match(/^(\s+)?/)[0];
-				alert(lines[i] + "; \"" + spacing + "\"");
+				//alert(lines[i] + "; \"" + spacing + "\"");
 				pp.value = val.slice(0, selIdx) + "\n" + spacing + val.slice(selIdx);
 				pp.selectionStart = selIdx + spacing.length + 1;
 				pp.selectionEnd = selIdx + spacing.length + 1;
