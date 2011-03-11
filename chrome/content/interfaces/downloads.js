@@ -207,7 +207,6 @@ function restart_child() {
 
 
 function remove_child() {
-	abort_child();
 	var outBox = document.getElementById("outBox");
 	var tree = outBox.parentNode;
 
@@ -217,21 +216,18 @@ function remove_child() {
 
 	var daNodes = new Array();
 
-	var removeList = new Array();
-	var z = 0;
-
-	var k = 0;
 	for (var t = 0; t < numRanges; t++){
 		tree.view.selection.getRangeAt(t,start,end);
-		for (var v = start.value; v <= end.value; v++){
-			daNodes[k] = tree.view.getItemAtIndex(v);
-			k++;
-		}
+		for (var v = start.value; v <= end.value; v++) daNodes.push(tree.view.getItemAtIndex(v));
 	}
 
-	for (var i = 0; i < daNodes.length; i++) {
-		outBox.removeChild(daNodes[i]);
-		removeList[z++] = daNodes[i].id;
+	var removeList = new Array();
+
+	for (var s = 0; s < daNodes.length; s++) {
+		var idx = daNodes[s].id;
+		if (req_objs[idx].inprogress) req_objs[idx].abort();
+		outbox.removeChild(daNodes[s]);
+		removeList.push(idx);
 	}
 
 	delete_from_req_objs(removeList);	
@@ -300,7 +296,6 @@ function clear_form() {
 	var outBox = document.getElementById("outBox");
 
 	var removeList = new Array();
-	var z = 0;
 
 	for (var i = 0; i < req_objs.length; i++) {
 		try {
@@ -309,9 +304,9 @@ function clear_form() {
 		}
 		catch(e) { continue; }
 
-		if(req_objs[i].finished == true && req_objs[i].aborted == false) {
+		if(req_objs[i].inprogress == false && req_objs[i].finished == true && req_objs[i].aborted == false) {
 			outBox.removeChild(daNode);
-			removeList[z++] = req_objs[i].uniqID;
+			removeList.push(req_objs[i].uniqID);
 		}
 	}
 
@@ -342,7 +337,7 @@ function killme() {
 
 	var shit = document.getElementById("outBox");
 
-	for(var i=0; i < shit.childNodes.length; i++) { 
+	for (var i=0; i < shit.childNodes.length; i++) { 
 		var idx = shit.childNodes[i].id; 
 		req_objs[idx].override_stop = false;
 		if(req_objs[idx].inprogress) {
@@ -354,6 +349,8 @@ function killme() {
 
 
 function reviveme() {
+	if (req_objs.length == 0) return;
+	
 	ihg_downloads_Globals.prefManager.setBoolPref("extensions.imagegrabber.killmenow", false);
 
 	var maxThreads = ihg_downloads_Globals.prefManager.getIntPref("extensions.imagegrabber.maxthreads");
@@ -369,7 +366,7 @@ function reviveme() {
 		}
 	}
 
-	if (req_objs.length > 0) req_objs[0].queueHandler();
+	req_objs[0].queueHandler();
 }
 
 
@@ -550,7 +547,7 @@ function exportList() {
 		var reqUrl = req_objs[i].reqURL;
 		reqUrl = reqUrl.replace(/&/g, "&amp;");
 		if (req_objs[i].regexp == "Embedded Image") converter.writeString("<img src=\"" + reqUrl + "\" alt=\"" + reqUrl+ "\" /><br />\n");
-		else converter.writeString("<a href=\"" + reqUrl + "\">" + reqUrl + "</a><br />\n");
+		else converter.writeString(reqUrl.link(reqUrl) + "<br />\n");
 	}
 
 	converter.writeString("</body>\n"

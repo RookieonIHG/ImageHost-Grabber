@@ -238,7 +238,7 @@ getInterface: function (aIID) {
 				}
 			}
 			else {
-				ihg_Functions.updateDownloadProgress(null, this.reqObj.uniqID, null, null, ihg_Globals.strings.finished);
+				ihg_Functions.updateDownloadProgress(null, this.reqObj.uniqID, null, null, ihg_Globals.strings.finished + " and locked...");
 			
 				if (ihg_Globals.useLastModFromHeader) {
 					try {
@@ -252,10 +252,12 @@ getInterface: function (aIID) {
 				}
 			}
 
-			ihg_Functions.clearFromWin(this.reqObj.uniqID);
+			// ihg_Functions.clearFromWin(this.reqObj.uniqID);
 
 			this.reqObj.finished = true;
-			this.reqObj.inprogress = false;
+			// this.reqObj.inprogress = false;
+			this.reqObj.callwrapper = new ihg_Functions.CCallWrapper(this.reqObj, 5000, 'unlock', "locking of " + this.reqObj.uniqID);
+			ihg_Functions.CCallWrapper.asyncExecute(this.reqObj.callwrapper);
 			this.reqObj.queueHandler();
 		}
 

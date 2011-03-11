@@ -105,7 +105,7 @@ ihg_Functions.requestObj.prototype = {
 	abort : function req_abort(additional_message) {
 		var retryURL = this.reqURL;
 
-		if(this.finished == true) return;
+		if (this.finished == true) return;
 
 		ihg_Functions.updateDownloadProgress(null, this.uniqID, null, null, ihg_Globals.strings.request_aborted + "  " + (additional_message?additional_message:""));
 		ihg_Functions.LOG(retryURL + " has been aborted.\n");
@@ -141,7 +141,7 @@ ihg_Functions.requestObj.prototype = {
 		var retryURL = this.reqURL;
 		ihg_Functions.LOG("In function requestObj.retry, this.retryNum is equal to: " + this.retryNum + "\n");
 
-		if(this.retryNum < 1) {
+		if (this.retryNum < 1) {
 			ihg_Functions.updateDownloadProgress(null, this.uniqID, null, null, ihg_Globals.strings.request_failed);
 			ihg_Functions.LOG(this.uniqID + " has been retried the maximum number of times... we're gonna give up.\n");
 
@@ -169,6 +169,21 @@ ihg_Functions.requestObj.prototype = {
 		ihg_Functions.LOG("Exiting function requestObj.retry\n");
 		},
 
+	unlock : function req_unlock() {
+		ihg_Functions.LOG("Entering function requestObj.unlock\n");
+
+		ihg_Functions.updateDownloadProgress(null, this.uniqID, null, null, ihg_Globals.strings.finished + " and unlocked...");
+		ihg_Functions.clearFromWin(this.uniqID);
+		this.inprogress = false;
+
+		var toDieOrNot = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.killmenow");
+		if (toDieOrNot) {
+			ihg_Functions.LOG("In function requestObj.unlock, received the call to die!\n");
+			return; }
+
+		this.queueHandler();
+		},
+
 	errHandler : function req_errHandler(event) {
 		ihg_Functions.LOG("Entering function requestObj.errHandler\n");
 
@@ -184,7 +199,7 @@ ihg_Functions.requestObj.prototype = {
 
 		req.callwrapper.cancel();
 
-		if(req.retryNum < 1) {
+		if (req.retryNum < 1) {
 			ihg_Functions.updateDownloadProgress(null, req.uniqID, null, null, ihg_Globals.strings.request_failed);
 			ihg_Functions.LOG(retryURL + " has been retried the maximum number of times... we're gonna give up.\n");
 
@@ -240,7 +255,7 @@ ihg_Functions.requestObj.prototype = {
 				if (next_req) next_req = next_req.getNextAvailable();
 				}
 			else {
-				if (this.cp.curThread == 0) {
+				if (this.cp.curThread == 0 && this.cp.curHostThread == 0) {
 					ihg_Functions.updateDownloadStatus(ihg_Globals.strings.all_done);
 					
 					ihg_Globals.autoCloseWindow = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.autoclosewindow");
@@ -258,7 +273,7 @@ ihg_Functions.requestObj.prototype = {
 		var nextReq = this.firstRequest;
 		while (nextReq) {
 			if (nextReq.inprogress) {
-				numThreads++;
+				if (!nextReq.finished) numThreads++;
 				if (nextReq.hostID == this.hostID) numHostThreads++;
 				}
 			nextReq = nextReq.nextRequest;
