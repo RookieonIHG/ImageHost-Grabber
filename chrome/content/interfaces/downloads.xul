@@ -91,33 +91,34 @@ onunload="onUnLoad();">
 			<preference id="pref_numretries" name="extensions.imagegrabber.numretries" type="int" instantApply="true"/>
 		</preferences>
 		
-		<hbox>
+		<hbox align="center">
 			<label value="&max_requests;" control="maxSimRequests" tooltiptext="&max_requests.tooltiptext;"/>
-			<textbox id="maxSimRequests" type="number" min="1" max="15" size="2" preference="pref_maxthreads"/>
+			<textbox id="maxSimRequests" type="number" min="1" max="20" size="2" preference="pref_maxthreads"/>
 			<label value="&max_retries;" control="maxRetries" tooltiptext="&max_retries.tooltiptext;"/>
-			<textbox id="maxRetries" type="number" min="1" max="30" size="2" preference="pref_numretries"/>
+			<textbox id="maxRetries" type="number" min="1" max="10" size="2" preference="pref_numretries"/>
 		</hbox>
 	</prefpane>
 </hbox>
 
 <tree id="igTree" flex="1" enableColumnDrag="true">
 
-  <treecols>
-    <treecol id="page_stat" label="&page_status;" flex="1" persist="width ordinal hidden"/>
-	<splitter class="tree-splitter"/>
-    <treecol id="filename" label="&file_name;" flex="3" persist="width ordinal hidden"/>
-	<splitter class="tree-splitter"/>
-    <treecol id="progress" label="&progress;" type="progressmeter" flex="1" persist="width ordinal hidden"/>
-	<splitter class="tree-splitter"/>
-    <treecol id="status" label="&status;" flex="2" persist="width ordinal hidden"/>
-  </treecols>
+	<treecols>
+		<treecol id="page_stat" label="&page_status;" flex="1" persist="width ordinal hidden"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="filename" label="&file_name;" flex="3" persist="width ordinal hidden"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="progress" label="&progress;" type="progressmeter" flex="1" persist="width ordinal hidden"/>
+		<splitter class="tree-splitter"/>
+		<treecol id="status" label="&status;" flex="2" persist="width ordinal hidden"/>
+	</treecols>
 
-  <treechildren id="outBox" context="dl_menu" ondblclick="launchFile();">
-  </treechildren>
+	<treechildren id="outBox" context="dl_menu" ondblclick="launchFile();">
+	</treechildren>
 
 </tree>
 
-<groupbox><caption label="&status;"/>
-<label id="statLabel" value=""/>
+<groupbox>
+	<caption label="&status;"/>
+	<label id="statLabel" value=""/>
 </groupbox>
 </window>

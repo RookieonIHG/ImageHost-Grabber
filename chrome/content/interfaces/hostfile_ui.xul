@@ -29,15 +29,15 @@ onload="initWindow();">
 		<column flex="1" />
 	</columns>
 	<rows>
-		<row>
+		<row align="center">
 			<label control="tb_hostLabel" value="&host_label;"/>
-			<hbox>
+			<hbox align="center">
 				<textbox flex="1" id="tb_hostLabel"/>
 				<label control="tb_hostMaxThreads" value="&host_max_threads;" tooltiptext="&host_max_threads.tooltiptext;"/>
 				<textbox type="number" min="0" max="15" size="2" id="tb_hostMaxThreads"/>
 			</hbox>
 		</row>
-		<row>
+		<row align="center">
 			<label control="tb_urlPattern" value="&url_pattern;"/>
 			<textbox id="tb_urlPattern"/>
 		</row>
