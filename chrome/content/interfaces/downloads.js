@@ -226,7 +226,7 @@ function remove_child() {
 	for (var s = 0; s < daNodes.length; s++) {
 		var idx = daNodes[s].id;
 		if (req_objs[idx].inprogress) req_objs[idx].abort();
-		outbox.removeChild(daNodes[s]);
+		outBox.removeChild(daNodes[s]);
 		removeList.push(idx);
 	}
 
