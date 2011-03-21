@@ -57,10 +57,21 @@
 }]]></searchpattern>
 </forum>
 
-<forum id="konachan">
+<!--<forum id="konachan">
 <urlpattern>^http:\/\/konachan\.com\/post(?:\?|\/)</urlpattern>
 <searchpattern><![CDATA[function(threadURL) {
 	var tmp = threadURL.replace(/page=\d+/, "page=" + threadsucker_Globals.linkIndex);
+	if (!tmp.match(/page=\d+/)) tmp = tmp + (tmp.match(/\?$/) ? "" : "&") + "page=" + threadsucker_Globals.linkIndex;
+	return tmp;
+}]]></searchpattern>
+</forum>-->
+
+<forum id="konachan.com">
+<urlpattern>^http:\/\/konachan\.com\/post(?:\?|\/)</urlpattern>
+<searchpattern><![CDATA[function(threadURL) {
+	var tmp = threadURL;
+	tmp = tmp.replace(/(^http:\/\/konachan\.com\/post)\?(.+)/, "$1/index$2");
+	tmp = tmp.replace(/page=\d+/, "page=" + threadsucker_Globals.linkIndex);
 	if (!tmp.match(/page=\d+/)) tmp = tmp + (tmp.match(/\?$/) ? "" : "&") + "page=" + threadsucker_Globals.linkIndex;
 	return tmp;
 }]]></searchpattern>
@@ -264,6 +275,17 @@
 <urlpattern>http:\/\/whatboyswant\.com\/forum_read\/\d+\/?(?:\d+\/\d+\/\w+\.html)?</urlpattern>
 <searchpattern><![CDATA[function(threadURL) {
    return threadURL.replace(/(forum_read\/\d+\/)\d+/, "$1" + threadsucker_Globals.linkIndex);
+}]]></searchpattern>
+</forum>
+
+<forum id="e621">
+<urlpattern>^http:\/\/e621\.net\/post(?:\?|\/)</urlpattern>
+<searchpattern><![CDATA[function(threadURL) {
+	var tmp = threadURL;
+	tmp = tmp.replace(/(^http:\/\/e621\.net\/post)\?(.+)/, "$1/index$2");
+	tmp = tmp.replace(/page=\d+/, "page=" + threadsucker_Globals.linkIndex);
+	if (!tmp.match(/page=\d+/)) tmp = tmp + (tmp.match(/\?$/) ? "" : "&") + "page=" + threadsucker_Globals.linkIndex;
+	return tmp;
 }]]></searchpattern>
 </forum>
 </root>
