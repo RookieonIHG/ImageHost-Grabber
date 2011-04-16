@@ -31,8 +31,8 @@
  * had a bad tendency of losing the data that was assigned to it on the fly.
  */
 ihg_Functions.requestObj = function requestObj() {
+	this.uniqID = "req_" + (Math.floor(1e9 * (1 + Math.random()))).toString().substring(1);
 	// These are the properties that need to be set (by someone) for each instance of the class
-	this.uniqID = "";
 	this.origURL = "";
 	this.reqURL = "";
 	this.hostFunc = new Function();

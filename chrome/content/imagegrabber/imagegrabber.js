@@ -149,16 +149,15 @@ ihg_Functions.finishUp = function finishUp(req_objs) {
 
 	ihg_Functions.updateDownloadStatus(ihg_Globals.strings.running);
 
+	// This means it found no links
+	if (req_objs.length == 0) return;
+
 	for(var i = 0; i < req_objs.length; i++) {
 		var m = req_objs[i].curLinkNum + 1;
 		var page_stat = ihg_Globals.strings.page + " " + req_objs[i].pageNum + ": " + m + " " + ihg_Globals.strings.of + " " + req_objs[i].totLinkNum;
 		ihg_Functions.addDownloadProgress(page_stat, req_objs[i].uniqID, req_objs[i].reqURL, ihg_Globals.strings.waiting);
 		}
 
-
-	// This means it found no links
-	if (req_objs.length == 0) return;
-	
 	ihg_Functions.setFocus();
 	
 	req_objs[0].queueHandler();
@@ -246,6 +245,7 @@ ihg_Functions.getDLCache = function getDLCache(fileName) {
 			var propType = props[i].getAttribute("type");
 
 			var propName = props[i].getAttribute("id");
+			if (propName.match(/^uniqID_\d+/)) continue;
 			propName = propName.match(/(.+)_\d+/)[1];
 
 			if (propType == "function") {
@@ -413,7 +413,7 @@ ihg_Functions.setUpReq = function setUpReq(objLinks) {
 			req.pageNum = i;
 			req.curLinkNum = j;
 			req.totLinkNum = objLinks.links[i].length;
-			req.uniqID = "req_" + Math.round(Math.random() * 1e9);
+			// req.uniqID = "req_" + Math.round(Math.random() * 1e9);
 			req.uniqFN_prefix = fName;
 			req.minFileSize = ihg_Globals.minFileSize;
 

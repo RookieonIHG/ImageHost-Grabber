@@ -87,26 +87,31 @@ function saveSession(fileName) {
 function loadSession() {
 	var tReqs = ihg_Functions.getDLCache();
 	if (tReqs == null) return;
-	req_objs = tReqs;
+	// req_objs = tReqs;
 	
-	var outBox = document.getElementById("outBox");
-	var children = outBox.childNodes;
+	// var outBox = document.getElementById("outBox");
+	// var children = outBox.childNodes;
 	
-	for (var i = children.length - 1; i >= 0; i--)
-		outBox.removeChild(children[i]);
-
+	// for (var i = children.length - 1; i >= 0; i--)
+		// outBox.removeChild(children[i]);
+	
 	ihg_Globals.strbundle = document.getElementById("imagegrabber-strings");
 	ihg_Functions.read_locale_strings();
 	
 	ihg_Functions.initVars(true); // true to suppress directory selection dialog
-
 	
-	for(var i = 0; i < req_objs.length; i++) {
-		var m = req_objs[i].curLinkNum + 1;
-		var page_stat = ihg_Globals.strings.page + " " + req_objs[i].pageNum + ": " + m + " " + ihg_Globals.strings.of + " " + req_objs[i].totLinkNum;
-		ihg_Functions.addDownloadProgress(page_stat, req_objs[i].uniqID, req_objs[i].reqURL, req_objs[i].status);
-		ihg_Functions.updateDownloadProgress(null, req_objs[i].uniqID, null, (req_objs[i].curProgress / req_objs[i].maxProgress) * 100, null);
-	}	
+	var new_array = req_objs.concat(tReqs);
+	for (var i=0; i < new_array.length; i++) new_array[new_array[i].uniqID] = new_array[i];
+	delete req_objs;
+	req_objs = new_array;
+	setUpLinkedList();
+	
+	for (var i = 0; i < tReqs.length; i++) {
+		var m = tReqs[i].curLinkNum + 1;
+		var page_stat = ihg_Globals.strings.page + " " + tReqs[i].pageNum + ": " + m + " " + ihg_Globals.strings.of + " " + tReqs[i].totLinkNum;
+		ihg_Functions.addDownloadProgress(page_stat, tReqs[i].uniqID, tReqs[i].reqURL, tReqs[i].status);
+		ihg_Functions.updateDownloadProgress(null, tReqs[i].uniqID, null, (tReqs[i].curProgress / tReqs[i].maxProgress) * 100, null);
+	}
 }
 
 
