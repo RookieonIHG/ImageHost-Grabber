@@ -105,7 +105,7 @@ ihg_Functions.requestObj.prototype = {
 	abort : function req_abort(additional_message) {
 		var retryURL = this.reqURL;
 
-		if (this.finished == true) return;
+		if (this.finished) return;
 
 		ihg_Functions.updateDownloadProgress(null, this.uniqID, null, null, ihg_Globals.strings.request_aborted + "  " + (additional_message?additional_message:""));
 		ihg_Functions.LOG(retryURL + " has been aborted.\n");
@@ -229,15 +229,13 @@ ihg_Functions.requestObj.prototype = {
 		var toDieOrNot = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.killmenow");
 		
 		var next_obj = this;
-		var not_found = true;
-		while (not_found) {
-			if (next_obj == null) not_found = false;
-			else if (next_obj.inprogress == false && next_obj.finished == false) {
-					if (!toDieOrNot) not_found = false; 
-					else if (next_obj.override_stop) not_found = false;
+		while (next_obj) {
+			if (!(next_obj.inprogress || next_obj.finished)) {
+				if (!toDieOrNot) break;
+				if (next_obj.override_stop) break;
 				}
 			
-			if (not_found) next_obj = next_obj.nextRequest;
+			next_obj = next_obj.nextRequest;
 			}
 		return next_obj;
 		},
@@ -247,21 +245,23 @@ ihg_Functions.requestObj.prototype = {
 		ihg_Globals.maxThreads = ihg_Globals.prefManager.getIntPref("extensions.imagegrabber.maxthreads");
 		
 		var next_req = this.firstRequest.getNextAvailable();
-		while (this.countThreads() < ihg_Globals.maxThreads) {
-			if (next_req) {
-				next_req.init();
-				
-				next_req = next_req.nextRequest;
-				if (next_req) next_req = next_req.getNextAvailable();
-				}
-			else {
-				if (this.cp.curThread == 0 && this.cp.curHostThread == 0) {
-					ihg_Functions.updateDownloadStatus(ihg_Globals.strings.all_done);
+		if (next_req) {
+			while (next_req) {
+				if (this.countThreads() < ihg_Globals.maxThreads) {
+					next_req.init();
 					
-					ihg_Globals.autoCloseWindow = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.autoclosewindow");
-					if (ihg_Globals.autoCloseWindow) ihg_Functions.startCloseCountdown();
+					next_req = next_req.nextRequest;
+					if (next_req) next_req = next_req.getNextAvailable();
 					}
-				break;
+				else break;
+				}
+			}
+		else {
+			if (this.countThreads() == 0) {
+				ihg_Functions.updateDownloadStatus(ihg_Globals.strings.all_done);
+				
+				ihg_Globals.autoCloseWindow = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.autoclosewindow");
+				if (ihg_Globals.autoCloseWindow) ihg_Functions.startCloseCountdown();
 				}
 			}
 		},
