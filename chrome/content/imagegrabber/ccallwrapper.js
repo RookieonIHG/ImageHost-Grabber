@@ -39,13 +39,6 @@ ihg_Functions.CCallWrapper = function CCallWrapper(aObjectReference, aDelay, aMe
 	}
 
 ihg_Functions.CCallWrapper.prototype.execute = function() {
-	
-	var toDieOrNot = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.killmenow");
-	if (toDieOrNot) return;
-
-	var req = this.mObjectReference;
-	var retry_dick = "(" + String(ihg_Globals.maxRetries - req.retryNum + 1) + " of " + String(ihg_Globals.maxRetries) + ")";
-
 	ihg_Functions.LOG("CCallWrapper with mId of " + this.mId + " and reqID of " + this.mReqId + " has timed out.  Executing the passed function\n");
 	this.mObjectReference[this.mMethodName]();
 	delete ihg_Functions.CCallWrapper.mPendingCalls[this.mId];
