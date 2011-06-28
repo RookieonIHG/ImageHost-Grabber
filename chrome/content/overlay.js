@@ -10,9 +10,16 @@ function isThread(Url) {
 	}
 }
 
+function ihg_popupMenuInit() {
+	if (this.open) return;
+	
+	var isForum = isThread(content.document.location.href);
+	
+	for each (var div in this.getElementsByClassName('suck_cur_thread_popup')) div.hidden = !isForum;
+}
+
 function ihg_contextMenuInit() {
-	var ihg_contextMenu = document.getElementById("contentAreaContextMenu");
-	if (ihg_contextMenu.state == 'open') return;
+	if (this.state == 'open') return;
 	
 	if (window.gContextMenu == null) return;
 	
