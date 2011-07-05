@@ -36,7 +36,8 @@ onunload="onUnLoad();">
 	<key id="launchFile_cmd" keycode="VK_RETURN" oncommand="launchFile();"/>
 	<key id="revealFile_cmd" keycode="VK_RETURN" modifiers="shift" oncommand="revealFile();"/>
 	<key id="openReqUrls_cmd" keycode="VK_RETURN" modifiers="accel" oncommand="openReqUrls();"/>
-	<key id="delete_cmd" keycode="VK_DELETE" oncommand="remove_child();"/>
+	<key id="delete_cmd" keycode="VK_DELETE" oncommand="remove_child(false);"/>
+	<key id="backsp_cmd" keycode="VK_BACK" oncommand="remove_child(true);"/>
 	<key id="selectAll_cmd" key="A" modifiers="accel" oncommand="doSelectAll();"/>
 	<key id="invertSelection_cmd" key="I" modifiers="accel" oncommand="doInvertSelection();"/>
 	<key id="viewDetails_cmd" key="V" oncommand="view_details();"/>
@@ -54,9 +55,9 @@ onunload="onUnLoad();">
   <menuitem label="&restart_download;" onclick="restart_child();"/>
   <menuitem label="&reset_the_retry_count_to_zero;" onclick="reset_retryCount();"/>
   <menuseparator />
+  <menuitem label="&open_url;" onclick="openReqUrls();" key="openReqUrls_cmd"/>
   <menuitem label="&view_request_details;" onclick="view_details();" key="viewDetails_cmd"/>
 </menupopup>
-
 
 <script type="application/x-javascript" src="chrome://imagegrabber/content/interfaces/downloads.js" />
 

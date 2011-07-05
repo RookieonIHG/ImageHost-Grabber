@@ -159,11 +159,9 @@ function exportSession() {
 function reInitSession() {
 }
 
-function reset_retryCount() {
-	var maxRetries = ihg_downloads_Globals.prefManager.getIntPref("extensions.imagegrabber.numretries");
 
-	var outBox = document.getElementById("outBox");
-	var tree = outBox.parentNode;
+function getTreeSelection() {
+	var tree = document.getElementById("igTree");
 
 	var start = new Object();
 	var end = new Object();
@@ -171,10 +169,19 @@ function reset_retryCount() {
 
 	var daNodes = new Array();
 
-	for (var t = 0; t < numRanges; t++){
+	for (var t = 0; t < numRanges; t++) {
 		tree.view.selection.getRangeAt(t,start,end);
 		for (var v = start.value; v <= end.value; v++) daNodes.push(tree.view.getItemAtIndex(v));
 	}
+	
+	return daNodes;
+}
+
+
+function reset_retryCount() {
+	var maxRetries = ihg_downloads_Globals.prefManager.getIntPref("extensions.imagegrabber.numretries");
+
+	var daNodes = getTreeSelection();
 
 	for (var s = 0; s < daNodes.length; s++) {
 		var idx = daNodes[s].id;
@@ -184,19 +191,7 @@ function reset_retryCount() {
 
 
 function restart_child() {
-	var outBox = document.getElementById("outBox");
-	var tree = outBox.parentNode;
-
-	var start = new Object();
-	var end = new Object();
-	var numRanges = tree.view.selection.getRangeCount();
-
-	var daNodes = new Array();
-
-	for (var t = 0; t < numRanges; t++){
-		tree.view.selection.getRangeAt(t,start,end);
-		for (var v = start.value; v <= end.value; v++) daNodes.push(tree.view.getItemAtIndex(v));
-	}
+	var daNodes = getTreeSelection();
 
 	for (var s = 0; s < daNodes.length; s++) {
 		var idx = daNodes[s].id;
@@ -211,51 +206,35 @@ function restart_child() {
 }
 
 
-function remove_child() {
-	var outBox = document.getElementById("outBox");
-	var tree = outBox.parentNode;
-
-	var start = new Object();
-	var end = new Object();
-	var numRanges = tree.view.selection.getRangeCount();
-
-	var daNodes = new Array();
-
-	for (var t = 0; t < numRanges; t++){
-		tree.view.selection.getRangeAt(t,start,end);
-		for (var v = start.value; v <= end.value; v++) daNodes.push(tree.view.getItemAtIndex(v));
-	}
+function remove_child(back_space) {
+	var tree = document.getElementById("igTree");
+	var currentNode = tree.view.getItemAtIndex(tree.view.selection.currentIndex);
+	
+	var daNodes = getTreeSelection();
 
 	var removeList = new Array();
 
 	for (var s = 0; s < daNodes.length; s++) {
 		var idx = daNodes[s].id;
+		if (idx == currentNode.id)
+			try {
+				tree.view.selection.select(tree.view.selection.currentIndex + (back_space ? -1 : +1));
+				currentNode = tree.view.getItemAtIndex(tree.view.selection.currentIndex);
+				}
+			catch (e) {}
 		if (req_objs[idx].inprogress) req_objs[idx].abort();
-		outBox.removeChild(daNodes[s]);
+		var parentItem = daNodes[s].parentNode;
+		parentItem.removeChild(daNodes[s]);
+
 		removeList.push(idx);
 	}
 
-	delete_from_req_objs(removeList);	
-
-	if (start.value > 0) tree.view.selection.select(start.value-1);
-	else tree.view.selection.select(0);
+	delete_from_req_objs(removeList);
 }
 
 
 function abort_child() {
-	var outBox = document.getElementById("outBox");
-	var tree = outBox.parentNode;
-
-	var start = new Object();
-	var end = new Object();
-	var numRanges = tree.view.selection.getRangeCount();
-
-	var daNodes = new Array();
-
-	for (var t = 0; t < numRanges; t++){
-		tree.view.selection.getRangeAt(t,start,end);
-		for (var v = start.value; v <= end.value; v++) daNodes.push(tree.view.getItemAtIndex(v));
-	}
+	var daNodes = getTreeSelection();
 
 	for (var s = 0; s < daNodes.length; s++) {
 		var idx = daNodes[s].id;
@@ -266,19 +245,7 @@ function abort_child() {
 
 
 function retry_child() {
-	var outBox = document.getElementById("outBox");
-	var tree = outBox.parentNode;
-
-	var start = new Object();
-	var end = new Object();
-	var numRanges = tree.view.selection.getRangeCount();
-
-	var daNodes = new Array();
-
-	for (var t = 0; t < numRanges; t++){
-		tree.view.selection.getRangeAt(t,start,end);
-		for (var v = start.value; v <= end.value; v++) daNodes.push(tree.view.getItemAtIndex(v));
-	}
+	var daNodes = getTreeSelection();
 
 	for (var s = 0; s < daNodes.length; s++) {
 		var idx = daNodes[s].id;
@@ -309,8 +276,8 @@ function clear_form() {
 		}
 		catch(e) { continue; }
 
-		if(req_objs[i].inprogress == false && req_objs[i].finished == true && req_objs[i].aborted == false) {
-			outBox.removeChild(daNode);
+		if (req_objs[i].inprogress == false && req_objs[i].finished == true && req_objs[i].aborted == false) {
+			daNode.parentNode.removeChild(daNode);
 			removeList.push(req_objs[i].uniqID);
 		}
 	}
@@ -340,25 +307,20 @@ function killme() {
 	var statLabel = document.getElementById("statLabel");
 	statLabel.value = ihg_Globals.strings.stopping_the_program;
 
-	var shit = document.getElementById("outBox");
-
-	for (var i=0; i < shit.childNodes.length; i++) { 
-		var idx = shit.childNodes[i].id; 
-		req_objs[idx].override_stop = false;
-		if(req_objs[idx].inprogress) {
-			req_objs[idx].stopped = true;
-			req_objs[idx].abort();
+	for (var i = 0; i < req_objs.length; i++) {
+		req_objs[i].override_stop = false;
+		if (req_objs[i].inprogress) {
+			req_objs[i].stopped = true;
+			req_objs[i].abort();
 		}
 	}
 }
 
 
 function reviveme() {
-	if (req_objs.length == 0) return;
-	
 	ihg_downloads_Globals.prefManager.setBoolPref("extensions.imagegrabber.killmenow", false);
 
-	var maxThreads = ihg_downloads_Globals.prefManager.getIntPref("extensions.imagegrabber.maxthreads");
+	if (req_objs.length == 0) return;
 
 	var statLabel = document.getElementById("statLabel");
 	statLabel.value = ihg_Globals.strings.reviving_the_program;
@@ -476,19 +438,17 @@ function setUpLinkedList() {
 
 
 function openReqUrls() {
-	var tree = document.getElementById("igTree");
+	var daNodes = getTreeSelection();
 
-	var nWinCheck=false;
-	for (var i = 0; i < tree.view.rowCount; i++) {
-		var reqUrl = req_objs[i].reqURL;
-		if (tree.view.selection.isSelected(i)) {
-			if (!nWinCheck) {
-				var nWin = window.open(reqUrl,reqUrl,"menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes");
-				nWinCheck = true;
-			} else{
-				var win = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService(Components.interfaces.nsIWindowMediator).getMostRecentWindow('navigator:browser');
-				win.openUILinkIn(reqUrl, 'tab');                                                                
-			}
+	for (var s = 0; s < daNodes.length; s++) {
+		var idx = daNodes[s].id;
+		var reqUrl = req_objs[idx].reqURL;
+		if (!nWin) {
+			var nWin = window.open(reqUrl,reqUrl,"menubar,toolbar,location,resizable,scrollbars,status=yes");
+		}
+		else {
+			var win = Components.classes['@mozilla.org/appshell/window-mediator;1'].getService(Components.interfaces.nsIWindowMediator).getMostRecentWindow('navigator:browser');
+			win.gBrowser.addTab(reqUrl);
 		}
 	}
 }
@@ -502,14 +462,17 @@ function doSelectAll() {
 
 function doInvertSelection() {
 	var tree = document.getElementById("igTree");
+	var idx = tree.view.selection.currentIndex;
 
 	//I can't make this working, don't know why...
 	//tree.view.selection.invertSelection();
 	//Firefox shows this error: NS_ERROR_NOT_IMPLEMENTED
 	//This code should be equivalent:
-	for (var i = 0; i < tree.view.rowCount; i++) {  
-		tree.view.selection.toggleSelect(i);
+	for (var i = 0; i < tree.view.rowCount; i++) {
+		if (i != idx) tree.view.selection.toggleSelect(i);
 	}
+	
+	tree.view.selection.toggleSelect(idx);
 }
 
 
@@ -549,9 +512,10 @@ function exportList() {
 	var tree = document.getElementById("igTree");
 
 	for (var i = 0; i < tree.view.rowCount; i++) {
-		var reqUrl = req_objs[i].reqURL;
+		var daNode = tree.view.getItemAtIndex(i);
+		var reqUrl = req_objs[daNode.id].reqURL;
 		reqUrl = reqUrl.replace(/&/g, "&amp;");
-		if (req_objs[i].regexp == "Embedded Image") converter.writeString("<img src=\"" + reqUrl + "\" alt=\"" + reqUrl+ "\" /><br />\n");
+		if (req_objs[daNode.id].regexp == "Embedded Image") converter.writeString("<img src=\"" + reqUrl + "\" alt=\"" + reqUrl+ "\" /><br />\n");
 		else converter.writeString(reqUrl.link(reqUrl) + "<br />\n");
 	}
 
