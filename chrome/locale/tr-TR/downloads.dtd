@@ -7,6 +7,7 @@
 <!ENTITY  retry_download_request "Tekrar Indirmeyi Dene">
 <!ENTITY  restart_download "Indirmeye Yeniden Basla">
 <!ENTITY  reset_the_retry_count_to_zero "Deneme Sayisini Sifirla">
+<!ENTITY  open_url "Open URL">
 <!ENTITY  view_request_details "Indirme Ayrintilarini Görüntüle">
 
 <!ENTITY  auto_clear_finished "Bitenleri Otomatik Temizle">

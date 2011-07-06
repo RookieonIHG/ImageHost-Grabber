@@ -7,6 +7,7 @@
 <!ENTITY  retry_download_request "Retry download/request">
 <!ENTITY  restart_download "Restart download">
 <!ENTITY  reset_the_retry_count_to_zero "Reset the retry count to zero">
+<!ENTITY  open_url "Open URL">
 <!ENTITY  view_request_details "View Request Details">
 
 <!ENTITY  auto_clear_finished "Auto Clear Finished">

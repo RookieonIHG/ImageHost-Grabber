@@ -7,6 +7,7 @@
 <!ENTITY  retry_download_request "Reintentar descarga">
 <!ENTITY  restart_download "Reiniciar descarga">
 <!ENTITY  reset_the_retry_count_to_zero "Reiniciar el contador de reintentos en cero">
+<!ENTITY  open_url "Abrir URL">
 <!ENTITY  view_request_details "Ver detalles de la descarga">
 
 <!ENTITY  auto_clear_finished "Auto-borrar finalizadas">
