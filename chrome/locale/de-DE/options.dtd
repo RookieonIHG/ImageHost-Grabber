@@ -2,8 +2,8 @@
 
 <!ENTITY  file_saving_options "Datei-Speicheroptionen">
 <!ENTITY  general "Allgemein">
-<!ENTITY  embedded_images "Embedded Images">
-<!ENTITY  host_file "Host File">
+<!ENTITY  embedded_images "Eingebettete Bilder">
+<!ENTITY  host_file "Hostdatei">
 <!ENTITY  host_options "Hostoptionen">
 <!ENTITY  debugging "Fehlersuche (Debugging)">
 
@@ -24,25 +24,25 @@
 <!ENTITY  remove_duplicate_links "Identische Links (auch seitenübergreifend) entfernen">
 <!ENTITY  even_across_multiple_pages "über mehrere Seiten">
 <!ENTITY  close_download_window "Download-Fenster schließen, wenn alle Downloads abgeschlossen sind">
-<!ENTITY  keep_download_window_contents "Keep Download Window Contents (even after closed)">
+<!ENTITY  keep_download_window_contents "Downloadfenster-Inhalte (auch nach dem Schließen) beibehalten">
 
-<!ENTITY  download_embedded_images "Download eingebettete Bilder">
-<!ENTITY  enter_the_minimum_width_and_height_that_will_be_considered_for_downloading "Geben Sie die minimale Breite und Höhe, die für das Herunterladen berücksichtigt werden.">
+<!ENTITY  download_embedded_images "Eingebettete Bilder herunterladen">
+<!ENTITY  enter_the_minimum_width_and_height_that_will_be_considered_for_downloading "Zum Download erforderliche Minimalbreite und -höhe eingeben.">
 <!ENTITY  image_width "Breite:">
 <!ENTITY  image_height "Höhe:">
-<!ENTITY  enter_the_minimum_file_size "Geben Sie die minimale Dateigröße, dass für das Herunterladen berücksichtigt werden.">
-<!ENTITY  setting_this_value_to_zero_disables_this_filter "(Wenn Sie diesen Wert auf Null deaktiviert diese Filter)">
-<!ENTITY  file_size_filter "File size:">
+<!ENTITY  enter_the_minimum_file_size "Zum Download erforderliche Minimaldateigröße eingeben.">
+<!ENTITY  setting_this_value_to_zero_disables_this_filter "(Der Wert 0 setzt diesen Filter außer Kraft.)">
+<!ENTITY  file_size_filter "Dateigröße:">
 <!ENTITY  kilobytes "KB">
-<!ENTITY  the_file_size_filter_is_the_only_one_used "Hinweis: die Größe der Datei-Filter ist der einzige, in der threadsucker Modus.">
+<!ENTITY  the_file_size_filter_is_the_only_one_used "Hinweis: Im Threadsauger-Modus wird nur der Dateigröße-Filter genutzt.">
 
-<!ENTITY  host_file_update "Host-Datei zu aktualisieren:">
-<!ENTITY  enable_automatic_update "Aktivieren Sie die automatische Aktualisierung">
-<!ENTITY  suppress_confirmation_dialog "Unterdrückt Bestätigungsdialog">
-<!ENTITY  merge_behavior "Merge Verhalten:">
-<!ENTITY  merge_host_file_ask "Fragen">
-<!ENTITY  merge_host_file_overwrite "Überschreiben aktuellen hosts und fügen Sie neue hosts">
-<!ENTITY  merge_host_file_add "Fügen Sie nur neue Wirte">
+<!ENTITY  host_file_update "Hostdatei-Aktualisierung:">
+<!ENTITY  enable_automatic_update "Automatische Aktualisierung aktivieren">
+<!ENTITY  suppress_confirmation_dialog "Bestätigungsdialog unterdrücken">
+<!ENTITY  merge_behavior "Verhalten beim Zusammenfassen:">
+<!ENTITY  merge_host_file_ask "Nachfragen">
+<!ENTITY  merge_host_file_overwrite "Aktuelle Hosts überschreiben, neue Hosts zufügen">
+<!ENTITY  merge_host_file_add "Nur neue Hosts zufügen">
 
 <!ENTITY  max_simultaneous_http_requests "Maximalzahl gleichzeitiger HTTP-Anfragen">
 <!ENTITY  max_number_of_retries_for_each_link "Maximale Wiederholungen pro Link">

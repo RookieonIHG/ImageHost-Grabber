@@ -1,7 +1,7 @@
 <!ENTITY  imagehost_grabber_download_progress "ImageHost Grabber – Downloadfortschritt">
 
-<!ENTITY  open_file "Öffnen Sie die Datei">
-<!ENTITY  open_folder "Open-Ordner enthalten">
+<!ENTITY  open_file "Datei öffnen">
+<!ENTITY  open_folder "Mutterordner öffnen">
 <!ENTITY  remove_from_list "Aus Liste entfernen">
 <!ENTITY  abort_download_request "Download/Anfrage abbrechen">
 <!ENTITY  retry_download_request "Download/Anfrage wiederholen">
@@ -22,14 +22,14 @@
 <!ENTITY  progress "Fortschritt">
 <!ENTITY  status "Status">
 
-<!ENTITY  export_list "Export nach HTML-Liste ...">
-<!ENTITY  max_requests "Max. Zugriffe:">
-<!ENTITY  max_requests.tooltiptext "Max. simultaneous HTTP requests">
-<!ENTITY  max_retries "Max. Wiederholungen:">
-<!ENTITY  max_retries.tooltiptext "Max. number of retries for each link">
-<!ENTITY  window_options "Window options">
-<!ENTITY  save_session_on_exit "Save session on exit">
-<!ENTITY  session "Session">
-<!ENTITY  load_saved_session "Load a saved session">
-<!ENTITY  export_session_file "Export a session file">
-<!ENTITY  reinit_session "Re-initialize session">
+<!ENTITY  export_list "Liste in HTML exportieren...">
+<!ENTITY  max_requests "Anfragen maximal:">
+<!ENTITY  max_requests.tooltiptext "Gleichzeitige HTTP-Anfragen maximal">
+<!ENTITY  max_retries "Wiederholungen maximal:">
+<!ENTITY  max_retries.tooltiptext "Maximale Wiederholungen pro Link">
+<!ENTITY  window_options "Fensteroptionen">
+<!ENTITY  save_session_on_exit "Sitzung beim Beenden speichern">
+<!ENTITY  session "Sitzung">
+<!ENTITY  load_saved_session "Gespeicherte Sitzung laden">
+<!ENTITY  export_session_file "Sitzungsdatei exportieren">
+<!ENTITY  reinit_session "Sitzung neu initialisieren">

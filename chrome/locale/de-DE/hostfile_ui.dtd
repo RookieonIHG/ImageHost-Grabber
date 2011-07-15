@@ -3,8 +3,8 @@
 <!ENTITY  select_host "Host auswählen...">
 
 <!ENTITY  host_label "Hostbezeichnung">
-<!ENTITY  host_max_threads "Max. threads">
-<!ENTITY  host_max_threads.tooltiptext "Max. simultaneous HTTP requests for this host. Use zero to disable this limit.">
+<!ENTITY  host_max_threads "Treads maximal">
+<!ENTITY  host_max_threads.tooltiptext "Maximal gleichzeitige HTTP-Anfragen für diesen Host. 0 = Limit außer Kraft setzen.">
 
 <!ENTITY  url_pattern "URL-Muster">
 
