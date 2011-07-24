@@ -127,10 +127,11 @@ function addHostFServer() {
 	tmp.textContent = newHost;
 
 	hostf_servers_Globals.hFile.firstChild.appendChild(tmp);
+	hostf_servers_Globals.hFile.firstChild.appendChild(hostf_servers_Globals.hFile.createTextNode("\n"));
 
 	var outBox = document.getElementById("tb_searchPattern");
 	var someThing = outBox.appendItem(tmp.textContent);
-	someThing.setAttribute("ondblclick", "var tmpVal = prompt('Enter Host File Server:', this.label); if(tmpVal) this.label = tmpVal;");
+	someThing.setAttribute("ondblclick", "updateHFile();");
 	}
 
 function delHostFServer() {
@@ -138,8 +139,11 @@ function delHostFServer() {
 	if (!tot.selectedItem) return;
 	
 	for (var i=0; i<hostf_servers_Globals.hFile.firstChild.childNodes.length; i++) { 
-		if (hostf_servers_Globals.hFile.firstChild.childNodes[i].textContent == tot.selectedItem.label)
+		if (hostf_servers_Globals.hFile.firstChild.childNodes[i].textContent == tot.selectedItem.label) {
 			hostf_servers_Globals.hFile.firstChild.removeChild(hostf_servers_Globals.hFile.firstChild.childNodes[i]);
+			if (hostf_servers_Globals.hFile.firstChild.childNodes[i].textContent == "\n")
+				hostf_servers_Globals.hFile.firstChild.removeChild(hostf_servers_Globals.hFile.firstChild.childNodes[i]);
+			}
 		}
 
 	tot.removeItemAt(tot.selectedIndex);

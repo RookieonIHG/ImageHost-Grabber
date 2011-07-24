@@ -46,7 +46,7 @@ onload="initWindow();">
 
 <vbox flex="1">
 	<label control="tb_searchPattern" value="&search_pattern;"/>
-	<textbox multiline="true" flex="1" height="200" id="tb_searchPattern"/>
+	<textbox multiline="true" flex="1" rows="12" id="tb_searchPattern"/>
 </vbox>
 
 <separator/>

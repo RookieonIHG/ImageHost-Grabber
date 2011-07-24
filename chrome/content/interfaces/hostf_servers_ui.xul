@@ -16,7 +16,7 @@ onload="loadHostFile();">
 ]]></script>
 
 <vbox flex="1">
-	<listbox height="200" flex="1" id="tb_searchPattern"/>
+	<listbox rows="10" flex="1" id="tb_searchPattern"/>
 </vbox>
 
 <separator/>
