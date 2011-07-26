@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <!DOCTYPE window SYSTEM "chrome://imagegrabber/locale/hostf_servers_ui.dtd">
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <window id="hostF_serversUI" title="&host_file_servers;" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
@@ -15,8 +15,22 @@ onload="loadHostFile();">
 <script type="text/javascript"><![CDATA[
 ]]></script>
 
+<keyset>
+	<key id="escape_cmd" keycode="VK_ESCAPE" oncommand="window.close();"/>
+	<key id="update_cmd" keycode="VK_RETURN" oncommand="updateHFile();"/>
+	<key id="delete_cmd" keycode="VK_DELETE" oncommand="delHostFServer();"/>
+</keyset>
+
 <vbox flex="1">
-	<listbox rows="10" flex="1" id="tb_searchPattern"/>
+	<hbox>
+		<listbox id="tb_searchPattern" ondblclick="updateHFile();" rows="10" flex="1"/>
+		<vbox hidden="true">
+		  <spacer flex="1"/>
+		  <button label="▲" style="min-width: 0em;" oncommand="moveHostFServer(-1);"/>
+		  <button label="▼" style="min-width: 0em;" oncommand="moveHostFServer(+1);"/>
+		  <spacer flex="1"/>
+		</vbox>
+	</hbox>
 </vbox>
 
 <separator/>
@@ -24,6 +38,7 @@ onload="loadHostFile();">
 <hbox>
 	<button onclick="addHostFServer();" label="&add_host_file_server;"/>
 	<button onclick="delHostFServer();" label="&delete_host_file_server;"/>
+	<separator flex="1"/>
 	<button onclick="updateHostFile();" label="&update_file;"/>
 </hbox>
 

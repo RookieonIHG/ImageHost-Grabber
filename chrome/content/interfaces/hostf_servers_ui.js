@@ -99,8 +99,7 @@ function loadHostFile() {
 	var outBox = document.getElementById("tb_searchPattern");
 
 	for (var i=0; i < hostf_servers_Globals.hosts.length; i++) {
-		var someThing = outBox.appendItem(hostf_servers_Globals.hosts[i].textContent);
-		someThing.setAttribute("ondblclick", "updateHFile();");
+		outBox.appendItem(hostf_servers_Globals.hosts[i].textContent);
 		}
 	}
 
@@ -130,8 +129,13 @@ function addHostFServer() {
 	hostf_servers_Globals.hFile.firstChild.appendChild(hostf_servers_Globals.hFile.createTextNode("\n"));
 
 	var outBox = document.getElementById("tb_searchPattern");
-	var someThing = outBox.appendItem(tmp.textContent);
-	someThing.setAttribute("ondblclick", "updateHFile();");
+	outBox.appendItem(tmp.textContent);
+	}
+
+function moveHostFServer() {
+	var tot = document.getElementById("tb_searchPattern");
+	if (!tot.selectedItem) return;
+
 	}
 
 function delHostFServer() {
