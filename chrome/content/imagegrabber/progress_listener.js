@@ -256,7 +256,8 @@ getInterface: function (aIID) {
 
 			this.reqObj.finished = true;
 			// this.reqObj.inprogress = false;
-			this.reqObj.callwrapper = new ihg_Functions.CCallWrapper(this.reqObj, 5000, 'unlock', "locking of " + this.reqObj.uniqID);
+			var download_timeout = ihg_Globals.downloadTimeout;
+			this.reqObj.callwrapper = new ihg_Functions.CCallWrapper(this.reqObj, download_timeout, 'unlock', "locking of " + this.reqObj.uniqID);
 			ihg_Functions.CCallWrapper.asyncExecute(this.reqObj.callwrapper);
 			this.reqObj.queueHandler();
 		}

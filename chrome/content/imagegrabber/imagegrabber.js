@@ -536,6 +536,10 @@ ihg_Functions.getIGPrefs = function getIGPrefs() {
 	ihg_Globals.reqTimeout *= 1000;
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.reqTimeout is equal to: " + ihg_Globals.reqTimeout + "\n");
 
+	ihg_Globals.downloadTimeout = ihg_Globals.prefManager.getIntPref("extensions.imagegrabber.downloadtimeout");
+	ihg_Globals.downloadTimeout *= 1000;
+	ihg_Functions.LOG("In " + myself + ", ihg_Globals.downloadTimeout is equal to: " + ihg_Globals.downloadTimeout + "\n");
+
  	ihg_Globals.downloadEmbeddedImages = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.downloadembeddedimages");
  	ihg_Functions.LOG("In " + myself + ", ihg_Globals.downloadEmbeddedImages is equal to: " + ihg_Globals.downloadEmbeddedImages + "\n");
 	

@@ -50,6 +50,7 @@ ihg_Globals.maxThreads = null;
 
 ihg_Globals.maxRetries = null;
 ihg_Globals.reqTimeout = null;
+ihg_Globals.downloadTimeout = null;
 
 ihg_Globals.baseDirSave = null;
 

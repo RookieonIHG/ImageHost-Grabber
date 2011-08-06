@@ -3,10 +3,12 @@
 <!DOCTYPE window SYSTEM "chrome://imagegrabber/locale/options.dtd">
 
 
-<prefwindow title="&imagegrabber_options;" id="imagegrabberPreferences" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" onload="setAccBut();">
+<prefwindow title="&imagegrabber_options;" id="imagegrabberPreferences" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	ondialogaccept="setPrefGlobVars();"
+	onload="setEnableStates();">
 
 <stringbundleset id="stringbundleset">
-    <stringbundle id="imagegrabber-strings" src="chrome://imagegrabber/locale/imagegrabber.properties" />
+	<stringbundle id="imagegrabber-strings" src="chrome://imagegrabber/locale/imagegrabber.properties" />
 </stringbundleset>
 
 <prefpane id="paneGeneral">
@@ -14,11 +16,12 @@
 <preferences>
 	<preference id="showDLDir" name="extensions.imagegrabber.showdldir" type="bool"/>
 	<preference id="boolpref_autorename" name="extensions.imagegrabber.autorename" type="bool"/>
-	<preference id="intpref_maxthreads" name="extensions.imagegrabber.maxthreads" type="int"/>
+	<preference id="maxThreads" name="extensions.imagegrabber.maxthreads" type="int"/>
 	<preference id="enableDebug" name="extensions.imagegrabber.enabledebug" type="bool"/>
 	<preference id="enableConLog" name="extensions.imagegrabber.enableconlog" type="bool"/>
 	<preference id="numRetries" name="extensions.imagegrabber.numretries" type="int"/>
 	<preference id="reqTimeout" name="extensions.imagegrabber.requesttimeout" type="int"/>
+	<preference id="downloadTimeout" name="extensions.imagegrabber.downloadtimeout" type="int"/>
 	<preference id="createDocSub" name="extensions.imagegrabber.createdoctitlesubfolder" type="bool"/>
 	<preference id="showInTools" name="extensions.imagegrabber.showintools" type="bool"/>
 	<preference id="cacheThreadSuck" name="extensions.imagegrabber.cachethreadsuck" type="bool"/>
@@ -47,9 +50,7 @@
 
 <script type="text/javascript">
 <![CDATA[
-function setAccBut() {
-	var prefWin = document.getElementById("imagegrabberPreferences");
-	prefWin._buttons.accept.addEventListener("click", setPrefGlobVars, false);
+function setEnableStates() {
 	ihg_Globals.strbundle = document.getElementById("imagegrabber-strings");
 	ihg_Functions.read_locale_strings();
 	toggleEnableState('cb_prefixFileNames', true, 'rg_existBehavior');
@@ -114,11 +115,12 @@ function toggleEnableState() {
 		<vbox>
 		<checkbox id="cb_prefixFileNames" preference="prefixFileName" label="&prefix_filenames_to_reflect_page_order;" 
 			oncommand="toggleEnableState(this.id, true, 'rg_existBehavior');"/>
-		<groupbox id="gb_existBehavior"><caption label="&what_to_do_if_file_exists_in_target_location;"/>
-		<radiogroup id="rg_existBehavior" preference="fileExistBehavior">
-			<radio label="&rename_file;" value="rename"/>
-			<radio label="&skip_file;" value="skip"/>
-			<radio label="&overwrite_file;" value="overwrite"/>
+		<groupbox id="gb_existBehavior">
+		<caption label="&what_to_do_if_file_exists_in_target_location;"/>
+		<radiogroup id="rg_existBehavior" preference="fileExistBehavior" orient="horizontal">
+			<radio label="&rename_file;" value="rename" flex="1"/>
+			<radio label="&skip_file;" value="skip" flex="1"/>
+			<radio label="&overwrite_file;" value="overwrite" flex="1"/>
 		</radiogroup>
 		</groupbox>
 		<checkbox preference="boolpref_autorename" label="&autorename_imagevenue_and_fapomatic_files;"/>
@@ -146,7 +148,7 @@ function toggleEnableState() {
 			<checkbox id="cb_embImages" preference="downloadEmbeddedImages" label="&download_embedded_images;" 
 				oncommand="toggleEnableState(this.id, false, 'lab_minEmbeddedWidth', 'lab_minEmbeddedHeight', 'lab_minSize');"/>
 			</caption>
-			<grid class="indent">
+			<grid>
 				<rows>
 					<label>&enter_the_minimum_width_and_height_that_will_be_considered_for_downloading;</label>
 					<row align="center">
@@ -162,8 +164,7 @@ function toggleEnableState() {
 					<label>&setting_this_value_to_zero_disables_this_filter;</label>
 					<row align="center">
 						<label control="lab_minSize">&file_size_filter;</label>
-						<hbox><textbox id="lab_minSize" type="number" size="3" hidespinbuttons="true" preference="minFileSize"/>
-						&kilobytes;</hbox>
+						<hbox><textbox id="lab_minSize" type="number" size="3" hidespinbuttons="true" preference="minFileSize"/>&kilobytes;</hbox>
 					</row>
 					<separator height="10" />
 					<label>&the_file_size_filter_is_the_only_one_used;</label>
@@ -174,10 +175,12 @@ function toggleEnableState() {
 	
 	<tabpanel id="hostfopts">
 		<vbox>
-		<groupbox><caption label="&host_file_update;"/>
+		<groupbox>
+		<caption label="&host_file_update;"/>
 		<checkbox id="cb_autoUpdate" preference="hostfcb_autoUpdate" label="&enable_automatic_update;" oncommand="toggleEnableState(this.id, false, 'cb_suppressConfirm', 'rg_mergeBehavior');"/>
 		<checkbox id="cb_suppressConfirm" preference="hostfUpdateConfirm" label="&suppress_confirmation_dialog;" class="indent"/>
-		<groupbox class="indent"><caption label="&merge_behavior;"/>
+		<groupbox class="indent">
+		<caption label="&merge_behavior;"/>
 		<radiogroup id="rg_mergeBehavior" preference="hostfrg_mergeBehavior">
 			<radio label="&merge_host_file_ask;" value="ask"/>
 			<radio label="&merge_host_file_overwrite;" value="overwrite"/>
@@ -193,8 +196,8 @@ function toggleEnableState() {
 			<rows>
 				<row align="center">
 					<label control="tb_textintpref">&max_simultaneous_http_requests;</label>
-					<scale min="1" max="20" preference="intpref_maxthreads" preference-editable="true" movetoclick="true"/>
-					<textbox id="tb_textintpref" type="number" size="1" hidespinbuttons="true" class="plain" style="color:black" disabled="true" preference="intpref_maxthreads"/>
+					<scale min="1" max="20" preference="maxThreads" preference-editable="true" movetoclick="true"/>
+					<textbox id="tb_textintpref" type="number" size="1" hidespinbuttons="true" class="plain" style="color:black" disabled="true" preference="maxThreads"/>
 				</row>
 				<row align="center">
 					<label control="tb_textintpref3">&max_number_of_retries_for_each_link;</label>
@@ -205,6 +208,31 @@ function toggleEnableState() {
 					<label control="tb_textintpref4">&request_timeout_before_retry;</label>
 					<scale min="15" max="90" preference="reqTimeout" preference-editable="true" increment="5"/>
 					<textbox id="tb_textintpref4" type="number" size="1" hidespinbuttons="true" class="plain" style="color:black" disabled="true" preference="reqTimeout"/>
+				</row>
+				<separator/>
+				<row align="center">
+					<label control="tb_downtimeout">&host_timeout_between_downloads;</label>
+					<menulist id="tb_downtimeout" preference="downloadTimeout">
+						<menupopup>
+							<menuitem label="Disabled" value="0"/>
+							<menuitem label="1 sec." value="1"/>
+							<menuitem label="2 sec." value="2"/>
+							<menuitem label="3 sec." value="3"/>
+							<menuitem label="4 sec." value="4"/>
+							<menuitem label="5 sec." value="5"/>
+							<menuitem label="6 sec." value="6"/>
+							<menuitem label="8 sec." value="8"/>
+							<menuitem label="10 sec." value="10"/>
+							<menuitem label="12 sec." value="12"/>
+							<menuitem label="15 sec." value="15"/>
+							<menuitem label="20 sec." value="20"/>
+							<menuitem label="25 sec." value="25"/>
+							<menuitem label="30 sec." value="30"/>
+							<menuitem label="40 sec." value="40"/>
+							<menuitem label="50 sec." value="50"/>
+							<menuitem label="60 sec." value="60"/>
+						</menupopup>
+					</menulist>
 				</row>
 			</rows>
 		</grid>
