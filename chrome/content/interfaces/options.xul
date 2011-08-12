@@ -58,6 +58,11 @@ function setEnableStates() {
 	toggleEnableState('cb_removeDupLinks', false, 'cb_removeDupLinksXpages');
 	toggleEnableState('cb_embImages', false, 'lab_minEmbeddedWidth', 'lab_minEmbeddedHeight', 'lab_minSize');
 	toggleEnableState('cb_autoUpdate', false, 'cb_suppressConfirm', 'rg_mergeBehavior');
+	
+	['maxThreads','numRetries','reqTimeout'].forEach(function(item) {
+		document.getElementById(item + '_scale').setAttribute('preference', item);
+		document.getElementById(item).updateElements();
+		});
 	}
 
 function setPrefGlobVars() {
@@ -196,17 +201,17 @@ function toggleEnableState() {
 			<rows>
 				<row align="center">
 					<label control="tb_textintpref">&max_simultaneous_http_requests;</label>
-					<scale min="1" max="20" preference="maxThreads" preference-editable="true" movetoclick="true"/>
+					<scale id="maxThreads_scale" min="1" max="20" preference-editable="true" movetoclick="true"/>
 					<textbox id="tb_textintpref" type="number" size="1" hidespinbuttons="true" class="plain" style="color:black" disabled="true" preference="maxThreads"/>
 				</row>
 				<row align="center">
 					<label control="tb_textintpref3">&max_number_of_retries_for_each_link;</label>
-					<scale min="1" max="10" preference="numRetries" preference-editable="true" movetoclick="true"/>
+					<scale id="numRetries_scale" min="1" max="10" preference-editable="true" movetoclick="true"/>
 					<textbox id="tb_textintpref3" type="number" size="1" hidespinbuttons="true" class="plain" style="color:black" disabled="true" preference="numRetries"/>
 				</row>
 				<row align="center">
 					<label control="tb_textintpref4">&request_timeout_before_retry;</label>
-					<scale min="15" max="90" preference="reqTimeout" preference-editable="true" increment="5"/>
+					<scale id="reqTimeout_scale" min="15" max="90" preference-editable="true" increment="5"/>
 					<textbox id="tb_textintpref4" type="number" size="1" hidespinbuttons="true" class="plain" style="color:black" disabled="true" preference="reqTimeout"/>
 				</row>
 				<separator/>
