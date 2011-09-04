@@ -94,9 +94,9 @@ onunload="onUnLoad();">
 		
 		<hbox align="center">
 			<label value="&max_requests;" control="maxSimRequests" tooltiptext="&max_requests.tooltiptext;"/>
-			<textbox id="maxSimRequests" type="number" min="1" max="20" size="2" preference="pref_maxthreads"/>
+			<textbox id="maxSimRequests" type="number" min="1" max="10" size="2" preference="pref_maxthreads"/>
 			<label value="&max_retries;" control="maxRetries" tooltiptext="&max_retries.tooltiptext;"/>
-			<textbox id="maxRetries" type="number" min="1" max="10" size="2" preference="pref_numretries"/>
+			<textbox id="maxRetries" type="number" min="1" max="99" size="2" preference="pref_numretries"/>
 		</hbox>
 	</prefpane>
 </hbox>

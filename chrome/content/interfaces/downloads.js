@@ -276,7 +276,7 @@ function clear_form() {
 		}
 		catch(e) { continue; }
 
-		if (req_objs[i].inprogress == false && req_objs[i].finished == true && req_objs[i].aborted == false) {
+		if (!req_objs[i].inprogress && req_objs[i].finished && !req_objs[i].aborted) {
 			daNode.parentNode.removeChild(daNode);
 			removeList.push(req_objs[i].uniqID);
 		}
@@ -462,17 +462,14 @@ function doSelectAll() {
 
 function doInvertSelection() {
 	var tree = document.getElementById("igTree");
-	var idx = tree.view.selection.currentIndex;
 
 	//I can't make this working, don't know why...
 	//tree.view.selection.invertSelection();
 	//Firefox shows this error: NS_ERROR_NOT_IMPLEMENTED
 	//This code should be equivalent:
-	for (var i = 0; i < tree.view.rowCount; i++) {
-		if (i != idx) tree.view.selection.toggleSelect(i);
+	for (var i = 0; i < tree.view.rowCount; i++) {  
+		tree.view.selection.toggleSelect(i);
 	}
-	
-	tree.view.selection.toggleSelect(idx);
 }
 
 
