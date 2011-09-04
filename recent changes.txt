@@ -130,3 +130,31 @@
 - Made some locale changes
 - Added Rookie's 1 second timeout before clearing "File too short"
 - Added tab feature in host file editor
+
+1.6.6.20110329
+- added support for Firefox 4.0
+- fixed a bug (asyncOnChannelRedirect was not implemented and the new API requires it)
+
+1.6.6.20110501
+- added the "open URL" item to the popup menu in the downloads window
+- added support for frames in function hostGrabber
+
+1.6.6.20110520
+- fixed the threadsucker pattern for coppermine galleries
+- sites added to the threadsucker: motherless, kapanlagi, imouto
+
+1.6.6.20110604
+- maxVersion changed to "7.0a1"
+- sites added to the threadsucker: paheal, 4chan, paramorefanclub
+
+1.6.6.20110605
+- little improvement in the threadsucker
+- little improvement in the function removeDuplicates to preserve the thumbnails of the duplicate links
+- flickr has been added to the threadsucker
+
+1.6.6.20110901
+- French translation added (thanks to Queenie Fontaine)
+- fixed a bug (nsIFile.target is not available on Linux)
+
+1.6.6.20110904
+- different behaviors for the preferences dialog based on "instantApply" (they fix a problem on Mac OS)

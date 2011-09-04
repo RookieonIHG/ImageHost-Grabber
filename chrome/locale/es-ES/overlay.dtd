@@ -7,14 +7,14 @@
 <!ENTITY  suck_the_current_thread.label "Procesar el hilo actual">
 <!ENTITY  suck_the_current_thread.accesskey "P">
 
-<!ENTITY  suck_selected_thread_link.label "Send link to thread sucker">
-<!ENTITY  suck_selected_thread_link.accesskey "L">
+<!ENTITY  suck_selected_thread_link.label "Enviar enlace al procesador de hilos">
+<!ENTITY  suck_selected_thread_link.accesskey "H">
 
 <!ENTITY  host_file_editor.label "Editor del archivo de servidores">
 <!ENTITY  host_file_editor.accesskey "E">
 
-<!ENTITY  show_dl_window.label "Show the download window">
-<!ENTITY  show_dl_window.accesskey "D">
+<!ENTITY  show_dl_window.label "Mostrar la ventana de descargas">
+<!ENTITY  show_dl_window.accesskey "M">
 
 <!ENTITY  restore_cached_session.label "Restaurar sesión en caché">
 <!ENTITY  restore_cached_session.accesskey "R">
