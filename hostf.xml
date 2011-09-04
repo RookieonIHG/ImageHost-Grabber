@@ -5,6 +5,11 @@
 <searchpattern>"REPLACE: 'show\\.php\\/(.+)\\.html' , 'out.php/i$1'"</searchpattern>
 </host>
 
+<host id="123-amateur">
+<urlpattern>^http:\/\/(?:.+\.)?123-amateur\.com\/fotos\/.+\/\d+(?:$|#.+$)</urlpattern>
+<searchpattern>"src="\/images\/fotos\/.+""</searchpattern>
+</host>
+
 <host id="4chan">
 <urlpattern>^http:\/\/.+\.4chan\.org\/.+\/src\/.+</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
@@ -25,6 +30,26 @@
 	retVal.imgUrl = pageUrl;
 	retVal.status = "OK";
 	
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="4hot.eu">
+<urlpattern>^http:\/\/piceye\.4hot\.eu\/share-.+\.html$</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/src='(http:\/\/piceye\.4hot\.eu\/image-.+?\..{3,4})'/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
 	return retVal;
 	}]]></searchpattern>
 </host>
@@ -59,6 +84,11 @@
 <searchpattern>"ID: image"</searchpattern>
 </host>
 
+<host id="adulta2z">
+<urlpattern>^http:\/\/(?:www\.)?adulta2z\.com\/.+\/\d+\/\d+</urlpattern>
+<searchpattern>"ID: media_photo"</searchpattern>
+</host>
+
 <host id="adultimagehoster">
 <urlpattern>^http:\/\/adultimagehoster\.com\/viewer\.php\?</urlpattern>
 <searchpattern>"REPLACE: 'viewer\\.php\\?id=' , 'images/'"</searchpattern>
@@ -75,9 +105,81 @@
 	}]]></searchpattern>
 </host>
 
+<host id="adultism2">
+<urlpattern>^http:\/\/www\.adultism\.com\/pi\d+\/#!.+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var params = pageUrl.match(/^http:\/\/www\.adultism\.com\/pi(\d+)\/#!(.+)/);
+	
+	var newUrl = "http://www.adultism.com/dn_postimage.php?p=" + params[1] + "&m=" + params[2];
+	var req = new XMLHttpRequest();
+	req.open("GET", newUrl, false);
+	req.setRequestHeader("Referer", pageUrl);
+	req.send(null);
+	
+	if (req.status != 200) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		return retVal;
+		}
+	
+	var newPage = req.responseText;
+	var iUrl = newPage.match(/<img src="(.+?)"/);
+	
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="aerisdies">
+<urlpattern>^http:\/\/www\.aerisdies\.com\/html\/.+\/img_.+\.html</urlpattern>
+<searchpattern>"src="\.\.\/\.\.\/images\/[^\/]+\/.+?" style="border: 1px solid"</searchpattern>
+</host>
+
 <host id="afisha">
 <urlpattern>^http:\/\/www\.afisha\.ru\/.+\/photo\/\d+\/\d+\/$</urlpattern>
 <searchpattern>"ID: ctl00_CenterPlaceHolder_ucPhotoPageContent_imgBigPhoto.+"</searchpattern>
+</host>
+
+<host id="afspot">
+<urlpattern>^http:\/\/(?:www\.)?afspot\.net\/gallery\/index\.php\?act=image&amp;pid=\d+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/src="(http:\/\/images\.asianfanatics\.net\/gallery\/albums\/.+?)"/);
+	
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1].replace(/\/normal_/, "/");
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="akiba-online">
+<urlpattern>^http:\/\/(?:www\.)?akiba-online\.com\/forum\/attachment\.php\?attachmentid=\d+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+
+	retVal.imgUrl = pageUrl;
+	retVal.status = "OK";
+	
+	return retVal;
+	}]]></searchpattern>
 </host>
 
 <host id="all-pictures">
@@ -114,6 +216,27 @@
 	}]]></searchpattern>
 </host>
 
+<host id="amadmp">
+<urlpattern>^http:\/\/www\.amadmp\.com\/view\/.+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/<a href="(.+?)">\s+<img[^>]+id="image"/);
+	if (!iUrl) iUrl = pageData.match(/<img src="(.+?)"[^>]+id="image"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
 <host id="amateur-blogx">
 <urlpattern>^http:\/\/www\.amateur-blogx\.com\/out\.php\?.+url=</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
@@ -122,6 +245,18 @@
 	retVal.imgUrl = pageUrl.replace(/http.+url=(.+)/, "$1");
 	retVal.status = "REQUEUE";
 
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="amateurvoyeurforum">
+<urlpattern>^http:\/\/(?:www\.)?amateurvoyeurforum\.com\/attachment\.php\?attachmentid=\d+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+
+	retVal.imgUrl = pageUrl;
+	retVal.status = "OK";
+	
 	return retVal;
 	}]]></searchpattern>
 </host>
@@ -141,6 +276,26 @@
 <searchpattern>"src=\.\/img\/.+\..{3,4}"</searchpattern>
 </host>
 
+<host id="asianceleb.info">
+<urlpattern>^http:\/\/asianceleb\.info\/\?attachment_id=\d+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/Full size is <a[.\s]+?href="(.+?)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
 <host id="asredas">
 <urlpattern>^http:\/\/www\.asredas\.com\/image\.php\?img=.+</urlpattern>
 <searchpattern>"media\/gals\/"</searchpattern>
@@ -149,6 +304,11 @@
 <host id="astaga">
 <urlpattern>^http:\/\/www\.astaga\.com\/photos\/image\/\d+#image-load</urlpattern>
 <searchpattern>"files\/photos\/image"</searchpattern>
+</host>
+
+<host id="av-girl">
+<urlpattern>^http:\/\/(?:www\.)?av-girl\.info\/.+\?url=.+\..{3,4}</urlpattern>
+<searchpattern>"ID: img"</searchpattern>
 </host>
 
 <host id="aww-kittah">
@@ -196,6 +356,26 @@
 	}]]></searchpattern>
 </host>
 
+<host id="babepicture">
+<urlpattern>^http:\/\/(?:www\.)?babepicture\.co\.uk\/play\/.+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/Click For Full View.+?href="([^"]+)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
 <host id="babes 2night">
 <urlpattern>^http:\/\/www\.babes2night\.com\/galleries\/\d+\/\d+\/.+\/.+\.php</urlpattern>
 <searchpattern>"REPLACE: 'php', 'jpg'"</searchpattern>
@@ -219,6 +399,11 @@
 <host id="babes2babes">
 <urlpattern>http:\/\/www\.babes2babes\.net\/babes\/.+\/\d+\.php</urlpattern> 
 <searchpattern>"http:\\/\\/www\\.pimpdump\\.com\\/b2b\\/.+\\/.+"</searchpattern> 
+</host>
+
+<host id="babesaround">
+<urlpattern>^http:\/\/(?:www\.)?babesaround\.com\/.+\/.+\.html$</urlpattern>
+<searchpattern>"http:\/\/[^\/]+\/.+\/\d+\/\d{2}\..{3,4}"</searchpattern>
 </host>
 
 <host id="babeupload">
@@ -321,6 +506,16 @@
 	}]]></searchpattern>
 </host>
 
+<host id="bigboobs.hu">
+<urlpattern>http:\/\/(www\.)?bigboobs\.hu\/index\.php\?page=pic&amp;pic=.+&amp;dir=.+</urlpattern>
+<searchpattern>"REPLACE: '(www\\.)?bigboobs\\.hu\\/index\\.php\\?page=pic&amp;pic=(.+)&amp;dir=(.+)', 'pic.bigboobs.hu/bb/$3/$2'"</searchpattern>
+</host>
+
+<host id="bitemehost">
+<urlpattern>^http:\/\/(?:www\.)?bitemehost\.com\/show\.php\/.+\.html</urlpattern>
+<searchpattern>"ID: img_obj"</searchpattern>
+</host>
+
 <host id="bledicola">
 <urlpattern>http:\/\/www\.bledicola\.com\/.+foto\.php\?.+</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
@@ -342,13 +537,25 @@
 </host>
 
 <host id="blogspot">
-<urlpattern>^http:\/\/\d+\.\w+\.blogspot\.com\/.+\.jpg</urlpattern>
-<searchpattern>"http:\\/\\/\\d+\\.\\w+\\.blogspot\\.com\\/.+\\.jpg"</searchpattern>
+<urlpattern>^http:\/\/\d+\.\w+\.blogspot\.com\/.+\..{3,4}</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	retVal.imgUrl = pageUrl;
+	retVal.status = "OK";
+	
+	return retVal;
+	}]]></searchpattern>
 </host>
 
 <host id="bluefame">
 <urlpattern>^http:\/\/.+\.bluefame\.me\/view\.php\?img=</urlpattern>
 <searchpattern>"ID: image"</searchpattern>
+</host>
+
+<host id="bobx">
+<urlpattern>^http:\/\/www\.bobx\.com\/.+\/large-.+-\d+\/$</urlpattern>
+<searchpattern>"picture serial number"</searchpattern>
 </host>
 
 <host id="boxtheclown">
@@ -368,9 +575,9 @@
     }]]></searchpattern>
 </host>
 
-<host id="bruce-juice">
-<urlpattern>^http:\/\/www\.bruce-juice\.com\/.+\/\d+\/\d+\/\d+\/.+\/$</urlpattern>
-<searchpattern>"ID: thepic"</searchpattern>
+<host id="bruce-juice" maxThreads="1">
+<urlpattern>^http:\/\/www\.bruce-juice\.com\/(?:celebrity_archive\/\d+\/.+\/|.+\/\d+\/\d+\/\d+\/.+\/$)</urlpattern>
+<searchpattern>"'http:\/\/[^\.]*\.?bruce-juice\.com\/.+\/wp-content\/uploads\/\d+\/\d+\/(?:\d+\/)?.+?'"</searchpattern>
 </host>
 
 <host id="bufeo">
@@ -429,6 +636,43 @@
 <searchpattern>"http:\\/\\/campusbug\\.com\\/file\\.php\\?.+?s=0"</searchpattern>
 </host>
 
+<host id="candidvoyeurism">
+<urlpattern>^http:\/\/www\.candidvoyeurism\.com\/.+\/.+\/.+\/\d+\/$</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/<div id="video_container">\s+<img src="(.+?)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="carneargenta">
+<urlpattern>^http:\/\/carneargenta\.com\/wp-content\/uploads\/.+\..{3,4}</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+
+	retVal.imgUrl = pageUrl;
+	retVal.status = "OK";
+	
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="catsuitmodel.de">
+<urlpattern>^http:\/\/catsuitmodel\.de\/scripts\/4images\/details\.php\?image_id=.+</urlpattern>
+<searchpattern>"data\/media\/"</searchpattern>
+</host>
+
 <host id="cavemancircus">
 <urlpattern>^http:\/\/www\.cavemancircus\.com\/.+</urlpattern>
 <searchpattern>"REPLACE: 'php' , 'jpg'"</searchpattern>
@@ -468,9 +712,30 @@
 <searchpattern>"id=img_obj"</searchpattern>
 </host>
 
-<host id="celebies (large)">
-<urlpattern>http:\/\/www\.celebies\.com\/picture\/[0-9]+\/.+\/large</urlpattern> 
-<searchpattern>"http:\\/\\/img\\.celebies\\.com\\/img\\/p\\/[0-9]+\\/large\\/.+\\.jpg"</searchpattern> 
+<host id="celebies">
+<urlpattern>^http:\/\/(?:www\.)?celebies\.com\/picture\/\d+\/.+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	if (!pageUrl.match(/\/large$/)) {
+			retVal.imgUrl = pageUrl + "/large";
+			retVal.status = "REQUEUE";
+			return retVal;
+		}
+
+	var iUrl = pageData.match(/id="picture-big"><img src="(.+?)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
 </host>
 
 <host id="celebrities-pictures">
@@ -491,6 +756,11 @@
 
 	return retVal;
 	}]]></searchpattern>
+</host>
+
+<host id="celebrity-pictures.ca">
+<urlpattern>^http:\/\/(?:www\.)?celebrity-pictures\.ca\/viewpicture\/\?id=\d+</urlpattern>
+<searchpattern>"img border=0 src="</searchpattern>
 </host>
 
 <host id="celebritypicsblog">
@@ -576,11 +846,6 @@
     }]]></searchpattern>
 </host>
 
-<host id="chan.sankakucomplex">
-<urlpattern>^http:\/\/chan\.sankakucomplex\.com\/post\/show\/.+</urlpattern>
-<searchpattern>"ID: image"</searchpattern>
-</host>
-
 <host id="chickupload" maxThreads="1">
 <urlpattern>^http:\/\/chickupload\.com\/showpicture\/.+\/.+\/.+</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
@@ -622,20 +887,32 @@
 
 	// If it can find the original file name, it will use that instead.
 	// otherwise, it picks a random file name
-	try {
-		retVal.fileName = pageData.match(/&raquo; <a href="\/gallery\/.+?\/.+?\/.+?">\w*<\/a> &raquo; (.+\.\w+)\s\(views: \w*\)/)[1];
-		}
-	catch(e) {
-		retVal.fileName = Math.random().toString().substring(2) + ".jpg";
-		}
+	//try {
+	//	retVal.fileName = pageData.match(/&raquo; <a href="\/gallery\/.+?\/.+?\/.+?">\w*<\/a> &raquo; (.+\.\w+)\s\(views: \w*\)/)[1];
+	//	}
+	//catch(e) {
+	//	retVal.fileName = Math.random().toString().substring(2) + ".jpg";
+	//	}
 
 	return retVal;
 	}]]></searchpattern>
 </host>
 
 <host id="china-girl.info">
-<urlpattern>http:\/\/www\.china-girl\.info\/view_china_girls\.aspx\?url=.+</urlpattern> 
+<urlpattern>^http:\/\/(?:www\.)?china-girl\.info\/view_china_girls\.aspx\?url=.+</urlpattern> 
 <searchpattern>"id="img""</searchpattern> 
+</host>
+
+<host id="chubbyparade">
+<urlpattern>^http:\/\/(?:www\.)?chubbyparade\.com\/forum\/attachment\.php\?attachmentid=\d+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+
+	retVal.imgUrl = pageUrl;
+	retVal.status = "OK";
+	
+	return retVal;
+	}]]></searchpattern>
 </host>
 
 <host id="cityrag">
@@ -834,7 +1111,7 @@
 			}
 		}
 	else {
-		retVal.imgUrl = iUrl[1].replace(/(displayimage\.php\?pid=\d+)&amp;(.+)/gi, site[1] + "$1&$2");
+		retVal.imgUrl = site[1] + iUrl[1].replace(/&amp;/g, "&");
 		retVal.status = "REQUEUE";
 		}
 	
@@ -843,7 +1120,7 @@
 </host>
 
 <host id="coppermine_gallery2">
-<urlpattern>^http:\/\/.+\/displayimage\.php\?pid=\d+&amp;fullsize=1</urlpattern>
+<urlpattern>^http:\/\/.+\/displayimage(?:\.php\?pid=\d+|-\d+\.html)&amp;fullsize=1</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
 	var retVal = new Object();
 
@@ -889,14 +1166,71 @@
 <searchpattern>"http:\\/\\/www\\.cybervice\\.com\\/files\\/+?\\d\\/\\."</searchpattern>
 </host>
 
+<host id="dailyniner">
+<urlpattern>^http:\/\/(?:www\.)?dailyniner\.com\/\?page=gallery&amp;image_size=.+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var medium = pageUrl.match(/^http:\/\/(?:www\.)?dailyniner\.com\/\?page=gallery&image_size=medium/);
+	if (medium) {
+		retVal.imgUrl = pageUrl.replace(/(image_size=)medium/, "$1large");
+		retVal.status = "REQUEUE";
+		return retVal;
+		}
+	
+	var iUrl = pageData.match(/src="(\/content\/\d+\/\d+\/\d+\/.+?)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
 <host id="dailypoa">
 <urlpattern>^http:\/\/www\.dailypoa\.com\/imageview\.php\?image=</urlpattern>
 <searchpattern>"REPLACE: 'imageview\\.php\\?image=(.+\\.jpg)' , 'images/$1'"</searchpattern>
 </host>
 
+<host id="dailypoa2">
+<urlpattern>^http:\/\/(?:www\.)?dailypoa\.com\/dpi\/share-.+\.html$</urlpattern>
+<searchpattern>"REPLACE: 'share(-.+)\.html' , 'image$1.jpg'"</searchpattern>
+</host>
+
 <host id="danbooru.donmai">
 <urlpattern>^http:\/\/danbooru\.donmai\.us\/post\/show\/.+</urlpattern>
 <searchpattern>"ID: image"</searchpattern>
+</host>
+
+<host id="datorrents">
+<urlpattern>^http:\/\/(?:www\.)?datorrents\.com\/gallery\/showimage\.php\?i=\d+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/Direct Link Code.+?<input[^>]+value="(.+?)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="depic.me">
+<urlpattern>^http:\/\/depic\.me\/.+\/.+</urlpattern>
+<searchpattern>"ID: pic"</searchpattern>
 </host>
 
 <host id="desiupload">
@@ -910,29 +1244,8 @@
 </host>
 
 <host id="deviantart">
-<urlpattern>http:\/\/.+\.deviantart\.com\/art\/.+</urlpattern>
-<searchpattern><![CDATA[function(pageData, pageUrl) {
-	var retVal = new Object();
-
-	var wetPants = pageData.match(/http:\/\/fc\d+\.deviantart\.net\/.+?\/.+?\.\D\D\D\"/);
-	if (wetPants) {
-		var iUrl = wetPants.toString().replace(/\"/, '');
-		}
-		else {
-		var shittyPants = pageData.match(/http:\/\/th\d+\.deviantart\.net\/fs\d+\/\d\d\d\D?\/.+?\/.+?\.\D\D\D\"/);
-		if (shittyPants) var iUrl = shittyPants.toString().replace(/th(\d+)/, 'fc$1').replace(/\/\d\d\d\D?/, '').replace(/\"$/, '');
-		}
-	if (!iUrl) {
-		retVal.imgUrl = null;
-		retVal.status = "ABORT";
-		}
-		else {
-		retVal.imgUrl = iUrl;
-		retVal.status = "OK";
-		}
-
-	return retVal;
-}]]></searchpattern>
+<urlpattern>^http:\/\/.+\.deviantart\.com\/art\/.+</urlpattern>
+<searchpattern>"ID: gmi-ResViewSizer_fullimg"</searchpattern>
 </host>
 
 <host id="digitalplayground">
@@ -940,9 +1253,19 @@
 <searchpattern>"photos\/images\/.+"</searchpattern>
 </host>
 
+<host id="directupload">
+<urlpattern>^http:\/\/s\d+\.directupload\.net\/file\/.+\/\d+\/.+\.htm</urlpattern>
+<searchpattern>"ID: Bild"</searchpattern>
+</host>
+
 <host id="dirtyrottenwhore">
 <urlpattern>^http:\/\/(?:www\.)?dirtyrottenwhore\.com\/.+\/.+\/.+\/.+</urlpattern>
 <searchpattern>"REPLACE: '(http:\\/\\/(?:www\\.)?dirtyrottenwhore\\.com)\\/(.+)\\/(.+)\\/(.+)\\/(.+)\\/(.+)\\.php','$1/$2/$3/$4/$5/$6.jpg'"</searchpattern>
+</host>
+
+<host id="dirtyyoungbitches">
+<urlpattern>^http:\/\/(?:www\.)?dirtyyoungbitches\.com\/.+\.html</urlpattern>
+<searchpattern>"http:\/\/[^\/]+\/.+\/\d+\/\d{2}\..{3,4}"</searchpattern>
 </host>
 
 <host id="divshare">
@@ -960,14 +1283,44 @@
 <searchpattern>"images\\/(.+). alt=.\\1"</searchpattern>
 </host>
 
+<host id="doujinland">
+<urlpattern>^http:\/\/(?:www\.)?doujinland\.com\/g\/\?level=picture&amp;id=\d+</urlpattern>
+<searchpattern>"class="photos-large""</searchpattern>
+</host>
+
+<host id="doujinshi.me">
+<urlpattern>^http:\/\/www\.doujinshi\.me\/image\.html\?doujin=.+&amp;page=\d+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/href='(.+?)'>Display full resolution image/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
 <host id="dr9000">
 <urlpattern>http:\/\/dr9000\.com\/.+</urlpattern> 
 <searchpattern>"REPLACE: 'share(.+)\\.html','image$1.jpg'"</searchpattern> 
 </host>
 
+<host id="dreamfakes">
+<urlpattern>^http:\/\/(?:www\.)?dreamfakes\.com\/pichost\/viewer\.php\?file=</urlpattern>
+<searchpattern>"REPLACE: 'viewer\.php\?file=(.+)' , 'images/$1'"</searchpattern>
+</host>
+
 <host id="drunkenstepfather">
-<urlpattern>^http:\/\/www\.drunkenstepfather\.com\/cms\/u\.php.+</urlpattern>
-<searchpattern>"http:\\/\\/www\\.drunkenstepfather\\.com\\/cms\\/ul\\/.+\\.jpg"</searchpattern>
+<urlpattern>^http:\/\/(?:www\.)?drunkenstepfather\.com\/cms\/u\.php.+</urlpattern>
+<searchpattern>"http:\\/\\/.+\\/cms\\/ul\\/.+\\.jpg"</searchpattern>
 </host>
 
 <host id="dumpanimage">
@@ -981,7 +1334,7 @@
 </host>
 
 <host id="dumpixxx">
-<urlpattern>^http:\/\/(?:www\.)?dumpixxx\.com\/view\.php\/</urlpattern>
+<urlpattern>^http:\/\/(?:www\.)?dumpixxx\.com\/(?:view|show)\.php\/</urlpattern>
 <searchpattern>"ID: img_obj"</searchpattern>
 </host>
 
@@ -993,6 +1346,58 @@
 <host id="duniaupload">
 <urlpattern>^http:\/\/(?:www\.)?duniaupload\.com\/files\/\d+</urlpattern>
 <searchpattern>"ID: duimg"</searchpattern>
+</host>
+
+<host id="e621">
+<urlpattern>^http:\/\/e621\.net\/post\/show\/.+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var theId = "highres";
+	
+	var searchPat = new RegExp("<.+id(?:\\s+)?=(?:\\s+)?(\"|')?" + theId + "\\1.+?>");
+	var tmpMatch = pageData.match(searchPat);
+	if (tmpMatch) {
+		tmpMatch = tmpMatch[0];
+		var the_url = tmpMatch.match(/href(?:\s+)?=(?:\s+)?("|')?(.+?)\1/);
+		if (the_url) the_url = the_url[2];
+		}
+	else {
+		theId = "image";
+		searchPat = new RegExp("<.+id(?:\\s+)?=(?:\\s+)?(\"|')?" + theId + "\\1.+?>");
+		tmpMatch = pageData.match(searchPat);
+		if (tmpMatch) {
+			tmpMatch = tmpMatch[0];
+			the_url = tmpMatch.match(/src(?:\s+)?=(?:\s+)?("|')?(.+?)\1/);
+			if (the_url) the_url = the_url[2];
+			}else {
+			theId = "movie";
+			searchPat = new RegExp("<.+name(?:\\s+)?=(?:\\s+)?(\"|')?" + theId + "\\1.+?>");
+			tmpMatch = pageData.match(searchPat);
+			if (tmpMatch) {
+				tmpMatch = tmpMatch[0];
+				the_url = tmpMatch.match(/value(?:\s+)?=(?:\s+)?("|')?(.+?)\1/);
+				if (the_url) the_url = the_url[2];
+				}
+			}
+		}
+
+	if(!the_url) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = the_url;
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="easypichosting">
+<urlpattern>^http:\/\/www\.easypichosting\.com\/show\.php\/.+\.html</urlpattern>
+<searchpattern>"ID: img_obj"</searchpattern>
 </host>
 
 <host id="echo">
@@ -1008,11 +1413,11 @@
 </host>
 
 <host id="egotastic">
-<urlpattern>^http:\/\/(?:www\.)?egotastic\.com\/image.*\?path=.+</urlpattern>
+<urlpattern>^http:\/\/(?:www\.)?egotastic\.com\/\d+\/\d+\/[^\/]+\/[^\/]+\/$</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
 	var retVal = new Object();
 	
-	var iUrl = pageData.match(/id="thepic"(?:.|\s)+?src="(.+?)"/);
+	var iUrl = pageData.match(/<a href="([^"]+)" class="view-orig"/);
 
 	if (!iUrl) {
 		retVal.imgUrl = null;
@@ -1042,6 +1447,26 @@
 		}
 	else {
 		retVal.imgUrl = iUrl;
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="eroprofile">
+<urlpattern>^http:\/\/www\.eroprofile\.com\/.+\/photos\/view\/</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/<div class="photo"><a href="(.+?)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
 		retVal.status = "OK";
 		}
 
@@ -1112,6 +1537,11 @@
 	}]]></searchpattern>
 </host>
 
+<host id="exgirlfriendmarket">
+<urlpattern>^http:\/\/(?:www\.)?exgirlfriendmarket\.com\/.+\.html</urlpattern>
+<searchpattern>"http:\/\/[^\/]+\/.+\/\d+\/\d{2}\..{3,4}"</searchpattern>
+</host>
+
 <host id="exs.cs">
 <urlpattern>^http:\/\/img\d+\.exs\.cx\/my\.php\?.+</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
@@ -1132,9 +1562,37 @@
 	}]]></searchpattern>
 </host>
 
+<host id="eyeprime">
+<urlpattern>^http:\/\/eyeprime\.net\/images\/.+\..{3,4}$</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	retVal.imgUrl = pageUrl;
+	retVal.status = "OK";
+	
+	return retVal;
+	}]]></searchpattern>
+</host>
+
 <host id="facebook">
-<urlpattern>^http:\/\/.+\.facebook\.com\/photo\.php\?.+</urlpattern>
-<searchpattern>"ID: myphoto"</searchpattern>
+<urlpattern>^https?:\/\/.+\.facebook\.com\/photo\.php\?.+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+
+	var iUrl = pageData.match(/<a href="(https?:\/\/[^"]+?_o\..{3,4})"/);
+	if (!iUrl) iUrl = pageData.match(/<img.+?id="fbPhotoImage" src="([^"]+)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
 </host>
 
 <host id="facialforum">
@@ -1245,6 +1703,11 @@
 <searchpattern>"ID: image"</searchpattern>
 </host>
 
+<host id="fetlife">
+<urlpattern>^http:\/\/fetlife\.com\/.+\/pictures\/\d+</urlpattern>
+<searchpattern>"src=".+?_720\..{3,4}""</searchpattern>
+</host>
+
 <host id="file-bunker">
 <urlpattern>^http:\/\/file-bunker\.org\/index\.php\?id=.+</urlpattern>
 <searchpattern>"REPLACE: 'index\\.php\\?id=' , 'shots/'"</searchpattern>
@@ -1255,8 +1718,13 @@
 <searchpattern>"resizeMe"</searchpattern>
 </host>
 
+<host id="filefap">
+<urlpattern>^http:\/\/filefap\.com\/view\/</urlpattern>
+<searchpattern>"ID: thepic"</searchpattern>
+</host>
+
 <host id="flickr">
-<urlpattern>http:\/\/www\.flickr\.com\/photos\/[\w@]+\/\d+\/(?:in\/set-\d+\/)?$</urlpattern>
+<urlpattern>^http:\/\/www\.flickr\.com\/photos\/[^\/]+\/\d+\/(?:in\/.+)?$</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
 	var retVal = new Object();
 	var tooty = pageUrl.match(/(http:\/\/.+?)\//);
@@ -1345,7 +1813,7 @@
 </host>
 
 <host id="formulatv">
-<urlpattern>^http:\/\/www\.formulatv\.com\/visor\.php\?.+fgal=\d+$</urlpattern>
+<urlpattern>^http:\/\/www\.formulatv\.com\/visor\.php\?.*(?:fgal|num)=\d+$</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
 	var retVal = new Object();
 	
@@ -1362,6 +1830,11 @@
 
 	return retVal;
 	}]]></searchpattern>
+</host>
+
+<host id="fotka-galeria.cba.pl">
+<urlpattern>^http:\/\/fotka-galeria\.cba\.pl\/galeria\/details\.php\?image_id=.+</urlpattern>
+<searchpattern>"data\/media\/"</searchpattern>
 </host>
 
 <host id="fotoblow">
@@ -1430,6 +1903,11 @@
 <searchpattern>"REPLACE: 'viewer\\.php\\?file=' , 'fullsize/'"</searchpattern>
 </host>
 
+<host id="freeporn.hu">
+<urlpattern>^http:\/\/(?:www\.)?freeporn\.hu\/pic\/.+\/\d+$</urlpattern>
+<searchpattern>"REPLACE: '(?:www\.)?(freeporn\.hu\/)pic\/(.+)' , 'pic.$1$2.jpg'"</searchpattern>
+</host>
+
 <host id="freeporndumpster">
 <urlpattern>^https?:\/\/.*freeporndumpster\.com\/show\.php</urlpattern>
 <searchpattern>"ID: thepic"</searchpattern>
@@ -1450,6 +1928,26 @@
 <searchpattern>"ID: image"</searchpattern>
 </host>
 
+<host id="furaffinity">
+<urlpattern>^http:\/\/www\.furaffinity\.net\/view\/\d+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/<a href="(.+?)">\s*Download\s*<\/a>/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
 <host id="futanaripalace">
 <urlpattern>^http:\/\/(?:www\.)?futanaripalace\.com\/attachment\.php\?attachmentid=\d+</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
@@ -1461,7 +1959,6 @@
 	return retVal;
 	}]]></searchpattern>
 </host>
-
 
 <host id="g.e-hentai" maxThreads="1">
 <urlpattern>^http:\/\/g\.e-hentai\.org\/s\/.+</urlpattern>
@@ -1492,6 +1989,31 @@
 
 	return retVal;
 	}]]></searchpattern>
+</host>
+
+<host id="galleryhosted">
+<urlpattern>^http:\/\/(?:www\.)?galleryhosted\.com\/.+\/.+\..{3,4}</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/<div[^>]+id="preview"[^>]+><img.+src="(.+?)">/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = "http://www.galleryhosted.com/" + iUrl[1].replace(/\/thumbs.+?\//, "/original/");
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="gayfotos.com.br">
+<urlpattern>^http:\/\/(?:www\.)?gayfotos\.com\.br\/galerias\/ver\/ver\.php\?chave=</urlpattern>
+<searchpattern>"\/galerias\/fotos\/.+\..{3,4}"</searchpattern>
 </host>
 
 <host id="geekypornygirl">
@@ -1599,6 +2121,11 @@
 <searchpattern>"\\/media\\/pictures\\/"</searchpattern>
 </host>
 
+<host id="glam0ur">
+<urlpattern>^http:\/\/(?:www\.)?glam0ur\.com\/gals\/.+\/.+\/.+\.php</urlpattern>
+<searchpattern>"ID: fullImage"</searchpattern>
+</host>
+
 <host id="glowfoto">
 <urlpattern>^http:\/\/www\.glowfoto\.com\/static_image\/.+</urlpattern>
 <searchpattern>"http:\\/\\/img\\d+\\.glowfoto\\.com\\/images\\/.+\\...."</searchpattern>
@@ -1632,6 +2159,26 @@
 <host id="goodbyemydarling">
 <urlpattern>^http:\/\/www\.goodbyemydarling\.com\/pics\/</urlpattern>
 <searchpattern>"REPLACE: 'source\\/(.+)\\.php' , 'image/$1.jpg'"</searchpattern>
+</host>
+
+<host id="googleceleb">
+<urlpattern>^http:\/\/(?:www\.)?googleceleb\.com\/view\/\d+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/<div class="art-PostContent">\s+<iframe src="(.+?)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "REQUEUE";
+		}
+
+	return retVal;
+	}]]></searchpattern>
 </host>
 
 <host id="groups.yahoo">
@@ -1688,6 +2235,31 @@
 <host id="hartists">
 <urlpattern>http:\/\/.+\.hartists\.net\/gallery\/submission\/\d+</urlpattern>
 <searchpattern>"http:\\/\\/submissions\\.hartists\\.net\\/.+\\.\\w{3,4}"</searchpattern>
+</host>
+
+<host id="hbrowse">
+<urlpattern>^http:\/\/www\.hbrowse\.com\/\d+\/.+\/.+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/class="pageImage"(?:.|\s)+?src="([^"]+)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="hdevil">
+<urlpattern>^http:\/\/(?:www\.)?hdevil\.biz\/share-.+\.html</urlpattern>
+<searchpattern>"http:\/\/(?:www\.)?hdevil\.biz\/image-.+\..{3,4}"</searchpattern>
 </host>
 
 <host id="hentai-foundry">
@@ -1800,6 +2372,26 @@
 <searchpattern>"ID: main_image"</searchpattern>
 </host>
 
+<host id="hornyasiangirls">
+<urlpattern>^http:\/\/hornyasiangirls\.net\/\d+\/\d+\/\d+\/.+\/.+\/</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/<p class="attachment"><a href="(.+?)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
 <host id="hostingfailov">
 <urlpattern>^http:\/\/(?:.+\.)?hostingfailov\.com\/photo(?:\/|-).+</urlpattern>
 <searchpattern>"ID: thepic"</searchpattern>
@@ -1810,6 +2402,11 @@
 <searchpattern>"ID: img_obj"</searchpattern>
 </host>
 
+<host id="hostyourpic">
+<urlpattern>^http:\/\/(?:www\.)?hostyourpic\.com\/\?v=.+</urlpattern>
+<searchpattern>"&lt;img src="\/images\/.+""</searchpattern>
+</host>
+
 <host id="hot-file">
 <urlpattern>http:\/\/www\.hot-file\.net\/pic\/.+</urlpattern>
 <searchpattern>"\/userimages\/\d+\/\d+\/big_.+"</searchpattern>
@@ -1818,6 +2415,71 @@
 <host id="hotcelebshome">
 <urlpattern>^http:\/\/www\.hotcelebshome\.com\/\d+\/\d+\/\d+\/.+?\/(?!trackback).+?\/$</urlpattern>
 <searchpattern>"ID: thepic"</searchpattern>
+</host>
+
+<host id="hotchinese.info">
+<urlpattern>^http:\/\/hotchinese\.info\/\?attachment_id=\d+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/Full size is <a[.\s]+?href="(.+?)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="hotimg">
+<urlpattern>^http:\/\/(?:www\.)?hotimg\.com\/image\/.+</urlpattern>
+<searchpattern>"REPLACE: '\/image\/' , '/direct/'"</searchpattern>
+</host>
+
+<host id="hotjapan.info">
+<urlpattern>^http:\/\/.+\.hotjapan\.info\/\?attachment_id=\d+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/Full size is <a[.\s]+?href="(.+?)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="hotkorean.info">
+<urlpattern>^http:\/\/.+\.hotkorean\.info\/\?attachment_id=\d+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/Full size is <a[.\s]+?href="(.+?)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
 </host>
 
 <host id="hotlinkimage">
@@ -1849,6 +2511,38 @@
 		retVal.imgUrl = sPattern[1];
 		retVal.status = "REQUEUE";
 		}
+	
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="hotsexyceleb.info">
+<urlpattern>^http:\/\/.+\.hotsexyceleb\.info\/\?attachment_id=\d+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/Full size is <a[.\s]+?href="(.+?)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="hottystop">
+<urlpattern>^http:\/\/www\.hottystop\.com\/.+\/.+\..{3,4}</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	retVal.imgUrl = pageUrl;
+	retVal.status = "OK";
 	
 	return retVal;
 	}]]></searchpattern>
@@ -1891,9 +2585,24 @@
 <searchpattern>"ID: thepic"</searchpattern>
 </host>
 
-<host id="iconacess">
-<urlpattern>^http:\/\/www\.iconaccess\.com\/.+\/show\.php\?</urlpattern>
-<searchpattern>"ID: thepic"</searchpattern>
+<host id="iheartredheads">
+<urlpattern>^http:\/\/www\.iheartredheads\.com\/.+\/gall\.php\?image=.+\..{3,4}$</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/<\/td>\s*<td>\s*<a href=[^>]+><img src="(.+?)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1].replace(/&#45;/, "-");
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
 </host>
 
 <host id="iimmgg">
@@ -1927,18 +2636,24 @@
 </host>
 
 <host id="imagebam">
-<urlpattern>^http:\/\/www\.imagebam\.com\/image\/.+</urlpattern>
+<urlpattern>^http:\/\/www\.imagebam\.com\/image\/[^&amp;]+$</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
     var retVal = new Object();
 
-    var sPattern = pageData.match(/("|')(http:\/\/.+\.imagebam\.com\/(?:download|dl)\.php\?ID=(\d+)&.*sec=\w+.*?)\1/);
+	/* Patterns provided by Flo:
+		http://([0-9]+).imagebam.com/download.php?ID=([0-9]+)&salt=([a-zA-Z0-9]{6})&sec=([a-zA-Z0-9]{6})&filesize=([0-9]+)&filename=(.*)
+		http://([0-9]+).imagebam.com/download/([a-zA-Z0-9_-])/([0-9]+)/([0-9]+)/(.*)
+	*/
+	
+    var sPattern = pageData.match(/("|')(http:\/\/\d+\.imagebam\.com\/(?:download|dl)\.php\?ID=\d+&amp;salt=\w+&amp;sec=\w+&amp;filesize=\d+&amp;filename=.+?)\1/);
+	if (!sPattern) sPattern = pageData.match(/("|')(http:\/\/\d+\.imagebam\.com\/download\/[^\/]+\/\d+\/\d+\/.+?)\1/);
   
     if (!sPattern) {
         retVal.imgUrl = null;
         retVal.status = "ABORT";
         }
     else {
-        retVal.imgUrl = sPattern[2];
+        retVal.imgUrl = sPattern[2].replace(/&amp;/g, "&");
         retVal.status = "OK";
         var fname = sPattern[2].match(/filename=(.+\..{3,4})/);
 		if (fname) retVal.fileName = fname[1];
@@ -1963,50 +2678,9 @@
 <searchpattern>"http:\\/\\/www\\.imagebanana\\.com\\/img\\/.+\\/.+"</searchpattern>
 </host>
 
-<host id="imagebeaver">
-<urlpattern>^https?:\/\/.*imagebeaver\.com\/view\.php</urlpattern>
+<host id="imageboss">
+<urlpattern>^http:\/\/www\.imageboss\.net\/view\/img\/</urlpattern>
 <searchpattern>"ID: thepic"</searchpattern>
-</host>
-
-<host id="imagebeaver2">
-<urlpattern>^https?:\/\/.*imagebeaver\.com\/photos\/.*\d+_\d+-.+</urlpattern>
-<searchpattern><![CDATA[function(pageData, pageUrl) {
-	if (appName == "ImageHost Grabber") {
-		}
-
-	var retVal = new Object();
-
-	var tittyFuck = pageData.match(/<a href="(confirm18\.php.+)">CONTINUE/);
-	if (tittyFuck) {
-		var shitCong = "http://imagebeaver.com/" + tittyFuck[1];
-		retVal.imgUrl = shitCong;
-		retVal.status = "RETRY";
-		return retVal;
-		}
-	
-	var theId = "thepic";
-
-	var searchPat = new RegExp("<.+id(?:\\s+)?=(?:\\s+)?(\"|')?" + theId + "\\1.+?>");
-	var tmpMatch = pageData.match(searchPat);
-	if (tmpMatch) {
-		tmpMatch = tmpMatch[0];
-		var the_url = tmpMatch.match(/src(?:\s+)?=(?:\s+)?("|')?(.+?)\1/);
-		if (the_url) the_url = the_url[2];
-		}
-	
-
-	if (!the_url) {
-		retVal.imgUrl = null;
-		retVal.status = "ABORT";
-		}
-	else {
-		retVal.imgUrl = the_url;
-		retVal.status = "OK";
-		}
-
-
-	return retVal;
-	}]]></searchpattern>
 </host>
 
 <host id="imagecamel">
@@ -2117,7 +2791,7 @@
 		retVal.imgUrl = the_url;
 		retVal.status = "OK";
 		
-		retVal.fileName = pageData.match(/Filename<\/td>(?:.|\s)+?<td.+?>(.+?)<\/td>/);
+		retVal.fileName = pageData.match(/<img id="mainPhoto".+?alt="[^-]+-\s+(.+?)"/);
 		if (retVal.fileName) retVal.fileName = retVal.fileName[1];
 		}
 	else {
@@ -2130,7 +2804,7 @@
 </host>
 
 <host id="imageflea">
-<urlpattern>^http:\/\/www\.imageflea\.com\/.+\/gallery\/.+\/.*\/\?p=.+</urlpattern>
+<urlpattern>^http:\/\/(?:www\.)?imageflea\.com\/.+\/gallery\/.+\/.*\/\?p=.+</urlpattern>
 <searchpattern>"\\/pics\\/\\d+/.+"</searchpattern>
 </host>
 
@@ -2257,6 +2931,11 @@
 <searchpattern>"http:\/\/img\d+\.imagehyper\.com\/img\/"</searchpattern>
 </host>
 
+<host id="imagepad">
+<urlpattern>^http:\/\/(?:www\.)?imagepad\.us\/.+\/.+\..{3,4}</urlpattern>
+<searchpattern>"onLoad="scaleImg"</searchpattern>
+</host>
+
 <host id="imagepix">
 <urlpattern>http:\/\/imagepix\.org\/image\/.+</urlpattern> 
 <searchpattern>"REPLACE: 'image\\/(.+)\\.html','full/$1.jpg'"</searchpattern> 
@@ -2283,12 +2962,13 @@
 </host>
 
 <host id="imageshack">
-<urlpattern>^http:\/\/img\d+\.imageshack\.us\/(?:(?:i\/|my\.php\?)|(?:img\d+\/.+\/.+))</urlpattern>
+<urlpattern>^http:\/\/(?:img\d+\.|www\.)?imageshack\.us\/(?:(?:i\/|photo\/|my\.php\?)|(?:img\d+\/.+\/.+))</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
     var retVal = new Object();
     var assCleaner = pageData.match(/var url_image_path = '(.+)';\s*/);   
     if (!assCleaner) {
-		assCleaner = pageData.match(/<img.+id=('|")main_image\1.+src=('|")(.+?)\1.+>/);
+		assCleaner = pageData.match(/<link.+rel=('|")image_src\1.+href=('|")(.+?)\2.+>/);
+		if (!assCleaner) assCleaner = pageData.match(/<img.+id=('|")main_image\1.+src=('|")(.+?)\2.+>/);
 		if (!assCleaner) {
 			retVal.imgUrl = null;
 			retVal.status = "ABORT";
@@ -2416,6 +3096,16 @@
 <searchpattern>"ID: img_obj"</searchpattern>
 </host>
 
+<host id="imgchili">
+<urlpattern>^http:\/\/imgchili\.com\/show\/</urlpattern>
+<searchpattern>"ID: show_image"</searchpattern>
+</host>
+
+<host id="imgdepot">
+<urlpattern>^http:\/\/imgdepot\.org\/show\/.+</urlpattern>
+<searchpattern>"REPLACE: '\/show\/' , '/images/'"</searchpattern>
+</host>
+
 <host id="imgfilez">
 <urlpattern>http:\/\/imgfilez\.com\/img\.php\?image=.+</urlpattern> 
 <searchpattern>"REPLACE: 'img\\.php\\?image=(.+)','storage/originals/$1'"</searchpattern> 
@@ -2494,9 +3184,62 @@
 	}]]></searchpattern>
 </host>
 
+<host id="imnotobsessed">
+<urlpattern>^http:\/\/www\.imnotobsessed\.com\/\d{4}\/\d{2}\/\d{2}\/.+\/.+\/$</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/Full size is <a href="([^"]+)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="imouto">
+<urlpattern>^http:\/\/.+\.imouto\.org\/post\/show\/\d+\/</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/href="([^"]+)".+?id="highres"/);
+	if (!iUrl) iUrl = pageData.match(/id="image".+?src="([^"]+)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
 <host id="in8photography">
 <urlpattern>^http:\/\/in8photography\.net\/.+\/slides\/.+\.html</urlpattern>
 <searchpattern>"img src=\"\\.\\.\\/.+\\.jpg\""</searchpattern>
+</host>
+
+<host id="infdaily">
+<urlpattern>^http:\/\/www\.infdaily\.com\/wp-content\/uploads\/\d+\/\d+\/.+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	retVal.imgUrl = pageUrl;
+	retVal.status = "OK";
+	
+	return retVal;
+	}]]></searchpattern>
 </host>
 
 <host id="innovativefashion">
@@ -2548,8 +3291,13 @@
 <searchpattern>"ID: img_obj"</searchpattern>
 </host>
 
+<host id="juicyvixen">
+<urlpattern>^http:\/\/(?:www\.)?juicyvixen\.com\/share\/show\.php\/.+\.html$</urlpattern>
+<searchpattern>"REPLACE: 'show\.php\/(.+)\.html' , 'out.php/i$1'"</searchpattern>
+</host>
+
 <host id="justjared">
-<urlpattern>^http:\/\/justjared\.buzznet\.com\/photo-gallery\/\d+\/.+?\/$</urlpattern>
+<urlpattern>^http:\/\/justjared(?:jr)?\.buzznet\.com\/photo-gallery\/\d+\/.+?\/$</urlpattern>
 <searchpattern>"ID: feature_image"</searchpattern>
 </host>
 
@@ -2559,7 +3307,7 @@
 </host>
 
 <host id="kapanlagi2">
-<urlpattern>^http:\/\/www\.kapanlagi\.com\/.+\/.+\/.+\.html$</urlpattern>
+<urlpattern>^http:\/\/www\.kapanlagi\.com\/foto\/.+\/.+\.html$</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
 	var retVal = new Object();
 	
@@ -2608,9 +3356,14 @@
 <searchpattern>"http:\\/\\/www\\.kemipic\\.com\\/image-.+\\.jpg"</searchpattern> 
 </host>
 
+<host id="keptarolo">
+<urlpattern>http:\/\/keptarolo\.hu\/.+\/.+\..{3,4}</urlpattern>
+<searchpattern>"REPLACE: 'http:\\/\\/keptarolo\\.hu\\/(.+\\/.+\\..{3,4})', 'http://keptarolo.hu/kep/$1'"</searchpattern>
+</host>
+
 <host id="kindgirls">
-<urlpattern>^http:\/\/www\.kindgirls\.com\/photo2\/.+\/.+\/.+\/\d+\/\d+\/\d+(\/)?(\d+-\d+)?</urlpattern>
-<searchpattern>"galh450p|(\\/gal-\\d+\\/.+\\/.+\\.jpg)"</searchpattern>
+<urlpattern>^http:\/\/www\.kindgirls\.com\/photo2?\/.+\/\d+\/\d+\/\d+(\/)?(\d+-\d+)?</urlpattern>
+<searchpattern>"galh450p|\/galsx\/|(\/gal-\w+\/.+\/.+\.jpg)"</searchpattern>
 </host>
 
 <host id="kinghost">
@@ -2655,6 +3408,11 @@
 <searchpattern>"ID: thepic"</searchpattern>
 </host>
 
+<host id="latex-model.de">
+<urlpattern>^http:\/\/(?:www\.)?latex-model\.de\/details\.php\?image_id=\d+</urlpattern>
+<searchpattern>"src="\.\/data\/media\/.+\/.+?\..{3,4}""</searchpattern>
+</host>
+
 <host id="lazygirls.info">
 <urlpattern>^http:\/\/www\.lazygirls\.info\/[^\/]+\/[^\/]+</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
@@ -2668,6 +3426,36 @@
 		}
 	else {
 		retVal.imgUrl = iUrl[1].replace(/(.+\.)sized\.(.{3,4})/, "$1$2");
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="lettherebeporn">
+<urlpattern>^http:\/\/www\.lettherebeporn\.com\/galleries\/\d+\/\d+\/.+\/.+\.php</urlpattern>
+<searchpattern>"ID: fullImage"</searchpattern>
+</host>
+
+<host id="ld-host.de">
+<urlpattern>^http:\/\/(?:www\.)?ld-host\.de\/show\/</urlpattern>
+<searchpattern>"ID: image"</searchpattern>
+</host>
+
+<host id="lingerie.haberji">
+<urlpattern>^http:\/\/lingerie\.haberji\.com\/.+\/.+\d+\/$</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/<p class="[^"]*attachment"><a href='(.+?)'/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
 		retVal.status = "OK";
 		}
 
@@ -2727,6 +3515,43 @@
 
 	return retVal;
 	}]]></searchpattern>
+</host>
+
+<host id="listal">
+<urlpattern>^http:\/\/www\.listal\.com\/viewimage\/\d+h?</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	/*if (pageUrl.match(/^http:\/\/www\.listal\.com\/viewimage\/\d+$/)) {
+		var fullsize = pageData.match(/href='(\/viewimage\/\d+h)'/);
+		if (fullsize) {
+			retVal.imgUrl = "http:\/\/www\.listal\.com" + fullsize[1];
+			retVal.status = "REQUEUE";
+			return retVal;
+			}
+		}*/
+	
+	var iUrl = pageData.match(/rel="image_src" href="(http:\/\/img\.listal\.com\/image\/\d+\/\d+full-(.+?))"/);
+	
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1].replace(/(\/image\/\d+\/)\d+(full-)/, "$16000$2");
+		retVal.status = "OK";
+		var name = iUrl[2].match(/^(.+)(\..{3,4})$/);
+		if (name) retVal.fileName = name[1] + Math.random().toString().substring(2,10) + name[2];
+		else retVal.fileName = iUrl[2];
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="livejasminbabes">
+<urlpattern>^http:\/\/(?:www\.)?livejasminbabes\.net\/.+\.html</urlpattern>
+<searchpattern>"http:\/\/[^\/]+\/.+\/\d+\/\d{2}\..{3,4}"</searchpattern>
 </host>
 
 <host id="lkrak">
@@ -2945,9 +3770,29 @@
 <searchpattern>"\\/d\\/.+\\/.+\\...."</searchpattern>
 </host>
 
+<host id="monsterfiles">
+<urlpattern>^http:\/\/hosting\.monsterfiles\.com\/show\/\d+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/"(http:\/\/[^\/]+\.monsterfiles\.com\/dl\/.+?)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
 <host id="morazzia">
 <urlpattern>^http:\/\/www\.morazzia\.com\/galleries\/.+\.s?html</urlpattern>
-<searchpattern>"http:\/\/content\d*\.morazzia\.com\/galleries\/.+\/.+\/.+\..{3,4}"</searchpattern>
+<searchpattern>"morazzia\.com\/galleries\/.+\..{3,4}"</searchpattern>
 </host>
 
 <host id="morethanporn">
@@ -2968,14 +3813,14 @@
 </host>
 
 <host id="motherless">
-<urlpattern>^http:\/\/motherless\.com\/[A-Z0-9]+(?:\/[A-Z0-9]+)?$</urlpattern>
+<urlpattern>^http:\/\/motherless\.com\/(?:g\/.+\/)?[A-Z0-9]+(?:\/[A-Z0-9]+)?$</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
 	var retVal = new Object();
 
 	var iUrl = "";
 	var isFlv = pageData.match(/<div.+id="mediaspace"/);
 	if (isFlv) {
-		var __file_url = pageData.match(/file_url = '(.+)'/);
+		/*var __file_url = pageData.match(/file_url = '(.+)'/);
 		__file_url = __file_url[1];
 
 		var b = [],
@@ -2998,10 +3843,12 @@
 		
 		var main_url = pageData.match(/s1.addParam\('flashvars','file=(.+?)'/);
 		main_url = main_url[1];
-		iUrl = main_url + __file_url + ".flv";
+		iUrl = main_url + __file_url + ".flv";*/
+		
+		iUrl = pageData.match(/file=(.+?)&/)[1];
 		}
 	else {
-		iUrl = pageData.match(/<img.+src="(http:\/\/s\d+\.motherless\.com\/dev.+\/\d+\/\d+\/\d+\/.+\..{3,4})" style="/);
+		iUrl = pageData.match(/<img\s+src="(http:\/\/s\d+\.motherless(?:media)?\.com\/dev.+\/\d+\/\d+\/\d+\/.+\..{3,4})"\s+style="/);
 		if (iUrl) iUrl = iUrl[1];
 		}
 		
@@ -3018,6 +3865,38 @@
     }]]></searchpattern>
 </host>
 
+<host id="multiply.com">
+<urlpattern>^http:\/\/(?:\w+\.)?multiply\.com\/photos\/photo\/</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+   
+	var newUrl = pageUrl.replace(/\/photo\//,"/hi-res/");
+	var req = new XMLHttpRequest();
+	req.open("GET", newUrl, false);
+	req.send(null);
+   
+	if (req.status != 200) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		return retVal;
+		}
+   
+	var newPage = req.responseText;
+	var iUrl = newPage.match(/<img[^>]*?src='(.+?1200x1200.+?)'/);
+   
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
 <host id="munemune">
 <urlpattern>^http:\/\/www\.munemune\.net\/post\/view\/.+</urlpattern>
 <searchpattern>"ID: main_image"</searchpattern>
@@ -3031,6 +3910,27 @@
 <host id="myadultimage">
 <urlpattern>http:\/\/myadultimage\.com\/viewer\.php\?file=.+</urlpattern> 
 <searchpattern>"REPLACE: 'viewer\\.php\\?file=(.+)','images/$1'"</searchpattern> 
+</host>
+
+<host id="myarchives">
+<urlpattern>^http:\/\/www\.myarchives\.net\/gallery\/showimage\.php\?i=\d+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/var bigPicUrl = '(.+?)'/);
+	if (!iUrl) iUrl = pageData.match(/id="vbgbigimg".+src="(.+?)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
 </host>
 
 <host id="myasianphotos">
@@ -3108,6 +4008,11 @@
 <searchpattern>"ID: userImage"</searchpattern>
 </host>
 
+<host id="myspace2">
+<urlpattern>^http:\/\/www\.myspace\.com\/.+\/photos\/\d+</urlpattern>
+<searchpattern>"ID: singlePhotoImage"</searchpattern>
+</host>
+
 <host id="mytasteinwomen">
 <urlpattern>^http:\/\/mytasteinwomen\.com\/post\/\d+</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
@@ -3116,8 +4021,8 @@
 	var photo_div = pageData.match(/<div class="photo-post"(?:.|\s)+?<\/div>/);
 	if (photo_div) {
 		photo_div = photo_div[0];
-		var iUrl = photo_div.match(/(?:.|\s)+?<a href="(.+?)".+?<img src="(.+?)"/);
-		if (!iUrl) var directUrl = photo_div.match(/(?:.|\s)+?<img src="(.+?)"/);
+		var iUrl = photo_div.match(/<a href="([^"]+)".+?<img src="([^"]+)"/);
+		if (!iUrl) var directUrl = photo_div.match(/<img src="(.+?)"/);
 	}
 	
 	if (directUrl) {
@@ -3174,6 +4079,33 @@
 
 	return retVal;
 	}]]></searchpattern>
+</host>
+
+<host id="nonnudegirls">
+<urlpattern>^http:\/\/(?:www\.)?nonnudegirls\.org\/forums\/attachment\.php\?attachmentid=\d+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+
+	retVal.imgUrl = pageUrl;
+	retVal.status = "OK";
+	
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="novojoy">
+<urlpattern>^http:\/\/(?:www\.)?novojoy\.com\/.+\/.+\.html$</urlpattern>
+<searchpattern>"http:\/\/[^\/]+\/.+\/\d+\/\d{2}\..{3,4}"</searchpattern>
+</host>
+
+<host id="novoporn">
+<urlpattern>^http:\/\/(?:www\.)?novoporn\.com\/.+\/.+\.html$</urlpattern>
+<searchpattern>"http:\/\/[^\/]+\/.+\/\d+\/\d{2}\..{3,4}"</searchpattern>
+</host>
+
+<host id="novostrong">
+<urlpattern>^http:\/\/(?:www\.)?novoporn\.com\/.+\/.+\.html$</urlpattern>
+<searchpattern>"http:\/\/[^\/]+\/.+\/\d+\/\d{2}\..{3,4}"</searchpattern>
 </host>
 
 <host id="nsfworld">
@@ -3250,6 +4182,11 @@
 <searchpattern>"ID: thepic"</searchpattern>
 </host>
 
+<host id="nuts.co.uk">
+<urlpattern>^http:\/\/www\.nuts\.co\.uk\/.+\/photo\/</urlpattern>
+<searchpattern>"\/images\/gallery\/\d+\/\d+\/"</searchpattern>
+</host>
+
 <host id="omega project">
 <urlpattern>^http:\/\/www\.theomegaproject\.org\/galleries\/\d+\/\d+\/.+\/.+\.php</urlpattern>
 <searchpattern>"REPLACE: 'php', 'jpg'"</searchpattern>
@@ -3258,6 +4195,43 @@
 <host id="omgasia">
 <urlpattern>http:\/\/.+\.omgasia\.net\/wpg2\?g2_itemId=\d+</urlpattern>
 <searchpattern>"ID: IFid1"</searchpattern>
+</host>
+
+<host id="oneclickchicks">
+<urlpattern>^http:\/\/forum\.oneclickchicks\.com\/attachment\.php\?attachmentid=\d+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	retVal.imgUrl = pageUrl;
+	retVal.status = "OK";
+	
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="onlythebestfakes">
+<urlpattern>^http:\/\/www\.onlythebestfakes\.com\/preview\/\d+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/<img src="([^"]+)".+?class="mainimage"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1].replace(/\/previews\//, "/");
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="orsm.net">
+<urlpattern>^http:\/\/.+\.orsm\.net\/gallery\/pictures\/.+\.html</urlpattern>
+<searchpattern>"ID: bigimg"</searchpattern>
 </host>
 
 <host id="paheal">
@@ -3275,6 +4249,18 @@
 <searchpattern>"REPLACE: 'viewer\\.php\\?file=' , 'images/'"</searchpattern>
 </host>
 
+<host id="pawsru">
+<urlpattern>^http:\/\/pawsru\.org\/.+\/src\/.+\..{3,4}</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	retVal.imgUrl = pageUrl;
+	retVal.status = "OK";
+	
+	return retVal;
+	}]]></searchpattern>
+</host>
+
 <host id="peachesfantasy">
 <urlpattern>^http:\/\/peachesfantasy\.com\/.+\/.+-\d+\.html</urlpattern>
 <searchpattern>"http:\\/\\/content\\d+\\.peachesfantasy\\.com\\/.+\\/\\d+\\/\\d+\\.jpg"</searchpattern>
@@ -3285,19 +4271,73 @@
 <searchpattern>"\\/photo-picture-image-media\\/.+\\.jpg"</searchpattern>
 </host>
 
+<host id="petiteteenager">
+<urlpattern>^http:\/\/galleries\d+\.petiteteenager\.com\/\d+\/.+\/.+\..{3,4}$</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	retVal.imgUrl = pageUrl;
+	retVal.status = "OK";
+	
+	return retVal;
+	}]]></searchpattern>
+</host>
+
 <host id="phantasi">
 <urlpattern>^http:\/\/(?:www\.)?phantasi\.cc\/post\/view\/\d+</urlpattern>
 <searchpattern>"ID: main_image"</searchpattern>
 </host>
 
+<host id="phil-flash">
+<urlpattern>^http:\/\/members\.phil-flash\.com\/.+\/image\d*\.php</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/src="(..\/images\/.+?)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="photo.net">
+<urlpattern>^http:\/\/(?:www\.)?photo.net\/photodb\/photo\?photo_id=\d+</urlpattern>
+<searchpattern>"REPLACE: 'http:\/\/photo\.net\/photodb\/photo\?photo_id=(\d+)' , 'http://gallery.photo.net/photo/$1-lg.jpg'"</searchpattern>
+</host>
+
 <host id="photobucket">
-<urlpattern>^http:\/\/.+\.photobucket\.com\/albums\/.+\/\?action=view\&amp;current=.+\....</urlpattern>
+<urlpattern>^http:\/\/.+\.photobucket\.com\/albums\/.+\/\?action=view\&amp;current=.+\..{3,4}</urlpattern>
 <searchpattern>"REPLACE: 'http:\\/\\/(.+)\\.photobucket\\.com\\/albums\\/(.+)\\/.+current=(.+\\....)' , 'http://$1.photobucket.com/albums/$2/$3'"</searchpattern>
+</host>
+
+<host id="photobucket2">
+<urlpattern>^http:\/\/.+\.photobucket\.com\/albums\/.+\/.+\..{3,4}</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	retVal.imgUrl = pageUrl;
+	retVal.status = "OK";
+	
+	return retVal;
+	}]]></searchpattern>
 </host>
 
 <host id="photocelebs">
 <urlpattern>^http:\/\/www\.photocelebs\.info\/.+\/.+</urlpattern>
 <searchpattern>"ID: thepic"</searchpattern>
+</host>
+
+<host id="photopost_gallery">
+<urlpattern>^http:\/\/.+\/showphoto\.php(?:\?photo=\d+&amp;size=big|\/photo\/\d+\/size\/big)</urlpattern>
+<searchpattern>"data\/\d+\/[^\/]+\..{3,4}"</searchpattern>
 </host>
 
 <host id="photosig">
@@ -3353,7 +4393,7 @@
 </host>
 
 <host id="picasa">
-<urlpattern>^http:\/\/picasaweb\.google\.\w+(?:\.\w+)?\/.+\/.+#\d+</urlpattern>
+<urlpattern>^https?:\/\/picasaweb\.google\.\w+(?:\.\w+)?\/.+\/.+#\d+</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
 	var retVal = new Object();
 
@@ -3362,8 +4402,8 @@
 	var searchPat = new RegExp(pageId + ".+?\"type\":\"image");
 	
 	var iUrl = pageData.match(searchPat);
-	if (iUrl) iUrl = iUrl[0].match(/url":"(http:\/\/.+?\..{3,4})"/);
-	if (iUrl) iUrl = iUrl[1].replace(/(http:\/\/\w+\.ggpht\.com\/.+\/.+\/.+\/.+\/)(.+\..{3,4})$/, "$1d/$2");
+	if (iUrl) iUrl = iUrl[0].match(/url":"(https?:\/\/.+?\..{3,4})"/);
+	if (iUrl) iUrl = iUrl[1].replace(/(https?:\/\/\w+\.ggpht\.com\/.+\/.+\/.+\/.+\/)(.+\..{3,4})$/, "$1d/$2");
 	
 	if (!iUrl) {
 		retVal.imgUrl = null;
@@ -3372,6 +4412,28 @@
 	else {
 		retVal.imgUrl = iUrl;
 		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="picbucks">
+<urlpattern>^http:\/\/.+\.picbucks\.com\/?$</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+
+	var rottenDick = pageData.match(/<frame id="frame2".+src="(.+)">/);
+	if (!rottenDick) rottenDick = pageData.match(/(?:linkDestUrl|TargetUrl) = '(.+?)'/);
+	if (!rottenDick) rottenDick = pageData.match(/iframe id="content" src="(.+?)"/);
+
+	if (!rottenDick) {
+		retVal.status = "ABORT";
+		retVal.imgUrl = null;
+		}
+	else {
+		retVal.status = "REQUEUE";
+		retVal.imgUrl = rottenDick[1];
 		}
 
 	return retVal;
@@ -3690,9 +4752,34 @@
 <searchpattern>"REPLACE: 'share(-\\w+\\.)html', 'image$1jpg'"</searchpattern> 
 </host>
 
+<host id="popoholic">
+<urlpattern>^http:\/\/www\.popoholic\.com\/photo\d*\.php\?id=.+</urlpattern>
+<searchpattern>"src="bigimages\/"</searchpattern>
+</host>
+
 <host id="popwarner">
 <urlpattern>^http:\/\/www\.popwarner\.com\/\w+\/.+\/.+\.html</urlpattern>
 <searchpattern>"images\/photo"</searchpattern>
+</host>
+
+<host id="porevo.info">
+<urlpattern>^http:\/\/porevo\.info\/view\.php\?item=.+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+
+	var tmpMatch = pageData.match(/url\(("|')?(.*\/pics?\.php\?\w+=.+)\1?\)/);
+ 	if (tmpMatch) var the_url = tmpMatch[2];
+
+	if (!the_url) {
+		retVal.status = "ABORT";
+		retVal.imgUrl = null;
+		}
+	else {
+		retVal.status = "OK";
+		retVal.imgUrl = the_url;
+		}
+	return retVal;
+	}]]></searchpattern>
 </host>
 
 <host id="porn.jj">
@@ -3725,9 +4812,53 @@
 <searchpattern>"REPLACE: 'viewer\\.php\\?file=' , 'fullsize/'"</searchpattern>
 </host>
 
+<host id="pornyhost">
+<urlpattern>^http:\/\/.+\.pornyhost\.com\/</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+
+	var newPageUrl = pageData.match(/linkDestUrl = '(.+?)'/);
+	
+	if (!newPageUrl) {
+		retVal.status = "ABORT";
+		retVal.imgUrl = null;
+		}
+	else {
+		retVal.status = "REQUEUE";
+		retVal.imgUrl = newPageUrl[1];
+		}
+		
+	return retVal;
+	}]]></searchpattern>
+</host>
+
 <host id="postimage">
 <urlpattern>^http:\/\/(?:www\.)?postimage\.org\/image(?:\.php\?|\/)</urlpattern>
-<searchpattern>"http:\\/\\/\\w+\\.postimage\\.org\\/.+\\..{3,4}"</searchpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+
+	if (!pageUrl.match(/\/full\//)) {
+		var full = pageData.match(/<a href='(.+?)'>full size/);
+		if (full) {
+			retVal.imgUrl = full[1];
+			retVal.status = "REQUEUE";
+			return retVal;
+			}
+		}
+	
+	var iUrl = pageData.match(/src='(http:\/\/\w+\.postimage\.org\/.+?\..{3,4})'/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
 </host>
 
 <host id="postyourimage">
@@ -3776,6 +4907,11 @@
 }]]></searchpattern>
 </host>
 
+<host id="r70.info">
+<urlpattern>^http:\/\/r70.info\/img\/viewer\.php\?file=</urlpattern>
+<searchpattern>"REPLACE: 'viewer\.php\?file=' , 'images/'"</searchpattern>
+</host>
+
 <host id="radikal">
 <urlpattern>^http:\/\/foto\.radikal\.ru\/f\.aspx\?i=.+</urlpattern>
 <searchpattern>"http:\\/\\/.+\\.foto\\.radikal\\.ru\\/.+\\/.+/.+\\...."</searchpattern>
@@ -3798,6 +4934,18 @@
 
     return retVal;
     }]]></searchpattern>
+</host>
+
+<host id="rajce.idnes.cz">
+<urlpattern>^http:\/\/img\d+\.rajce\.idnes\.cz\/d\d+\/\d+\/.+\/images\/.+\..{3,4}$</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	retVal.imgUrl = pageUrl;
+	retVal.status = "OK";
+	
+	return retVal;
+	}]]></searchpattern>
 </host>
 
 <host id="recapped">
@@ -3891,6 +5039,32 @@
 <host id="sadew">
 <urlpattern>http:\/\/www\.sadew\.com\/viewer\.php\?file=.+</urlpattern> 
 <searchpattern>"REPLACE: 'viewer\\.php\\?file=(.+)','images/$1'"</searchpattern> 
+</host>
+
+<host id="safebooru">
+<urlpattern>^http:\/\/safebooru\.org\/index\.php\?page=post.s=view.+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var theId = "highres";
+	
+	var searchPat = new RegExp("href=[\"|']([^\"|']*)\"[^<]*>Original image");
+	var tmpMatch = pageData.match(searchPat);
+	if (tmpMatch) {
+		var the_url = tmpMatch[1];
+		}
+
+	if(!the_url) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = the_url;
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
 </host>
 
 <host id="sankakucomplex">
@@ -3987,9 +5161,39 @@
 <searchpattern>"REPLACE: 'php', 'jpg'"</searchpattern>
 </host>
 
+<host id="sensualgirls">
+<urlpattern>http:\/\/(?:www\.)?sensualgirls\.org\/.+\/.+\/\d+\/</urlpattern>
+<searchpattern>"\/media\/pictures\/[^\/]+\/.+?\..{3,4}" border="0""</searchpattern>
+</host>
+
 <host id="sexole">
 <urlpattern>^http:\/\/www\.sexole\.com\/galerias\/foto\.aspx\?</urlpattern>
 <searchpattern>"http:\\/\\/hosted\\.ifw\\.es\\/galerias\\/.+\\/.+\\.jpg"</searchpattern>
+</host>
+
+<host id="sexyandfunny">
+<urlpattern>^http:\/\/www\.sexyandfunny\.com\/image_gallery\/.+_\d+_\d+\.html</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/src="(http:\/\/files\.sexyandfunny\.com\/photos\/img_disp\/.+?)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1].replace("img_disp", "img_orig");
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="sexycoolfun">
+<urlpattern>^http:\/\/(?:www\.)?sexycoolfun\.com\/image\/.+</urlpattern>
+<searchpattern>"ID: img"</searchpattern>
 </host>
 
 <host id="seyvet">
@@ -4113,9 +5317,9 @@
 	var retVal = new Object();
 		
 	if (pageUrl.match(/pjk=l/)) {
-		var iUrl = pageData.match(/src="(http:\/\/images\.sharenxs\.com\/.+?)"/);
+		var iUrl = pageData.match(/src="(http:\/\/cache\.sharenxs\.com\/images\/.+\/.+?)" id=img1/);
 		if (!iUrl) iUrl = pageData.match(/src="(http:\/\/(?:www\.)?sharenxs\.com\/images\/.+?)"/);
-		if (!iUrl) iUrl = pageData.match(/src="(http:\/\/cache\.sharenxs\.com\/images\/.+?)"/);
+		if (!iUrl) iUrl = pageData.match(/src="(http:\/\/images\.sharenxs\.com\/.+?)"/);
 		
 		if (!iUrl) {
 			retVal.imgUrl = null;
@@ -4172,8 +5376,23 @@
 </host>
 
 <host id="simplyrandom">
-<urlpattern>^http:\/\/www\.simplyrandom\.com\/.+\/.+\.php\/.+</urlpattern>
-<searchpattern>"ID: img_obj"</searchpattern>
+<urlpattern>^http:\/\/www\.simplyrandom\.com\/.+\/.+\.php(?:\/|\?).+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/<img src='(\.\.\/images\/.+?)'/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
 </host>
 
 <host id="sinemalar">
@@ -4298,7 +5517,7 @@
 </host>
 
 <host id="snapfish">
-<urlpattern>http:\/\/www\d+\.snapfish\.com\/slideshow\/AlbumID=\d+\/PictureID=\d+\/a=.+</urlpattern>
+<urlpattern>http:\/\/www\d+\.snapfish\.com\/snapfish/slideshow\/AlbumID=\d+\/PictureID=\d+\/a=.+</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
 	var retVal = new Object();
 	
@@ -4362,6 +5581,38 @@
 <searchpattern>"REPLACE: 'html', 'jpg'"</searchpattern>
 </host>
 
+<host id="sofurry">
+<urlpattern>^http:\/\/www\.sofurry\.com\/page\/\d+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/<a href="(.+?)" id="zoompicture">/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="southern-charms">
+<urlpattern>^http:\/\/(?:www\.)?southern-charms\d?\.com\/.+\/.+x\d+\..{3,4}</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	retVal.imgUrl = pageUrl;
+	retVal.status = "OK";
+	
+	return retVal;
+	}]]></searchpattern>
+</host>
+
 <host id="southwc.ru">
 <urlpattern>http:\/\/southwc\.ru\/viewer\.php\?id=.+</urlpattern> 
 <searchpattern>"REPLACE: 'viewer\\.php\\?id=(.+)','images/$1'"</searchpattern> 
@@ -4390,8 +5641,8 @@
 </host>
 
 <host id="stooorage">
-<urlpattern>http:\/\/www\.stooorage\.com\/show\/.+\/.+\.jpg</urlpattern> 
-<searchpattern>"REPLACE: 'show','images'"</searchpattern> 
+<urlpattern>^http:\/\/www\.stooorage\.com\/show\/.+\/.+</urlpattern> 
+<searchpattern>"stooorage\.com\/images\/"</searchpattern> 
 </host>
 
 <host id="storeimgs">
@@ -4407,6 +5658,11 @@
 <host id="studio31">
 <urlpattern>^http:\/\/.+\.studio31\.org\/.+\/index\.php\?album=.+&amp;image=.+</urlpattern>
 <searchpattern>"REPLACE: '(http:\\/\\/.+\\.studio31\\.org\\/.+\\/index\\.php\\?album=.+&amp;image=.+)', '$1&amp;p=*full-image'"</searchpattern>
+</host>
+
+<host id="subimg">
+<urlpattern>^http:\/\/subimg\.net\/jpg\?id=[^&amp;]+$</urlpattern>
+<searchpattern>"REPLACE: 'jpg\?id=(.+)' , '$1.jpg'"</searchpattern>
 </host>
 
 <host id="supload">
@@ -4558,55 +5814,79 @@
 <searchpattern>"\\/forum\\/pics\\/.+"</searchpattern>
 </host>
 
-<host id="thesuperficial">
-<urlpattern>^http:\/\/thesuperficial\.com\/\d+\/\d+\/[^\/]+\.php\?bfm_index=\d+&amp;bfm_page=\d+</urlpattern>
+<host id="theselittlepix">
+<urlpattern>^http:\/\/www\.theselittlepix\.com\/post\/\d+</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
 	var retVal = new Object();
 	
-	var base_dir = pageUrl.substring(0, pageUrl.lastIndexOf("/"));
-	var base_file = pageUrl.substring(pageUrl.lastIndexOf("/")+1);
-		
-	var iUrl = base_dir + "/bfm_enlarged/enlarged-" + base_file;
+	var photo_div = pageData.match(/<div class="photoWrapper"(?:.|\s)+?<\/div>/);
+	if (photo_div) {
+		photo_div = photo_div[0];
+		var iUrl = photo_div.match(/<a href="([^"]+)".+?<img src="([^"]+)"/);
+		if (!iUrl) var directUrl = photo_div.match(/<img src="(.+?)"/);
+	}
+	
+	if (directUrl) {
+		retVal.imgUrl = directUrl[1];
+		retVal.status = "OK";
+		return retVal;	
+	}
 	
 	if (!iUrl) {
 		retVal.imgUrl = null;
 		retVal.status = "ABORT";
 		}
 	else {
-		retVal.imgUrl = iUrl;
-		retVal.status = "REQUEUE";
+		if (iUrl[1].search(/^http:\/\/.+\.media\.tumblr\.com\/.+/) >= 0 ||
+			iUrl[1].search(/^http:\/\/www\.theselittlepix\.com\/photo\/\d+\/\d+\/.+/) >= 0) {
+			retVal.imgUrl = iUrl[1];
+			retVal.status = "OK";
+			}
+		else {	
+			retVal.imgUrl = iUrl[2];
+			retVal.status = "OK";
+			}
 		}
 
 	return retVal;
 	}]]></searchpattern>
 </host>
 
-<host id="thesuperficial2">
-<urlpattern>^http:\/\/thesuperficial\.com\/\d+\/\d+\/bfm_enlarged\/enlarged-.+\.php\?bfm_index=\d+&amp;bfm_page=\d+</urlpattern>
+<host id="thesuperficial">
+<urlpattern>^http:\/\/(?:www\.)?thesuperficial\.com\/[^\/]+\/[^?#\/]+$</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
 	var retVal = new Object();
+			
+	var iUrl = pageData.match(/<a href="(.+?)" >View Original<\/a>/);
 	
-	var images = pageData.match(/enlarged_images\[image_count\] = '.+?'/g);
-	var urls = new Array();
-	
-	for (var i = 0; i < images.length; i++) {
-		urls[i] = images[i].match(/enlarged_images\[image_count\] = '(.+?)'/)[1];
-		}
-	
-	var index = pageUrl.match(/\?bfm_index=(\d+)/)[1];
-	var iUrl = urls[index];
-		
 	if (!iUrl) {
 		retVal.imgUrl = null;
 		retVal.status = "ABORT";
 		}
 	else {
-		retVal.imgUrl = iUrl;
+		retVal.imgUrl = iUrl[1];
 		retVal.status = "OK";
 		}
 
 	return retVal;
 	}]]></searchpattern>
+</host>
+
+<host id="thesupermodelsgallery">
+<urlpattern>^http:\/\/www\.thesupermodelsgallery\.com\/wp-content\/uploads\/\d+\/\d+\/.+\/.+\..{3,4}$</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	retVal.imgUrl = pageUrl;
+	retVal.status = "OK";
+	
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="tieguyuk">
+<urlpattern>^http:\/\/(?:www\.)?tieguyuk\.net\/.+\/.+\/.+\.html?</urlpattern>
+<searchpattern>"\.\.\/images\/.+\..{3,4}"</searchpattern>
 </host>
 
 <host id="tinypic">
@@ -4654,8 +5934,24 @@
 </host>
 
 <host id="tumblr">
-<urlpattern>http:\/\/.+\.tumblr\.com\/post\/.+</urlpattern>
-<searchpattern>"http:\/\/.+\.tumblr\.com.+tumblr_.+"</searchpattern>
+<urlpattern>^http:\/\/.+\.tumblr\.com\/post\/.+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/href="(http:\/\/.+\.tumblr\.com\/photo\/\d+\/.+?)"/);
+	if (!iUrl) iUrl = pageData.match(/src="(http:\/\/.+\.tumblr\.com.+tumblr_.+?)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
 </host>
 
 <host id="turboimagehost">
@@ -4731,6 +6027,31 @@
 <searchpattern>"REPLACE: '\\/image\\/' , '/im/'"</searchpattern>
 </host>
 
+<host id="uaimage3">
+<urlpattern>^http:\/\/uaimage\.com\/\?page=i&amp;u=</urlpattern>
+<searchpattern>"ID: im"</searchpattern>
+</host>
+
+<host id="ubucks">
+<urlpattern>^http:\/\/.+\.ubucks\.net\/$</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/<iframe id="content" src="(.+?)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "REQUEUE";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
 <host id="ultimages">
 <urlpattern>http:\/\/www\.ultimages\.com\/viewer\.php\?file=.+\.jpg</urlpattern> 
 <searchpattern>"REPLACE: 'viewer\\.php\\?file=(.+)','images/$1'"</searchpattern> 
@@ -4739,6 +6060,18 @@
 <host id="unleashedpics">
 <urlpattern>^http:\/\/www\.unleashedpics\.com\/Pics\/Viewer\.php\?file=</urlpattern>
 <searchpattern>"REPLACE: 'Viewer\\.php\\?file=' , ''"</searchpattern>
+</host>
+
+<host id="upload.ee">
+<urlpattern>^http:\/\/www\.upload\.ee\/image\/.+\..{3,4}</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	retVal.imgUrl = pageUrl;
+	retVal.status = "OK";
+	
+	return retVal;
+	}]]></searchpattern>
 </host>
 
 <host id="uploadem">
@@ -4752,7 +6085,7 @@
 </host>
 
 <host id="upmyphoto">
-<urlpattern>http:\/\/(?:www\.)?upmyphoto\.com\/img\/image\.php\?image=.+</urlpattern>
+<urlpattern>^http:\/\/(?:www\.)?upmyphoto\.com\/(?:img\/image\.php\?image=.+|image\/.+)</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
 	var retVal = new Object();
 
@@ -4861,6 +6194,26 @@
 	}]]></searchpattern>
 </host>
 
+<host id="vettri">
+<urlpattern>^http:\/\/(?:www\.)?vettri\.net\/gallery\/.+\/.+\/.+\/.+\.html</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/class="PhotoPad".+?src="(.+?)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
 <host id="videolist.biz">
 <urlpattern>^http:\/\/videolist\.biz\/host\/photo\/view\.php</urlpattern>
 <searchpattern>"ID: image"</searchpattern>
@@ -4931,20 +6284,35 @@
 </host>
 
 <host id="webshots">
-<urlpattern>^http:\/\/.+\.webshots\.com\/photo\/</urlpattern>
+<urlpattern>^http:\/\/.+\.webshots\.com\/photo\/(?:fullsize\/)?\w+$</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
 	var retVal = new Object();
 	
-	var iUrl = pageData.match(/name="flashvars" value="src=(.+?)"/);
-	if (iUrl) iUrl = iUrl[1].replace(/_ph\.(.{3,4})/, "_fs.$1");
+	var iUrl = null;
+	
+	if (pageUrl.match(/\/fullsize\//)) {
+		iUrl = pageData.match(/'(http:\/\/image\d+\.webshots\.com\/.+?)'/);
+		if (!iUrl) {
+			retVal.imgUrl = null;
+			retVal.status = "ABORT";
+			}
+		else {
+			retVal.imgUrl = iUrl[1];
+			retVal.status = "OK";
+			}
+		
+		return retVal;
+		}
+	
+	iUrl = pageData.match(/class="mo-fullsize"><a href="(.+?)"/);
 		
 	if (!iUrl) {
 		retVal.imgUrl = null;
 		retVal.status = "ABORT";
 		}
 	else {
-		retVal.imgUrl = iUrl;
-		retVal.status = "OK";
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "REQUEUE";
 		}
 
 	return retVal;
@@ -5059,24 +6427,14 @@
 <searchpattern>"ID: gallery_image"</searchpattern>
 </host>
 
+<host id="x05">
+<urlpattern>^http:\/\/(?:www\.)?x05\.org\/show\.php\/</urlpattern>
+<searchpattern>"http:\/\/(?:[^\.]+\.)?x05\.org\/out\.php\/"</searchpattern>
+</host>
+
 <host id="xhamster">
 <urlpattern>^http:\/\/xhamster\.com\/photos\/view\/</urlpattern>
-<searchpattern><![CDATA[function(pageData, pageUrl) {
-	var retVal = new Object();
-	
-	var iUrl = pageData.match(/id='img'(?:.|\s)+?img.+?src='(.+?)'/);
-
-	if (!iUrl) {
-		retVal.imgUrl = null;
-		retVal.status = "ABORT";
-		}
-	else {
-		retVal.imgUrl = iUrl[1];
-		retVal.status = "OK";
-		}
-
-	return retVal;
-	}]]></searchpattern>
+<searchpattern>"imgId\s*="</searchpattern>
 </host>
 
 <host id="xportalbiz">
@@ -5108,6 +6466,26 @@
 	
 	retVal.imgUrl = pageUrl.replace(/(.+)\/share-(.+)\.html/g, "$1/image-$2.jpg");
 	retVal.status = "OK";
+	return retVal;
+	}]]></searchpattern>
+</host>
+
+<host id="ychan.ca">
+<urlpattern>^http:\/\/ychan\.ca\/view\/\d+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var iUrl = pageData.match(/<a href="(.+?)">Download/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
 	return retVal;
 	}]]></searchpattern>
 </host>
@@ -5144,9 +6522,48 @@
 	}]]></searchpattern>
 </host>
 
+<host id="z0d">
+<urlpattern>^http:\/\/(?:www\.)?z0d\.com\/\?page=gallery&amp;image_size=.+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	var medium = pageUrl.match(/^http:\/\/(?:www\.)?z0d\.com\/\?page=gallery&image_size=medium/);
+	if (medium) {
+		retVal.imgUrl = pageUrl.replace(/(image_size=)medium/, "$1large");
+		retVal.status = "REQUEUE";
+		return retVal;
+		}
+	
+	var iUrl = pageData.match(/src="(\/content\/\d+\/\d+\/\d+\/.+?)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
+</host>
+
 <host id="zimagez">
 <urlpattern>^http:\/\/www\.zimagez\.com\/zimage\/.+\.php</urlpattern>
 <searchpattern>"ID: userPic"</searchpattern>
+</host>
+
+<host id="zonagay.com.br">
+<urlpattern>^http:\/\/(?:www\.)?zonagay\.com\.br\/fotos\/.+\..{3,4}</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = new Object();
+	
+	retVal.imgUrl = pageUrl;
+	retVal.status = "OK";
+	
+	return retVal;
+	}]]></searchpattern>
 </host>
 
 <host id="zscan">
