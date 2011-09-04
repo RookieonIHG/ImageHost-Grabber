@@ -113,7 +113,7 @@
 			<menuitem label="&host_file_editor.label;" accesskey="&host_file_editor.accesskey;" oncommand="openDialog('chrome://imagegrabber/content/interfaces/hostfile_ui.xul')"/>
 			<menuitem label="&show_dl_window.label;" accesskey="&show_dl_window.accesskey;" oncommand="ihg_Functions.showDLWin('dlwin_exit_state');" />
 			<menuseparator/>
-			<menuitem label="&options.label;" accesskey="&options.accesskey;" oncommand="openDialog('chrome://imagegrabber/content/interfaces/options.xul', '', 'modal,toolbar')" />
+			<menuitem label="&options.label;" accesskey="&options.accesskey;" oncommand="ihg_Functions.showPreferencesDialog();" />
 			<menuitem label="&help.label;" accesskey="&help.accesskey;" oncommand="openDialog('chrome://imagegrabber/locale/help.html', '', 'dialog=no,close,resizable,scrollbars,minimizable,width=800,height=600')" />
 		</menupopup>
 	</toolbarbutton>
@@ -131,7 +131,7 @@
 			<menuitem label="&host_file_editor.label;" accesskey="&host_file_editor.accesskey;" oncommand="openDialog('chrome://imagegrabber/content/interfaces/hostfile_ui.xul')"/>
 			<menuitem label="&show_dl_window.label;" accesskey="&show_dl_window.accesskey;" oncommand="ihg_Functions.showDLWin('dlwin_exit_state');" />
 			<menuseparator/>
-			<menuitem label="&options.label;" accesskey="&options.accesskey;" oncommand="openDialog('chrome://imagegrabber/content/interfaces/options.xul', '', 'modal,toolbar')" />
+			<menuitem label="&options.label;" accesskey="&options.accesskey;" oncommand="ihg_Functions.showPreferencesDialog();" />
 			<menuitem label="&help.label;" accesskey="&help.accesskey;" oncommand="openDialog('chrome://imagegrabber/locale/help.html', '', 'dialog=no,close,resizable,scrollbars,minimizable,width=800,height=600')" />
 		</menupopup>
 	</menu>
@@ -149,7 +149,7 @@
 			<menuitem label="&host_file_editor.label;" accesskey="&host_file_editor.accesskey;" oncommand="openDialog('chrome://imagegrabber/content/interfaces/hostfile_ui.xul')"/>
 			<menuitem label="&show_dl_window.label;" accesskey="&show_dl_window.accesskey;" oncommand="ihg_Functions.showDLWin('dlwin_exit_state');" />
 			<menuseparator/>
-			<menuitem label="&options.label;" accesskey="&options.accesskey;" oncommand="openDialog('chrome://imagegrabber/content/interfaces/options.xul', '', 'modal,toolbar')" />
+			<menuitem label="&options.label;" accesskey="&options.accesskey;" oncommand="ihg_Functions.showPreferencesDialog();" />
 			<menuitem label="&help.label;" accesskey="&help.accesskey;" oncommand="openDialog('chrome://imagegrabber/locale/help.html', '', 'dialog=no,close,resizable,scrollbars,minimizable,width=800,height=600')" />
 		</menupopup>
 	</menu>
@@ -167,7 +167,7 @@
 			<menuitem label="&host_file_editor.label;" accesskey="&host_file_editor.accesskey;" oncommand="openDialog('chrome://imagegrabber/content/interfaces/hostfile_ui.xul')"/>
 			<menuitem label="&show_dl_window.label;" accesskey="&show_dl_window.accesskey;" oncommand="ihg_Functions.showDLWin('dlwin_exit_state');" />
 			<menuseparator/>
-			<menuitem label="&options.label;" accesskey="&options.accesskey;" oncommand="openDialog('chrome://imagegrabber/content/interfaces/options.xul', '', 'modal,toolbar')" />
+			<menuitem label="&options.label;" accesskey="&options.accesskey;" oncommand="ihg_Functions.showPreferencesDialog();" />
 			<menuitem label="&help.label;" accesskey="&help.accesskey;" oncommand="openDialog('chrome://imagegrabber/locale/help.html', '', 'dialog=no,close,resizable,scrollbars,minimizable,width=800,height=600')" />
 		</menupopup>
 	</menu>

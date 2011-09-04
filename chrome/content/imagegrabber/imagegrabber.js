@@ -714,3 +714,15 @@ ihg_Functions.showFilterDialog = function showFilterDialog(objLinks) {
 			"ig-filter_win", "chrome, dialog, modal, resizable=yes", params);
     return params.out;
 } 
+
+ihg_Functions.showPreferencesDialog = function showPreferencesDialog() {
+	var features = "chrome,titlebar,toolbar,centerscreen";
+	try {
+		ihg_Globals.prefManager.getBoolPref("browser.preferences.instantApply");
+		features += instantApply ? ",dialog=no" : ",modal";
+	} catch (e) {
+		features += ",modal";
+	}
+
+	window.openDialog("chrome://imagegrabber/content/interfaces/options.xul", "", features);
+}
