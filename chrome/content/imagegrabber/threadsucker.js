@@ -180,7 +180,8 @@ ihg_Functions.setUp_suckerReq = function setUp_suckerReq() {
 		var uPat = new RegExp(uPatNode.textContent);
 		if (threadsucker_Globals.threadURL.match(uPat)) {
 			var sPatNode = forums[i].getElementsByTagName("searchpattern")[0];
-			tempThing = sPatNode.textContent; 
+			tempThing = sPatNode.textContent;
+			break;
 			}
 		}
 
@@ -218,7 +219,7 @@ ihg_Functions.setUp_suckerReq = function setUp_suckerReq() {
 		req.pageNum = threadsucker_Globals.linkIndex;
 		req.curLinkNum = 0;
 		req.totLinkNum = 1;
-		// req.uniqID = "req_" + Math.round(Math.random() * 1e9);
+		req.uniqID = "req_" + Math.round(Math.random() * 1e9);
 
 		temp_array[count] = req;
 		temp_array[req.uniqID] = temp_array[count];
