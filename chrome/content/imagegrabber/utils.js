@@ -445,8 +445,12 @@ ihg_Functions.removeDuplicates = function removeDuplicates(docLinks, thumbLinks)
  			for (var k = ihg_Globals.firstPage; k < cleanDocLinks.length; k++) {
  				if (!ihg_Globals.remove_duplicate_links_across_pages) k = i;
  				for (var l = 0; l < cleanDocLinks[k].length; l++) {
- 					if (cleanDocLinks[k][l] == docLinks[i][j])
+ 					if (cleanDocLinks[k][l] == docLinks[i][j]) {
+						if (thumbLinks) {
+							if (!cleanThumbLinks[k][l]) cleanThumbLinks[k][l] = thumbLinks[i][j];
+						}
  						continue loop;
+					}
 				}
 			}
  			cleanDocLinks[k-1][l] = docLinks[i][j];
