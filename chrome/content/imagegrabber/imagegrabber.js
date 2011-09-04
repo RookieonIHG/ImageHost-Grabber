@@ -60,35 +60,7 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 		docLinks[ihg_Globals.firstPage] = new Array();
 		thumbLinks[ihg_Globals.firstPage] = new Array();
 		
-		for (var q = 0; q < content.document.links.length; q++) {
-			var someNode = content.document.links[q];
-			docLinks[ihg_Globals.firstPage][q] = someNode.href;
-			thumbLinks[ihg_Globals.firstPage][q] = null;
-			for (var a = 0; a < someNode.childNodes.length; a++) {
- 				var someTagName = someNode.childNodes[a].tagName;
-  				if (someTagName) {
- 					if (someTagName.search(/img/i) >= 0) {
- 						thumbLinks[ihg_Globals.firstPage][q] = {
-							src:someNode.childNodes[a].src,
-							width:someNode.childNodes[a].naturalWidth,
- 							height:someNode.childNodes[a].naturalHeight
-							}
- 						break;
- 						}
- 					}
-  				}
-			}
-			
- 		if (ihg_Globals.downloadEmbeddedImages) {
-			var imgs = content.document.images;
-			for (var q = 0; q < imgs.length; q++) {
-				if (imgs[q].naturalHeight >= ihg_Globals.minEmbeddedHeight && imgs[q].naturalWidth >= ihg_Globals.minEmbeddedWidth) {
-					// add a tag to the link so we can identify it later
-					docLinks[ihg_Globals.firstPage].push("[embeddedImg]" + imgs[q].src);
-					thumbLinks[ihg_Globals.firstPage].push({ src:imgs[q].src, width:imgs[q].naturalWidth, height:imgs[q].naturalHeight });
-					}
- 				}
- 			}	
+		ihg_Functions.getLinksAndImages(content, docLinks, thumbLinks);	
 		}
 	ihg_Functions.LOG("In hostGrabber, docLinks is equal to: " + docLinks.toSource() + "\n");
 
@@ -139,6 +111,44 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 		ihg_Functions.finishUp(tmp_req_objs);
 		}
 	} //end of hostGrabber function
+
+
+ihg_Functions.getLinksAndImages = function getLinksAndImages(content, docLinks, thumbLinks) {
+	for (var q = 0; q < content.document.links.length; q++) {
+		var someNode = content.document.links[q];
+		docLinks[ihg_Globals.firstPage].push(someNode.href);
+		var thumbnail = null;
+		for (var a = 0; a < someNode.childNodes.length; a++) {
+ 			var someTagName = someNode.childNodes[a].tagName;
+  			if (someTagName) {
+ 				if (someTagName.search(/img/i) >= 0) {
+					thumbnail = { src:someNode.childNodes[a].src,
+								width:someNode.childNodes[a].naturalWidth,
+								height:someNode.childNodes[a].naturalHeight };
+ 					break;
+ 					}
+ 				}
+  			}
+			thumbLinks[ihg_Globals.firstPage].push(thumbnail);
+		}
+			
+ 	if (ihg_Globals.downloadEmbeddedImages) {
+		var imgs = content.document.images;
+		for (var q = 0; q < imgs.length; q++) {
+			if (imgs[q].naturalHeight >= ihg_Globals.minEmbeddedHeight && imgs[q].naturalWidth >= ihg_Globals.minEmbeddedWidth) {
+				// add a tag to the link so we can identify it later
+				docLinks[ihg_Globals.firstPage].push("[embeddedImg]" + imgs[q].src);
+				thumbLinks[ihg_Globals.firstPage].push({ src:imgs[q].src, width:imgs[q].naturalWidth, height:imgs[q].naturalHeight });
+				}
+ 			}
+ 		}
+
+	if (content.frames) {
+		for (var q = 0; q < content.frames.length; q++) {
+			ihg_Functions.getLinksAndImages(content.frames[q], docLinks, thumbLinks);
+			}
+		}
+	}
 
 
 ihg_Functions.finishUp = function finishUp(req_objs) {
@@ -413,11 +423,15 @@ ihg_Functions.setUpReq = function setUpReq(objLinks) {
 			req.pageNum = i;
 			req.curLinkNum = j;
 			req.totLinkNum = objLinks.links[i].length;
-			// req.uniqID = "req_" + Math.round(Math.random() * 1e9);
 			req.uniqFN_prefix = fName;
 			req.minFileSize = ihg_Globals.minFileSize;
 
 			//if (inner_link.match(/boxtheclown/)) req.init = boxclown_init;
+
+			/* Set the referrer for those sites that require it */
+			if (inner_link.match(/^http:\/\/[^\/]*bruce-juice\.com\//)) {
+				req.referer = req.originatingPage;
+				}
 
 			req.debugLog();
 
