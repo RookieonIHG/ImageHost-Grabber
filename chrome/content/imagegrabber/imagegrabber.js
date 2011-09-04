@@ -732,7 +732,7 @@ ihg_Functions.showFilterDialog = function showFilterDialog(objLinks) {
 ihg_Functions.showPreferencesDialog = function showPreferencesDialog() {
 	var features = "chrome,titlebar,toolbar,centerscreen";
 	try {
-		ihg_Globals.prefManager.getBoolPref("browser.preferences.instantApply");
+		var instantApply = ihg_Globals.prefManager.getBoolPref("browser.preferences.instantApply");
 		features += instantApply ? ",dialog=no" : ",modal";
 	} catch (e) {
 		features += ",modal";
