@@ -172,7 +172,7 @@ ihg_Functions.requestObj.prototype = {
 	unlock : function req_unlock() {
 		ihg_Functions.LOG("Entering function requestObj.unlock\n");
 
-		ihg_Functions.updateDownloadProgress(null, this.uniqID, null, null, ihg_Globals.strings.finished + " and unlocked...");
+		ihg_Functions.updateDownloadProgress(null, this.uniqID, null, null, ihg_Globals.strings.finished);
 		ihg_Functions.clearFromWin(this.uniqID);
 		this.inprogress = false;
 
