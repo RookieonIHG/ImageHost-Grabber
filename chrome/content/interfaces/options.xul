@@ -201,18 +201,18 @@ function toggleEnableState() {
 			<rows>
 				<row align="center">
 					<label control="scale_maxThreads">&max_simultaneous_http_requests;</label>
-					<scale id="scale_maxThreads" min="1" max="20" preference-editable="true" movetoclick="true"/>
-					<textbox type="number" size="1" hidespinbuttons="true" class="plain" style="color:black" disabled="true" preference="maxThreads"/>
+					<scale id="scale_maxThreads" min="1" max="10" preference-editable="true" movetoclick="true"/>
+					<textbox type="number" size="2" hidespinbuttons="true" class="plain" style="color:black" disabled="true" preference="maxThreads"/>
 				</row>
 				<row align="center">
 					<label control="scale_numRetries">&max_number_of_retries_for_each_link;</label>
-					<scale id="scale_numRetries" min="1" max="10" preference-editable="true" movetoclick="true"/>
-					<textbox type="number" size="1" hidespinbuttons="true" class="plain" style="color:black" disabled="true" preference="numRetries"/>
+					<scale id="scale_numRetries" min="1" max="99" preference-editable="true" movetoclick="true"/>
+					<textbox type="number" size="2" hidespinbuttons="true" class="plain" style="color:black" disabled="true" preference="numRetries"/>
 				</row>
 				<row align="center">
 					<label control="scale_reqTimeout">&request_timeout_before_retry;</label>
 					<scale id="scale_reqTimeout" min="15" max="90" preference-editable="true" increment="5"/>
-					<textbox type="number" size="1" hidespinbuttons="true" class="plain" style="color:black" disabled="true" preference="reqTimeout"/>
+					<textbox type="number" size="2" hidespinbuttons="true" class="plain" style="color:black" disabled="true" preference="reqTimeout"/>
 				</row>
 				<separator/>
 				<row align="center">
@@ -228,13 +228,10 @@ function toggleEnableState() {
 							<menuitem label="6 sec." value="6"/>
 							<menuitem label="8 sec." value="8"/>
 							<menuitem label="10 sec." value="10"/>
-							<menuitem label="12 sec." value="12"/>
 							<menuitem label="15 sec." value="15"/>
 							<menuitem label="20 sec." value="20"/>
 							<menuitem label="25 sec." value="25"/>
 							<menuitem label="30 sec." value="30"/>
-							<menuitem label="40 sec." value="40"/>
-							<menuitem label="50 sec." value="50"/>
 							<menuitem label="60 sec." value="60"/>
 						</menupopup>
 					</menulist>
