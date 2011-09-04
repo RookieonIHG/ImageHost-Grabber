@@ -238,7 +238,7 @@ getInterface: function (aIID) {
 				}
 			}
 			else {
-				ihg_Functions.updateDownloadProgress(null, this.reqObj.uniqID, null, null, ihg_Globals.strings.finished + " and locked...");
+				ihg_Functions.updateDownloadProgress(null, this.reqObj.uniqID, null, null, ihg_Globals.strings.finished);
 			
 				if (ihg_Globals.useLastModFromHeader) {
 					try {
@@ -283,9 +283,17 @@ getInterface: function (aIID) {
 	},
 
 	// nsIChannelEventSink
-onChannelRedirect: function (aOldChannel, aNewChannel, aFlags) {
+	onChannelRedirect: function (aOldChannel, aNewChannel, aFlags) {
 		ihg_Functions.LOG("Entered onChannelRedirect...\n");
 	},
+
+	// Requires Gecko 2.0
+	asyncOnChannelRedirect: function (oldChannel, newChannel, flags, callback) {
+		ihg_Functions.LOG("Entered asyncOnChannelRedirect...\n");
+
+		this.onChannelRedirect(oldChannel, newChannel, flags);
+		callback.onRedirectVerifyCallback(0);
+		},
 
 	onDataAvailable : function(request, context, stream, offset, count) { 
 		this.reqObj.curProgress += count;
