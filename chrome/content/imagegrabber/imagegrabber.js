@@ -217,7 +217,7 @@ ihg_Functions.getDLCache = function getDLCache(fileName) {
 		
 		if (fileName) {
 			cacheDir.append(fileName);
-			target = cacheDir.target;
+			target = cacheDir.path;
 		}
 	}
 	

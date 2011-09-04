@@ -53,7 +53,7 @@ function saveSession(fileName) {
 
 	if (fileName) {
 		aLocalFile.append(fileName);
-		var cacheFile = new ihg_Functions.dlWinCacheService(aLocalFile.target);
+		var cacheFile = new ihg_Functions.dlWinCacheService(aLocalFile.path);
 		cacheFile.writeCache(req_objs);
 		return;
 	}
