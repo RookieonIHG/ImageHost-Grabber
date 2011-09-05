@@ -1580,7 +1580,7 @@
 	var retVal = new Object();
 
 	var iUrl = pageData.match(/<a href="(https?:\/\/[^"]+?_o\..{3,4})"/);
-	if (!iUrl) iUrl = pageData.match(/<img.+?id="fbPhotoImage" src="([^"]+)"/);
+	if (!iUrl) iUrl = pageData.match(/<img[^>]+src="([^"]+?_n\..{3,4})"/);
 
 	if (!iUrl) {
 		retVal.imgUrl = null;
