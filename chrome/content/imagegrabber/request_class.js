@@ -116,8 +116,7 @@ ihg_Functions.requestObj.prototype = {
 			this.callwrapper.cancel();
 			}
 		catch(e) { }
-		this.xmlhttp.abort();
-
+		if (this.xmlhttp) this.xmlhttp.abort();
 
 		var toDieOrNot = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.killmenow");
 		if (toDieOrNot) {
@@ -155,7 +154,7 @@ ihg_Functions.requestObj.prototype = {
 		this.aborted = false;
 
 		ihg_Functions.LOG("In function req_retry, fixing to execute xmlhttp.abort\n");		
-		this.xmlhttp.abort();
+		if (this.xmlhttp) this.xmlhttp.abort();
 
 		this.retryNum--;
 
