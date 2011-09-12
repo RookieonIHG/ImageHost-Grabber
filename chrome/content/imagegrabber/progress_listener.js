@@ -249,14 +249,16 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 				}
 			}
 
-			// ihg_Functions.clearFromWin(this.reqObj.uniqID);
-
 			this.reqObj.finished = true;
-			// this.reqObj.inprogress = false;
+
 			var download_timeout = ihg_Globals.downloadTimeout;
-			this.reqObj.callwrapper = new ihg_Functions.CCallWrapper(this.reqObj, download_timeout, 'unlock', "locking of " + this.reqObj.uniqID);
-			ihg_Functions.CCallWrapper.asyncExecute(this.reqObj.callwrapper);
-			this.reqObj.queueHandler();
+			if (download_timeout <= 0) {
+				this.reqObj.unlock();
+			} else {
+				this.reqObj.callwrapper = new ihg_Functions.CCallWrapper(this.reqObj, download_timeout, 'unlock', "locking of " + this.reqObj.uniqID);
+				ihg_Functions.CCallWrapper.asyncExecute(this.reqObj.callwrapper);
+				this.reqObj.queueHandler();
+			}
 		}
 
 		if(aStatus != 0) {

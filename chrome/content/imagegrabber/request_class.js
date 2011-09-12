@@ -120,7 +120,7 @@ ihg_Functions.requestObj.prototype = {
 
 		var toDieOrNot = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.killmenow");
 		if (toDieOrNot) {
-			ihg_Functions.LOG("In function requestObj.retry, received the call to die!\n");
+			ihg_Functions.LOG("In function requestObj.abort, received the call to die!\n");
 			return; }
 
 		this.queueHandler();
@@ -170,7 +170,6 @@ ihg_Functions.requestObj.prototype = {
 	unlock : function req_unlock() {
 		ihg_Functions.LOG("Entering function requestObj.unlock\n");
 
-		ihg_Functions.updateDownloadProgress(null, this.uniqID, null, null, ihg_Globals.strings.finished);
 		ihg_Functions.clearFromWin(this.uniqID);
 		this.inprogress = false;
 
