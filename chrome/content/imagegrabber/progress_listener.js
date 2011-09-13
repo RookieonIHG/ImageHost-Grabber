@@ -252,7 +252,7 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 			this.reqObj.finished = true;
 
 			var download_timeout = ihg_Globals.downloadTimeout;
-			if (download_timeout <= 0) {
+			if (download_timeout <= 0 || this.reqObj.maxThreads == 0) {
 				this.reqObj.unlock();
 			} else {
 				this.reqObj.callwrapper = new ihg_Functions.CCallWrapper(this.reqObj, download_timeout, 'unlock', "locking of " + this.reqObj.uniqID);
