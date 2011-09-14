@@ -42,15 +42,23 @@ Use the following script if you are using Linux:
 
 #!/bin/bash
 USER="cybormatt"
+REPO="ImageHost-Grabber"
 TARGET_URL_1="https://github.com/"
-TARGET_URL_2="/ImageHost-Grabber/zipball/master"
+TARGET_URL_2="/zipball/master"
 FILENAME="latest_ihg"
 
-wget $TARGET_URL_1$USER$TARGET_URL_2 -O $FILENAME.zip
+wget $TARGET_URL_1$USER/$REPO$TARGET_URL_2 -O $FILENAME.zip
 unzip -d $FILENAME $FILENAME.zip
-rm -f $FILENAME.xpi
-cd $FILENAME/$USER-ImageHost-Grabber-*
-zip -r ../../$FILENAME.xpi *
-cd ../../
+
+if [ -d $FILENAME/$USER-$REPO-* ];
+then
+	rm -f $FILENAME.xpi
+	cd $FILENAME/$USER-$REPO-*
+	zip -r ../../$FILENAME.xpi *
+	cd ../../
+else
+	echo "There was a problem creating the xpi file."
+fi
+
 rm -f $FILENAME.zip
 rm -rf $FILENAME/
