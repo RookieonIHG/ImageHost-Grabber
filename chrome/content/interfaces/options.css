@@ -12,7 +12,7 @@ radio[pane="genopts"] {
 	-moz-image-region: rect(0px, 64px, 32px, 32px);
 }
 
-radio[pane="tp_embeddedopts"] {
+radio[pane="embeddedopts"] {
 	-moz-image-region: rect(0px, 96px, 32px, 64px);
 }
 
