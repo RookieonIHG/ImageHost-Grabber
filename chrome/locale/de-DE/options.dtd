@@ -53,6 +53,7 @@
 <!ENTITY  disclaimer_line1 "Beim Aktivieren/Deaktivieren der folgenden Optionen muss Firefox neu gestartet werden, damit die Änderungen in Kraft treten.">
 <!ENTITY  disclaimer_line2 "Die Optionen sollten nur vorübergehend zum Protokollieren eines bestimmten Ereignisses aktiviert und anschließend gleich wieder deaktiviert werden.">
 <!ENTITY  disclaimer_line3 "Bleiben die Optionen aktiviert, wird Firefox ausgebremst und verbraucht viel Speicher und Festplattenspeicherplatz.">
+<!ENTITY  read_disclaimer "Lesen Sie unbedingt den Haftungsausschluss!">
 <!ENTITY  enable_console_logging "Konsolenprotokollierung aktivieren">
 <!ENTITY  enable_debugging_logging "Fehlersucheprotokollierung aktivieren">
 <!ENTITY  clear_log "Protokoll löschen">

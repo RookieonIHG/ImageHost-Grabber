@@ -165,13 +165,13 @@ ihg_Functions.HostFileService = function HostFileService() {
 	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
-	if(ihg_Globals.hostFileLoc != "") {
+	if (ihg_Globals.hostFileLoc != "") {
 		hostFile.initWithPath(ihg_Globals.hostFileLoc);
 		var fuckwhore = hostFile.exists();
 		if (!fuckwhore) ihg_Globals.hostFileLoc = "";
 		}
 
-	if(ihg_Globals.hostFileLoc == "") {
+	if (ihg_Globals.hostFileLoc == "") {
 		// This should work for Firefox v1.5 to v3.6  It returns a file object initialized
 		// with the path where the extension is located	
 		try {
@@ -276,6 +276,7 @@ ihg_Functions.dlWinCacheService.prototype = {
 					//newReqObj.appendChild(newDocument.createTextNode("\n"));
 					}
 				}
+			newReqObj.appendChild(newDocument.createTextNode("\n"));
 
 			newRoot.appendChild(newDocument.createTextNode("\n")); 
 			newRoot.appendChild(newReqObj); 

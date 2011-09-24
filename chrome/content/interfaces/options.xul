@@ -255,8 +255,8 @@ function toggleEnableState() {
 	<label>&disclaimer_line2;</label>
 	<label>&disclaimer_line3;</label>
 	<separator height="15"/>
-	<checkbox id="cb_enableConLog" preference="enableConLog" label="&enable_console_logging;" onclick="alert(ihg_Globals.strings.read_disclaimer);"/>
-	<checkbox id="cb_enableDebug" preference="enableDebug" label="&enable_debugging_logging;" onclick="alert(ihg_Globals.strings.read_disclaimer);"/>
+	<checkbox id="cb_enableConLog" preference="enableConLog" label="&enable_console_logging;" onclick="alert('&read_disclaimer;');"/>
+	<checkbox id="cb_enableDebug" preference="enableDebug" label="&enable_debugging_logging;" onclick="alert('&read_disclaimer;');"/>
 	<button id="but_clear" label="&clear_log;" oncommand="ihg_Functions.clearLog();"/>
 	<button id="but_copy" label="&copy_log_to_local_folder;" oncommand="ihg_Functions.copyLog();"/>
 
