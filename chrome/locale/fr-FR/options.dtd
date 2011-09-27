@@ -53,8 +53,8 @@
 <!ENTITY  disclaimer_line1 "Activation / Désactivation des options suivantes nécessitera un redémarrage de Firefox, afin de prendre effet.">
 <!ENTITY  disclaimer_line2 "Il vous est permis seulement de mettre activée temporairement pour vous connecter à un événement spécifique et puis le désactivé immédiatement">
 <!ENTITY  disclaimer_line3 "Le mode activée va ralentir l'exécution de firefox, va prendre beaucoup de mémoire et surtout prendre de l'espace dans le disque dur.">
-<!ENTITY  read_disclaimer "Assurez-vous d'avoir lu et compris l'avertissement.">
-<!ENTITY  enable_console_logging "Activer la console de journalisation">
-<!ENTITY  enable_debugging_logging "Activer le débogage de journalisation">
+<!ENTITY  read_disclaimer "Assurez-vous d\u0027avoir lu et compris l\u0027avertissement.">
+<!ENTITY  enable_console_logging "Activer le journal de la console d'erreurs">
+<!ENTITY  enable_debugging_logging "Activer le journal des événements notifiés par ImageHost Grabber">
 <!ENTITY  clear_log "Effacer le journal">
 <!ENTITY  copy_log_to_local_folder "Copie du journal dans un dossier local">
