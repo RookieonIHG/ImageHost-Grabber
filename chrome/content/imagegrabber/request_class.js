@@ -75,8 +75,7 @@ ihg_Functions.requestObj = function requestObj() {
 
 	this.progListener = new Object();
 
-	this.xmlhttp = new XMLHttpRequest();
-	this.xmlhttp.parent = this;
+	this.xmlhttp = null;
 	}
 
 
@@ -117,12 +116,11 @@ ihg_Functions.requestObj.prototype = {
 			this.callwrapper.cancel();
 			}
 		catch(e) { }
-		this.xmlhttp.abort();
-
+		if (this.xmlhttp) this.xmlhttp.abort();
 
 		var toDieOrNot = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.killmenow");
 		if (toDieOrNot) {
-			ihg_Functions.LOG("In function requestObj.retry, received the call to die!\n");
+			ihg_Functions.LOG("In function requestObj.abort, received the call to die!\n");
 			return; }
 
 		this.queueHandler();
@@ -156,11 +154,11 @@ ihg_Functions.requestObj.prototype = {
 		this.aborted = false;
 
 		ihg_Functions.LOG("In function req_retry, fixing to execute xmlhttp.abort\n");		
-		this.xmlhttp.abort();
+		if (this.xmlhttp) this.xmlhttp.abort();
 
 		this.retryNum--;
 
-		var retry_dick = "(" + String(ihg_Globals.maxRetries - this.retryNum + 1) + " " + ihg_Globals.strings.of + " " + String(ihg_Globals.maxRetries) + ")";
+		var retry_dick = "(" + String(ihg_Globals.maxRetries - this.retryNum) + " " + ihg_Globals.strings.of + " " + String(ihg_Globals.maxRetries) + ")";
 		ihg_Functions.updateDownloadProgress(null, this.uniqID, this.reqURL, null, ihg_Globals.strings.restarting_http + retry_dick);
 
 		this.retried = true;
@@ -172,7 +170,6 @@ ihg_Functions.requestObj.prototype = {
 	unlock : function req_unlock() {
 		ihg_Functions.LOG("Entering function requestObj.unlock\n");
 
-		ihg_Functions.updateDownloadProgress(null, this.uniqID, null, null, ihg_Globals.strings.finished);
 		ihg_Functions.clearFromWin(this.uniqID);
 		this.inprogress = false;
 
@@ -210,15 +207,20 @@ ihg_Functions.requestObj.prototype = {
 			return;
 			}
 
-		this.finished = false;
-		this.aborted = false;
-
-		ihg_Functions.LOG(retryURL + " has encountered an error.  Retrying.\n");
-		var retry_dick = "(" + String(ihg_Globals.maxRetries - req.retryNum + 1) + " " + ihg_Globals.strings.of + " " + String(ihg_Globals.maxRetries) + ")";
-		ihg_Functions.updateDownloadProgress(null, req.uniqID, null, null, ihg_Globals.strings.error_in_request + " " + retry_dick);
+		req.finished = false;
+		req.aborted = false;
 
 		req.retryNum--;
 
+		ihg_Functions.LOG(retryURL + " has encountered an error.  Retrying.\n");
+		var retry_dick = "(" + String(ihg_Globals.maxRetries - req.retryNum) + " " + ihg_Globals.strings.of + " " + String(ihg_Globals.maxRetries) + ")";
+		ihg_Functions.updateDownloadProgress(null, req.uniqID, null, null, ihg_Globals.strings.error_in_request + " " + retry_dick);
+
+		// Using the old XMLHttpRequest again does not seem to work properly, so we have to create a new one
+		req.xmlhttp = new XMLHttpRequest();
+		req.xmlhttp.parent = req;
+
+		req.retried = true;
 		req.init();
 
 		ihg_Functions.LOG("Exiting function requestObj.errHandler\n");
@@ -311,11 +313,11 @@ ihg_Functions.requestObj.prototype = {
 			ihg_Globals.maxRetries = ihg_Globals.prefManager.getIntPref("extensions.imagegrabber.numretries");
 			this.retryNum = ihg_Globals.maxRetries;
 		}
-		
-		var req_timeout = ihg_Globals.reqTimeout;  // timeout is in milliseconds
 
-		this.callwrapper = new ihg_Functions.CCallWrapper(this, req_timeout, 'retry', this.uniqID);
-		ihg_Functions.CCallWrapper.asyncExecute(this.callwrapper);
+		if (!this.xmlhttp) {
+			this.xmlhttp = new XMLHttpRequest();
+			this.xmlhttp.parent = this;
+		}	
 
 		this.xmlhttp.open("GET", this.reqURL, true);
 		if (this.referer) this.xmlhttp.setRequestHeader("Referer", this.referer);
@@ -323,6 +325,11 @@ ihg_Functions.requestObj.prototype = {
 		this.xmlhttp.onload = this.hostFunc;
 		this.xmlhttp.onerror = this.errHandler;
 		this.xmlhttp.send(null);
+
+		var req_timeout = ihg_Globals.reqTimeout;  // timeout is in milliseconds
+
+		this.callwrapper = new ihg_Functions.CCallWrapper(this, req_timeout, 'retry', this.uniqID);
+		ihg_Functions.CCallWrapper.asyncExecute(this.callwrapper);
 
 		ihg_Functions.LOG("Exiting function requestObj.init with uniqID of:" + this.uniqID + "\n");
 		},

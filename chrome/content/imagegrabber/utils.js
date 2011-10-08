@@ -164,25 +164,24 @@ ihg_Functions.generateFName = function generateFName(reqObj, URLFile) {
 
 	// Check to make sure the URLFile is a valid link
 	try {
-		var pic_uri = ihg_Globals.ioService.newURI(URLFile,null,null);
+		var pic_uri = ihg_Globals.ioService.newURI(URLFile, null, null);
 		var pic_url = pic_uri.QueryInterface(Components.interfaces.nsIURL);
 		}
 	catch(e) {
 		ihg_Functions.LOG("In " + myself + ", an invalid URL was given: " + URLFile + "\n");
 		return null;
-		}
-	
- 	// Check to make sure URLFile contains a file
-	if(!pic_url.fileName) {
-		ihg_Functions.LOG("In " + myself + ", no file found in URL: " + URLFile + "\n");
-		return null;
-		}
+		}	
 
 	// if a desired filename is given, use it
-	if(desiredFName) var displayName = desiredFName;
-
-	// otherwise, use the filename from above
+	if (desiredFName) var displayName = desiredFName;
+	// otherwise, use the filename from URLFile
 	else {
+		// Check to make sure URLFile contains a file
+		if (!pic_url.fileName) {
+			ihg_Functions.LOG("In " + myself + ", no file found in URL: " + URLFile + "\n");
+			return null;
+			}
+
 		// If the picture URL is actually a script with some extra stuff at
 		// the end (that stuff should uniquely identify the image, hopefully)
 		// then we'll use the extra stuff as identifying data for the filename.
@@ -191,8 +190,7 @@ ihg_Functions.generateFName = function generateFName(reqObj, URLFile) {
 		else if (pic_url.query) var displayName = pic_url.fileName + pic_url.query;
 		else if (pic_url.ref) var displayName = pic_url.fileName + pic_url.ref;
 		else var displayName = pic_url.fileName;
-
-  		}
+		}
 
 	if (displayName) {
 		if (!displayName.match(/(?:jpg|jpeg|swf|bmp|gif|png|flv|ico)$/i))

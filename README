@@ -35,3 +35,30 @@ The installation procedure is fairly simple, but still needs some explaining.  T
 4) Open the file in Firefox.  This is pretty straight forward but probably needs a little explanation.  Open Firefox, go to the File menu and click "Open file".  Browse to the location where you created the "xpi" file.
 
 This should pretty much be all you need to do.  If you have any trouble packaging the source, shoot me an email: cybormatt@gmail.com  Please check out the forum to see the latest news and features: http://forum.imagehost-grabber.com/
+
+--------
+* Lazy way to download the source code and create an xpi file using the latest version of the "master" branch *
+Use the following script if you are using Linux:
+
+#!/bin/bash
+USER="cybormatt"
+REPO="ImageHost-Grabber"
+TARGET_URL_1="https://github.com/"
+TARGET_URL_2="/zipball/master"
+FILENAME="latest_ihg"
+
+wget $TARGET_URL_1$USER/$REPO$TARGET_URL_2 -O $FILENAME.zip
+unzip -d $FILENAME $FILENAME.zip
+
+if [ -d $FILENAME/$USER-$REPO-* ];
+then
+	rm -f $FILENAME.xpi
+	cd $FILENAME/$USER-$REPO-*
+	zip -r ../../$FILENAME.xpi *
+	cd ../../
+else
+	echo "There was a problem creating the xpi file."
+fi
+
+rm -f $FILENAME.zip
+rm -rf $FILENAME/

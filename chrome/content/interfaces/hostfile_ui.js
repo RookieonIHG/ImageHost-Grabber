@@ -139,32 +139,62 @@ function sortHosts() {
 	}
 
 function initWindow() {
-	var tb_searchPattern = document.getElementById("tb_searchPattern");
-	tb_searchPattern.addEventListener("keydown", handleKeyDown, false);
+	//var tb_searchPattern = document.getElementById("tb_searchPattern");
+	//tb_searchPattern.addEventListener("keydown", handleKeyDown, false);
 	//document.onkeydown = handleKeyDown;
-	
+
 	//window.addEventListener("resize", resizeResponseTextBox, false);
 	//resizeResponseTextBox();
+
 	loadHostFile();
+	document.getElementById("theList").setAttribute("label", ihg_Globals.strings.select_host);
+
+	var searchType = document.getElementById("searchType");
+	searchType.removeAllItems();
+
+	[['ID','"\\"ID: ...\\""'],
+	 ['RegExp','"\\"...\\""'],
+	 ['Replace','"\\"REPLACE: \'" + uPat + "\', \'...\'\\""'],
+//	 ['Redirect','"\\"REDIRECT: \'" + uPat + "\', \'...\'\\""'],
+	 ['Link2Img','"function(pageData, pageUrl) {" + maxThreads_LineCode + "\\n\\tvar retVal = new Object();" + \
+					"\\n\\t\\n\\tretVal.imgUrl = pageUrl;\\n\\tretVal.status = \\"OK\\";\\n\\t\\n\\treturn retVal;\\n\\t}"'],
+	 ['function','"function(pageData, pageUrl) {" + maxThreads_LineCode + "\\n\\tvar retVal = new Object();" + \
+					"\\n\\t\\n\\t\\/\\/ Insert your code hereunder to build the target URL\\n\\t\\/\\/ Acceptable values for retVal.status are: \\"OK\\", \\"ABORT\\", \\"RETRY\\" or \\"REQUEUE\\"" + \
+					"\\n\\t\\n\\tvar iUrl = ...;\\n\\t\\n\\tif (!iUrl) {\\n\\t\\tretVal.imgUrl = null;\\n\\t\\tretVal.status = \\"ABORT\\";" + \
+					"\\n\\t\\t}\\n\\telse {\\n\\t\\tretVal.imgUrl = iUrl;\\n\\t\\tretVal.status = \\"OK\\";\\n\\t\\t}\\n\\t\\n\\treturn retVal;\\n\\t}"']]
+	 .forEach(function(sType) {
+		var newElem = searchType.appendItem(sType[0]);
+		var thecommand = "var maxthreads = document.getElementById(\"tb_hostMaxThreads\").value; \
+							var uPat = document.getElementById(\"tb_urlPattern\").value; \
+							var maxThreads_LineCode = (maxthreads == 0 ? '' : '\\n\\tif (ihg_Globals.appName == \"ImageHost Grabber\") ihg_Globals.maxThreads = ' + maxthreads + ';\\n\\t'); \
+							if (!uPat) uPat = '...'; \
+							document.getElementById(\"tb_searchPattern\").value = " + sType[1] + ";";
+		newElem.setAttribute("oncommand", thecommand);
+		});
+
+	document.getElementById("searchType").setAttribute("label", "Select...");
 	}
 
 function handleKeyDown(event) {
 	// Keycode for Tab
 	if (event.keyCode == 9) {
-		var pp = document.getElementById("tb_searchPattern");
+		var pp = event.target;
 		var val = pp.value;
 		var selIdx = pp.selectionStart;
-		pp.value = val.slice(0,selIdx) + "\t" + val.slice(selIdx);
-		pp.selectionStart = selIdx + 1;
-		pp.selectionEnd = selIdx + 1;
+		if (!(event.shiftKey || event.ctrlKey)) {
+			pp.value = val.slice(0,selIdx) + "\t" + val.slice(selIdx);
+			pp.selectionStart = selIdx + 1;
+			pp.selectionEnd = selIdx + 1;
+			}
 		event.preventDefault();
 		event.stopPropagation();
 		return false;
-	}
+		}
 	// Keycode for Return
 	if (event.keyCode == 13) {
-		var pp = document.getElementById("tb_searchPattern");
-		var val = pp.value;
+		var pp = event.target;
+		// var val = pp.value;
+		var val = pp.value.slice(0, pp.selectionStart) + pp.value.slice(pp.selectionEnd);
 		var selIdx = pp.selectionStart;
 		var lines = val.split("\n");
 		var indices = new Array();
@@ -172,28 +202,32 @@ function handleKeyDown(event) {
 		for (var i = 1; i < lines.length; i++) {
 			indices[i] = {};
 			indices[i].start = indices[i-1].end + 1;
-			indices[i].end = lines[i].length + indices[i].start + 1;
-		}
+			indices[i].end = indices[i].start + lines[i].length;
+			}
 		
 		for (var i = 0; i < indices.length; i++) {
 			if (indices[i].start <= selIdx && indices[i].end >= selIdx) {
 				var spacing = lines[i].match(/^(\s+)?/)[0];
 				//alert(lines[i] + "; \"" + spacing + "\"");
-				pp.value = val.slice(0, selIdx) + "\n" + spacing + val.slice(selIdx);
-				pp.selectionStart = selIdx + spacing.length + 1;
-				pp.selectionEnd = selIdx + spacing.length + 1;
+				if (indices[i].start == selIdx)
+					spacing = spacing + "\n"
+				else
+					spacing = "\n" + spacing;
+				pp.value = val.slice(0, selIdx) + spacing + val.slice(selIdx);
+				pp.selectionStart = selIdx + spacing.length;
+				pp.selectionEnd = selIdx + spacing.length;
 				break;
+				}
 			}
-		}
 
 		event.preventDefault();
 		event.stopPropagation();
 		
 		return false;
-	}
+		}
 	
 	return event.keyCode;
-}
+	}
 
 function handleKeyUp(event) {
 	return event.keyCode;
@@ -244,6 +278,8 @@ function fillTBs(idx) {
 	var sp_tbout = document.getElementById("tb_searchPattern");
 	if(!sPat.match(/function/)) sp_tbout.value = sPat.replace("\\\\", "\\", "g");
 	else sp_tbout.value = sPat;
+
+	document.getElementById("searchType").setAttribute("label", "Select...");
 	}
 
 function updateHostFile() {
@@ -471,4 +507,5 @@ function resetTextBoxes() {
 	document.getElementById("tb_hostMaxThreads").value = "0";
 	document.getElementById("tb_urlPattern").value = "";
 	document.getElementById("tb_searchPattern").value = "";
+	document.getElementById("searchType").setAttribute("label", "Select...");
 	}

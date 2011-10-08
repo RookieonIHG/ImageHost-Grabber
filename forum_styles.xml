@@ -202,6 +202,13 @@
 </forum>
 
 <forum id="vBulletin mod2">
+<urlpattern>http:\/\/.+\/showthread\.php[\?\/]\d+-.+(?:\/page\d+)?</urlpattern>
+<searchpattern><![CDATA[function(threadURL) {
+	return threadURL.match(/(http:\/\/.+\/showthread\.php[\?\/]\d+-.+?)(?:$|\/page\d+)/)[1] + "/page" + threadsucker_Globals.linkIndex;
+}]]></searchpattern>
+</forum>
+
+<forum id="vBulletin mod3">
 <urlpattern>http:\/\/.+\/t\d+-(?:p\d+-)?.+\.html</urlpattern>
 <searchpattern><![CDATA[function(threadURL) {
 	var matched = threadURL.match(/(http:\/\/.+\/t\d+-)(?:p\d+-)?(.+\.html)/);
@@ -209,17 +216,10 @@
 }]]></searchpattern>
 </forum>
 
-<forum id="vBulletin mod3">
+<forum id="vBulletin mod4">
 <urlpattern>http:\/\/.+\/\d+-.+?\/(?:\d+\/)?</urlpattern>
 <searchpattern><![CDATA[function(threadURL) {
 	return threadURL.match(/http:\/\/.+\/\d+-.+?\//) + threadsucker_Globals.linkIndex + "/";
-}]]></searchpattern>
-</forum>
-
-<forum id="vBulletin mod4">
-<urlpattern>http:\/\/.+\/showthread\.php\?\d+-.+(?:\/page\d+)?</urlpattern>
-<searchpattern><![CDATA[function(threadURL) {
-	return threadURL.match(/(http:\/\/.+\/showthread\.php\?\d+-.+?)(?:$|\/page\d+)/)[1] + "/page" + threadsucker_Globals.linkIndex;
 }]]></searchpattern>
 </forum>
 

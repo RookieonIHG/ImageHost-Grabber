@@ -43,11 +43,9 @@ ihg_Functions.ihg_ProgressListener = function ihg_ProgressListener() {
 	this.aFile = new Object();
 
 	this.fileGood = "";
-
 	this.fileContents = "";
 
 	this.bis = Components.classes["@mozilla.org/binaryinputstream;1"].createInstance(Components.interfaces.nsIBinaryInputStream);
-
 
 	this.resumable = true;
 
@@ -70,22 +68,21 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 
 			// For jpegs, the first two bytes are the start of image (SOI) marker.
 			// the SOI marker is FFD8
-			if( shitty.match(/^\xFF\xD8/) ) this.fileGood = "yes";
+			if (shitty.search(/^\xFF\xD8/) >= 0) this.fileGood = "yes";
 			// For pngs, the first four bytes are 8950 4E47
-			else if( shitty.match(/^\x89\x50\x4E\x47/) ) this.fileGood = "yes";
+			else if (shitty.search(/^\x89\x50\x4E\x47/) >= 0) this.fileGood = "yes";
 			// For bmps, the first two bytes are 424D
-			else if ( shitty.match(/^\x42\x4D/) ) this.fileGood = "yes";
+			else if (shitty.search(/^\x42\x4D/) >= 0) this.fileGood = "yes";
 			// For gifs, the first six bytes are 4749 4638 3761 or 4749 4638 3961
 			// Who in their right mind would be downloading gifs?
-			else if ( shitty.match(/^GIF87a/) || shitty.match(/^GIF89a/) ) this.fileGood = "yes";
+			else if (shitty.search(/^\x47\x49\x46\x38(?:\x37|\x39)\x61/) >= 0) this.fileGood = "yes";
 			// For flvs, the first three bytes are 464C56 (FLV)
-			else if ( shitty.match(/^\x46\x4C\x56/) ) this.fileGood = "yes";
+			else if (shitty.search(/^\x46\x4C\x56/) >= 0) this.fileGood = "yes";
 			// For icon files, the first four bytes are 0000 0100
 			// Bah humbugs!  Fuck icon files!
-			else if ( shitty.match(/^\x00\x00\x01\x00/) ) this.fileGood = "yes";
+			else if (shitty.search(/^\x00\x00\x01\x00/) >= 0) this.fileGood = "yes";
 			// For swf's, the first three bytes are 435753 (CWS) of 465753 (FWS)
-			else if ( shitty.match(/^\x43\x57\x53/) ) this.fileGood = "yes";
-			else if ( shitty.match(/^\x46\x57\x53/) ) this.fileGood = "yes";
+			else if (shitty.search(/^(?:\x43|\x46)\x57\x53/) >= 0) this.fileGood = "yes";
 			
 			else this.fileGood = "no";
 		}
@@ -95,7 +92,7 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 	},
 
 	// nsIInterfaceRequestor
-getInterface: function (aIID) {
+	getInterface : function (aIID) {
 		try {
 			return this.QueryInterface(aIID);
 		}
@@ -252,14 +249,16 @@ getInterface: function (aIID) {
 				}
 			}
 
-			// ihg_Functions.clearFromWin(this.reqObj.uniqID);
-
 			this.reqObj.finished = true;
-			// this.reqObj.inprogress = false;
+
 			var download_timeout = ihg_Globals.downloadTimeout;
-			this.reqObj.callwrapper = new ihg_Functions.CCallWrapper(this.reqObj, download_timeout, 'unlock', "locking of " + this.reqObj.uniqID);
-			ihg_Functions.CCallWrapper.asyncExecute(this.reqObj.callwrapper);
-			this.reqObj.queueHandler();
+			if (download_timeout <= 0 || this.reqObj.maxThreads == 0) {
+				this.reqObj.unlock();
+			} else {
+				this.reqObj.callwrapper = new ihg_Functions.CCallWrapper(this.reqObj, download_timeout, 'unlock', "locking of " + this.reqObj.uniqID);
+				ihg_Functions.CCallWrapper.asyncExecute(this.reqObj.callwrapper);
+				this.reqObj.queueHandler();
+			}
 		}
 
 		if(aStatus != 0) {

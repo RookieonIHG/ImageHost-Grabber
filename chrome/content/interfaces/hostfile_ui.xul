@@ -45,8 +45,16 @@ onload="initWindow();">
 </grid>
 
 <vbox flex="1">
-	<label control="tb_searchPattern" value="&search_pattern;"/>
-	<textbox multiline="true" flex="1" rows="12" id="tb_searchPattern"/>
+	<hbox align="center">
+		<label control="tb_searchPattern" value="&search_pattern;"/>
+		<spacer flex="1"/>
+		<menulist id="searchType">
+			<menupopup>
+				<menuitem label="Select..."/>
+			</menupopup>
+		</menulist>
+	</hbox>
+	<textbox id="tb_searchPattern" multiline="true" flex="1" rows="12" onkeydown="handleKeyDown(event);" style="padding: 0px 0px 0px 3px"/>
 </vbox>
 
 <separator/>
