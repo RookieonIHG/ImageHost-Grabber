@@ -151,6 +151,15 @@
 }]]></searchpattern>
 </forum>
 
+<forum id="motherless">
+<urlpattern>http:\/\/motherless\.com\/G.+</urlpattern>
+<searchpattern><![CDATA[function(threadURL) {
+	var tmp = threadURL.replace(/\?page=\d+/, "?page=" + threadsucker_Globals.linkIndex);
+	if (!tmp.match(/\?page=\d+/)) tmp = tmp + "?page=" + threadsucker_Globals.linkIndex;
+	return tmp;
+}]]></searchpattern>
+</forum>
+
 <forum id="pornbb">
 <urlpattern>http:\/\/.*pornbb\.org\/.+-t\d+(?:-\d+)?\.html</urlpattern>
 <searchpattern><![CDATA[function(threadURL) {
