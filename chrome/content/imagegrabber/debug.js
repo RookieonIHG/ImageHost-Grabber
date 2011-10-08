@@ -224,10 +224,22 @@ ihg_Functions.getConMsgs = function getConMsgs() {
 	for(var i=0; i < msgObj.length; i++) ihg_Functions.CON_LOG(msgObj[i].message + "\n");
 	}
 
-
+/////////////////////  Unregister console listener  ////////////////////
+ihg_Functions.unregisterConsoleListener = function unregisterConsoleListener() {
+	var consoleService = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
+	consoleService.unregisterListener(ihg_Globals.consoleListener);
+	}
 
 ///////////////  Listener for the error console  /////////////////////
 
 ihg_Globals.consoleListener = {
-	observe : function(msgObj) { ihg_Functions.CON_LOG(msgObj.message + "\n"); }
+	observe : function(msgObj) { ihg_Functions.CON_LOG(msgObj.message + "\n"); },
+
+	QueryInterface: function (iid) {
+		if (!iid.equals(Components.interfaces.nsIConsoleListener) &&
+	            !iid.equals(Components.interfaces.nsISupports)) {
+			throw Components.results.NS_ERROR_NO_INTERFACE;
+		}
+	        return this;
 	}
+}

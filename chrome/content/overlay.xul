@@ -32,6 +32,7 @@
 	ihg_Functions.getConMsgs();
 
 	window.addEventListener("load", setIGPlace, false);
+	if (ihg_Globals.conLogOut) window.addEventListener("unload", ihg_Functions.unregisterConsoleListener, false);
 
 	function setIGPlace() {
 		var prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);

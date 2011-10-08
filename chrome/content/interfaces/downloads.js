@@ -100,11 +100,16 @@ function loadSession() {
 	
 	ihg_Functions.initVars(true); // true to suppress directory selection dialog
 	
-	var new_array = req_objs.concat(tReqs);
-	for (var i=0; i < new_array.length; i++) new_array[new_array[i].uniqID] = new_array[i];
-	delete req_objs;
-	req_objs = new_array;
-	setUpLinkedList();
+	if (!this.req_objs) {
+		this.req_objs = tReqs;
+	} 
+	else {
+		var new_array = this.req_objs.concat(tReqs);
+		for (var i = 0; i < new_array.length; i++) new_array[new_array[i].uniqID] = new_array[i];
+		delete this.req_objs;
+		this.req_objs = new_array;
+		setUpLinkedList();
+	}
 	
 	for (var i = 0; i < tReqs.length; i++) {
 		var m = tReqs[i].curLinkNum + 1;
