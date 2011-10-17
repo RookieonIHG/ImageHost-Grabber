@@ -236,6 +236,36 @@
 }]]></searchpattern>
 </forum>
 
+<forum id="hentai-foundry user">
+<urlpattern>http:\/\/www\.hentai-foundry\.com\/user(?:_|-).+\.php</urlpattern>
+<searchpattern><![CDATA[function(threadURL) {
+	var tmp = threadURL.replace(/page-\d+/, "page-" + threadsucker_Globals.linkIndex);
+	if (!tmp.match(/\.page-\d+\.php/)) { 
+		tmp = threadURL.replace(/\/user-/, "/user_pictures-");
+		tmp = tmp.replace(/\.php/, "") + ".page-" + threadsucker_Globals.linkIndex + ".php";
+		}
+	return tmp;
+}]]></searchpattern>
+</forum>
+
+<forum id="hentai-foundry cat">
+<urlpattern>http:\/\/www\.hentai-foundry\.com\/cat-.+\.php</urlpattern>
+<searchpattern><![CDATA[function(threadURL) {
+	var tmp = threadURL.replace(/page-\d+/, "page-" + threadsucker_Globals.linkIndex);
+	if (!tmp.match(/page-\d+/)) tmp = threadURL.replace(/\.php/, "") + "_page-" + threadsucker_Globals.linkIndex + ".php";
+	return tmp;
+}]]></searchpattern>
+</forum>
+
+<forum id="hentai-foundry search">
+<urlpattern>http:\/\/www\.hentai-foundry\.com\/\/?search\.php\?.+</urlpattern>
+<searchpattern><![CDATA[function(threadURL) {
+	var tmp = threadURL.replace(/pageID=\d+/, "pageID=" + threadsucker_Globals.linkIndex);
+	if (!tmp.match(/pageID=\d+/)) tmp = threadURL + "&pageID=" + threadsucker_Globals.linkIndex;
+	return tmp;
+}]]></searchpattern>
+</forum>
+
 <forum id="UBB.threads classic">
 <urlpattern>http:\/\/.+\/ubbthreads\.php\/topics\/\d+</urlpattern>
 <searchpattern><![CDATA[function(threadURL) {
