@@ -658,7 +658,7 @@ ihg_Functions.initVars = function initVars(skipDirDialog) {
 		ihg_Functions.LOG("In " + myself + ", ihg_Globals.firstPage is equal to: " + ihg_Globals.firstPage + "\n");
 		ihg_Globals.lastPage=ihg_Globals.firstPage;
 		}
-		
+
 	// skipDirDialog is true when restoring a cached session, so we disable the auto update feature
 	if (ihg_Globals.hostfAutoUpdate && !skipDirDialog) ihg_Functions.autoUpdate();
 
@@ -667,58 +667,12 @@ ihg_Functions.initVars = function initVars(skipDirDialog) {
 	}
 
 ihg_Functions.read_locale_strings = function read_locale_strings() {
-	ihg_Globals.strings.running = ihg_Globals.strbundle.getString("running");
-	ihg_Globals.strings.page = ihg_Globals.strbundle.getString("page");
-	ihg_Globals.strings.of = ihg_Globals.strbundle.getString("of");
-	ihg_Globals.strings.waiting = ihg_Globals.strbundle.getString("waiting");
-	ihg_Globals.strings.setDownloadDir = ihg_Globals.strbundle.getString("setDownloadDir");
-	ihg_Globals.strings.firstPage = ihg_Globals.strbundle.getString("firstPage");
-	ihg_Globals.strings.lastPage = ihg_Globals.strbundle.getString("lastPage");
-	ihg_Globals.strings.the_first_page = ihg_Globals.strbundle.getString("the_first_page");
-	ihg_Globals.strings.greather_than_last = ihg_Globals.strbundle.getString("greather_than_last");
-	ihg_Globals.strings.debug_log_cleared = ihg_Globals.strbundle.getString("debug_log_cleared");
-	ihg_Globals.strings.pick_a_folder = ihg_Globals.strbundle.getString("pick_a_folder");
-	ihg_Globals.strings.failed_to_copy = ihg_Globals.strbundle.getString("failed_to_copy");
-	ihg_Globals.strings.log_file_copied = ihg_Globals.strbundle.getString("log_file_copied");
-	ihg_Globals.strings.cant_find_image = ihg_Globals.strbundle.getString("cant_find_image");
-	ihg_Globals.strings.cant_find_new_host = ihg_Globals.strbundle.getString("cant_find_new_host");
-	ihg_Globals.strings.file_already_exists = ihg_Globals.strbundle.getString("file_already_exists");
-	ihg_Globals.strings.starting_download = ihg_Globals.strbundle.getString("starting_download");
-	ihg_Globals.strings.download_did_not_complete = ihg_Globals.strbundle.getString("download_did_not_complete");
-	ihg_Globals.strings.error_from_server = ihg_Globals.strbundle.getString("error_from_server");
-	ihg_Globals.strings.file_not_good = ihg_Globals.strbundle.getString("file_not_good");
-	ihg_Globals.strings.downloading = ihg_Globals.strbundle.getString("downloading");
-	ihg_Globals.strings.request_aborted = ihg_Globals.strbundle.getString("request_aborted");
-	ihg_Globals.strings.request_failed = ihg_Globals.strbundle.getString("request_failed");
-	ihg_Globals.strings.restarting_http = ihg_Globals.strbundle.getString("restarting_http");
-	ihg_Globals.strings.error_in_request = ihg_Globals.strbundle.getString("error_in_request");
-	ihg_Globals.strings.all_done = ihg_Globals.strbundle.getString("all_done");
-	ihg_Globals.strings.starting_http = ihg_Globals.strbundle.getString("starting_http");
-	ihg_Globals.strings.getting_link_information = ihg_Globals.strbundle.getString("getting_link_information");
-	ihg_Globals.strings.dont_know_how = ihg_Globals.strbundle.getString("dont_know_how");
-	ihg_Globals.strings.bailing = ihg_Globals.strbundle.getString("bailing");
-	ihg_Globals.strings.pick_download_folder = ihg_Globals.strbundle.getString("pick_download_folder");
-	ihg_Globals.strings.could_not_get_filename = ihg_Globals.strbundle.getString("could_not_get_filename");
-	ihg_Globals.strings.failed_to_initialize = ihg_Globals.strbundle.getString("failed_to_initialize");
-	ihg_Globals.strings.stopping_the_program = ihg_Globals.strbundle.getString("stopping_the_program");
-	ihg_Globals.strings.reviving_the_program = ihg_Globals.strbundle.getString("reviving_the_program");
-	ihg_Globals.strings.no_file_to_open_yet = ihg_Globals.strbundle.getString("no_file_to_open_yet");
-	ihg_Globals.strings.enter_host_file_server = ihg_Globals.strbundle.getString("enter_host_file_server");
-	ihg_Globals.strings.new_host_file_server = ihg_Globals.strbundle.getString("new_host_file_server");
-	ihg_Globals.strings.pick_host_file = ihg_Globals.strbundle.getString("pick_host_file");
-	ihg_Globals.strings.overwrite_mode = ihg_Globals.strbundle.getString("overwrite_mode");
-	ihg_Globals.strings.select_host = ihg_Globals.strbundle.getString("select_host");
-	// ihg_Globals.strings.read_disclaimer = ihg_Globals.strbundle.getString("read_disclaimer");
-	ihg_Globals.strings.closing = ihg_Globals.strbundle.getString("closing");
-	ihg_Globals.strings.finished = ihg_Globals.strbundle.getString("finished");
-	ihg_Globals.strings.updated_hostf_found = ihg_Globals.strbundle.getString("updated_hostf_found");
-	ihg_Globals.strings.update_local_hostf = ihg_Globals.strbundle.getString("update_local_hostf");
-	ihg_Globals.strings.need_to_right_click_on_link = ihg_Globals.strbundle.getString("need_to_right_click_on_link");
-	ihg_Globals.strings.could_not_initialize = ihg_Globals.strbundle.getString("could_not_initialize");
-	ihg_Globals.strings.target_directory_no_longer_exists = ihg_Globals.strbundle.getString("target_directory_no_longer_exists");
-	ihg_Globals.strings.pick_folder_to_copy_session = ihg_Globals.strbundle.getString("pick_folder_to_copy_session");
-	ihg_Globals.strings.failed_to_copy_session = ihg_Globals.strbundle.getString("failed_to_copy_session");
-	ihg_Globals.strings.session_file_sucessfully_copied = ihg_Globals.strbundle.getString("session_file_sucessfully_copied");
+	var enumerator = ihg_Globals.strbundle.strings;
+	while (enumerator.hasMoreElements()) {
+		var property = enumerator.getNext().QueryInterface(Components.interfaces.nsIPropertyElement);
+		if (property.value.search(/%(\d+\$)?S/) >= 0) continue;	// This is most probably a formatted string...
+		ihg_Globals.strings[property.key] = property.value;
+		}
 }
 
 
@@ -726,7 +680,7 @@ ihg_Functions.showFilterDialog = function showFilterDialog(objLinks) {
 	var params = { inn:{links:objLinks, firstPage:ihg_Globals.firstPage, lastPage:ihg_Globals.lastPage}, out:null };
 	window.openDialog("chrome://imagegrabber/content/interfaces/filter.xul", 
 			"ig-filter_win", "chrome, dialog, modal, resizable=yes", params);
-    return params.out;
+	return params.out;
 } 
 
 ihg_Functions.showPreferencesDialog = function showPreferencesDialog() {
