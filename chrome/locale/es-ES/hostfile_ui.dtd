@@ -1,6 +1,7 @@
 <!ENTITY  host_file_editor "Editor del archivo de servidores">
 
 <!ENTITY  select_host "Escoja un servidor...">
+<!ENTITY  select_func "Select...">
 
 <!ENTITY  host_label "Etiqueta">
 <!ENTITY  host_max_threads "Peticiones simultáneas">

@@ -147,7 +147,7 @@ function initWindow() {
 	//resizeResponseTextBox();
 
 	loadHostFile();
-	document.getElementById("theList").setAttribute("label", ihg_Globals.strings.select_host);
+	// document.getElementById("theList").setAttribute("label", ihg_Globals.strings.select_host);
 
 	var searchType = document.getElementById("searchType");
 	searchType.removeAllItems();
@@ -172,7 +172,8 @@ function initWindow() {
 		newElem.setAttribute("oncommand", thecommand);
 		});
 
-	document.getElementById("searchType").setAttribute("label", "Select...");
+	// document.getElementById("searchType").setAttribute("label", "Select...");
+	resetTextBoxes();
 	}
 
 function handleKeyDown(event) {
@@ -279,7 +280,8 @@ function fillTBs(idx) {
 	if(!sPat.match(/function/)) sp_tbout.value = sPat.replace("\\\\", "\\", "g");
 	else sp_tbout.value = sPat;
 
-	document.getElementById("searchType").setAttribute("label", "Select...");
+	// document.getElementById("searchType").setAttribute("label", "Select...");
+	with (document.getElementById("searchType")) setAttribute("label", getAttribute("_label"));
 	}
 
 function updateHostFile() {
@@ -502,10 +504,12 @@ function resetHostFileLoc() {
 
 
 function resetTextBoxes() {
-	document.getElementById("theList").setAttribute("label", ihg_Globals.strings.select_host);
+	// document.getElementById("theList").setAttribute("label", ihg_Globals.strings.select_host);
+	with (document.getElementById("theList")) setAttribute("label", getAttribute("_label"));
 	document.getElementById("tb_hostLabel").value = "";
 	document.getElementById("tb_hostMaxThreads").value = "0";
 	document.getElementById("tb_urlPattern").value = "";
 	document.getElementById("tb_searchPattern").value = "";
-	document.getElementById("searchType").setAttribute("label", "Select...");
+	// document.getElementById("searchType").setAttribute("label", "Select...");
+	with (document.getElementById("searchType")) setAttribute("label", getAttribute("_label"));
 	}

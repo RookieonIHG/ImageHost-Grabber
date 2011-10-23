@@ -2,7 +2,7 @@
 <!DOCTYPE window SYSTEM "chrome://imagegrabber/locale/hostfile_ui.dtd">
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <window id="hostFileUI" title="&host_file_editor;" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
-onload="initWindow();">
+	onload="initWindow();">
 
 <stringbundleset id="stringbundleset">
     <stringbundle id="imagegrabber-strings" src="chrome://imagegrabber/locale/imagegrabber.properties" />
@@ -16,7 +16,7 @@ onload="initWindow();">
 ]]></script>
 
 <hbox>
-	<menulist flex="1" id="theList">
+	<menulist id="theList" _label="&select_host;" flex="1">
 		<menupopup>
 			<menuitem label="&select_host;"/>
 		</menupopup>
@@ -32,9 +32,9 @@ onload="initWindow();">
 		<row align="center">
 			<label control="tb_hostLabel" value="&host_label;"/>
 			<hbox align="center">
-				<textbox flex="1" id="tb_hostLabel"/>
+				<textbox id="tb_hostLabel" flex="1"/>
 				<label control="tb_hostMaxThreads" value="&host_max_threads;" tooltiptext="&host_max_threads.tooltiptext;"/>
-				<textbox type="number" min="0" max="15" size="2" id="tb_hostMaxThreads"/>
+				<textbox id="tb_hostMaxThreads" type="number" min="0" max="15" size="2"/>
 			</hbox>
 		</row>
 		<row align="center">
@@ -48,9 +48,9 @@ onload="initWindow();">
 	<hbox align="center">
 		<label control="tb_searchPattern" value="&search_pattern;"/>
 		<spacer flex="1"/>
-		<menulist id="searchType">
+		<menulist id="searchType" _label="&select_func;">
 			<menupopup>
-				<menuitem label="Select..."/>
+				<menuitem label="&select_func;"/>
 			</menupopup>
 		</menulist>
 	</hbox>
