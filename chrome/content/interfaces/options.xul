@@ -1,7 +1,12 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://imagegrabber/content/interfaces/options.css" type="text/css"?>
-<!DOCTYPE window SYSTEM "chrome://imagegrabber/locale/options.dtd">
+<!DOCTYPE window [
+	<!ENTITY % optionsDTD SYSTEM "chrome://imagegrabber/locale/options.dtd">
+	%optionsDTD;
+	<!ENTITY % optionsLIM SYSTEM "chrome://imagegrabber/content/interfaces/options.lim">
+	%optionsLIM;
+]>
 
 
 <prefwindow title="&imagegrabber_options;" id="imagegrabberPreferences" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
@@ -203,17 +208,17 @@ function toggleEnableState() {
 		<rows>
 			<row align="center">
 				<label control="scale_maxThreads">&max_simultaneous_http_requests;</label>
-				<scale id="scale_maxThreads" min="1" max="10" preference-editable="true" movetoclick="true"/>
+				<scale id="scale_maxThreads" min="&maxThreads_LowLimit;" max="&maxThreads_HighLimit;" preference-editable="true" movetoclick="true"/>
 				<textbox type="number" size="2" hidespinbuttons="true" class="plain" style="color:black" disabled="true" preference="maxThreads"/>
 			</row>
 			<row align="center">
 				<label control="scale_numRetries">&max_number_of_retries_for_each_link;</label>
-				<scale id="scale_numRetries" min="1" max="99" preference-editable="true" movetoclick="true"/>
+				<scale id="scale_numRetries" min="&numRetries_LowLimit;" max="&numRetries_HighLimit;" preference-editable="true" movetoclick="true"/>
 				<textbox type="number" size="2" hidespinbuttons="true" class="plain" style="color:black" disabled="true" preference="numRetries"/>
 			</row>
 			<row align="center">
 				<label control="scale_reqTimeout">&request_timeout_before_retry;</label>
-				<scale id="scale_reqTimeout" min="15" max="90" preference-editable="true" increment="5"/>
+				<scale id="scale_reqTimeout" min="&reqTimeout_LowLimit;" max="&reqTimeout_HighLimit;" preference-editable="true" increment="5"/>
 				<textbox type="number" size="2" hidespinbuttons="true" class="plain" style="color:black" disabled="true" preference="reqTimeout"/>
 			</row>
 			<separator/>

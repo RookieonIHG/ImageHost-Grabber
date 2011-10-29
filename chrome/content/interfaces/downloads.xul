@@ -1,11 +1,16 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<!DOCTYPE window SYSTEM "chrome://imagegrabber/locale/downloads.dtd">
+<!DOCTYPE window [
+	<!ENTITY % downloadsDTD SYSTEM "chrome://imagegrabber/locale/downloads.dtd">
+	%downloadsDTD;
+	<!ENTITY % optionsLIM SYSTEM "chrome://imagegrabber/content/interfaces/options.lim">
+	%optionsLIM;
+]>
 
 <window title="&imagehost_grabber_download_progress;" id="ig_dl_win"  
-width="640" height="480" persist="sizemode height width screenX screenY"
-xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-onunload="onUnLoad();">
+	width="640" height="480" persist="sizemode height width screenX screenY"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	onunload="onUnLoad();">
 
 <stringbundleset id="stringbundleset">
     <stringbundle id="imagegrabber-strings" src="chrome://imagegrabber/locale/imagegrabber.properties" />
@@ -94,9 +99,9 @@ onunload="onUnLoad();">
 		
 		<hbox align="center">
 			<label value="&max_requests;" control="maxSimRequests" tooltiptext="&max_requests.tooltiptext;"/>
-			<textbox id="maxSimRequests" type="number" min="1" max="10" size="2" preference="pref_maxthreads"/>
+			<textbox id="maxSimRequests" type="number" min="&maxThreads_LowLimit;" max="&maxThreads_HighLimit;" size="2" preference="pref_maxthreads"/>
 			<label value="&max_retries;" control="maxRetries" tooltiptext="&max_retries.tooltiptext;"/>
-			<textbox id="maxRetries" type="number" min="1" max="99" size="2" preference="pref_numretries"/>
+			<textbox id="maxRetries" type="number" min="&numRetries_LowLimit;" max="&numRetries_HighLimit;" size="2" preference="pref_numretries"/>
 		</hbox>
 	</prefpane>
 </hbox>

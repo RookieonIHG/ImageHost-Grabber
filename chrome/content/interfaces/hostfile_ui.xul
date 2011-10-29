@@ -1,11 +1,17 @@
 <?xml version="1.0"?>
-<!DOCTYPE window SYSTEM "chrome://imagegrabber/locale/hostfile_ui.dtd">
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!DOCTYPE window [
+	<!ENTITY % hostfile_uiDTD SYSTEM "chrome://imagegrabber/locale/hostfile_ui.dtd">
+	%hostfile_uiDTD;
+	<!ENTITY % optionsLIM SYSTEM "chrome://imagegrabber/content/interfaces/options.lim">
+	%optionsLIM;
+]>
+
 <window id="hostFileUI" title="&host_file_editor;" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" 
 	onload="initWindow();">
 
 <stringbundleset id="stringbundleset">
-    <stringbundle id="imagegrabber-strings" src="chrome://imagegrabber/locale/imagegrabber.properties" />
+	<stringbundle id="imagegrabber-strings" src="chrome://imagegrabber/locale/imagegrabber.properties" />
 </stringbundleset>
 
 <script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/globals.js" />
@@ -34,7 +40,7 @@
 			<hbox align="center">
 				<textbox id="tb_hostLabel" flex="1"/>
 				<label control="tb_hostMaxThreads" value="&host_max_threads;" tooltiptext="&host_max_threads.tooltiptext;"/>
-				<textbox id="tb_hostMaxThreads" type="number" min="0" max="15" size="2"/>
+				<textbox id="tb_hostMaxThreads" type="number" min="0" max="&maxThreads_HighLimit;" size="2"/>
 			</hbox>
 		</row>
 		<row align="center">
