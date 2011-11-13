@@ -20,7 +20,7 @@
 
 <!ENTITY  show_the_download_directory_box "Kaydedilecek Yeri Sor(Bu Seçenek Isaretsizse Son Indirme Klasörü Kullanilir)">
 <!ENTITY  show_the_image_grabber_menu_in_the_tools_menu "Araçlar Menüsünde Image Grabber Menüsünü Göster(Bu Seçenek Isaretsizse Ana Menüde Konumlanir)">
-<!ENTITY  alert_restart "alert: this requires a restart of Firefox">
+<!ENTITY  alert_restart "alert: this requires a restart of &brandShortName;">
 <!ENTITY  remove_duplicate_links "Ayni linkleri sil">
 <!ENTITY  even_across_multiple_pages "Farkli sayfalardan bile olsa">
 <!ENTITY  close_download_window "Bütün indirmeler bittikten sonra indirme penceresini kapat">
@@ -50,9 +50,9 @@
 <!ENTITY  host_timeout_between_downloads "Host timeout between downloads">
 
 <!ENTITY  disclaimer "UYARI:">
-<!ENTITY  disclaimer_line1 "Asagidaki Seçenekleri Degistirmek Firefox’un Yeniden Baslatilmasini Gerektirir.">
+<!ENTITY  disclaimer_line1 "Asagidaki Seçenekleri Degistirmek &brandShortName;’un Yeniden Baslatilmasini Gerektirir.">
 <!ENTITY  disclaimer_line2 "Sadece Özel Durumlarda Geçici Olarak Aktif Hale Getirilmeli,Sonra Hemen Devre Disi Birakilmalidir.">
-<!ENTITY  disclaimer_line3 "Aktif Halde Birakilmalari Firefox’un Yavas Çalismasina,Fazla Bellek ve Hard Disk Kullanimina Sebep Olur.">
+<!ENTITY  disclaimer_line3 "Aktif Halde Birakilmalari &brandShortName;’un Yavas Çalismasina,Fazla Bellek ve Hard Disk Kullanimina Sebep Olur.">
 <!ENTITY  read_disclaimer "Uyariyi Okuyup Anladigindan Emin Ol.">
 <!ENTITY  enable_console_logging "Günlük Konsolunu Aktiflestir">
 <!ENTITY  enable_debugging_logging "Hata Ayiklama Günlügünü Aktiflestir">

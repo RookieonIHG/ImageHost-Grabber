@@ -20,7 +20,7 @@
 
 <!ENTITY  show_the_download_directory_box "Downloadordner-Auswahlfenster anzeigen (wenn nicht markiert, wird der zuletzt genutzte Ordner verwendet)">
 <!ENTITY  show_the_image_grabber_menu_in_the_tools_menu "ImageGrabber-Menü im Extras-Menü anzeigen (wenn nicht markiert, erscheint das Menü in der Hauptmenüleiste)">
-<!ENTITY  alert_restart "alert: this requires a restart of Firefox">
+<!ENTITY  alert_restart "alert: this requires a restart of &brandShortName;">
 <!ENTITY  remove_duplicate_links "Identische Links (auch seitenübergreifend) entfernen">
 <!ENTITY  even_across_multiple_pages "über mehrere Seiten">
 <!ENTITY  close_download_window "Download-Fenster schließen, wenn alle Downloads abgeschlossen sind">
@@ -50,9 +50,9 @@
 <!ENTITY  host_timeout_between_downloads "Host timeout between downloads">
 
 <!ENTITY  disclaimer "Achtung:">
-<!ENTITY  disclaimer_line1 "Beim Aktivieren/Deaktivieren der folgenden Optionen muss Firefox neu gestartet werden, damit die Änderungen in Kraft treten.">
+<!ENTITY  disclaimer_line1 "Beim Aktivieren/Deaktivieren der folgenden Optionen muss &brandShortName; neu gestartet werden, damit die Änderungen in Kraft treten.">
 <!ENTITY  disclaimer_line2 "Die Optionen sollten nur vorübergehend zum Protokollieren eines bestimmten Ereignisses aktiviert und anschließend gleich wieder deaktiviert werden.">
-<!ENTITY  disclaimer_line3 "Bleiben die Optionen aktiviert, wird Firefox ausgebremst und verbraucht viel Speicher und Festplattenspeicherplatz.">
+<!ENTITY  disclaimer_line3 "Bleiben die Optionen aktiviert, wird &brandShortName; ausgebremst und verbraucht viel Speicher und Festplattenspeicherplatz.">
 <!ENTITY  read_disclaimer "Lesen Sie unbedingt den Haftungsausschluss!">
 <!ENTITY  enable_console_logging "Konsolenprotokollierung aktivieren">
 <!ENTITY  enable_debugging_logging "Fehlersucheprotokollierung aktivieren">
