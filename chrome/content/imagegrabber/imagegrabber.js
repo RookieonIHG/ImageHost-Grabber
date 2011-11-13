@@ -550,6 +550,7 @@ ihg_Functions.getIGPrefs = function getIGPrefs() {
 	ihg_Globals.reqTimeout *= 1000;
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.reqTimeout is equal to: " + ihg_Globals.reqTimeout + "\n");
 
+	// The "download timeout" is the time to wait between each download from the same host.
 	ihg_Globals.downloadTimeout = ihg_Globals.prefManager.getIntPref("extensions.imagegrabber.downloadtimeout");
 	ihg_Globals.downloadTimeout *= 1000;
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.downloadTimeout is equal to: " + ihg_Globals.downloadTimeout + "\n");

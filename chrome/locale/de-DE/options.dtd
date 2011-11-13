@@ -47,7 +47,8 @@
 <!ENTITY  max_simultaneous_http_requests "Maximalzahl gleichzeitiger HTTP-Anfragen">
 <!ENTITY  max_number_of_retries_for_each_link "Maximale Wiederholungen pro Link">
 <!ENTITY  request_timeout_before_retry "Anfragewartezeit vor Neuversuch (in Sekunden)">
-<!ENTITY  host_timeout_between_downloads "Host timeout between downloads">
+<!ENTITY  host_timeout_between_downloads "Time to wait between each download from same host">
+<!ENTITY  host_timeout_note "Note: Only applies to hosts with a max. thread limit">
 
 <!ENTITY  disclaimer "Achtung:">
 <!ENTITY  disclaimer_line1 "Beim Aktivieren/Deaktivieren der folgenden Optionen muss Firefox neu gestartet werden, damit die Änderungen in Kraft treten.">

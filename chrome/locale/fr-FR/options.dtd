@@ -47,7 +47,8 @@
 <!ENTITY  max_simultaneous_http_requests "Max. simultanée de la requête HTTP">
 <!ENTITY  max_number_of_retries_for_each_link "Max. nombre de tentatives pour chaque lien">
 <!ENTITY  request_timeout_before_retry "Délai d'attente de la requête avant réessayer (en secondes)">
-<!ENTITY  host_timeout_between_downloads "Host timeout between downloads">
+<!ENTITY  host_timeout_between_downloads "Time to wait between each download from same host">
+<!ENTITY  host_timeout_note "Note: Only applies to hosts with a max. thread limit">
 
 <!ENTITY  disclaimer "Avertissement:">
 <!ENTITY  disclaimer_line1 "Activation / Désactivation des options suivantes nécessitera un redémarrage de Firefox, afin de prendre effet.">

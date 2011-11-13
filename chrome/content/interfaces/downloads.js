@@ -280,7 +280,23 @@ function clear_form() {
 			var someShit = daNode.nodeName;
 		}
 		catch(e) { continue; }
-
+		
+		
+		// Be cautious in performing this sort of conditional testing, as this assumes
+		// that req_objs[i].inprogress (and others) will always exist, and will always
+		// have a value of true or false.  If, for some reason, req_objs[i].inprogress
+		// (or others) got deleted, then "if (req_objs[i].inprogress)" will return
+		// false.  Likewise, if req_objs[i].inprogress is declared, but contains no
+		// value, then "if (req_objs[i].inprogress)" will return true.  This may give
+		// unintended results.
+		//
+		// This sort of conditional testing should be used to check the existence of
+		// a variable, and not for checking the value of the variable.  Although
+		// JavaScript is smart enough to check the values of the variables, it is
+		// considered sloppy, since it can produce un-intended results.
+		//
+		// To ensure the intended conditions are tested, use:
+		//		if (req_objs[i].inprogress == false && req_objs[i].finished == true && req_objs[i].aborted == false) {
 		if (!req_objs[i].inprogress && req_objs[i].finished && !req_objs[i].aborted) {
 			daNode.parentNode.removeChild(daNode);
 			removeList.push(req_objs[i].uniqID);
