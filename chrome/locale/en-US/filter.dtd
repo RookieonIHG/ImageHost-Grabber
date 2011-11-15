@@ -17,6 +17,7 @@
 <!ENTITY  host_id "Host ID">
 
 <!ENTITY  no_preview_available "No preview available.">
+<!ENTITY  preview "Preview:">
 <!ENTITY  select_all "Select all">
 <!ENTITY  clear_all "Clear all">
 <!ENTITY  invert_selection "Invert selection">

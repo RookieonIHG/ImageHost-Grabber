@@ -17,6 +17,7 @@
 <!ENTITY  host_id "Id. del servidor">
 
 <!ENTITY  no_preview_available "Vista previa no disponible.">
+<!ENTITY  preview "Vista previa:">
 <!ENTITY  select_all "Seleccionar todo">
 <!ENTITY  clear_all "Borrar todo">
 <!ENTITY  invert_selection "Invertir selección">

@@ -1,8 +1,8 @@
 <!ENTITY  imagegrabber_options "Options de ImageGrabber">
 
-<!ENTITY  file_saving_options "Enregistrement fichier">
+<!ENTITY  file_saving_options "Sauvegarde Fichiers">
 <!ENTITY  general "Général">
-<!ENTITY  embedded_images "Taille des images">
+<!ENTITY  embedded_images "Images Incrustées">
 <!ENTITY  host_file "Fichier hôte">
 <!ENTITY  host_options "Options de hôte">
 <!ENTITY  debugging "Débogage">
@@ -11,41 +11,41 @@
 <!ENTITY  rename_file "Renommer le fichier">
 <!ENTITY  skip_file "Ignorer le fichier">
 <!ENTITY  overwrite_file "Remplacer le fichier">
-<!ENTITY  autorename_imagevenue_and_fapomatic_files "Renommer automatiquement les fichiers imageavenue et fapomatic">
+<!ENTITY  autorename_imagevenue_and_fapomatic_files "Renommer automatiquement les fichiers imagevenue et fapomatic">
 <!ENTITY  create_a_subdirectory_with_document_title_inside_the_target_directory "Créer un sous-dossier avec le titre du document dans le dossier cible">
 <!ENTITY  prefix_directories_to_uniquely_and_chronologically_identify_them "Le Préfixe dossier les identifient de manière unique et par ordre chronologique">
 <!ENTITY  create_separate_directories_for_each_page_when_using_thread_sucker "Créer des dossiers distincts pour chaque page lors de l'utilisation du mode threadsucker">
-<!ENTITY  prefix_filenames_to_reflect_page_order "Préfixe des noms de fichiers afin de refléter l'ordre des pages">
-<!ENTITY  use_last_modified_header "Gardez la dernière mise à jour horodatage envoyés par le serveur pour les fichiers téléchargés">
+<!ENTITY  prefix_filenames_to_reflect_page_order "Préfixer le nom des fichiers afin de refléter l'ordre des pages">
+<!ENTITY  use_last_modified_header "Garder la dernière mise à jour horodatage envoyés par le serveur pour les fichiers téléchargés">
 
 <!ENTITY  show_the_download_directory_box "Afficher le dossier où sera mis le téléchargement (si rien n'est fait, il utilisera le dernier dossier utilisé)">
 <!ENTITY  show_the_image_grabber_menu_in_the_tools_menu "Afficher le menu Image Grabber dans le menu Outils. (si rien n'est fait, il le placera sur la barre du menu principale)">
 <!ENTITY  alert_restart "Alerte: cela nécessite un redémarrage de Firefox">
-<!ENTITY  remove_duplicate_links "Suppression des liens doubles">
+<!ENTITY  remove_duplicate_links "Suppression des liens doublons">
 <!ENTITY  even_across_multiple_pages "Le même sur plusieurs pages.">
-<!ENTITY  close_download_window "Fermer la fenêtre de téléchargement lorsque tous les téléchargements sont terminés">
-<!ENTITY  keep_download_window_contents "Gardez télécharger le contenu des fenêtres (même après fermeture)">
+<!ENTITY  close_download_window "Fermer la fenêtre de téléchargement lorsque tout ceux-ci sont terminés">
+<!ENTITY  keep_download_window_contents "Garder le contenu de la fenêtre de téléchargement (même après fermeture)">
 
-<!ENTITY  download_embedded_images "Téléchargement des images intégrées">
-<!ENTITY  enter_the_minimum_width_and_height_that_will_be_considered_for_downloading "Entrez la largeur et la hauteur minimale qui sera considéré pour le téléchargement">
+<!ENTITY  download_embedded_images "Téléchargement des images incrustées">
+<!ENTITY  enter_the_minimum_width_and_height_that_will_be_considered_for_downloading "Entrer la largeur et la hauteur minimale à considérer pour le téléchargement">
 <!ENTITY  image_width "Largeur:">
 <!ENTITY  image_height "Hauteur:">
-<!ENTITY  enter_the_minimum_file_size "Entrez la taille de fichier minimum qui seront considérés pour le téléchargement.">
+<!ENTITY  enter_the_minimum_file_size "Entrer la taille de fichier minimum à considérér pour le téléchargement.">
 <!ENTITY  setting_this_value_to_zero_disables_this_filter "(La définition de cette valeur à zéro désactive ce filtre)">
 <!ENTITY  file_size_filter "Taille du fichier:">
 <!ENTITY  kilobytes "KB">
-<!ENTITY  the_file_size_filter_is_the_only_one_used "REMARQUE: le filtre taille du fichier est la seule utilisée dans le mode threadsucker.">
+<!ENTITY  the_file_size_filter_is_the_only_one_used "REMARQUE: le filtre taille du fichier est le seul utilisé dans le mode threadsucker.">
 
 <!ENTITY  host_file_update "Mise à jour du fichier hôte:">
 <!ENTITY  enable_automatic_update "Activer mise à jour automatique">
 <!ENTITY  suppress_confirmation_dialog "Supprimer la fenêtre de confirmation">
 <!ENTITY  merge_behavior "Fusionner:">
-<!ENTITY  merge_host_file_ask "Demandez">
+<!ENTITY  merge_host_file_ask "Demander">
 <!ENTITY  merge_host_file_overwrite "Ecraser les hôtes actuels et ajouter de nouveaux hôtes">
-<!ENTITY  merge_host_file_add "Ajoutez seulement de nouveaux hôtes">
+<!ENTITY  merge_host_file_add "Ajouter seulement de nouveaux hôtes">
 
-<!ENTITY  max_simultaneous_http_requests "Max. simultanée de la requête HTTP">
-<!ENTITY  max_number_of_retries_for_each_link "Max. nombre de tentatives pour chaque lien">
+<!ENTITY  max_simultaneous_http_requests "Nombre Max. de requêtes HTTP simultanées">
+<!ENTITY  max_number_of_retries_for_each_link "Nombre Max. de tentatives pour chaque lien">
 <!ENTITY  request_timeout_before_retry "Délai d'attente de la requête avant réessayer (en secondes)">
 <!ENTITY  host_timeout_between_downloads "Time to wait between each download from same host">
 <!ENTITY  host_timeout_note "Note: Only applies to hosts with a max. thread limit">
@@ -54,7 +54,8 @@
 <!ENTITY  disclaimer_line1 "Activation / Désactivation des options suivantes nécessitera un redémarrage de Firefox, afin de prendre effet.">
 <!ENTITY  disclaimer_line2 "Il vous est permis seulement de mettre activée temporairement pour vous connecter à un événement spécifique et puis le désactivé immédiatement">
 <!ENTITY  disclaimer_line3 "Le mode activée va ralentir l'exécution de firefox, va prendre beaucoup de mémoire et surtout prendre de l'espace dans le disque dur.">
-<!ENTITY  enable_console_logging "Activer la console de journalisation">
-<!ENTITY  enable_debugging_logging "Activer le débogage de journalisation">
+<!ENTITY  read_disclaimer "Assurez-vous d\u0027avoir lu et compris l\u0027avertissement.">
+<!ENTITY  enable_console_logging "Activer le journal de la console d'erreurs">
+<!ENTITY  enable_debugging_logging "Activer le journal des événements notifiés par ImageHost Grabber">
 <!ENTITY  clear_log "Effacer le journal">
 <!ENTITY  copy_log_to_local_folder "Copie du journal dans un dossier local">

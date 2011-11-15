@@ -17,6 +17,7 @@
 <!ENTITY  host_id "ID de l'hôte">
 
 <!ENTITY  no_preview_available "Aucun aperçu disponible.">
+<!ENTITY  preview "Aperçu:">
 <!ENTITY  select_all "Sélectionnez tout">
 <!ENTITY  clear_all "Effacer tout">
 <!ENTITY  invert_selection "Inverser la sélection">

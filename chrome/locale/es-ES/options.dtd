@@ -54,6 +54,7 @@
 <!ENTITY  disclaimer_line1 "Habilitar/inhabilitar las siguientes opciones requiere reiniciar Firefox para que entren en funcionamiento.">
 <!ENTITY  disclaimer_line2 "Deberían ser habilitadas sólo temporalmente para registrar un evento específico e inhabilitadas de inmediato.">
 <!ENTITY  disclaimer_line3 "Mantenerlas habilitadas reduce la velocidad de Firefox, consume memoria adicional y disminuye el espacio disponible en disco.">
+<!ENTITY  read_disclaimer "Asegúrese de haber leído y entendido la advertencia.">
 <!ENTITY  enable_console_logging "Habilitar el registro de la consola">
 <!ENTITY  enable_debugging_logging "Habilitar el registro de depuración">
 <!ENTITY  clear_log "Borrar el registro">

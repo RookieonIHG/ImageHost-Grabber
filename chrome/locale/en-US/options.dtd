@@ -54,6 +54,7 @@
 <!ENTITY  disclaimer_line1 "Enabling/Disabling the following options will require a restart of firefox in order to take affect.">
 <!ENTITY  disclaimer_line2 "They should only be enabled temporarily to log a specific event, and then disabled right away.">
 <!ENTITY  disclaimer_line3 "Leaving them enabled will cause firefox to run slow, chew up memory, and eat up hard drive space.">
+<!ENTITY  read_disclaimer "Make sure have read and understood the disclaimer.">
 <!ENTITY  enable_console_logging "Enable Console Logging">
 <!ENTITY  enable_debugging_logging "Enable Debugging Logging">
 <!ENTITY  clear_log "Clear Log">

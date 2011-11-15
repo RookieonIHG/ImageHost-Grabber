@@ -54,6 +54,7 @@
 <!ENTITY  disclaimer_line1 "Asagidaki Seçenekleri Degistirmek Firefox’un Yeniden Baslatilmasini Gerektirir.">
 <!ENTITY  disclaimer_line2 "Sadece Özel Durumlarda Geçici Olarak Aktif Hale Getirilmeli,Sonra Hemen Devre Disi Birakilmalidir.">
 <!ENTITY  disclaimer_line3 "Aktif Halde Birakilmalari Firefox’un Yavas Çalismasina,Fazla Bellek ve Hard Disk Kullanimina Sebep Olur.">
+<!ENTITY  read_disclaimer "Uyariyi Okuyup Anladigindan Emin Ol.">
 <!ENTITY  enable_console_logging "Günlük Konsolunu Aktiflestir">
 <!ENTITY  enable_debugging_logging "Hata Ayiklama Günlügünü Aktiflestir">
 <!ENTITY  clear_log "Günlügü Temizle">

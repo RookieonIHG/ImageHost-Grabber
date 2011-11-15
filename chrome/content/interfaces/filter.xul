@@ -67,7 +67,10 @@
 
 <hbox height="160">
 	<vbox id="previewBox">
-		<label id="previewLabel" value="&no_preview_available;"/>
+		<deck id="previewLabel" selectedIndex="0">
+			<label value="&no_preview_available;"/>
+			<label value="&preview;"/>
+		</deck>
 		<hbox width="200">
 			<spacer flex="1"/>
 			<image id="thumbnail" src="" width="" height=""/>

@@ -363,20 +363,18 @@ function changeImage() {
 	var tree = doc.getElementById("igLinksTree");
 	if (tree.view.rowCount == 0) return;
 	
-	var strbundle = doc.getElementById("imagegrabber-strings");
-	
 	var current = tree.view.selection.currentIndex;
 	var thumb = doc.getElementById("thumbnail");
 	
 	var previewLabel = doc.getElementById("previewLabel");
 	if (!objLinks.thumbs[firstPage][current]) {
 		//There's no thumbnail to show...
-		previewLabel.value = strbundle.getString("no_preview_available");
+		previewLabel.selectedIndex = 0;
 		thumb.src = "";
 		return;
 	}
 	
-	previewLabel.value = strbundle.getString("preview");
+	previewLabel.selectedIndex = 1;
 	thumb.src = objLinks.thumbs[firstPage][current].src;
 	
 	var w = objLinks.thumbs[firstPage][current].width;
