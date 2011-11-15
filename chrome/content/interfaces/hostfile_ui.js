@@ -376,7 +376,13 @@ function addHost() {
 
 function deleteHost() {
 	var idx = document.getElementById("theList").value;
-	if (!idx || (idx == 0)) return;
+	
+	// It was reported that the first host could not be deleted in the
+	// host file editor.  Upon inspection, I can not see why we should
+	// prevent index 0 from being removed.
+	// -- cybormatt
+	//if (!idx || (idx == 0)) return;
+	if (!idx) return;
 
 	hostfile_Globals.hFile.firstChild.removeChild(hostfile_Globals.hosts[idx]);
 	hostfile_Globals.hostFileObj.writeHosts();

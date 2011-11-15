@@ -50,6 +50,8 @@ ihg_Globals.maxThreads = null;
 
 ihg_Globals.maxRetries = null;
 ihg_Globals.reqTimeout = null;
+
+// The "download timeout" is the time to wait between each download from the same host.
 ihg_Globals.downloadTimeout = null;
 
 ihg_Globals.baseDirSave = null;

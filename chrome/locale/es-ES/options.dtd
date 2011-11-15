@@ -47,7 +47,8 @@
 <!ENTITY  max_simultaneous_http_requests "Máximo de descargas simultáneas">
 <!ENTITY  max_number_of_retries_for_each_link "Máximo de reintentos por cada enlace">
 <!ENTITY  request_timeout_before_retry "Tiempo máximo antes de reintentar (en segundos)">
-<!ENTITY  host_timeout_between_downloads "Host timeout between downloads">
+<!ENTITY  host_timeout_between_downloads "Time to wait between each download from same host">
+<!ENTITY  host_timeout_note "Note: Only applies to hosts with a max. thread limit">
 
 <!ENTITY  disclaimer "ADVERTENCIA:">
 <!ENTITY  disclaimer_line1 "Habilitar/inhabilitar las siguientes opciones requiere reiniciar &brandShortName; para que entren en funcionamiento.">

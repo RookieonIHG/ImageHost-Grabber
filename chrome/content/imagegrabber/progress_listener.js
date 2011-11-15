@@ -81,7 +81,7 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 			// For icon files, the first four bytes are 0000 0100
 			// Bah humbugs!  Fuck icon files!
 			else if (shitty.search(/^\x00\x00\x01\x00/) >= 0) this.fileGood = "yes";
-			// For swf's, the first three bytes are 435753 (CWS) of 465753 (FWS)
+			// For swf's, the first three bytes are 435753 (CWS) or 465753 (FWS)
 			else if (shitty.search(/^(?:\x43|\x46)\x57\x53/) >= 0) this.fileGood = "yes";
 			
 			else this.fileGood = "no";
@@ -251,6 +251,8 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 
 			this.reqObj.finished = true;
 
+			// The "download timeout" is the time to wait between each download
+			// from the same host.
 			var download_timeout = ihg_Globals.downloadTimeout;
 			if (download_timeout <= 0 || this.reqObj.maxThreads == 0) {
 				this.reqObj.unlock();

@@ -225,7 +225,14 @@ function toggleEnableState() {
 			</row>
 			<separator/>
 			<row align="center">
-				<label control="list_downloadtimeout">&host_timeout_between_downloads;</label>
+					<rows>
+						<row>
+						<label control="list_downloadtimeout">&host_timeout_between_downloads;</label>
+						</row>
+						<row>
+						<label>&host_timeout_note;</label>
+						</row>
+					</rows>
 				<menulist id="list_downloadtimeout" preference="downloadTimeout">
 					<menupopup>
 						<menuitem label="Disabled" value="0"/>
