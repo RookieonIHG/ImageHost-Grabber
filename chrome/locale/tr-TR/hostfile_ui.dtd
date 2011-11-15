@@ -1,6 +1,7 @@
 <!ENTITY  host_file_editor "Sunucu Dosyasi Düzenleyici">
 
 <!ENTITY  select_host "Sunucu Seç…">
+<!ENTITY  select_func "Select...">
 
 <!ENTITY  host_label "Sunucu Etiketi">
 <!ENTITY  host_max_threads "Max. threads">

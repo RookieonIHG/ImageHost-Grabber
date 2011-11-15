@@ -1,6 +1,7 @@
 <!ENTITY  host_file_editor "Hostdateieditor">
 
 <!ENTITY  select_host "Host auswählen...">
+<!ENTITY  select_func "Select...">
 
 <!ENTITY  host_label "Hostbezeichnung">
 <!ENTITY  host_max_threads "Treads maximal">
