@@ -6,6 +6,8 @@
 	%optionsDTD;
 	<!ENTITY % optionsLIM SYSTEM "chrome://imagegrabber/content/interfaces/options.lim">
 	%optionsLIM;
+	<!ENTITY % brandDTD   SYSTEM "chrome://branding/locale/brand.dtd">
+	%brandDTD;
 ]>
 
 

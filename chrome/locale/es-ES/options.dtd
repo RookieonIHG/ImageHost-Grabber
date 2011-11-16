@@ -20,7 +20,7 @@
 
 <!ENTITY  show_the_download_directory_box "Mostrar el selector del directorio de descarga (de estar inhabilitado, se usa el último directorio utilizado)">
 <!ENTITY  show_the_image_grabber_menu_in_the_tools_menu "Mostrar ImageHost Grabber en el menú de herramientas (de estar inhabilitado, se coloca en la barra de menúes)">
-<!ENTITY  alert_restart "Alerta: esto requiere reiniciar Firefox">
+<!ENTITY  alert_restart "Alerta: esto requiere reiniciar &brandShortName;">
 <!ENTITY  remove_duplicate_links "Borrar los enlaces duplicados">
 <!ENTITY  even_across_multiple_pages "incluso procedentes de páginas distintas">
 <!ENTITY  close_download_window "Cerrar la ventana de descargas cuando éstas hayan finalizado">
@@ -51,9 +51,9 @@
 <!ENTITY  host_timeout_note "Note: Only applies to hosts with a max. thread limit">
 
 <!ENTITY  disclaimer "ADVERTENCIA:">
-<!ENTITY  disclaimer_line1 "Habilitar/inhabilitar las siguientes opciones requiere reiniciar Firefox para que entren en funcionamiento.">
+<!ENTITY  disclaimer_line1 "Habilitar/inhabilitar las siguientes opciones requiere reiniciar &brandShortName; para que entren en funcionamiento.">
 <!ENTITY  disclaimer_line2 "Deberían ser habilitadas sólo temporalmente para registrar un evento específico e inhabilitadas de inmediato.">
-<!ENTITY  disclaimer_line3 "Mantenerlas habilitadas reduce la velocidad de Firefox, consume memoria adicional y disminuye el espacio disponible en disco.">
+<!ENTITY  disclaimer_line3 "Mantenerlas habilitadas reduce la velocidad de &brandShortName;, consume memoria adicional y disminuye el espacio disponible en disco.">
 <!ENTITY  read_disclaimer "Asegúrese de haber leído y entendido la advertencia.">
 <!ENTITY  enable_console_logging "Habilitar el registro de la consola">
 <!ENTITY  enable_debugging_logging "Habilitar el registro de depuración">
