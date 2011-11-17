@@ -3386,24 +3386,34 @@
 <searchpattern><![CDATA[function(pageData, pageUrl) {
 	var retVal = new Object();
 	
+	/*
 	var iUrl = pageData.match(/href="http:\/\/app\.kapanlagi\.com\/galeri\/\?i=(.+?)"/);
-	if (!iUrl) {
+	if (!iUrl)
 		iUrl = pageData.match(/<iframe id="frame_selebriti" src="(http:\/\/www\.kapanlagi\.com\/u\/showimage\.php\?i=.+?)"/);
-		if (iUrl) {
-			var req = new XMLHttpRequest();
-			req.open("GET", iUrl[1], false);
-			req.send(null);
-		
-			iUrl = req.responseText.match(/href="http:\/\/www\.kapanlagi\.com\/u\/image_view\.php\?image=(.+?)"/);
-		}
-	}
-
+	if (!iUrl)
+		iUrl = pageData.match(/(http:\/\/foto\.kapanlagi\.com\/.+\/.+\.html$)/)
+	*/
+	var filePart = pageUrl.match(/\/(\w+)\.html$/);
+	if (filePart) filePart = filePart[1];
+	
+	var blah = new RegExp("img.+src=\\\"(http:\\/\\/klimg\\.com\\/kapanlagi\\.com\\/.+\\/p\\/" + filePart + ".{3,4})\\\"");
+	var iUrl = pageData.match(blah);
+	
 	if (!iUrl) {
 		retVal.imgUrl = null;
 		retVal.status = "ABORT";
 		}
 	else {
-		retVal.imgUrl = iUrl[1];
+		/*
+		var req = new XMLHttpRequest();
+		req.open("GET", iUrl[1], false);
+		req.send(null);
+			
+		iUrl = req.responseText.match(/href="http:\/\/www\.kapanlagi\.com\/u\/image_view\.php\?image=(.+?)"/);
+		*/
+		iUrl = iUrl[1].replace(/p\//, '');	
+		//retVal.imgUrl = iUrl[1];
+		retVal.imgUrl = iUrl;
 		retVal.status = "OK";
 		}
 
