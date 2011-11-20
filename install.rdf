@@ -13,7 +13,7 @@
                    em:creator="Cybormatt"
                    em:description="Downloads all the images hosted on many of the popular free image hosts."
                    em:homepageURL="http://imagehost-grabber.com/"
-                   em:iconURL="chrome://imagegrabber/content/imagegrabber.png"
+                   em:iconURL="chrome://imagegrabber/skin/images/imagegrabber.png"
                    em:optionsURL="chrome://imagegrabber/content/interfaces/options.xul"
                    em:aboutURL="chrome://imagegrabber/locale/help.html">
     <em:contributor>Web Surfer</em:contributor>
