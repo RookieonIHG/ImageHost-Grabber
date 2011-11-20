@@ -1,7 +1,7 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
 radio[pane] {
-	list-style-image: url("chrome://imagegrabber/content/interfaces/options.png");
+	list-style-image: url("chrome://imagegrabber/skin/images/options.png");
 }
 
 radio[pane="fileopts"] {
@@ -17,7 +17,7 @@ radio[pane="embeddedopts"] {
 }
 
 radio[pane="hostfopts"] {
-	list-style-image: url("chrome://imagegrabber/content/imagegrabber.png");
+	list-style-image: url("chrome://imagegrabber/skin/images/imagegrabber.png");
 }
 
 radio[pane="hostopts"] {

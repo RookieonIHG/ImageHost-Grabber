@@ -15,11 +15,11 @@ treechildren::-moz-tree-row(selected) {
 }
 treechildren::-moz-tree-checkbox {
 	/* unchecked checkbox treecells. This style MUST come before treechildren::-moz-tree-checkbox(checked) otherwise it won't take effect. */
-	list-style-image: url("chrome://imagegrabber/content/interfaces/cb_unchecked.gif");
+	list-style-image: url("chrome://imagegrabber/skin/images/cb_unchecked.gif");
 }
 treechildren::-moz-tree-checkbox(checked) {
 	/* checked checkbox treecells */
-	list-style-image: url("chrome://imagegrabber/content/interfaces/cb_checked.gif");
+	list-style-image: url("chrome://imagegrabber/skin/images/cb_checked.gif");
 }
 treechildren::-moz-tree-checkbox(disabled) {
 	/* disabled checkbox treecells */
