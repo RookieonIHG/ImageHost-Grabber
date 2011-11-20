@@ -108,7 +108,7 @@
 			<menuitem label="&get_selected_pics_page.label;" accesskey="&get_selected_pics_page.accesskey;" oncommand="ihg_Functions.hostGrabber(null, true);" key="ihg-getSelected_cmd"/>
 			<menuseparator/>
 			<menuitem class="suck_cur_thread_popup" label="&suck_the_current_thread.label;" accesskey="&suck_the_current_thread.accesskey;" oncommand="ihg_Functions.leechThread();"/>
-			<menuseparator class="suck_cur_thread_popup"/>
+			<menuseparator/>
 			<menuitem label="&host_file_editor.label;" accesskey="&host_file_editor.accesskey;" oncommand="openDialog('chrome://imagegrabber/content/interfaces/hostfile_ui.xul')"/>
 			<menuitem label="&show_dl_window.label;" accesskey="&show_dl_window.accesskey;" oncommand="ihg_Functions.showDLWin('dlwin_exit_state');" />
 			<menuseparator/>
@@ -126,7 +126,7 @@
 			<menuitem label="&get_selected_pics_page.label;" accesskey="&get_selected_pics_page.accesskey;" oncommand="ihg_Functions.hostGrabber(null, true);" key="ihg-getSelected_cmd"/>
 			<menuseparator/>
 			<menuitem class="suck_cur_thread_popup" label="&suck_the_current_thread.label;" accesskey="&suck_the_current_thread.accesskey;" oncommand="ihg_Functions.leechThread();"/>
-			<menuseparator class="suck_cur_thread_popup"/>
+			<menuseparator/>
 			<menuitem label="&host_file_editor.label;" accesskey="&host_file_editor.accesskey;" oncommand="openDialog('chrome://imagegrabber/content/interfaces/hostfile_ui.xul')"/>
 			<menuitem label="&show_dl_window.label;" accesskey="&show_dl_window.accesskey;" oncommand="ihg_Functions.showDLWin('dlwin_exit_state');" />
 			<menuseparator/>
@@ -144,7 +144,7 @@
 			<menuitem label="&get_selected_pics_page.label;" accesskey="&get_selected_pics_page.accesskey;" oncommand="ihg_Functions.hostGrabber(null, true);" key="ihg-getSelected_cmd"/>
 			<menuseparator/>
 			<menuitem class="suck_cur_thread_popup" label="&suck_the_current_thread.label;" accesskey="&suck_the_current_thread.accesskey;" oncommand="ihg_Functions.leechThread();"/>
-			<menuseparator class="suck_cur_thread_popup"/>
+			<menuseparator/>
 			<menuitem label="&host_file_editor.label;" accesskey="&host_file_editor.accesskey;" oncommand="openDialog('chrome://imagegrabber/content/interfaces/hostfile_ui.xul')"/>
 			<menuitem label="&show_dl_window.label;" accesskey="&show_dl_window.accesskey;" oncommand="ihg_Functions.showDLWin('dlwin_exit_state');" />
 			<menuseparator/>
@@ -162,7 +162,7 @@
 			<menuitem label="&get_selected_pics_page.label;" accesskey="&get_selected_pics_page.accesskey;" oncommand="ihg_Functions.hostGrabber(null, true);" key="ihg-getSelected_cmd"/>
 			<menuseparator/>
 			<menuitem class="suck_cur_thread_popup" label="&suck_the_current_thread.label;" accesskey="&suck_the_current_thread.accesskey;" oncommand="ihg_Functions.leechThread();"/>
-			<menuseparator class="suck_cur_thread_popup"/>
+			<menuseparator/>
 			<menuitem label="&host_file_editor.label;" accesskey="&host_file_editor.accesskey;" oncommand="openDialog('chrome://imagegrabber/content/interfaces/hostfile_ui.xul')"/>
 			<menuitem label="&show_dl_window.label;" accesskey="&show_dl_window.accesskey;" oncommand="ihg_Functions.showDLWin('dlwin_exit_state');" />
 			<menuseparator/>
