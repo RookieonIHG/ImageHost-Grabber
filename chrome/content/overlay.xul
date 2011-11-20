@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE overlay SYSTEM "chrome://imagegrabber/locale/overlay.dtd">
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://imagegrabber/skin/overlay.css" type="text/css"?>
 <overlay id="ImageGrabber-Overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 <stringbundleset id="stringbundleset">
@@ -99,7 +100,7 @@
 </popupset>
 
 <toolbarpalette id="BrowserToolbarPalette">
-	<toolbarbutton id="imagehostgrabber-toolbarbutton" label="ImageHost Grabber" image="chrome://imagegrabber/content/imagegrabber.png"
+	<toolbarbutton id="imagehostgrabber-toolbarbutton" label="ImageHost Grabber"
 		tooltip="ihg-toolbarbutton-tip" type="menu-button"
 		oncommand="ihg_toolbarButtonCommand(event);" onclick="ihg_toolbarButtonClick(event);"
 		class="toolbarbutton-1 chromeclass-toolbar-additional">
@@ -108,7 +109,7 @@
 			<menuitem label="&get_selected_pics_page.label;" accesskey="&get_selected_pics_page.accesskey;" oncommand="ihg_Functions.hostGrabber(null, true);" key="ihg-getSelected_cmd"/>
 			<menuseparator/>
 			<menuitem class="suck_cur_thread_popup" label="&suck_the_current_thread.label;" accesskey="&suck_the_current_thread.accesskey;" oncommand="ihg_Functions.leechThread();"/>
-			<menuseparator class="suck_cur_thread_popup"/>
+			<menuseparator/>
 			<menuitem label="&host_file_editor.label;" accesskey="&host_file_editor.accesskey;" oncommand="openDialog('chrome://imagegrabber/content/interfaces/hostfile_ui.xul')"/>
 			<menuitem label="&show_dl_window.label;" accesskey="&show_dl_window.accesskey;" oncommand="ihg_Functions.showDLWin('dlwin_exit_state');" />
 			<menuseparator/>
@@ -126,7 +127,7 @@
 			<menuitem label="&get_selected_pics_page.label;" accesskey="&get_selected_pics_page.accesskey;" oncommand="ihg_Functions.hostGrabber(null, true);" key="ihg-getSelected_cmd"/>
 			<menuseparator/>
 			<menuitem class="suck_cur_thread_popup" label="&suck_the_current_thread.label;" accesskey="&suck_the_current_thread.accesskey;" oncommand="ihg_Functions.leechThread();"/>
-			<menuseparator class="suck_cur_thread_popup"/>
+			<menuseparator/>
 			<menuitem label="&host_file_editor.label;" accesskey="&host_file_editor.accesskey;" oncommand="openDialog('chrome://imagegrabber/content/interfaces/hostfile_ui.xul')"/>
 			<menuitem label="&show_dl_window.label;" accesskey="&show_dl_window.accesskey;" oncommand="ihg_Functions.showDLWin('dlwin_exit_state');" />
 			<menuseparator/>
@@ -144,7 +145,7 @@
 			<menuitem label="&get_selected_pics_page.label;" accesskey="&get_selected_pics_page.accesskey;" oncommand="ihg_Functions.hostGrabber(null, true);" key="ihg-getSelected_cmd"/>
 			<menuseparator/>
 			<menuitem class="suck_cur_thread_popup" label="&suck_the_current_thread.label;" accesskey="&suck_the_current_thread.accesskey;" oncommand="ihg_Functions.leechThread();"/>
-			<menuseparator class="suck_cur_thread_popup"/>
+			<menuseparator/>
 			<menuitem label="&host_file_editor.label;" accesskey="&host_file_editor.accesskey;" oncommand="openDialog('chrome://imagegrabber/content/interfaces/hostfile_ui.xul')"/>
 			<menuitem label="&show_dl_window.label;" accesskey="&show_dl_window.accesskey;" oncommand="ihg_Functions.showDLWin('dlwin_exit_state');" />
 			<menuseparator/>
@@ -162,7 +163,7 @@
 			<menuitem label="&get_selected_pics_page.label;" accesskey="&get_selected_pics_page.accesskey;" oncommand="ihg_Functions.hostGrabber(null, true);" key="ihg-getSelected_cmd"/>
 			<menuseparator/>
 			<menuitem class="suck_cur_thread_popup" label="&suck_the_current_thread.label;" accesskey="&suck_the_current_thread.accesskey;" oncommand="ihg_Functions.leechThread();"/>
-			<menuseparator class="suck_cur_thread_popup"/>
+			<menuseparator/>
 			<menuitem label="&host_file_editor.label;" accesskey="&host_file_editor.accesskey;" oncommand="openDialog('chrome://imagegrabber/content/interfaces/hostfile_ui.xul')"/>
 			<menuitem label="&show_dl_window.label;" accesskey="&show_dl_window.accesskey;" oncommand="ihg_Functions.showDLWin('dlwin_exit_state');" />
 			<menuseparator/>

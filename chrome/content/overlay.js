@@ -15,7 +15,7 @@ function ihg_popupMenuInit() {
 	
 	var isForum = isThread(content.document.location.href);
 	
-	for each (var div in this.getElementsByClassName('suck_cur_thread_popup')) div.hidden = !isForum;
+	for each (var div in this.getElementsByClassName('suck_cur_thread_popup')) div.disabled = !isForum;
 }
 
 function ihg_contextMenuInit() {

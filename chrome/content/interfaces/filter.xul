@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE dialog SYSTEM "chrome://imagegrabber/locale/filter.dtd">
 <?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
-<?xml-stylesheet href="chrome://imagegrabber/content/interfaces/filter.css" type="text/css"?>
+<?xml-stylesheet href="chrome://imagegrabber/skin/filter.css" type="text/css"?>
 
 <dialog id="ig_filter_win" title="&select_the_images_you_want_to_download.title;"
 		width="720" height="540" persist="sizemode height width screenX screenY"

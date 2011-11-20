@@ -45,7 +45,7 @@
 	<key id="backsp_cmd" keycode="VK_BACK" oncommand="remove_child(true);"/>
 	<key id="selectAll_cmd" key="A" modifiers="accel" oncommand="doSelectAll();"/>
 	<key id="invertSelection_cmd" key="I" modifiers="accel" oncommand="doInvertSelection();"/>
-	<key id="viewDetails_cmd" key="V" oncommand="view_details();"/>
+	<key id="viewDetails_cmd" key="V" modifiers="accel" oncommand="view_details();"/>
 </keyset>
 
 <menupopup id="dl_menu">
