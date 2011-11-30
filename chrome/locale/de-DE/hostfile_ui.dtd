@@ -1,15 +1,17 @@
 <!ENTITY  host_file_editor "Hostdateieditor">
 
 <!ENTITY  select_host "Host auswählen...">
-<!ENTITY  select_func "Select...">
 
 <!ENTITY  host_label "Hostbezeichnung">
 <!ENTITY  host_max_threads "Treads maximal">
 <!ENTITY  host_max_threads.tooltiptext "Maximal gleichzeitige HTTP-Anfragen für diesen Host. 0 = Limit außer Kraft setzen.">
+<!ENTITY  timeout.tooltiptext "Timeout between downloads for this host.">
+<!ENTITY  timeout.disabled "Disabled">
 
 <!ENTITY  url_pattern "URL-Muster">
 
 <!ENTITY  search_pattern "Suchmuster">
+<!ENTITY  select_func "Select...">
 
 <!ENTITY  update_file "Datei aktualisieren">
 <!ENTITY  add_host "Host hinzufügen">

@@ -271,8 +271,18 @@ function fillTBs(idx) {
 
 	var mt_tbout = document.getElementById("tb_hostMaxThreads");
 	var maxThreads = hostfile_Globals.hosts[idx].getAttribute("maxThreads");
-	mt_tbout.value = maxThreads?maxThreads:"0";
-	
+	mt_tbout.value = maxThreads;
+
+	var timer_tbout = document.getElementById("hostTimeout");
+	timer_tbout.setAttribute("disabled",(mt_tbout.value == 0));
+
+	var mp_timeout = document.getElementById("timeout");
+	var timeout = hostfile_Globals.hosts[idx].getAttribute("Timeout");
+	mp_timeout.value = timeout || "0";
+
+	for (var i = mp_timeout.childNodes.length; i--;)
+		mp_timeout.childNodes[i].setAttribute("checked", (mp_timeout.childNodes[i].value == mp_timeout.value));
+
 	var up_tbout = document.getElementById("tb_urlPattern");
 	up_tbout.value = uPat;
 
@@ -290,12 +300,20 @@ function updateHostFile() {
 	if (!searchPattern.match(/function/)) searchPattern = searchPattern.replace(/\\(?!\")/g, "\\\\");
 	var label = document.getElementById("tb_hostLabel").value;
 	var maxThreads = document.getElementById("tb_hostMaxThreads").value;
+	var timeout = document.getElementById("timeout").value;
 	var menupopup = document.getElementById("theList");
 	var idx = menupopup.value;
 
 	hostfile_Globals.hosts[idx].setAttribute("id", label);
-	if (maxThreads == 0) hostfile_Globals.hosts[idx].removeAttribute("maxThreads");
-	else hostfile_Globals.hosts[idx].setAttribute("maxThreads", maxThreads);
+	if (maxThreads == 0) {
+		hostfile_Globals.hosts[idx].removeAttribute("maxThreads");
+		hostfile_Globals.hosts[idx].removeAttribute("Timeout");
+		}
+	else {
+		hostfile_Globals.hosts[idx].setAttribute("maxThreads", maxThreads);
+		if (timeout == 0) hostfile_Globals.hosts[idx].removeAttribute("Timeout");
+		else hostfile_Globals.hosts[idx].setAttribute("Timeout", timeout);
+		}
 
 	var uPatNode = hostfile_Globals.hosts[idx].getElementsByTagName("urlpattern")[0];
 	uPatNode.textContent = urlPattern;
@@ -514,6 +532,10 @@ function resetTextBoxes() {
 	with (document.getElementById("theList")) setAttribute("label", getAttribute("_label"));
 	document.getElementById("tb_hostLabel").value = "";
 	document.getElementById("tb_hostMaxThreads").value = "0";
+	document.getElementById("hostTimeout").setAttribute("disabled","true");
+	var mp_timeout = document.getElementById("timeout");
+	for (var i = mp_timeout.childNodes.length; i--;)
+		mp_timeout.childNodes[i].setAttribute("checked", "false");
 	document.getElementById("tb_urlPattern").value = "";
 	document.getElementById("tb_searchPattern").value = "";
 	// document.getElementById("searchType").setAttribute("label", "Select...");
