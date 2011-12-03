@@ -4,7 +4,8 @@
 
 <!ENTITY  host_label "Hostbezeichnung">
 <!ENTITY  host_max_threads "Treads maximal">
-<!ENTITY  host_max_threads.tooltiptext "Maximal gleichzeitige HTTP-Anfragen für diesen Host. 0 = Limit außer Kraft setzen.">
+<!ENTITY  host_max_threads.tooltiptext "Maximal gleichzeitige HTTP-Anfragen für diesen Host.">
+<!ENTITY  host_max_threads.hint "0 = Limit außer Kraft setzen.">
 <!ENTITY  timeout.tooltiptext "Timeout between downloads for this host.">
 <!ENTITY  timeout.disabled "Disabled">
 

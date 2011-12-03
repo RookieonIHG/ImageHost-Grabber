@@ -4,7 +4,8 @@
 
 <!ENTITY  host_label "Etiqueta">
 <!ENTITY  host_max_threads "Peticiones simultáneas">
-<!ENTITY  host_max_threads.tooltiptext "Número máximo de peticiones HTTP simultáneas para este servidor. Use cero para deshabilitar este límite.">
+<!ENTITY  host_max_threads.tooltiptext "Número máximo de peticiones HTTP simultáneas para este servidor.">
+<!ENTITY  host_max_threads.hint "Use cero para deshabilitar este límite.">
 <!ENTITY  timeout.tooltiptext "Timeout between downloads for this host.">
 <!ENTITY  timeout.disabled "Disabled">
 
