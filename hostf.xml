@@ -6241,6 +6241,12 @@
 <searchpattern>"REPLACE: 'Viewer\\.php\\?file=' , ''"</searchpattern>
 </host>
 
+<host id="upix.me">
+<urlpattern>^http:\/\/(?:www\.)?upix\.me\/files\/.+\/#.+</urlpattern>
+<searchpattern>"REPLACE: '\/#' , '/'"</searchpattern>
+</host>
+
+
 <host id="upload.ee">
 <urlpattern>^http:\/\/www\.upload\.ee\/image\/.+\..{3,4}</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
