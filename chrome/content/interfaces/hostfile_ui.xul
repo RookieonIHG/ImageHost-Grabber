@@ -21,6 +21,13 @@
 <script type="text/javascript"><![CDATA[
 ]]></script>
 
+<popupset>
+	<tooltip id="host_max_threads-tip">
+		<label value="&host_max_threads.tooltiptext;"/>
+		<label value="&host_max_threads.hint;" style="font-style: italic;" class="indent"/>
+	</tooltip>
+</popupset>
+
 <hbox>
 	<menulist id="theList" _label="&select_host;" flex="1">
 		<menupopup>
@@ -39,8 +46,27 @@
 			<label control="tb_hostLabel" value="&host_label;"/>
 			<hbox align="center">
 				<textbox id="tb_hostLabel" flex="1"/>
-				<label control="tb_hostMaxThreads" value="&host_max_threads;" tooltiptext="&host_max_threads.tooltiptext;"/>
-				<textbox id="tb_hostMaxThreads" type="number" min="0" max="&maxThreads_HighLimit;" size="2"/>
+				<label control="tb_hostMaxThreads" value="&host_max_threads;" tooltip="host_max_threads-tip"/>
+				<textbox id="tb_hostMaxThreads" type="number" min="0" max="&maxThreads_HighLimit;" size="2" onchange="getElementById('hostTimeout').setAttribute('disabled',(this.value == 0));"/>
+<!-- 			To evaluate the modification remove the attribute 'hidden' in the line here below -->
+				<toolbarbutton id="hostTimeout" type="menu" image="chrome://imagegrabber/skin/images/chronometer.png" disabled="true" hidden="true">
+					<menupopup id="timeout" tooltiptext="&timeout.tooltiptext;" oncommand="this.value = event.target.value;">
+						<menuitem label="&timeout.disabled;" type="radio" value="0" />
+						<menuitem label="1 sec."	type="radio" value="1" />
+						<menuitem label="2 sec."	type="radio" value="2" />
+						<menuitem label="3 sec."	type="radio" value="3" />
+						<menuitem label="4 sec."	type="radio" value="4" />
+						<menuitem label="5 sec."	type="radio" value="5" />
+						<menuitem label="6 sec."	type="radio" value="6" />
+						<menuitem label="8 sec."	type="radio" value="8" />
+						<menuitem label="10 sec."	type="radio" value="10"/>
+						<menuitem label="15 sec."	type="radio" value="15"/>
+						<menuitem label="20 sec."	type="radio" value="20"/>
+						<menuitem label="25 sec."	type="radio" value="25"/>
+						<menuitem label="30 sec."	type="radio" value="30"/>
+						<menuitem label="60 sec."	type="radio" value="60"/>
+					</menupopup>
+				</toolbarbutton>
 			</hbox>
 		</row>
 		<row align="center">
