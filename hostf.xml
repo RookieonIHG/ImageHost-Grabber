@@ -3166,6 +3166,11 @@
 <searchpattern>"ID: img_obj"</searchpattern>
 </host>
 
+<host id="imgbox">
+<urlpattern>^http:\/\/imgbox\.com\/(?!(login|register|tos|help|dmca)).+</urlpattern>
+<searchpattern>"ID: img"</searchpattern>
+</host>
+
 <host id="imgchili">
 <urlpattern>^http:\/\/imgchili\.com\/show\/</urlpattern>
 <searchpattern>"ID: show_image"</searchpattern>
@@ -6245,7 +6250,6 @@
 <urlpattern>^http:\/\/(?:www\.)?upix\.me\/files\/.+\/#.+</urlpattern>
 <searchpattern>"REPLACE: '\/#' , '/'"</searchpattern>
 </host>
-
 
 <host id="upload.ee">
 <urlpattern>^http:\/\/www\.upload\.ee\/image\/.+\..{3,4}</urlpattern>

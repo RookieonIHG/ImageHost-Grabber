@@ -173,6 +173,7 @@ ihg_Functions.getHostToUse = function getHostToUse(innerLink) {
 			return {
 				hostID : ihg_Globals.lastHost.hostID ,
 				maxThreads : ihg_Globals.lastHost.maxThreads ,
+				downloadTimeout : ihg_Globals.lastHost.downloadTimeout ,
 				hostFunc : ihg_Globals.lastHost.searchPattern
 				};
 		}
@@ -250,6 +251,9 @@ ihg_Functions.getHostToUse = function getHostToUse(innerLink) {
 			ihg_Globals.lastHost.hostID = ihg_Globals.hosts_list[i].getAttribute("id");
 			ihg_Globals.lastHost.maxThreads = ihg_Globals.hosts_list[i].getAttribute("maxThreads");
 			if (!ihg_Globals.lastHost.maxThreads) ihg_Globals.lastHost.maxThreads = 0;
+			ihg_Globals.lastHost.downloadTimeout = ihg_Globals.hosts_list[i].getAttribute("Timeout");
+			if (!ihg_Globals.lastHost.downloadTimeout) ihg_Globals.lastHost.downloadTimeout = 0;
+			else ihg_Globals.lastHost.downloadTimeout *= 1000;
 			ihg_Globals.lastHost.urlPattern = uPat;
 			ihg_Globals.lastHost.searchPattern = retval;
 
@@ -270,7 +274,7 @@ ihg_Functions.getHostToUse = function getHostToUse(innerLink) {
         ihg_Globals.unknownHosts_list.push(urlBase);
 		}
 	
-	if (retval) return { hostID : ihg_Globals.lastHost.hostID , maxThreads : ihg_Globals.lastHost.maxThreads , hostFunc : retval };
+	if (retval) return { hostID : ihg_Globals.lastHost.hostID , maxThreads : ihg_Globals.lastHost.maxThreads , downloadTimeout : ihg_Globals.lastHost.downloadTimeout , hostFunc : retval };
 	else return null;
 	}
 

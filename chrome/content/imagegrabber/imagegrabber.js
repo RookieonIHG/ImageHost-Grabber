@@ -65,7 +65,7 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 	ihg_Functions.LOG("In hostGrabber, docLinks is equal to: " + docLinks.toSource() + "\n");
 
 	if (ihg_Globals.lastHost.urlPattern) {
-		ihg_Globals.lastHost = { hostID : null, maxThreads : null, urlPattern : null, searchPattern : null };
+		ihg_Globals.lastHost = { hostID : null, maxThreads : null, downloadTimeout : null, urlPattern : null, searchPattern : null };
 		}
 
 	if (ihg_Globals.hosts_list) ihg_Globals.hosts_list = null;
@@ -320,6 +320,7 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 		objLinks.hostFunc[i] = new Array();
 		objLinks.hostID[i] = new Array();
 		objLinks.maxThreads[i] = new Array();
+		objLinks.downloadTimeout[i] = new Array();
 		
 		// Added to give a proper referring url for embedded images
 		objLinks.originatingPage[i] = new Array();
@@ -332,7 +333,7 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 			var tmpMatch = unescape(docLinks[i][j]).match(/https?:\/\/.+(https?:\/\/.+)/);
 			if(tmpMatch) docLinks[i][j] = tmpMatch[1];
 			
-			if (isEmbedded) var theHostToUse = { hostID : "Embedded Image" , maxThreads : 0, hostFunc : "Embedded Image" };
+			if (isEmbedded) var theHostToUse = { hostID : "Embedded Image" , maxThreads : 0, downloadTimeout : 0, hostFunc : "Embedded Image" };
 			else var theHostToUse = ihg_Functions.getHostToUse(docLinks[i][j]);
 			
 			if (theHostToUse) {
@@ -350,6 +351,7 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 				objLinks.links[i][t_count] = isEmbedded?isEmbedded[1]:docLinks[i][j];
 				objLinks.hostID[i][t_count] = theHostToUse.hostID;
 				objLinks.maxThreads[i][t_count] = theHostToUse.maxThreads;
+				objLinks.downloadTimeout[i][t_count] = theHostToUse.downloadTimeout;
 				
 				// Create an instance of the local file object
 				var aFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
@@ -407,12 +409,14 @@ ihg_Functions.setUpReq = function setUpReq(objLinks) {
 			var dir_save = objLinks.dirSave[i][j];
 			var host_ID = objLinks.hostID[i][j];
 			var host_maxThreads = objLinks.maxThreads[i][j];
+			var host_downloadTimeout = objLinks.downloadTimeout[i][j];
 			var host_func = objLinks.hostFunc[i][j];
 			
 			var req = new ihg_Functions.requestObj();
 			
 			req.hostID = host_ID;
 			req.maxThreads = host_maxThreads;
+			req.downloadTimeout = host_downloadTimeout;
 			req.regexp = host_func;
 			req.hostFunc = ihg_Functions.genericHostFunc;
 				
@@ -425,6 +429,7 @@ ihg_Functions.setUpReq = function setUpReq(objLinks) {
 			req.totLinkNum = objLinks.links[i].length;
 			req.uniqFN_prefix = fName;
 			req.minFileSize = ihg_Globals.minFileSize;
+			
 
 			//if (inner_link.match(/boxtheclown/)) req.init = boxclown_init;
 
@@ -500,6 +505,7 @@ ihg_Functions.LinksOBJ = function LinksOBJ() {
 	this.thumbs = new Array();
 	this.hostID = new Array();
 	this.maxThreads = new Array();
+	this.downloadTimeout = new Array();
 	
 	// The following is added to give a proper referring url when downloading embedded images
 	this.originatingPage = new Array();

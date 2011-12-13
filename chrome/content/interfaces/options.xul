@@ -27,6 +27,8 @@
 <script type="text/javascript">
 <![CDATA[
 function setEnableStates() {
+	var prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+
 	ihg_Globals.strbundle = document.getElementById("imagegrabber-strings");
 	ihg_Functions.read_locale_strings();
 	toggleEnableState('cb_prefixFileNames', true, 'rg_existBehavior');
@@ -34,14 +36,39 @@ function setEnableStates() {
 	toggleEnableState('cb_removeDupLinks', false, 'cb_removeDupLinksXpages');
 	toggleEnableState('cb_embImages', false, 'lab_minEmbeddedWidth', 'lab_minEmbeddedHeight', 'lab_minSize');
 	toggleEnableState('cb_autoUpdate', false, 'cb_suppressConfirm', 'rg_mergeBehavior');
+	toggleEnableState('cb_downloadTimeout', false, 'tb_downloadTimeout');
+	
+	var dlTimeout = prefManager.getIntPref("extensions.imagegrabber.downloadtimeout");
+	document.getElementById("cb_downloadTimeout").checked = dlTimeout;
+	handleDLTimeoutControl();
 	}
 
+function handleDLTimeoutControl() {
+	var cbDLTimeout = document.getElementById("cb_downloadTimeout");
+	var tbDLTimeout = document.getElementById("tb_downloadTimeout");
+	var labDLTimeout = document.getElementById("lab_downloadTimeout");
+	
+	if (cbDLTimeout.checked) {
+		tbDLTimeout.disabled = false;
+		labDLTimeout.disabled = false;
+		tbDLTimeout.setAttribute("min", "1");
+		if (tbDLTimeout.value == "0") tbDLTimeout.value = "1";
+	}
+	else {
+		tbDLTimeout.removeAttribute("min");
+		tbDLTimeout.value = "0";
+		tbDLTimeout.disabled = true;
+		labDLTimeout.disabled = true;
+	}
+}
+	
 function setPrefGlobVars() {
 	var prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
 
 	var chkBx2 = document.getElementById("cb_enableConLog");
 
 	prefManager.setBoolPref("javascript.options.showInConsole", chkBx2.checked);
+	prefManager.setIntPref("extensions.imagegrabber.downloadtimeout", document.getElementById("tb_downloadTimeout").value);
 	}
 
 // This function toggles the enabled state of a target element with ID
@@ -225,32 +252,13 @@ function toggleEnableState() {
 			</row>
 			<separator/>
 			<row align="center">
-					<rows>
-						<row>
-						<label control="list_downloadtimeout">&host_timeout_between_downloads;</label>
-						</row>
-						<row>
-						<label>&host_timeout_note;</label>
-						</row>
-					</rows>
-				<menulist id="list_downloadtimeout" preference="downloadTimeout">
-					<menupopup>
-						<menuitem label="Disabled" value="0"/>
-						<menuitem label="1 sec." value="1"/>
-						<menuitem label="2 sec." value="2"/>
-						<menuitem label="3 sec." value="3"/>
-						<menuitem label="4 sec." value="4"/>
-						<menuitem label="5 sec." value="5"/>
-						<menuitem label="6 sec." value="6"/>
-						<menuitem label="8 sec." value="8"/>
-						<menuitem label="10 sec." value="10"/>
-						<menuitem label="15 sec." value="15"/>
-						<menuitem label="20 sec." value="20"/>
-						<menuitem label="25 sec." value="25"/>
-						<menuitem label="30 sec." value="30"/>
-						<menuitem label="60 sec." value="60"/>
-					</menupopup>
-				</menulist>
+				<checkbox label="&host_timeout_between_downloads;" id="cb_downloadTimeout" oncommand="handleDLTimeoutControl();"/>
+			</row>
+			<row align="center">
+				<hbox class="indent">
+				<label id="lab_downloadTimeout" control="tb_downloadTimeout">&host_timeout_seconds;</label>
+				<textbox preference="downloadTimeout" id="tb_downloadTimeout" type="number" max="60" size="2"/>
+				</hbox>
 			</row>
 		</rows>
 	</grid>
