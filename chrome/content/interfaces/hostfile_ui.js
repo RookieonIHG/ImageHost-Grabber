@@ -271,24 +271,30 @@ function fillTBs(idx) {
 
 	var mt_tbout = document.getElementById("tb_hostMaxThreads");
 	var maxThreads = hostfile_Globals.hosts[idx].getAttribute("maxThreads");
-	mt_tbout.value = maxThreads;
+	
+	var cbMaxThreads = document.getElementById("cb_hostMaxThreads");
+	cbMaxThreads.checked = (maxThreads != null)?true:false;
+	mt_tbout.disabled = !cbMaxThreads.checked;
+	mt_tbout.value = (maxThreads != null)?maxThreads:1;
 
-	var timer_tbout = document.getElementById("hostTimeout");
-	timer_tbout.setAttribute("disabled",(mt_tbout.value == 0));
-
-	var mp_timeout = document.getElementById("timeout");
+	var timer_tbout = document.getElementById("tb_downloadTimeout");
 	var timeout = hostfile_Globals.hosts[idx].getAttribute("Timeout");
-	mp_timeout.value = timeout || "0";
 
-	for (var i = mp_timeout.childNodes.length; i--;)
-		mp_timeout.childNodes[i].setAttribute("checked", (mp_timeout.childNodes[i].value == mp_timeout.value));
-
+	var cbDLTimeout = document.getElementById("cb_downloadTimeout");
+	cbDLTimeout.checked = (timeout != null)?true:false;
+	timer_tbout.disabled = !cbDLTimeout.checked;
+	timer_tbout.value = (timeout != null)?timeout:1;
+	
 	var up_tbout = document.getElementById("tb_urlPattern");
 	up_tbout.value = uPat;
 
 	var sp_tbout = document.getElementById("tb_searchPattern");
 	if(!sPat.match(/function/)) sp_tbout.value = sPat.replace("\\\\", "\\", "g");
 	else sp_tbout.value = sPat;
+
+	document.getElementById("but_updateFile").disabled = false;
+	document.getElementById("but_addHost").disabled = true;
+	document.getElementById("but_delHost").disabled = false;
 
 	// document.getElementById("searchType").setAttribute("label", "Select...");
 	with (document.getElementById("searchType")) setAttribute("label", getAttribute("_label"));
@@ -300,20 +306,19 @@ function updateHostFile() {
 	if (!searchPattern.match(/function/)) searchPattern = searchPattern.replace(/\\(?!\")/g, "\\\\");
 	var label = document.getElementById("tb_hostLabel").value;
 	var maxThreads = document.getElementById("tb_hostMaxThreads").value;
-	var timeout = document.getElementById("timeout").value;
+	var timeout = document.getElementById("tb_downloadTimeout").value;
+	var cb_maxThreads = document.getElementById("cb_hostMaxThreads").checked;
+	var cb_timeout = document.getElementById("cb_downloadTimeout").checked;
 	var menupopup = document.getElementById("theList");
 	var idx = menupopup.value;
 
 	hostfile_Globals.hosts[idx].setAttribute("id", label);
-	if (maxThreads == 0) {
-		hostfile_Globals.hosts[idx].removeAttribute("maxThreads");
-		hostfile_Globals.hosts[idx].removeAttribute("Timeout");
-		}
-	else {
-		hostfile_Globals.hosts[idx].setAttribute("maxThreads", maxThreads);
-		if (timeout == 0) hostfile_Globals.hosts[idx].removeAttribute("Timeout");
-		else hostfile_Globals.hosts[idx].setAttribute("Timeout", timeout);
-		}
+	
+	if (cb_maxThreads == false)	hostfile_Globals.hosts[idx].removeAttribute("maxThreads");
+	else hostfile_Globals.hosts[idx].setAttribute("maxThreads", maxThreads);
+	
+	if (cb_timeout == false) hostfile_Globals.hosts[idx].removeAttribute("Timeout");
+	else hostfile_Globals.hosts[idx].setAttribute("Timeout", timeout);
 
 	var uPatNode = hostfile_Globals.hosts[idx].getElementsByTagName("urlpattern")[0];
 	uPatNode.textContent = urlPattern;
@@ -349,12 +354,20 @@ function addHost() {
 	if (!searchPattern.match(/function/)) searchPattern = searchPattern.replace(/\\(?!\")/g, "\\\\");
 	var label = document.getElementById("tb_hostLabel").value;
 	var maxThreads = document.getElementById("tb_hostMaxThreads").value;
+	var timeout = document.getElementById("tb_downloadTimeout").value;
+	var cb_maxThreads = document.getElementById("cb_hostMaxThreads").checked;
+	var cb_timeout = document.getElementById("cb_downloadTimeout").checked;
+
 	var menupopup = document.getElementById("theList");
 
 	var newHost = hostfile_Globals.hFile.createElement("host");
 	newHost.setAttribute("id", label);
-	if (maxThreads == 0) newHost.removeAttribute("maxThreads");
+	
+	if (cb_maxThreads == false)	newHost.removeAttribute("maxThreads");
 	else newHost.setAttribute("maxThreads", maxThreads);
+	
+	if (cb_timeout == false) newHost.removeAttribute("Timeout");
+	else newHost.setAttribute("Timeout", timeout);
 
 	var newUP = hostfile_Globals.hFile.createElement("urlpattern");
 	newUP.textContent = urlPattern;
@@ -531,13 +544,20 @@ function resetTextBoxes() {
 	// document.getElementById("theList").setAttribute("label", ihg_Globals.strings.select_host);
 	with (document.getElementById("theList")) setAttribute("label", getAttribute("_label"));
 	document.getElementById("tb_hostLabel").value = "";
-	document.getElementById("tb_hostMaxThreads").value = "0";
-	document.getElementById("hostTimeout").setAttribute("disabled","true");
-	var mp_timeout = document.getElementById("timeout");
-	for (var i = mp_timeout.childNodes.length; i--;)
-		mp_timeout.childNodes[i].setAttribute("checked", "false");
+	document.getElementById("cb_hostMaxThreads").checked = false;
+	document.getElementById("tb_hostMaxThreads").disabled = true;
+	document.getElementById("tb_hostMaxThreads").value = "1";
+	document.getElementById("cb_downloadTimeout").checked = false;
+	document.getElementById("tb_downloadTimeout").disabled = true;
+	document.getElementById("tb_downloadTimeout").value = "1";
+	
 	document.getElementById("tb_urlPattern").value = "";
 	document.getElementById("tb_searchPattern").value = "";
+	
+	document.getElementById("but_updateFile").disabled = true;
+	document.getElementById("but_addHost").disabled = false;
+	document.getElementById("but_delHost").disabled = true;
+	
 	// document.getElementById("searchType").setAttribute("label", "Select...");
 	with (document.getElementById("searchType")) setAttribute("label", getAttribute("_label"));
 	}

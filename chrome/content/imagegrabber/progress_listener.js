@@ -251,16 +251,45 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 
 			this.reqObj.finished = true;
 
-			// The "download timeout" is the time to wait between each download
-			// from the same host.
-			var download_timeout = ihg_Globals.downloadTimeout;
-			if (download_timeout <= 0 || this.reqObj.maxThreads == 0) {
-				this.reqObj.unlock();
-			} else {
-				this.reqObj.callwrapper = new ihg_Functions.CCallWrapper(this.reqObj, download_timeout, 'unlock', "locking of " + this.reqObj.uniqID);
-				ihg_Functions.CCallWrapper.asyncExecute(this.reqObj.callwrapper);
-				this.reqObj.queueHandler();
+			var hostID = this.reqObj.hostID;
+			var hostLocked = this.reqObj.cp.hostLocked;
+			var hostTimer = this.reqObj.cp.hostTimer;
+			
+			// Seeing as how there is an option for a host-specific downloadTimeout, then it stands to reason
+			// that a global setting for downloadTimeout must mean that the user wants every download from
+			// every host to have the limit, not just the ones that have maxThreads value.
+
+			// if (download_timeout <= 0 || this.reqObj.maxThreads == 0) {
+				// req_obj.unlock();
+			// }
+
+			
+			if (ihg_Globals.downloadTimeout > 0) {
+				if (this.reqObj.cp.hostTimer["global"] == null) {
+					this.reqObj.cp.hostLocked["global"] = true;
+					
+					this.reqObj.cp.hostTimer["global"] = new ihg_Functions.CCallWrapper(this.reqObj, ihg_Globals.downloadTimeout, 'clearHostTimer', "locking of " + this.reqObj.uniqID);
+					ihg_Functions.CCallWrapper.asyncExecute(this.reqObj.cp.hostTimer["global"]);
+				}
+				this.reqObj.unlock();	
 			}
+			else if (this.reqObj.downloadTimeout > 0) {
+				// If the downloadTimeout is imposed from the host definition, then we should continue
+				// checking for other hosts that are not limited by downloadTimeout.  Otherwise, all
+				// downloads should be limited by downloadTimeout
+				if (this.reqObj.cp.hostTimer[hostID] == null) {
+					// We "lock" the host after the first completed download in a set of downloads.
+					// This gives enough opportunity for either the global maxThreads to be met, or
+					// for the host-specified maxThreads to be met, before locking the host.
+					this.reqObj.cp.hostLocked[hostID] = true;
+					
+					this.reqObj.cp.hostTimer[hostID] = new ihg_Functions.CCallWrapper(this.reqObj, this.reqObj.downloadTimeout, 'clearHostTimer', "locking of " + this.reqObj.uniqID);
+					ihg_Functions.CCallWrapper.asyncExecute(this.reqObj.cp.hostTimer[hostID]);
+				}
+				this.reqObj.unlock();
+			}
+			else this.reqObj.unlock();
+			dump("in prog list: " + this.reqObj.cp.hostLocked["global"] + "\n");			
 		}
 
 		if(aStatus != 0) {

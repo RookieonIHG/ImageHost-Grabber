@@ -47,8 +47,8 @@
 <!ENTITY  max_simultaneous_http_requests "Max. simultaneous HTTP requests">
 <!ENTITY  max_number_of_retries_for_each_link "Max. number of retries for each link">
 <!ENTITY  request_timeout_before_retry "Request timeout before retry (in seconds)">
-<!ENTITY  host_timeout_between_downloads "Time to wait between each download from same host">
-<!ENTITY  host_timeout_note "Note: Only applies to hosts with a max. thread limit">
+<!ENTITY  host_timeout_between_downloads "Enable time to wait between each set of downloads">
+<!ENTITY  host_timeout_seconds "Time to wait in seconds">
 
 <!ENTITY  disclaimer "DISCLAIMER:">
 <!ENTITY  disclaimer_line1 "Enabling/Disabling the following options will require a restart of &brandShortName; in order to take affect.">

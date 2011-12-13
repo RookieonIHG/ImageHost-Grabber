@@ -38,6 +38,7 @@ ihg_Functions.requestObj = function requestObj() {
 	this.hostFunc = new Function();
 	this.hostID = null;
 	this.maxThreads = 0;
+	this.downloadTimeout = 0;
 	this.regexp = null;
 	this.retryNum = 0;
 	this.dirSave = "";
@@ -67,6 +68,16 @@ ihg_Functions.requestObj = function requestObj() {
 	this.stopped = false;
 	this.retried = false;
 	this.notResumable = false;
+	
+	// A host is "locked" when the host has a "Timeout" attribute and is waiting to
+	// start the next download or set of downloads.
+	//
+	// Syntax: reqObj.cp.hostLocked[hostID] = true
+	this.cp.hostLocked = new Object();
+	
+	// Each locked host has a corresponding timer.  It should be set at the end of
+	// the first to finish in a download set, and cleared at the end of the timeout period.
+	this.cp.hostTimer = new Object();
 
 	this.nextRequest = new Object();
 	this.previousRequest = new Object();
@@ -172,7 +183,7 @@ ihg_Functions.requestObj.prototype = {
 
 		ihg_Functions.clearFromWin(this.uniqID);
 		this.inprogress = false;
-
+		
 		var toDieOrNot = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.killmenow");
 		if (toDieOrNot) {
 			ihg_Functions.LOG("In function requestObj.unlock, received the call to die!\n");
@@ -181,6 +192,19 @@ ihg_Functions.requestObj.prototype = {
 		this.queueHandler();
 		},
 
+	clearHostTimer : function req_clearHostTimer() {
+		if (this.cp.hostTimer["global"] != null) {
+			this.cp.hostTimer["global"] = null;
+			this.cp.hostLocked["global"] = false;
+			}
+		else {
+			this.cp.hostTimer[this.hostID] = null;
+			this.cp.hostLocked[this.hostID] = false;
+			}
+		
+		this.queueHandler();
+		},
+	
 	errHandler : function req_errHandler(event) {
 		ihg_Functions.LOG("Entering function requestObj.errHandler\n");
 
@@ -290,14 +314,20 @@ ihg_Functions.requestObj.prototype = {
 	init : function req_init() {
 		ihg_Functions.LOG("Entering function requestObj.init with uniqID of: " + this.uniqID + "\n");
 
+			
 		if (this.countThreads() >= ihg_Globals.maxThreads) {
 			ihg_Functions.LOG("In function requestObj.init with uniqID of: " + this.uniqID + ", curThread >= ihg_Globals.maxThreads (" + ihg_Globals.maxThreads + ")\n");
 			return;
 			}
+
 		if (this.maxThreads > 0 && this.cp.curHostThread >= this.maxThreads) {
 			ihg_Functions.LOG("In function requestObj.init with uniqID of: " + this.uniqID + ", curHostThread >= maxHostThreads (" + this.maxThreads + ")\n");
 			return;
-			}	
+			}
+
+		if (this.cp.hostLocked["global"] == true) return;
+		if (this.cp.hostLocked[this.hostID] == true) return;
+		
 		if (this.finished || this.inprogress) {
 			ihg_Functions.LOG("In function requestObj.init with uniqID of: " + this.uniqID + 
 			    "\nfinished: " + this.finished + ", inprogress: " + this.inprogress + "\n");
