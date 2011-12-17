@@ -186,7 +186,8 @@ ihg_Functions.generateFName = function generateFName(reqObj, URLFile) {
 		// the end (that stuff should uniquely identify the image, hopefully)
 		// then we'll use the extra stuff as identifying data for the filename.
 		if (pic_url.fileName.match(/(?:jpg|jpeg|swf|bmp|gif|png|flv|ico)$/i)) var displayName = pic_url.fileName;
-		else if (pic_url.param) var displayName = pic_url.fileName + pic_url.param;
+		// nsIURL.param was removed in Gecko 9.0
+		//else if (pic_url.param) var displayName = pic_url.fileName + pic_url.param;
 		else if (pic_url.query) var displayName = pic_url.fileName + pic_url.query;
 		else if (pic_url.ref) var displayName = pic_url.fileName + pic_url.ref;
 		else var displayName = pic_url.fileName;
