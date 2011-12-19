@@ -34,15 +34,15 @@
 </menupopup>
 
 <tooltip id="typeTip">
-	<label value="&simple;" style="font-weight: bold;"/>
+	<label value="&simple;" class="header"/>
 	<label value="&it_allows_you_to_use_these_wildcards;" class="indent"/>
 	<label value="&matches_any_number_of_characters;" class="indent"/>
 	<label value="&matches_any_single_character;" class="indent"/>
-	<label value=""/>
-	<label value="&regular_expression;" style="font-weight: bold;"/>
+	<separator/>
+	<label value="&regular_expression;" class="header"/>
 	<label value="&it_allows_you_to_create_a_regular_expression_using_js;" class="indent"/>
 	<label value="https://developer.mozilla.org/en/JavaScript/Guide/Regular_Expressions" class="text-link indent"/>
-	<label value=""/>
+	<separator/>
 	<label value="&note_both_filters_are_case_insensitive;"/>
 </tooltip>
 
