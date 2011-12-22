@@ -78,6 +78,7 @@ function doOK() {
 		newObjLinks.hostFunc[i] = new Array();
 		newObjLinks.hostID[i] = new Array();
 		newObjLinks.maxThreads[i] = new Array();
+		newObjLinks.downloadTimeout[i] = new Array();
 		newObjLinks.originatingPage[i] = new Array();
 		
 		for (var j = 0; j < objLinks.links[i].length; j++) {
@@ -89,6 +90,7 @@ function doOK() {
 				newObjLinks.hostFunc[i].push(objLinks.hostFunc[i][j]);
 				newObjLinks.hostID[i].push(objLinks.hostID[i][j]);
 				newObjLinks.maxThreads[i].push(objLinks.maxThreads[i][j]);
+				newObjLinks.downloadTimeout[i].push(objLinks.downloadTimeout[i][j]);
 				newObjLinks.originatingPage[i].push(objLinks.originatingPage[i][j]);
 			}
 			
@@ -108,6 +110,7 @@ function LinksOBJ() {
 	this.hostFunc = new Array();
 	this.hostID = new Array();
 	this.maxThreads = new Array();
+	this.downloadTimeout = new Array();
 	this.originatingPage = new Array();
 }
 
