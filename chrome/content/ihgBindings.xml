@@ -41,7 +41,7 @@
 	<binding id="ihgLabelGroup">
 		<content>
 			<xul:vbox>
-				<xul:label flex="1" style="font-weight: bold;" xbl:inherits="disabled, xbl:text=buttonlabel"/>
+				<xul:label flex="1" class="header" xbl:inherits="disabled, xbl:text=buttonlabel"/>
 				<xul:label class="indent" flex="1" xbl:inherits="disabled, xbl:text=description"/>
 			</xul:vbox>
 		</content>
