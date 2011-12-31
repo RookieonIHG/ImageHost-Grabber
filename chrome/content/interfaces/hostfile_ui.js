@@ -31,6 +31,7 @@ hostfile_Globals.hosts = null;
 hostfile_Globals.hFile = null;
 hostfile_Globals.hostFileObj = null;
 hostfile_Globals.hostFileLoc = "";
+hostfile_Globals.addonPath = "";
 
 ihg_Globals.strbundle = document.getElementById("imagegrabber-strings");
 ihg_Functions.read_locale_strings();
@@ -139,6 +140,29 @@ function sortHosts() {
 	}
 
 function initWindow() {
+	var id = "{E4091D66-127C-11DB-903A-DE80D2EFDFE8}"; // imagegrabber's ID
+	var nsLocFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+
+	// This should work for Firefox v1.5 to v3.6  It returns a file object initialized
+	// with the path where the extension is located	
+	try {
+		nsLocFile = Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces.nsIExtensionManager).getInstallLocation(id).getItemLocation(id); 
+		hostfile_Globals.addonPath = nsLocFile.path;
+		initWindow2();
+	}
+
+	// For 4.0+ series
+	catch (e) {
+		Components.utils.import("resource://gre/modules/AddonManager.jsm"); 
+		var tempFunc = function(addon) {
+			hostfile_Globals.addonPath = addon.getResourceURI("").QueryInterface(Components.interfaces.nsIFileURL).file.path;
+			initWindow2();
+		}
+		AddonManager.getAddonByID(id, tempFunc);
+	}	
+}
+
+function initWindow2() {
 	//var tb_searchPattern = document.getElementById("tb_searchPattern");
 	//tb_searchPattern.addEventListener("keydown", handleKeyDown, false);
 	//document.onkeydown = handleKeyDown;

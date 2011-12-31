@@ -87,6 +87,12 @@ ihg_Globals.cacheDLWin = null;
 
 ihg_Globals.lastHost = { hostID : null, maxThreads : null, urlPattern : null , searchPattern : null };
 
+// Keep the forum styles in memory to prevent constantly reading from disk
+ihg_Globals.forums = null;
+
+// Store add-on path in global variable since "AddonManager" is asynchronous
+ihg_Globals.addonPath = null;
+
 ihg_Globals.hostfAutoUpdate = null;
 ihg_Globals.hostfUpdateConfirm = null;
 ihg_Globals.hostfMergeBehavior = null;

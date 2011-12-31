@@ -289,7 +289,6 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 				this.reqObj.unlock();
 			}
 			else this.reqObj.unlock();
-			dump("in prog list: " + this.reqObj.cp.hostLocked["global"] + "\n");			
 		}
 
 		if(aStatus != 0) {

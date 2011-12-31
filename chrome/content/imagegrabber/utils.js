@@ -464,3 +464,8 @@ ihg_Functions.removeDuplicates = function removeDuplicates(docLinks, thumbLinks)
 
 	return { docLinks:cleanDocLinks, thumbLinks:cleanThumbLinks };
 }
+
+ihg_Functions.restartFF = function restartFF() {
+	var nsIAppStartup = Components.interfaces.nsIAppStartup;
+    Components.classes["@mozilla.org/toolkit/app-startup;1"].getService(nsIAppStartup).quit(nsIAppStartup.eForceQuit | nsIAppStartup.eRestart);
+}

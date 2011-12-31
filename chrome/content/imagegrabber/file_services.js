@@ -34,22 +34,8 @@ ihg_Functions.CacheFileService = function CacheFileService(cacheFileID) {
 	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
-	var id = "{E4091D66-127C-11DB-903A-DE80D2EFDFE8}"; // imagegrabber's ID
 	var cacheFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-
-	// This should work for Firefox v1.5 to v3.6  It returns a file object initialized
-	// with the path where the extension is located	
-	try {
-		var cacheFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-		cacheFile = Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces.nsIExtensionManager).getInstallLocation(id).getItemLocation(id); 
-	}
-
-	// For the new 4.0 series
-	catch (e) {
-		var cacheFile =  Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
-		cacheFile.append("extensions");
-		cacheFile.append(id);
-	}
+	cacheFile.initWithPath(ihg_Globals.addonPath);
 	
 	cacheFile.append("cache");
 	
@@ -107,34 +93,14 @@ ihg_Functions.CacheFileService.prototype = {
 
 
 ihg_Functions.forumStyleFileService = function forumStyleFileService() {
-	var id = "{E4091D66-127C-11DB-903A-DE80D2EFDFE8}"; // imagegrabber's ID
+	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+	ihg_Functions.LOG("Entering " + myself + "\n");
+
 	var forumStyleFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
-	ihg_Functions.LOG("Entering " + myself + "\n");
-
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
-	ihg_Functions.LOG("Entering " + myself + "\n");
-
-	var id = "{E4091D66-127C-11DB-903A-DE80D2EFDFE8}"; // imagegrabber's ID
-
-	// This should work for Firefox v1.5 to v3.6  It returns a file object initialized
-	// with the path where the extension is located	
-	try {
-		var forumStyleFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-		forumStyleFile = Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces.nsIExtensionManager).getInstallLocation(id).getItemLocation(id); 
-	}
-
-	// For the new 4.0 series
-	catch (e) {
-		var forumStyleFile =  Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
-		forumStyleFile.append("extensions");
-		forumStyleFile.append(id);
-	}
-	
+	forumStyleFile.initWithPath(ihg_Globals.addonPath);
 	forumStyleFile.append("forum_styles.xml");
 	this.forumStyleFile = forumStyleFile;
-	}
+}
 
 
 ihg_Functions.forumStyleFileService.prototype = {
@@ -172,33 +138,13 @@ ihg_Functions.HostFileService = function HostFileService() {
 		}
 
 	if (ihg_Globals.hostFileLoc == "") {
-		// This should work for Firefox v1.5 to v3.6  It returns a file object initialized
-		// with the path where the extension is located	
-		try {
-			var hostFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-			hostFile = Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces.nsIExtensionManager).getInstallLocation(id).getItemLocation(id); 
-		}
-
-		// For the new 4.0 series
-		catch (e) {
-			var hostFile =  Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
-			hostFile.append("extensions");
-			hostFile.append(id);
-		}
-	
+		var hostFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		hostFile.initWithPath(ihg_Globals.addonPath);
 		hostFile.append("hostf.xml");
 		}
 
-	try {
-		var hostf_servers = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-		hostf_servers = Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces.nsIExtensionManager).getInstallLocation(id).getItemLocation(id); 
-	}
-	catch (e) {
-		var hostf_servers =  Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
-		hostf_servers.append("extensions");
-		hostf_servers.append(id);
-	}
-	
+	var hostf_servers = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+	hostf_servers.initWithPath(ihg_Globals.addonPath);
 	hostf_servers.append("hostf_servers.xml");
 	
 	this.hostFile = hostFile;
