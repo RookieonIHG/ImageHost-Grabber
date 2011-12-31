@@ -3446,9 +3446,9 @@
 <searchpattern>"http:\\/\\/www\\.kemipic\\.com\\/image-.+\\.jpg"</searchpattern> 
 </host>
 
-<host id="keptarolo">
-<urlpattern>http:\/\/keptarolo\.hu\/.+\/.+\..{3,4}</urlpattern>
-<searchpattern>"REPLACE: 'http:\\/\\/keptarolo\\.hu\\/(.+\\/.+\\..{3,4})', 'http://keptarolo.hu/kep/$1'"</searchpattern>
+<host id="keptarolo" maxThreads="1">
+<urlpattern>^http:\/\/(?:www\.)?keptarolo\.hu\/.+\/.+\..{3,4}</urlpattern>
+<searchpattern>"REPLACE: 'http:\\/\\/(?:www\\.)?keptarolo\\.hu\\/(.+\\/.+\\..{3,4})', 'http://keptarolo.hu/kep/$1'"</searchpattern>
 </host>
 
 <host id="kindgirls">
@@ -5082,7 +5082,7 @@
 </host>
 
 <host id="r70.info">
-<urlpattern>^http:\/\/r70.info\/img\/viewer\.php\?file=</urlpattern>
+<urlpattern>^http:\/\/r70.info\/(?:img\/)?viewer\.php\?file=</urlpattern>
 <searchpattern>"REPLACE: 'viewer\.php\?file=' , 'images/'"</searchpattern>
 </host>
 
