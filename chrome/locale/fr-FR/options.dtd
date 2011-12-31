@@ -47,7 +47,7 @@
 <!ENTITY  max_simultaneous_http_requests "Nombre Max. de requêtes HTTP simultanées">
 <!ENTITY  max_number_of_retries_for_each_link "Nombre Max. de tentatives pour chaque lien">
 <!ENTITY  request_timeout_before_retry "Délai d'attente de la requête avant réessayer (en secondes)">
-<!ENTITY  host_timeout_between_downloads "Activer le délai d'attente entre les requêtes d'un même hébergeur">
+<!ENTITY  host_timeout_between_downloads "Activer le délai d'attente entre chaque bloc de requêtes">
 <!ENTITY  host_timeout_seconds "Délai d'attente en secondes">
 
 <!ENTITY  disclaimer "Avertissement:">
