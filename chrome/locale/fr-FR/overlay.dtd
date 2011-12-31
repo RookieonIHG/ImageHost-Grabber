@@ -6,8 +6,8 @@
 
 <!ENTITY  suck_the_current_thread.label "Prendre les images des pages selectionnées">
 <!ENTITY  suck_the_current_thread.accesskey "U">
-<!ENTITY  suck_the_current_thread.tooltiptext "This option is available only to recognized thread/gallery URLs.">
-<!ENTITY  suck_the_current_thread.hint "See help file for more information."> 
+<!ENTITY  suck_the_current_thread.tooltiptext "Disponible uniquement pour les forum/galleries reconnus.">
+<!ENTITY  suck_the_current_thread.hint "Consulter l'Aide pour plus d'information.">
 
 <!ENTITY  suck_selected_thread_link.label "Envoyer le lien des pages">
 <!ENTITY  suck_selected_thread_link.accesskey "L">
