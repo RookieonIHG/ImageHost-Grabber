@@ -212,12 +212,17 @@ ihg_Functions.generateFName = function generateFName(reqObj, URLFile) {
 		// I really should get a life...
 
 		var reqUrl = reqObj.reqURL;
-		if (reqUrl.match(/imagevenue/) || reqUrl.match(/fapomatic/)) {
+		if (reqUrl.search(/imagevenue\.com\//) >= 0 || reqUrl.search(/fapomatic\.com\//) >= 0) {
 			var indxVal = displayName.indexOf("_");
 			if (indxVal != -1) displayName = displayName.substr(indxVal+1);
 			
-			if (reqUrl.match(/imagevenue/)) displayName = displayName.replace(/(.+)_12[23]_\d+lo(\..{3,4})$/, "$1$2");
+			if (reqUrl.search(/imagevenue\.com\//) >= 0) displayName = displayName.replace(/(.+)_12[23]_\d+lo(\..{3,4})$/, "$1$2");
 			
+			ihg_Functions.LOG("In " + myself + ", displayName is equal to: " + displayName + "\n");
+			}
+		else if (reqUrl.search(/imagehaven\.net\//) >= 0) {
+			displayName = displayName.replace(/^[A-Z0-9]{10}_/, "");
+
 			ihg_Functions.LOG("In " + myself + ", displayName is equal to: " + displayName + "\n");
 			}
 		}
