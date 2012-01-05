@@ -228,14 +228,8 @@ ihg_Functions.generateFName = function generateFName(reqObj, URLFile) {
 		}
 
 	if (ihg_Globals.prefix_fileNames) displayName = ihg_Functions.prefixFName(reqObj, displayName);		
-
-	// the regex splits the full file name into the main file name and the extension
-	var tempVar = displayName.match(/(.+)\.(jpg|jpeg|swf|bmp|gif|png|flv|ico)$/i);
-
-	// if the main file name is longer than 89 chars, then shorten it
-	if(tempVar[1].length > 89)
-		displayName = tempVar[1].substring(0, 85) + Math.random().toString().substring(2,6) + "." + tempVar[2];
-
+	displayName = ihg_Functions.cutFName(displayName);
+	
 	return displayName;
 }
 
@@ -345,6 +339,7 @@ ihg_Functions.getFNameFromHeader = function getFNameFromHeader(reqObj, request) 
 		ihg_Functions.LOG("Filename(Response-Header): " + displayName + "\n");
 
 		if (ihg_Globals.prefix_fileNames) displayName = ihg_Functions.prefixFName(reqObj, displayName);
+		displayName = ihg_Functions.cutFName(displayName);
 		}
 	catch (e) {
 		ihg_Functions.LOG("Error: " + e + "\n");
@@ -364,6 +359,21 @@ ihg_Functions.prefixFName = function prefixFName(reqObj, fname) {
 	formatted += reqObj.curLinkNum;
 	result = reqObj.uniqFN_prefix + "_" + formatted + "_" + result;
 	
+	return result;
+}
+
+
+ihg_Functions.cutFName = function cutFName(fname) {
+	var maxLength = 240;
+	var result = fname;
+
+	// the regex splits the full file name into the main file name and the extension
+	var tempVar = result.match(/(.+)\.(jpg|jpeg|swf|bmp|gif|png|flv|ico)$/i);
+
+	// if the main file name is longer than maxLength chars, then shorten it
+	if(tempVar[1].length > maxLength)
+		result = tempVar[1].substring(0, maxLength-4) + Math.random().toString().substring(2,6) + "." + tempVar[2];
+
 	return result;
 }
 
