@@ -1951,7 +1951,7 @@
 </host>
 
 <host id="formulatv">
-<urlpattern>^http:\/\/www\.formulatv\.com\/visor\.php\?.*(?:fgal|num)=\d+</urlpattern>
+<urlpattern>^http:\/\/www\.formulatv\.com\/visor\.php\?.*(?:fgal|num)=\d+[^#]+$</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
 	var retVal = new Object();
 	
@@ -4426,6 +4426,11 @@
 <host id="nuts.co.uk">
 <urlpattern>^http:\/\/www\.nuts\.co\.uk\/.+\/photo\/</urlpattern>
 <searchpattern>"\/images\/gallery\/\d+\/\d+\/"</searchpattern>
+</host>
+
+<host id="ofoto">
+<urlpattern>^http:\/\/ofoto\.org\/image\/\d+</urlpattern>
+<searchpattern>"onclick="imageSizeMaxMin"</searchpattern>
 </host>
 
 <host id="omega project">
