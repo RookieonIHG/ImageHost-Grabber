@@ -484,3 +484,33 @@ ihg_Functions.restartFF = function restartFF() {
 	var nsIAppStartup = Components.interfaces.nsIAppStartup;
     Components.classes["@mozilla.org/toolkit/app-startup;1"].getService(nsIAppStartup).quit(nsIAppStartup.eForceQuit | nsIAppStartup.eRestart);
 }
+
+ihg_Functions.AlertPopup = function AlertPopup(title, message, listener, clickable) {
+	var logo = "chrome://imagegrabber/skin/images/imagegrabber.png";
+	try {
+		Components.classes['@mozilla.org/alerts-service;1']
+			.getService(Components.interfaces.nsIAlertsService)
+			.showAlertNotification(logo, title, message, clickable, 'cookie', listener, '');
+		}
+	catch(e) {
+		// prevents runtime error on platforms that don't implement nsIAlertsService, use alert.xul window instead
+		var win = Components.classes['@mozilla.org/embedcomp/window-watcher;1']
+			.getService(Components.interfaces.nsIWindowWatcher)
+			.openWindow(null, 'chrome://global/content/alerts/alert.xul', '_alert_', 'chrome,titlebar=no,popup=yes', null);  
+		win.arguments = [logo, title, message, clickable, 'cookie', null, listener];
+		}
+
+	/************************************************************************************************************************************************
+	* EVENT_NEW_MAIL_RECEIVED 		0 	The system receives email. Requires Gecko 1.9.2
+	* EVENT_ALERT_DIALOG_OPEN 		1 	An alert dialog is opened. Requires Gecko 1.9.2
+	* EVENT_CONFIRM_DIALOG_OPEN 	2 	A confirm dialog is opened. Requires Gecko 1.9.2
+	* EVENT_PROMPT_DIALOG_OPEN 		3 	A prompt dialog (one that allows the user to enter data, such as an authentication dialog) is opened. Requires Gecko 1.9.2
+	* EVENT_SELECT_DIALOG_OPEN 		4 	A select dialog (one that contains a list box) is opened. Requires Gecko 1.9.2
+	* EVENT_MENU_EXECUTE 			5 	A menu item is executed. Requires Gecko 1.9.2
+	* EVENT_MENU_POPUP 				6 	A popup menu is shown. Requires Gecko 1.9.2
+	* EVENT_EDITOR_MAX_LEN 			7 	More characters than the maximum allowed are typed into a text field. Requires Gecko 9.0
+	************************************************************************************************************************************************/
+
+	Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound)
+		.playEventSound(0);
+}
