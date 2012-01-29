@@ -284,10 +284,25 @@ ihg_Functions.requestObj.prototype = {
 			}
 		else {
 			if (this.countThreads() == 0) {
+
+				var listener = {
+					observe: function(subject, topic, data) {
+						switch(topic) {
+							case "alertclickcallback":
+								var ig_dl_win_obj = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
+								ig_dl_win = ig_dl_win_obj.getWindowByName("ig-dl_win", null);
+								ig_dl_win.focus();
+								break;
+							case "alertfinished":
+								ihg_Globals.autoCloseWindow = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.autoclosewindow");
+								if (ihg_Globals.autoCloseWindow) ihg_Functions.startCloseCountdown();
+							default:break;
+							}
+						}
+					}
+
 				ihg_Functions.updateDownloadStatus(ihg_Globals.strings.all_done);
-				
-				ihg_Globals.autoCloseWindow = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.autoclosewindow");
-				if (ihg_Globals.autoCloseWindow) ihg_Functions.startCloseCountdown();
+				ihg_Functions.AlertPopup('Download Progress', 'Status: ' + ihg_Globals.strings.all_done, listener, true);
 				}
 			}
 		},
@@ -380,8 +395,10 @@ ihg_Functions.requestObj.prototype = {
 					if (typeof(req.regexp) == "string" && req.regexp.match(/Embedded Image/)) {
 						var contLength = this.getResponseHeader("Content-Length");
 						if (contLength && contLength < req.minFileSize) { 
-							req.abort(document.getElementById("imagegrabber-strings").getFormattedString("file_too_short", [req.minFileSize/1024]));
-							setTimeout(function(){ ihg_Functions.clearFromWin(req.uniqID, true); }, 1000);
+							// req.abort(document.getElementById("imagegrabber-strings").getFormattedString("file_too_short", [req.minFileSize/1024]));
+							// setTimeout(function(){ ihg_Functions.clearFromWin(req.uniqID, true); }, 1000);
+							req.abort(ihg_Globals.strbundle.getFormattedString("file_too_short", [req.minFileSize/1024]));
+							setTimeout('ihg_Functions.clearFromWin("' + req.uniqID + '", true)', 1000);
 							return;
 							}
 						}
