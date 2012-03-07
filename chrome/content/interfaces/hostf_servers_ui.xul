@@ -24,7 +24,7 @@ onload="loadHostFServersFile();">
 <vbox flex="1">
 	<hbox>
 		<listbox id="tb_searchPattern" ondblclick="updateHostFServer();" rows="10" flex="1"/>
-		<vbox hidden="true">
+		<vbox>
 		  <spacer flex="1"/>
 		  <button label="▲" style="min-width: 0em;" oncommand="moveHostFServer(-1);"/>
 		  <button label="▼" style="min-width: 0em;" oncommand="moveHostFServer(+1);"/>
