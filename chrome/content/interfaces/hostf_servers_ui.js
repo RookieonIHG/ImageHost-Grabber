@@ -82,7 +82,7 @@ HostFileService.prototype = {
 function initWindow() {
 	window.addEventListener("resize", resizeResponseTextBox, false);
 	//resizeResponseTextBox();
-	loadHostFile();
+	loadHostFServersFile();
 	}
 
 function resizeResponseTextBox() {
@@ -91,31 +91,31 @@ function resizeResponseTextBox() {
 	}
  */
 
-function loadHostFile() {
+function loadHostFServersFile() {
 	hostf_servers_Globals.hostFileObj = new HostFileService();
 	hostf_servers_Globals.hFile = hostf_servers_Globals.hostFileObj.getHostf_servers();
 	hostf_servers_Globals.hosts = hostf_servers_Globals.hFile.getElementsByTagName("server");
 
-	var outBox = document.getElementById("tb_searchPattern");
+	var servers_list = document.getElementById("tb_searchPattern");
 
 	for (var i=0; i < hostf_servers_Globals.hosts.length; i++) {
-		outBox.appendItem(hostf_servers_Globals.hosts[i].textContent);
+		servers_list.appendItem(hostf_servers_Globals.hosts[i].textContent);
 		}
 	}
 
-function updateHFile() {
-	var tot = document.getElementById("tb_searchPattern");
+function updateHostFServer() {
+	var servers_list = document.getElementById("tb_searchPattern");
 
-	var tmpVal = prompt(ihg_Globals.strings.enter_host_file_server, tot.selectedItem.label); 
+	var tmpVal = prompt(ihg_Globals.strings.enter_host_file_server, servers_list.selectedItem.label);
 	if (!tmpVal) return;
 
 	var sList = hostf_servers_Globals.hFile.firstChild.childNodes;
 
 	for (var i=0; i<sList.length; i++) {
-		if (sList[i].textContent == tot.selectedItem.label) sList[i].textContent = tmpVal;
+		if (sList[i].textContent == servers_list.selectedItem.label) sList[i].textContent = tmpVal;
 		}
 
-	tot.selectedItem.label = tmpVal;
+	servers_list.selectedItem.label = tmpVal;
 	}
 
 function addHostFServer() {
@@ -128,31 +128,31 @@ function addHostFServer() {
 	hostf_servers_Globals.hFile.firstChild.appendChild(tmp);
 	hostf_servers_Globals.hFile.firstChild.appendChild(hostf_servers_Globals.hFile.createTextNode("\n"));
 
-	var outBox = document.getElementById("tb_searchPattern");
-	outBox.appendItem(tmp.textContent);
+	var servers_list = document.getElementById("tb_searchPattern");
+	servers_list.appendItem(newHost);
 	}
 
-function moveHostFServer() {
-	var tot = document.getElementById("tb_searchPattern");
-	if (!tot.selectedItem) return;
+function moveHostFServer(UpDown) {
+	var servers_list = document.getElementById("tb_searchPattern");
+	if (!servers_list.selectedItem) return;
 
 	}
 
 function delHostFServer() {
-	var tot = document.getElementById("tb_searchPattern");
-	if (!tot.selectedItem) return;
+	var servers_list = document.getElementById("tb_searchPattern");
+	if (!servers_list.selectedItem) return;
 	
 	for (var i=0; i<hostf_servers_Globals.hFile.firstChild.childNodes.length; i++) { 
-		if (hostf_servers_Globals.hFile.firstChild.childNodes[i].textContent == tot.selectedItem.label) {
+		if (hostf_servers_Globals.hFile.firstChild.childNodes[i].textContent == servers_list.selectedItem.label) {
 			hostf_servers_Globals.hFile.firstChild.removeChild(hostf_servers_Globals.hFile.firstChild.childNodes[i]);
 			if (hostf_servers_Globals.hFile.firstChild.childNodes[i].textContent == "\n")
 				hostf_servers_Globals.hFile.firstChild.removeChild(hostf_servers_Globals.hFile.firstChild.childNodes[i]);
 			}
 		}
 
-	tot.removeItemAt(tot.selectedIndex);
+	servers_list.removeItemAt(servers_list.selectedIndex);
 	}
 
-function updateHostFile() {
+function updateHostFServersFile() {
 	hostf_servers_Globals.hostFileObj.writeHosts();
 	}
