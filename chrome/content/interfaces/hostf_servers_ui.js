@@ -103,17 +103,31 @@ function loadHostFServersFile() {
 		}
 	}
 
+function updateHostFServersFile() {
+	var newRoot = hostf_servers_Globals.hFile.createElement("root");
+
+	var servers_list = document.getElementById("tb_searchPattern");
+	for (var i = 0; i < servers_list.getRowCount(); i++) {
+		var server_def = servers_list.getItemAtIndex(i);
+		var tmp = hostf_servers_Globals.hFile.createElement("server");
+		tmp.textContent = server_def.label;
+
+		newRoot.appendChild(hostf_servers_Globals.hFile.createTextNode("\n"));
+		newRoot.appendChild(tmp);
+		}
+	newRoot.appendChild(hostf_servers_Globals.hFile.createTextNode("\n"));
+
+	hostf_servers_Globals.hFile.removeChild(hostf_servers_Globals.hFile.firstChild);
+	hostf_servers_Globals.hFile.appendChild(newRoot);
+
+	hostf_servers_Globals.hostFileObj.writeHosts();
+	}
+
 function updateHostFServer() {
 	var servers_list = document.getElementById("tb_searchPattern");
 
 	var tmpVal = prompt(ihg_Globals.strings.enter_host_file_server, servers_list.selectedItem.label);
 	if (!tmpVal) return;
-
-	var sList = hostf_servers_Globals.hFile.firstChild.childNodes;
-
-	for (var i=0; i<sList.length; i++) {
-		if (sList[i].textContent == servers_list.selectedItem.label) sList[i].textContent = tmpVal;
-		}
 
 	servers_list.selectedItem.label = tmpVal;
 	}
@@ -121,12 +135,6 @@ function updateHostFServer() {
 function addHostFServer() {
 	var newHost = prompt(ihg_Globals.strings.new_host_file_server);
 	if (!newHost) return;
-
-	var tmp = hostf_servers_Globals.hFile.createElement("server");
-	tmp.textContent = newHost;
-
-	hostf_servers_Globals.hFile.firstChild.appendChild(tmp);
-	hostf_servers_Globals.hFile.firstChild.appendChild(hostf_servers_Globals.hFile.createTextNode("\n"));
 
 	var servers_list = document.getElementById("tb_searchPattern");
 	servers_list.appendItem(newHost);
@@ -136,23 +144,18 @@ function moveHostFServer(UpDown) {
 	var servers_list = document.getElementById("tb_searchPattern");
 	if (!servers_list.selectedItem) return;
 
+	var newIndex = servers_list.selectedIndex + UpDown;
+	if ( newIndex < 0 || newIndex == servers_list.getRowCount() ) return;
+
+	var server = servers_list.selectedItem;
+	servers_list.removeChild(server);
+	servers_list.insertBefore(server, servers_list.getItemAtIndex(newIndex));
+	servers_list.selectedItem=server;
 	}
 
 function delHostFServer() {
 	var servers_list = document.getElementById("tb_searchPattern");
 	if (!servers_list.selectedItem) return;
 	
-	for (var i=0; i<hostf_servers_Globals.hFile.firstChild.childNodes.length; i++) { 
-		if (hostf_servers_Globals.hFile.firstChild.childNodes[i].textContent == servers_list.selectedItem.label) {
-			hostf_servers_Globals.hFile.firstChild.removeChild(hostf_servers_Globals.hFile.firstChild.childNodes[i]);
-			if (hostf_servers_Globals.hFile.firstChild.childNodes[i].textContent == "\n")
-				hostf_servers_Globals.hFile.firstChild.removeChild(hostf_servers_Globals.hFile.firstChild.childNodes[i]);
-			}
-		}
-
 	servers_list.removeItemAt(servers_list.selectedIndex);
-	}
-
-function updateHostFServersFile() {
-	hostf_servers_Globals.hostFileObj.writeHosts();
 	}
