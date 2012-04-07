@@ -388,6 +388,11 @@ ihg_Functions.requestObj.prototype = {
 		ihg_Functions.LOG("In " + myself + ", this.readyState: " + this.readyState + "\n");
 
 		if (this.readyState == 2) {
+			if (this.status >= 400 && this.status < 500) {
+				req.abort(ihg_Globals.strbundle.getFormattedString("http_status_code", [this.status]));
+				return;
+				}
+	
 			var contType = this.getResponseHeader("Content-type");
 			if (!contType) return;
 			if (contType.match(/image\/.+/)) {
