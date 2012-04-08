@@ -1695,6 +1695,14 @@
 	var retVal = {};
 
 	var iUrl = pageData.match(/<a[^>]+class="fbPhotosPhotoActionsItem"[^>]+href="(https?:\/\/[^"]+?)"/);
+	if (!iUrl) {
+		iUrl = pageData.match(/"video_src","([^"]+)"/);
+		if (iUrl) {
+			iUrl[1] = iUrl[1].replace(/\\u([A-Fa-f\d]{4})/gi,
+									function (str, p1) { return String.fromCharCode(parseInt(p1, 16)); });
+			iUrl[1] = unescape(iUrl[1]);
+			}
+		}
 	//var iUrl = pageData.match(/<a[^>]+href="(https?:\/\/[^"]+?(?:_o\..{3,4}|\..{3,4}\?dl=1))"/);
 	//if (!iUrl) iUrl = pageData.match(/<img[^>]+src="([^"]+?_n\..{3,4})"/);
 
