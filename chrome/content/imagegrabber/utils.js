@@ -170,7 +170,7 @@ ihg_Functions.generateFName = function generateFName(reqObj, URLFile) {
 	catch(e) {
 		ihg_Functions.LOG("In " + myself + ", an invalid URL was given: " + URLFile + "\n");
 		return null;
-		}	
+		}
 
 	// if a desired filename is given, use it
 	if (desiredFName) var displayName = desiredFName;
@@ -242,7 +242,7 @@ ihg_Functions.getOutputFile = function getOutputFile(reqObj, URLFile) {
 	if (reqObj.retried && reqObj.fileName) displayName = reqObj.fileName;
 	else {
 		var contType = reqObj.xmlhttp.getResponseHeader("Content-type");
-		if (contType.match(/image\/.+/)) {
+		if (contType && contType.match(/image\/.+/)) {
 			var contDisp = reqObj.xmlhttp.getResponseHeader("Content-disposition");
 			if (contDisp) {
 				var mhp = Components.classes["@mozilla.org/network/mime-hdrparam;1"]
@@ -447,7 +447,7 @@ ihg_Functions.doStartDownload = function doStartDownload(reqObj, URLFile) {
 	}
 
 
-ihg_Functions.removeDuplicates = function removeDuplicates(docLinks, thumbLinks){
+ihg_Functions.removeDuplicates = function removeDuplicates(docLinks, thumbLinks) {
 	var cleanDocLinks = new Array();
 	var cleanThumbLinks = new Array();
 

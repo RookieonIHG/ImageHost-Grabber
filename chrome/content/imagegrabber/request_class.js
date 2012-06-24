@@ -178,6 +178,26 @@ ihg_Functions.requestObj.prototype = {
 		ihg_Functions.LOG("Exiting function requestObj.retry\n");
 		},
 
+	requeue : function req_requeue(newPageUrl) {
+		ihg_Functions.LOG("Entering function requestObj.requeue\n");
+
+		var newHostToUse = ihg_Functions.getHostToUse(newPageUrl);
+		if (!newHostToUse) {
+			this.abort(ihg_Globals.strings.cant_find_new_host);
+			return;
+			}
+
+		this.regexp = newHostToUse.hostFunc;
+
+		this.reqURL = newPageUrl;
+		this.retryNum++;
+
+		this.retry();
+
+		ihg_Functions.LOG("Exiting function requestObj.requeue\n");
+		return;
+		},
+
 	unlock : function req_unlock() {
 		ihg_Functions.LOG("Entering function requestObj.unlock\n");
 
@@ -329,7 +349,6 @@ ihg_Functions.requestObj.prototype = {
 	init : function req_init() {
 		ihg_Functions.LOG("Entering function requestObj.init with uniqID of: " + this.uniqID + "\n");
 
-			
 		if (this.countThreads() >= ihg_Globals.maxThreads) {
 			ihg_Functions.LOG("In function requestObj.init with uniqID of: " + this.uniqID + ", curThread >= ihg_Globals.maxThreads (" + ihg_Globals.maxThreads + ")\n");
 			return;
@@ -362,9 +381,12 @@ ihg_Functions.requestObj.prototype = {
 		if (!this.xmlhttp) {
 			this.xmlhttp = new XMLHttpRequest();
 			this.xmlhttp.parent = this;
-		}	
+		}
 
-		this.xmlhttp.open("GET", this.reqURL, true);
+		if (typeof(this.regexp) == "string" && this.regexp.search(/^REPLACE: ["']/) >= 0)
+			this.xmlhttp.open("GET", encodeURI('about:blank'), true);
+		else
+			this.xmlhttp.open("GET", this.reqURL, true);
 		if (this.referer) this.xmlhttp.setRequestHeader("Referer", this.referer);
 		this.xmlhttp.onreadystatechange = this.init2;
 		this.xmlhttp.onload = this.hostFunc;
