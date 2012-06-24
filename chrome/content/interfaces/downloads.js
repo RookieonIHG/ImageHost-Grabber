@@ -111,12 +111,13 @@ function loadSession() {
 		setUpLinkedList();
 	}
 	
-	for (var i = 0; i < tReqs.length; i++) {
-		var m = tReqs[i].curLinkNum + 1;
-		var page_stat = ihg_Globals.strings.page + " " + tReqs[i].pageNum + ": " + m + " " + ihg_Globals.strings.of + " " + tReqs[i].totLinkNum;
-		ihg_Functions.addDownloadProgress(page_stat, tReqs[i].uniqID, tReqs[i].reqURL, tReqs[i].status);
-		ihg_Functions.updateDownloadProgress(null, tReqs[i].uniqID, null, (tReqs[i].curProgress / tReqs[i].maxProgress) * 100, null);
-	}
+	ihg_Functions.addDownloadReqObjs(tReqs);
+	// for (var i = 0; i < tReqs.length; i++) {
+		// var m = tReqs[i].curLinkNum + 1;
+		// var page_stat = ihg_Globals.strings.page + " " + tReqs[i].pageNum + ": " + m + " " + ihg_Globals.strings.of + " " + tReqs[i].totLinkNum;
+		// ihg_Functions.addDownloadProgress(page_stat, tReqs[i].uniqID, tReqs[i].reqURL, tReqs[i].status);
+		// ihg_Functions.updateDownloadProgress(null, tReqs[i].uniqID, null, (tReqs[i].curProgress / tReqs[i].maxProgress) * 100, null);
+	// }
 }
 
 
@@ -190,6 +191,7 @@ function reset_retryCount() {
 
 	for (var s = 0; s < daNodes.length; s++) {
 		var idx = daNodes[s].id;
+		if (!idx.match(/^req_/)) continue;
 		req_objs[idx].retryNum = maxRetries;
 	}
 }
@@ -200,6 +202,7 @@ function restart_child() {
 
 	for (var s = 0; s < daNodes.length; s++) {
 		var idx = daNodes[s].id;
+		if (!idx.match(/^req_/)) continue;
 		req_objs[idx].reqURL = req_objs[idx].origURL;
 		req_objs[idx].curProgress = 0;
 		req_objs[idx].maxProgress = 0;
@@ -221,6 +224,7 @@ function remove_child(back_space) {
 
 	for (var s = 0; s < daNodes.length; s++) {
 		var idx = daNodes[s].id;
+		if (!idx.match(/^req_/)) continue;
 		if (idx == currentNode.id)
 			try {
 				tree.view.selection.select(tree.view.selection.currentIndex + (back_space ? -1 : +1));
@@ -230,6 +234,13 @@ function remove_child(back_space) {
 		if (req_objs[idx].inprogress) req_objs[idx].abort();
 		var parentItem = daNodes[s].parentNode;
 		parentItem.removeChild(daNodes[s]);
+
+		var containerItem = parentItem.parentNode;
+		if (containerItem.getAttribute("container")) {
+			if (parentItem.childNodes.length == 0) {
+				setTimeout('ihg_Functions.clearFromWin("' + containerItem.id + '", true)', 1000);
+				}
+			}
 
 		removeList.push(idx);
 	}
@@ -243,6 +254,7 @@ function abort_child() {
 
 	for (var s = 0; s < daNodes.length; s++) {
 		var idx = daNodes[s].id;
+		if (!idx.match(/^req_/)) continue;
 		req_objs[idx].abort();
 	}
 
@@ -254,6 +266,7 @@ function retry_child() {
 
 	for (var s = 0; s < daNodes.length; s++) {
 		var idx = daNodes[s].id;
+		if (!idx.match(/^req_/)) continue;
 		req_objs[idx].retryNum++;
 		req_objs[idx].overwrite = true;
 		req_objs[idx].override_stop = true;
@@ -298,7 +311,15 @@ function clear_form() {
 		// To ensure the intended conditions are tested, use:
 		//		if (req_objs[i].inprogress == false && req_objs[i].finished == true && req_objs[i].aborted == false) {
 		if (!req_objs[i].inprogress && req_objs[i].finished && !req_objs[i].aborted) {
-			daNode.parentNode.removeChild(daNode);
+			var parentItem = daNode.parentNode;
+			parentItem.removeChild(daNode);
+
+			var containerItem = parentItem.parentNode;
+			if (containerItem.getAttribute("container")) {
+				if (parentItem.childNodes.length == 0) {
+					setTimeout('ihg_Functions.clearFromWin("' + containerItem.id + '", true)', 1000);
+					}
+				}
 			removeList.push(req_objs[i].uniqID);
 		}
 	}
@@ -364,6 +385,7 @@ function view_details() {
 	if (idx == -1) return;
 	var daNode = igTree.view.getItemAtIndex(idx);
 	var shit = daNode.id;
+	if (!shit.match(/^req_/)) return;
 
 	var detail_win_obj = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
 	var detail_win = detail_win_obj.getWindowByName("ig-detail_win", null);
@@ -443,7 +465,7 @@ function revealFile() {
 function setUpLinkedList() {
 	var lastObj = req_objs.length - 1;
 
-	for(var i = 0; i < req_objs.length; i++) {
+	for (var i = 0; i < req_objs.length; i++) {
 		if (i == 0) req_objs[i].previousRequest = null;
 		else req_objs[i].previousRequest = req_objs[i-1];
 
@@ -463,6 +485,7 @@ function openReqUrls() {
 
 	for (var s = 0; s < daNodes.length; s++) {
 		var idx = daNodes[s].id;
+		if (!idx.match(/^req_/)) continue;
 		var reqUrl = req_objs[idx].reqURL;
 		if (!nWin) {
 			var nWin = window.open(reqUrl,reqUrl,"menubar,toolbar,location,resizable,scrollbars,status=yes");
@@ -483,14 +506,17 @@ function doSelectAll() {
 
 function doInvertSelection() {
 	var tree = document.getElementById("igTree");
+	var idx = tree.view.selection.currentIndex;
 
 	//I can't make this working, don't know why...
 	//tree.view.selection.invertSelection();
 	//Firefox shows this error: NS_ERROR_NOT_IMPLEMENTED
 	//This code should be equivalent:
-	for (var i = 0; i < tree.view.rowCount; i++) {  
+	for (var i = 0; i < tree.view.rowCount; i++) {
 		tree.view.selection.toggleSelect(i);
 	}
+	
+	tree.view.selection.currentIndex = idx;
 }
 
 
@@ -531,6 +557,10 @@ function exportList() {
 
 	for (var i = 0; i < tree.view.rowCount; i++) {
 		var daNode = tree.view.getItemAtIndex(i);
+		if (!daNode.id.match(/^req_/)) {
+			converter.writeString("<h3>" + daNode.firstChild.childNodes[1].getAttribute("label") + "</h3>\n");
+			continue;
+			}
 		var reqUrl = req_objs[daNode.id].reqURL;
 		reqUrl = reqUrl.replace(/&/g, "&amp;");
 		if (req_objs[daNode.id].regexp == "Embedded Image") converter.writeString("<img src=\"" + reqUrl + "\" alt=\"" + reqUrl+ "\" /><br />\n");

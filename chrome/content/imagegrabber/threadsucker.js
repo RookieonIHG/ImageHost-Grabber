@@ -89,7 +89,7 @@ ihg_Functions.leechThread = function leechThread(activeElement) {
 ihg_Functions.finishUp2 = function finishUp2() {
 	ihg_Functions.updateDownloadStatus(ihg_Globals.strings.running);
 
-	for(var i = 0; i < threadsucker_Globals.doc_req.length; i++) {
+	for (var i = 0; i < threadsucker_Globals.doc_req.length; i++) {
 		var m = threadsucker_Globals.doc_req[i].curLinkNum + 1;
 		var page_stat = ihg_Globals.strings.page + " " + threadsucker_Globals.doc_req[i].pageNum + ": " + m + " " + ihg_Globals.strings.of + " " + threadsucker_Globals.doc_req[i].totLinkNum;
 		ihg_Functions.addDownloadProgress(page_stat, threadsucker_Globals.doc_req[i].uniqID, threadsucker_Globals.doc_req[i].reqURL, ihg_Globals.strings.waiting);
@@ -149,7 +149,7 @@ ihg_Functions.getRDun = function getRDun() {
 			tempLinks[i] = someURI.resolve(tempLinks[i]);
 			}
 			
-			if (isEmbedded) tempLinks[i] = "[embeddedImg]" + tempLinks[i];
+		if (isEmbedded) tempLinks[i] = "[embeddedImg]" + tempLinks[i];
 		}
 
 	threadsucker_Globals.tmpDocLinks[pageNum] = tempLinks;
@@ -157,12 +157,13 @@ ihg_Functions.getRDun = function getRDun() {
 	req.finished = true;
 	req.inprogress = false;
 
-	var ig_dl_win_obj = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
-	ig_dl_win = ig_dl_win_obj.getWindowByName("ig-dl_win", null);
-	var doc = ig_dl_win.document;
-	var outBox = doc.getElementById("outBox");
-	var treeItem = doc.getElementById(req.uniqID);
-	outBox.removeChild(treeItem);
+	ihg_Functions.clearFromWin(req.uniqID, true);
+	// var ig_dl_win_obj = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
+	// ig_dl_win = ig_dl_win_obj.getWindowByName("ig-dl_win", null);
+	// var doc = ig_dl_win.document;
+	// var outBox = doc.getElementById("outBox");
+	// var treeItem = doc.getElementById(req.uniqID);
+	// treeItem.parentNode.removeChild(treeItem);
 
 	req.queueHandler();
 }
@@ -207,7 +208,7 @@ ihg_Functions.setUp_suckerReq = function setUp_suckerReq() {
 		var tmpURL = retval(threadsucker_Globals.threadURL);
 
 		if(tmpURL == "continue") continue;
-		if(!tmpURL){
+		if (!tmpURL){
 			ihg_Functions.updateDownloadStatus(ihg_Globals.strings.dont_know_how + " " + threadsucker_Globals.threadURL + ihg_Globals.strings.bailing);
 			return;
 			}

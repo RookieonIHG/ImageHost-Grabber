@@ -1,0 +1,21 @@
+treechildren::-moz-tree-row(odd) {
+	background-color: whitesmoke;
+}
+treechildren::-moz-tree-row(selected) {
+	background-color: #3399FF;
+}
+treechildren::-moz-tree-row(container) {
+	background-color: lightgrey;
+	border: 1px solid darkgrey;
+}
+treechildren::-moz-tree-row(container, selected) {
+	background-color: blue;
+	border: 1px solid darkblue;
+}
+treechildren::-moz-tree-cell-text(selected) {
+	font-weight: bold;
+	color: #FFFFFF;
+}
+treechildren::-moz-tree-line {
+	visibility: visible;
+}
