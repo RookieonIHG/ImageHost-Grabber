@@ -357,8 +357,10 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 
 	// nsIProgressEventSink (not implementing will cause annoying exceptions)
 	onProgress : function (aRequest, aContext, aProgress, aProgressMax) { 
+		// aProgressMax: numeric value indicating maximum number of bytes that will be transfered (or 0xFFFFFFFFFFFFFFFF if total is unknown).
 		if (this.reqObj.maxProgress == 0) {
-			this.reqObj.maxProgress = aProgressMax;
+			if (aProgressMax == 0xFFFFFFFFFFFFFFFF ) this.reqObj.maxProgress = -1;
+			else this.reqObj.maxProgress = aProgressMax;
 		}
 		//if (this.reqObj.maxProgress == -1) this.request.cancel(Components.results.NS_ERROR_ABORT);
 	},
