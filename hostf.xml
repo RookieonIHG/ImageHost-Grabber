@@ -1321,7 +1321,22 @@
 
 <host id="directupload">
 <urlpattern>^http:\/\/s\d+\.directupload\.net\/file\/.+\/\d+\/.+\.htm</urlpattern>
-<searchpattern>"ID: Bild"</searchpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = {};
+	
+	var iUrl = pageData.match(/<input[^>]+type="image"[^>]+src="([^"]+)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
 </host>
 
 <host id="dirtyrottenwhore">
@@ -1357,7 +1372,7 @@
 </host>
 
 <host id="doujinland">
-<urlpattern>^http:\/\/(?:www\.)?doujinland\.com\/g\/\?level=picture&amp;id=\d+</urlpattern>
+<urlpattern>^http:\/\/(?:www\.)?doujinland\.com\/g(?:allery)?\/\?level=picture&amp;id=\d+</urlpattern>
 <searchpattern>"class="photos-large""</searchpattern>
 </host>
 
@@ -1614,7 +1629,7 @@
 	var retVal = {};
 
 	if (pageUrl.match(/nl=1$/)) {
-		var iUrl = pageData.match(/img src="(http:\/\/\d+\.\d+\.\d+\.\d+(:\d+)?\/h\/[^"]+?\.(jpe?g|gif|png|bmp))"/i);
+		var iUrl = pageData.match(/img src="(http:\/\/\d+\.\d+\.\d+\.\d+(:\d+)?\/(?:h|ehg)\/[^"]+?\.(jpe?g|gif|png|bmp))"/i);
 		if (!iUrl) iUrl = pageData.match(/img src="(http:\/\/\w+?\.hentaiverse\.net\/[^"]+?image\.php.+?)"/);
 		if (!iUrl) iUrl = pageData.match(/img src="(http:\/\/gu\.e-hentai\.org\/image\.php.+?)"/);
 		}
@@ -1703,6 +1718,7 @@
 			iUrl[1] = unescape(iUrl[1]);
 			}
 		}
+	if (!iUrl) iUrl = pageData.match(/<img[^>]+id="fbPhotoImage"[^>]+src="(https?:\/\/[^"]+?)"/);
 	//var iUrl = pageData.match(/<a[^>]+href="(https?:\/\/[^"]+?(?:_o\..{3,4}|\..{3,4}\?dl=1))"/);
 	//if (!iUrl) iUrl = pageData.match(/<img[^>]+src="([^"]+?_n\..{3,4})"/);
 
@@ -1841,7 +1857,7 @@
 
 <host id="filefap">
 <urlpattern>^http:\/\/filefap\.com\/view\/</urlpattern>
-<searchpattern>"ID: thepic"</searchpattern>
+<searchpattern>"src="http:\/\/filefap\.com\/files\/"</searchpattern>
 </host>
 
 <host id="flickr">
@@ -1880,6 +1896,13 @@
 			else if (blah) iUrl = blah[2];
 			}
 		}
+		
+	if (!iUrl) {
+		var imageInfo = pageData.match(/sizes: {(?:.|\s)+?},\s+tags:/);
+		iUrl = imageInfo.match(/(?:.|\s)+url: '([^']+)'/); 
+		if (iUrl) iUrl = iUrl[1];
+		}
+		
 	if (iUrl) {
 		retVal.imgUrl = iUrl.replace(/\\\//g, "/");
 		retVal.status = "OK";
@@ -2074,7 +2097,7 @@
 	var retVal = {};
 
 	if (pageUrl.match(/nl=1$/)) {
-		var iUrl = pageData.match(/img src="(http:\/\/\d+\.\d+\.\d+\.\d+(:\d+)?\/h\/[^"]+?\.(jpe?g|gif|png|bmp))"/i);
+		var iUrl = pageData.match(/img src="(http:\/\/\d+\.\d+\.\d+\.\d+(:\d+)?\/(?:h|ehg)\/[^"]+?\.(jpe?g|gif|png|bmp))"/i);
 		if (!iUrl) iUrl = pageData.match(/img src="(http:\/\/\w+?\.hentaiverse\.net\/[^"]+?image\.php.+?)"/);
 		if (!iUrl) iUrl = pageData.match(/img src="(http:\/\/gu\.e-hentai\.org\/image\.php.+?)"/);
 		}
@@ -2202,6 +2225,26 @@
 <host id="girl-wallpapers">
 <urlpattern>^http:\/\/www\.girl-wallpapers\.com\/wallpaper-pics-wallpaper-\d+-.+\.html</urlpattern>
 <searchpattern>"ID: wallpaperimg"</searchpattern>
+</host>
+
+<host id="girlsgen">
+<urlpattern>^http:\/\/(?:www\.)?girlsgen\.com\/gallery\/[^\/]+\/[^\/]+\/[^\/]+?\d+\/$</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = {};
+	
+	var iUrl = pageData.match(/<a accesskey="v" href="([^"]+)">/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		}
+
+	return retVal;
+	}]]></searchpattern>
 </host>
 
 <host id="girlpits">
@@ -2425,6 +2468,27 @@
 <host id="hentaigif">
 <urlpattern>http:\/\/hentaigif\.net\/\?level=picture&amp;id=\d+</urlpattern>
 <searchpattern>"http:\/\/hentaigif\.net\/images\/.+\/.+\/.+"</searchpattern>
+</host>
+
+<host id="hitwgang">
+<urlpattern>^http:\/\/(?:www\.)hitwgang\.com\/hitwdb\/HITWView\?content=[^.]+\.(?!htm).+$</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = {};
+	
+	var iUrl = pageUrl.replace(/&mode=middle/,"");
+	
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl + "&mode=stream";
+		retVal.fileName = iUrl.match(/[^\/]+$/)[0];
+		retVal.status = "OK";
+		}
+	
+	return retVal;
+	}]]></searchpattern>
 </host>
 
 <host id="hochladen">
@@ -3145,7 +3209,23 @@
 
 <host id="imagetwist">
 <urlpattern>http:\/\/(?:www\.)?imagetwist\.com\/.+\/.+</urlpattern>
-<searchpattern>"class="pic""</searchpattern> 
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = {};
+	
+	var iUrl = pageData.match(/<img src="([^"]+)" class="pic" alt="([^"]+)"/);
+
+	if (!iUrl) {
+		retVal.imgUrl = null;
+		retVal.status = "ABORT";
+		}
+	else {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+		retVal.fileName = iUrl[2];
+		}
+
+	return retVal;
+	}]]></searchpattern> 
 </host>
 
 <host id="imageupper">
@@ -4839,6 +4919,11 @@
 <searchpattern>"ID: image"</searchpattern>
 </host>
 
+<host id="picturescream">
+<urlpattern>^http:\/\/(?:www\.)?picturescream\.com\/\?v=.+</urlpattern>
+<searchpattern>"REPLACE: '\?v=' , 'images/'"</searchpattern>
+</host>
+
 <host id="pictureshoster">
 <urlpattern>http:\/\/www\.pictureshoster\.com\/hosted-pictures\/jpg\/.+\.html</urlpattern> 
 <searchpattern>"REPLACE: 'hosted-pictures\\/jpg\\/(.+)\\.html','files/$1.jpg'"</searchpattern> 
@@ -4945,7 +5030,7 @@
 <searchpattern><![CDATA[function(pageData, pageUrl) {
 	var retVal = {};
 	
-	var iUrl = pageData.match(/<div class="image-show(?:.|\n)+?<img[^>]+src="(.+?)"/);
+	var iUrl = pageData.match(/<div class="image-show(?:.|\s)+?<img[^>]+src="([^"]+)"/);
 
 	if (!iUrl) {
 		retVal.imgUrl = null;
@@ -5570,7 +5655,7 @@
 
 <host id="share-image">
 <urlpattern>^http:\/\/www\.share-image\.com\/gallery\/.+</urlpattern>
-<searchpattern>"http:\\/\\/pictures\\.share-image\\.com\\/pictures\\/big\\/.+"</searchpattern>
+<searchpattern>"http:\/\/(?:pictures|www)\.share-image\.com\/pictures\/big\/.+"</searchpattern>
 </host>
 
 <host id="shareapic">
@@ -6035,6 +6120,11 @@
 <host id="supload">
 <urlpattern>^http:\/\/www\.supload\.(com|us)\/free\/</urlpattern>
 <searchpattern>"http:\\/\\/.+\\.supload\\.(com|us)\\/\\.\\/files"</searchpattern>
+</host>
+
+<host id="swagirl">
+<urlpattern>^http:\/\/((host)\.)?swagirl\.com\/(\2\/|image-)</urlpattern>
+<searchpattern>"class="img_full_screen""</searchpattern>
 </host>
 
 <host id="sweetandhotgirls">
@@ -6831,6 +6921,11 @@
 <searchpattern>"imgId\s*="</searchpattern>
 </host>
 
+<host id="xoze.in">
+<urlpattern>^http:\/\/xoze\.in\/\w+\/.+\.jpg\.html$</urlpattern>
+<searchpattern>"class="pic""</searchpattern>
+</host>
+
 <host id="xportalbiz">
 <urlpattern>^http:\/\/x-portal\.biz\/share.+</urlpattern>
 <searchpattern>"ID: iimg"</searchpattern>
@@ -6981,6 +7076,11 @@
 <host id="zimagez">
 <urlpattern>^http:\/\/www\.zimagez\.com\/zimage\/.+\.php</urlpattern>
 <searchpattern>"ID: userPic"</searchpattern>
+</host>
+
+<host id="zimbio">
+<urlpattern>^http:\/\/www\.zimbio\.com\/photos\/[^/]+/[^/]+\/\w+$</urlpattern>
+<searchpattern>"ID: currentPic"</searchpattern>
 </host>
 
 <host id="zonagay.com.br">
