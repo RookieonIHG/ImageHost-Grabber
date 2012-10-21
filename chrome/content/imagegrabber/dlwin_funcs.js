@@ -58,7 +58,7 @@ ihg_Functions.clearFromWin =  function clearFromWin(reqID, ignoreAutoClear) {
 
 	var containerItem = parentItem.parentNode;
 	if (containerItem.getAttribute("container")) {
-		if (parentItem.childNodes.length == 0) {
+		if (!parentItem.hasChildNodes()) {
 			setTimeout('ihg_Functions.clearFromWin("' + containerItem.id + '", true)', 1000);
 			}
 		}
@@ -88,7 +88,7 @@ ihg_Functions.addDownloadReqObjs = function addDownloadReqObjs(req_objs) {
 	
 	var treeRow = doc.createElement("treerow");
 	var treeCell0 = doc.createElement("treecell");
-	treeCell0.setAttribute("label", "Page " + req_objs[0].pageNum + " : " + req_objs.length + " Reqs");
+	treeCell0.setAttribute("label", ihg_Globals.strings.page + " " + req_objs[0].pageNum + " : " + req_objs.length + " Reqs");
 	var treeCell1 = doc.createElement("treecell");
 	treeCell1.setAttribute("label", ihg_Globals.docTitle);
 	var treeCell2 = doc.createElement("treecell");

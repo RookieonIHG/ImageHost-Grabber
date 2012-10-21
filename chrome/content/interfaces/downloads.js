@@ -237,7 +237,7 @@ function remove_child(back_space) {
 
 		var containerItem = parentItem.parentNode;
 		if (containerItem.getAttribute("container")) {
-			if (parentItem.childNodes.length == 0) {
+			if (!parentItem.hasChildNodes()) {
 				setTimeout('ihg_Functions.clearFromWin("' + containerItem.id + '", true)', 1000);
 				}
 			}
@@ -316,7 +316,7 @@ function clear_form() {
 
 			var containerItem = parentItem.parentNode;
 			if (containerItem.getAttribute("container")) {
-				if (parentItem.childNodes.length == 0) {
+				if (!parentItem.hasChildNodes()) {
 					setTimeout('ihg_Functions.clearFromWin("' + containerItem.id + '", true)', 1000);
 					}
 				}
