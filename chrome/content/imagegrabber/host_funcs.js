@@ -131,6 +131,16 @@ ihg_Functions.genericHostFunc = function genericHostFunc() {
 			req.requeue(newPageUrl);
 			return;
 		}
+		
+		if (retVal.status == "REDIRECT") {
+			if (this.channel.URI.spec == this.channel.originalURI.spec) {
+				req.abort("REDIRECTION failed...");
+				return;
+				}
+			var newPageUrl = this.channel.URI.spec;
+			req.requeue(newPageUrl);
+			return;
+		}
 	}
 
 	else if(typeof(req.regexp) == "string") {
@@ -144,23 +154,18 @@ ihg_Functions.genericHostFunc = function genericHostFunc() {
 			}
 		else if (req.regexp.match(/ID: .+/)) {
 			var the_url = ihg_Functions.getPicById(req);
-		}
+			}
 		else if (req.regexp.match(/REPLACE: .+/)) {
 			var tempMatch = req.regexp.match(/REPLACE: ('|")(.*)\1.*,.*('|")(.*)\3/);
 			var the_url = req.reqURL.replace( new RegExp(tempMatch[2]), tempMatch[4] );
-		}
-		else if (req.regexp.match(/^REDIRECT$/)) {
-			var newPageUrl = this.channel.URI.spec;
-			req.requeue(newPageUrl);
-			return;
-		}
+			}
 		else var the_url = ihg_Functions.getPicByRegExp(req);
 
 		if (!the_url) {
 			req.abort(ihg_Globals.strings.cant_find_image);
 			return;
+			}
 		}
-	}
 
 	else { throw "IHG error: the regexp value is not a string or function for " + req.uniqID; }
 
