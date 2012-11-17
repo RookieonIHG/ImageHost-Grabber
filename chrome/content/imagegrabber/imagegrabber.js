@@ -327,11 +327,15 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 
 		for (var j = 0; j < (ihg_Globals.suckMode?docLinks[i].length-1:docLinks[i].length); j++) {
 			// check to see if link has an embedded image tag
-			var isEmbedded = docLinks[i][j].match(/\[embeddedImg\](.+)/);
+			var isEmbedded = docLinks[i][j].match(/^\[embeddedImg\](.+)/);
 			
 			// gets rid of the anonymizers
 			var tmpMatch = unescape(docLinks[i][j]).match(/https?:\/\/.+(https?:\/\/.+)/);
-			if(tmpMatch) docLinks[i][j] = tmpMatch[1];
+			if (tmpMatch) {
+				if (docLinks[i][j].search(/^https?:\/\/[^/]*facebook\.com\//) == -1) {
+					docLinks[i][j] = tmpMatch[1];
+					}
+				}
 			
 			if (isEmbedded) var theHostToUse = { hostID : "Embedded Image" , maxThreads : 0, downloadTimeout : 0, hostFunc : "Embedded Image" };
 			else var theHostToUse = ihg_Functions.getHostToUse(docLinks[i][j]);
