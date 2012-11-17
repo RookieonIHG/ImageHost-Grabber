@@ -76,6 +76,8 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 			// For gifs, the first six bytes are 4749 4638 3761 or 4749 4638 3961
 			// Who in their right mind would be downloading gifs?
 			else if (shitty.search(/^\x47\x49\x46\x38(?:\x37|\x39)\x61/) >= 0) this.fileGood = "yes";
+			// For avis, the first bytes are 52 49 46 46 xx xx xx xx 41 56 49 20 4C 49 53 54
+			else if (shitty.search(/^\x52\x49\x46\x46[\x00-\xff]{4}\x41\x56\x49\x20\x4c\x49\x53\x54/) >= 0) this.fileGood = "yes";
 			// For flvs, the first three bytes are 464C56 (FLV)
 			else if (shitty.search(/^\x46\x4C\x56/) >= 0) this.fileGood = "yes";
 			// For icon files, the first four bytes are 0000 0100

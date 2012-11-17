@@ -118,24 +118,19 @@ HostFileService.prototype = {
 	}
 
 function sortHosts() {
-	var tmpList = new Array();
-
-	for (var i = 0; i < hostfile_Globals.hosts.length; i++)
-		tmpList[i] = hostfile_Globals.hosts[i].getAttribute("id");
-
-	tmpList = tmpList.sort();
+	var tmpList = Array.map(hostfile_Globals.hosts, function(host) {return host.getAttribute("id")}).sort();
 
 	for (var i = 0; i < tmpList.length; i++) {
 		for (var j = 0; j < hostfile_Globals.hosts.length; j++) {
 			if (tmpList[i] == hostfile_Globals.hosts[j].getAttribute("id")) {
-				tmpList[i] = hostfile_Globals.hosts[j].cloneNode(true);
+				tmpList[i] = hostfile_Globals.hosts[j];
 				break;
 				}
 			}
 		}
 
 	for (var i = 0; i < tmpList.length; i++) {
-		hostfile_Globals.hFile.firstChild.replaceChild(tmpList[i], hostfile_Globals.hosts[i]);
+		hostfile_Globals.hFile.firstChild.appendChild(tmpList[i]);
 		}
 	}
 
@@ -185,13 +180,13 @@ function initWindow2() {
 					"\\n\\t\\n\\t\\/\\/ Insert your code hereunder to build the target URL\\n\\t\\/\\/ Acceptable values for retVal.status are: \\"OK\\", \\"ABORT\\", \\"RETRY\\" or \\"REQUEUE\\"" + \
 					"\\n\\t\\n\\tvar iUrl = ...;\\n\\t\\n\\tif (!iUrl) {\\n\\t\\tretVal.imgUrl = null;\\n\\t\\tretVal.status = \\"ABORT\\";" + \
 					"\\n\\t\\t}\\n\\telse {\\n\\t\\tretVal.imgUrl = iUrl;\\n\\t\\tretVal.status = \\"OK\\";\\n\\t\\t}\\n\\t\\n\\treturn retVal;\\n\\t}"']]
-	 .forEach(function(sType) {
-		var newElem = searchType.appendItem(sType[0]);
+	 .forEach(function([label, searchPat]) {
+		var newElem = searchType.appendItem(label);
 		var thecommand = "var maxthreads = (document.getElementById(\"cb_hostMaxThreads\").checked ? document.getElementById(\"tb_hostMaxThreads\").value : 0); \
 							var uPat = document.getElementById(\"tb_urlPattern\").value; \
 							var maxThreads_LineCode = (maxthreads == 0 ? '' : '\\n\\tif (ihg_Globals.appName == \"ImageHost Grabber\") ihg_Globals.maxThreads = ' + maxthreads + ';\\n\\t'); \
 							if (!uPat) uPat = '...'; \
-							document.getElementById(\"tb_searchPattern\").value = " + sType[1] + ";";
+							document.getElementById(\"tb_searchPattern\").value = " + searchPat + ";";
 		newElem.setAttribute("oncommand", thecommand);
 		});
 
@@ -320,7 +315,10 @@ function fillTBs(idx) {
 	document.getElementById("but_delHost").disabled = false;
 
 	// document.getElementById("searchType").setAttribute("label", "Select...");
-	with (document.getElementById("searchType")) setAttribute("label", getAttribute("_label"));
+	with (document.getElementById("searchType")) {
+		value = "-1";
+		setAttribute("label", getAttribute("_label"));
+		}
 	}
 
 function updateHostFile() {
@@ -508,24 +506,19 @@ function mergeHostFile(onlineXML) {
 
 	var mergHosts = mergFile.getElementsByTagName("host");
 
-	var tmpList = new Array();
-
-	for (var i=0; i < mergHosts.length; i++)
-		tmpList[i] = mergHosts[i].getAttribute("id");
-
-	tmpList = tmpList.sort();
+	var tmpList = Array.map(mergHosts, function(host) {return host.getAttribute("id")}).sort();
 
 	for (var i = 0; i < tmpList.length; i++) {
 		for (var j = 0; j < mergHosts.length; j++) {
 			if (tmpList[i] == mergHosts[j].getAttribute("id")) {
-				tmpList[i] = mergHosts[j].cloneNode(true);
+				tmpList[i] = mergHosts[j];
 				break;
 				}
 			}
 		}
 
 	for (var i = 0; i < tmpList.length; i++)
-		mergFile.firstChild.replaceChild(tmpList[i], mergHosts[i]);
+		mergFile.firstChild.appendChild(tmpList[i]);
 
 	var overWriteMode = confirm(ihg_Globals.strings.overwrite_mode);
 			
@@ -564,8 +557,10 @@ function resetHostFileLoc() {
 
 
 function resetTextBoxes() {
-	// document.getElementById("theList").setAttribute("label", ihg_Globals.strings.select_host);
-	with (document.getElementById("theList")) setAttribute("label", getAttribute("_label"));
+	with (document.getElementById("theList")) {
+		value = "-1";
+		setAttribute("label", getAttribute("_label"));
+		}
 	document.getElementById("tb_hostLabel").value = "";
 	document.getElementById("cb_hostMaxThreads").checked = false;
 	document.getElementById("tb_hostMaxThreads").disabled = true;
@@ -581,6 +576,8 @@ function resetTextBoxes() {
 	document.getElementById("but_addHost").disabled = false;
 	document.getElementById("but_delHost").disabled = true;
 	
-	// document.getElementById("searchType").setAttribute("label", "Select...");
-	with (document.getElementById("searchType")) setAttribute("label", getAttribute("_label"));
+	with (document.getElementById("searchType")) {
+		value = "-1";
+		setAttribute("label", getAttribute("_label"));
+		}
 	}

@@ -85,7 +85,7 @@ ihg_Globals.minFileSize = null;
 
 ihg_Globals.cacheDLWin = null;
 
-ihg_Globals.lastHost = { hostID : null, maxThreads : null, urlPattern : null , searchPattern : null };
+ihg_Globals.lastHost = { hostID : null, maxThreads : null, downloadTimeout : null, urlPattern : null, searchPattern : null };
 
 // Keep the forum styles in memory to prevent constantly reading from disk
 ihg_Globals.forums = null;

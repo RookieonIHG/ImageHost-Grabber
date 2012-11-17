@@ -31,7 +31,7 @@ ihg_Functions.getLinks = function getLinks(sometext) {
 
 	var re;
 	if (!ihg_Globals.downloadEmbeddedImages) re = new RegExp("<a.+?>", "ig");
-	else re = new RegExp("(<a.+?>)|(<img.+?>)", "ig");
+	else re = new RegExp("<(?:a|img).+?>", "ig");
 
 	var filtered = sometext.replace(/\r?\n/g, " ");
 	filtered = filtered.match(re);
@@ -39,7 +39,7 @@ ihg_Functions.getLinks = function getLinks(sometext) {
 	var theLinks = new Array();
 	var caca = new Array();
 	ihg_Functions.LOG("In " + myself + ", fixing to find the links.\n");
-	re = new RegExp("&amp;", "ig");
+	// re = new RegExp("&amp;", "ig");
 	for (var j = 0; j < filtered.length; j++) {
 		if (filtered[j]) {
  			if (!ihg_Globals.downloadEmbeddedImages) theLinks[j] = filtered[j].match(/href\s*=\s*('|").+?\1/i);
@@ -49,7 +49,7 @@ ihg_Functions.getLinks = function getLinks(sometext) {
 				else var isEmbedded = false;
 				theLinks[j] = theLinks[j][0].split(/(?:href|src)\s*=\s*/i);
 				theLinks[j][1] = theLinks[j][1].replace(/["']/g, "");
-				theLinks[j][1] = theLinks[j][1].replace(re, '&');
+				theLinks[j][1] = theLinks[j][1].replace(/&amp;/ig, '&');
 				if (ihg_Globals.downloadEmbeddedImages && isEmbedded) caca.push("[embeddedImg]" + theLinks[j][1]);
 				else caca.push(theLinks[j][1]);
 				}
@@ -73,21 +73,16 @@ ihg_Functions.getImgSrcById = function getImgSrcById(sometext, theID){
 
 	var theLinks = new Array();
 		
-	var re = new RegExp("id\\s*=\\s*(\"|')?" + theID + "\\1?\\s");
+	var re = new RegExp("id\\s*=\\s*(\"|')?" + theID + "\\1[\\s>]");
 
-	var re2 = new RegExp("&amp;", "ig");
 	ihg_Functions.LOG("In " + myself + ", fixing to find the image.\n");
 	if (filtered) {
 		for (var j = 0; j < filtered.length; j++) {
 			if (filtered[j]) {
-				if (filtered[j].match(re)) {
-				theLinks[j] = filtered[j].match(/src\s*=\s*("|').+?\1/i);
-				if (!theLinks[j]) theLinks[j] = filtered[j].match(/src\s*=\s*.+?(?=\s|>)/i);
+				if (re.test(filtered[j])) {
+					theLinks[j] = filtered[j].match(/src\s*=\s*("|')?(.+?)\1[\s>]/i);
 					if (theLinks[j]) {
-						theLinks[j] = theLinks[j][0].split(/src\s*=\s*/i);
-						theLinks[j][1] = theLinks[j][1].replace(/["']/g, "");
-						theLinks[j][1] = theLinks[j][1].replace(re2, '&');
-						var caca = theLinks[j][1];
+						var caca = theLinks[j][2].replace(/&amp;/ig, '&');
 						}
 					}
 				}
@@ -141,20 +136,16 @@ ihg_Functions.getImgSrcFromTag = function getImgSrcFromTag(sometext){
 
 	var filtered = sometext;
 	
-	re = new RegExp("&amp;", "ig");
 	ihg_Functions.LOG("In " + myself + ", fixing to find the image.\n");
 	if (filtered) {
-		var theSrc = filtered.match(/src\s*=\s*("|').+?\1/i);
-		if (!theSrc) theSrc = filtered.match(/src\s*=\s*.+?(?=\s|>)/i);
+		var theSrc = filtered.match(/src\s*=\s*("|')?(.+?)\1[\s>]/i);
 		if (theSrc) {
-			theSrc = theSrc[0].split(/src\s*=\s*/i);
-			theSrc[1] = theSrc[1].replace(/["']/g, "");
-			theSrc[1] = theSrc[1].replace(re, '&');
+			theSrc[2] = theSrc[2].replace(/&amp;/ig, '&');
 		}
 	}
 
 	ihg_Functions.LOG("In " + myself + ", theSrc is equal to: " + theSrc + "\n");	
-	if (theSrc) return theSrc[1];
+	if (theSrc) return theSrc[2];
 	else return null;
 }
 

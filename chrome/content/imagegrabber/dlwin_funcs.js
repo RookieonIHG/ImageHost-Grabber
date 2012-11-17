@@ -56,6 +56,89 @@ ihg_Functions.clearFromWin =  function clearFromWin(reqID, ignoreAutoClear) {
 		}
 	catch(e) {}
 
+	var containerItem = parentItem.parentNode;
+	if (containerItem.getAttribute("container")) {
+		if (!parentItem.hasChildNodes()) {
+			setTimeout('ihg_Functions.clearFromWin("' + containerItem.id + '", true)', 1000);
+			}
+		}
+	
+	ihg_Functions.LOG("Exiting " + myself + "\n");
+}
+
+
+ihg_Functions.addDownloadReqObjs = function addDownloadReqObjs(req_objs) {
+	if (!req_objs || req_objs.length == 0) return;
+
+	var ig_dl_win_obj = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
+	ig_dl_win = ig_dl_win_obj.getWindowByName("ig-dl_win", null);
+	if (!ig_dl_win) return;
+
+	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+	ihg_Functions.LOG("Entering " + myself + "\n");
+
+	var doc = ig_dl_win.document;
+
+	var outBox = doc.getElementById("outBox");
+	
+	var treeItem = doc.createElement("treeitem");
+	treeItem.setAttribute("id", "page_" + (Math.floor(1e9 * (1 + Math.random()))).toString().substring(1));
+	treeItem.setAttribute("container", "true");
+	treeItem.setAttribute("open", "true");
+	
+	var treeRow = doc.createElement("treerow");
+	var treeCell0 = doc.createElement("treecell");
+	treeCell0.setAttribute("label", ihg_Globals.strings.page + " " + req_objs[0].pageNum + " : " + req_objs.length + " Reqs");
+	var treeCell1 = doc.createElement("treecell");
+	treeCell1.setAttribute("label", ihg_Globals.docTitle);
+	var treeCell2 = doc.createElement("treecell");
+	var treeCell3 = doc.createElement("treecell");
+	treeRow.appendChild(treeCell0);
+	treeRow.appendChild(treeCell1);
+	treeRow.appendChild(treeCell2);
+	treeRow.appendChild(treeCell3);
+	treeItem.appendChild(treeRow);
+
+	var treeChildren = doc.createElement("treechildren");
+	for (var i = 0; i < req_objs.length; i++) {
+		let treeItem = doc.createElement("treeitem");
+		treeItem.setAttribute("id", req_objs[i].uniqID);
+		
+		let treeRow = doc.createElement("treerow");
+		
+		let treeCell0 = doc.createElement("treecell");
+		let m = req_objs[i].curLinkNum + 1;
+		let page_stat = ihg_Globals.strings.page + " " + req_objs[i].pageNum + ": " + m + " " + ihg_Globals.strings.of + " " + req_objs[i].totLinkNum;
+		treeCell0.setAttribute("label", page_stat);
+		treeCell0.setAttribute("id", "page_stat_" + req_objs[i].uniqID);
+		
+		let treeCell1 = doc.createElement("treecell");
+		treeCell1.setAttribute("label", req_objs[i].reqURL);
+		treeCell1.setAttribute("id", "fname_" + req_objs[i].uniqID);
+
+		let treeCell2 = doc.createElement("treecell");
+		treeCell2.setAttribute("mode", "normal");
+		if (req_objs[i].maxProgress > 0) treeCell2.setAttribute("value", String(100 * (req_objs[i].curProgress / req_objs[i].maxProgress)))
+		else treeCell2.setAttribute("value", "0");
+		treeCell2.setAttribute("id", "prog_met_" + req_objs[i].uniqID);
+		
+		let treeCell3 = doc.createElement("treecell");
+		treeCell3.setAttribute("label", req_objs[i].status ? req_objs[i].status : ihg_Globals.strings.waiting);
+		treeCell3.setAttribute("id", "stat_text_" + req_objs[i].uniqID);
+		
+		treeRow.appendChild(treeCell0);
+		treeRow.appendChild(treeCell1);
+		treeRow.appendChild(treeCell2);
+		treeRow.appendChild(treeCell3);
+		
+		treeItem.appendChild(treeRow);
+
+		treeChildren.appendChild(treeItem);
+	}
+	treeItem.appendChild(treeChildren);
+	
+	outBox.appendChild(treeItem);
+
 	ihg_Functions.LOG("Exiting " + myself + "\n");
 }
 

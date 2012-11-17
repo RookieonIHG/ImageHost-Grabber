@@ -40,7 +40,7 @@
  */
 ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 	ihg_Functions.LOG("Entering function hostGrabber.\n");
-	if(!docLinks) {
+	if (!docLinks) {
 		ihg_Globals.strbundle = document.getElementById("imagegrabber-strings");
 		ihg_Functions.read_locale_strings();
 	
@@ -60,7 +60,7 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 		docLinks[ihg_Globals.firstPage] = new Array();
 		thumbLinks[ihg_Globals.firstPage] = new Array();
 		
-		ihg_Functions.getLinksAndImages(content, docLinks, thumbLinks);	
+		ihg_Functions.getLinksAndImages(content, docLinks, thumbLinks);
 		}
 	ihg_Functions.LOG("In hostGrabber, docLinks is equal to: " + docLinks.toSource() + "\n");
 
@@ -97,7 +97,7 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 	else {
 		if (ig_dl_win.req_objs) {
 			var new_array = Array.concat(ig_dl_win.req_objs, tmp_req_objs);
-			for(var i=0; i < new_array.length; i++)	new_array[new_array[i].uniqID] = new_array[i];
+			for (var i=0; i < new_array.length; i++) new_array[new_array[i].uniqID] = new_array[i];
 			delete ig_dl_win.req_objs;
 			new_array = ihg_Functions.setUpLinkedList(new_array);
 			ig_dl_win.req_objs = new_array;
@@ -124,20 +124,20 @@ ihg_Functions.getLinksAndImages = function getLinksAndImages(content, docLinks, 
 		
 		var thumbnail = null;
 		for (var a = 0; a < someNode.childNodes.length; a++) {
- 			var someTagName = someNode.childNodes[a].tagName;
-  			if (someTagName) {
- 				if (someTagName.search(/img/i) >= 0) {
+			var someTagName = someNode.childNodes[a].tagName;
+			if (someTagName) {
+				if (someTagName.search(/img/i) >= 0) {
 					thumbnail = { src:someNode.childNodes[a].src,
 								width:someNode.childNodes[a].naturalWidth,
 								height:someNode.childNodes[a].naturalHeight };
- 					break;
- 					}
- 				}
-  			}
+					break;
+					}
+				}
+			}
 			thumbLinks[ihg_Globals.firstPage].push(thumbnail);
 		}
 			
- 	if (ihg_Globals.downloadEmbeddedImages) {
+	if (ihg_Globals.downloadEmbeddedImages) {
 		var imgs = content.document.images;
 		for (var q = 0; q < imgs.length; q++) {
 			if (imgs[q].naturalHeight >= ihg_Globals.minEmbeddedHeight && imgs[q].naturalWidth >= ihg_Globals.minEmbeddedWidth) {
@@ -145,8 +145,8 @@ ihg_Functions.getLinksAndImages = function getLinksAndImages(content, docLinks, 
 				docLinks[ihg_Globals.firstPage].push("[embeddedImg]" + imgs[q].src);
 				thumbLinks[ihg_Globals.firstPage].push({ src:imgs[q].src, width:imgs[q].naturalWidth, height:imgs[q].naturalHeight });
 				}
- 			}
- 		}
+			}
+		}
 
 	if (content.frames) {
 		for (var q = 0; q < content.frames.length; q++) {
@@ -167,10 +167,8 @@ ihg_Functions.finishUp = function finishUp(req_objs) {
 	// This means it found no links
 	if (req_objs.length == 0) return;
 
-	for(var i = 0; i < req_objs.length; i++) {
-		var m = req_objs[i].curLinkNum + 1;
-		var page_stat = ihg_Globals.strings.page + " " + req_objs[i].pageNum + ": " + m + " " + ihg_Globals.strings.of + " " + req_objs[i].totLinkNum;
-		ihg_Functions.addDownloadProgress(page_stat, req_objs[i].uniqID, req_objs[i].reqURL, ihg_Globals.strings.waiting);
+	for (var pageIndex = ihg_Globals.firstPage; pageIndex <= ihg_Globals.lastPage; pageIndex++) {
+		ihg_Functions.addDownloadReqObjs(req_objs.filter(function (element) (element.pageNum == pageIndex)));
 		}
 
 	ihg_Functions.setFocus();
@@ -198,12 +196,7 @@ ihg_Functions.showDLWin = function showDLWin(fileName) {
 			ig_dl_win.req_objs = req_objs;
 
 			ig_dl_win.onload = function () {
-				for(var i = 0; i < req_objs.length; i++) {
-					var m = req_objs[i].curLinkNum + 1;
-					var page_stat = ihg_Globals.strings.page + " " + req_objs[i].pageNum + ": " + m + " " + ihg_Globals.strings.of + " " + req_objs[i].totLinkNum;
-					ihg_Functions.addDownloadProgress(page_stat, req_objs[i].uniqID, req_objs[i].reqURL, req_objs[i].status);
-					ihg_Functions.updateDownloadProgress(null, req_objs[i].uniqID, null, (req_objs[i].curProgress / req_objs[i].maxProgress) * 100, null);
-				}
+				ihg_Functions.addDownloadReqObjs(req_objs);
 
 				ihg_Functions.setFocus();
 			};
@@ -226,8 +219,8 @@ ihg_Functions.getDLCache = function getDLCache(fileName) {
 		var cacheDir =  Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
 		
 		cacheDir.append("ihg_cache");
-		if (!cacheDir.exists() || !cacheDir.isDirectory()) { 
-			cacheDir.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);  
+		if (!cacheDir.exists() || !cacheDir.isDirectory()) {
+			cacheDir.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
 			}
 		
 		if (fileName) {
@@ -246,6 +239,8 @@ ihg_Functions.getDLCache = function getDLCache(fileName) {
 		if (rv == nsIFilePicker.returnCancel) return null;
 		target = fp.file.path;
 	}
+
+	ihg_Globals.docTitle = target;
 	
 	var dlCache = new ihg_Functions.dlWinCacheService(target);
 	var cacheDoc = dlCache.getCache();
@@ -256,7 +251,7 @@ ihg_Functions.getDLCache = function getDLCache(fileName) {
 	for (var h = 0; h < reqList.length; h++) {
 		req_objs[h] = new ihg_Functions.requestObj();
 		var props = reqList[h].getElementsByTagName("prop");
-		for (var i = 0; i < props.length; i++) { 
+		for (var i = 0; i < props.length; i++) {
 			var propType = props[i].getAttribute("type");
 
 			var propName = props[i].getAttribute("id");
@@ -406,10 +401,10 @@ ihg_Functions.setUpReq = function setUpReq(objLinks) {
 	var temp_array = new Array();
 	var count = 0;
 
-	for(var i = ihg_Globals.firstPage; i <= ihg_Globals.lastPage; i++) {
+	for (var i = ihg_Globals.firstPage; i <= ihg_Globals.lastPage; i++) {
 		var fName = ihg_Functions.getFormattedDate();
 
-		for(var j = 0; j < objLinks.links[i].length; j++) {
+		for (var j = 0; j < objLinks.links[i].length; j++) {
 			var inner_link = objLinks.links[i][j];
 			var dir_save = objLinks.dirSave[i][j];
 			var host_ID = objLinks.hostID[i][j];
@@ -434,7 +429,6 @@ ihg_Functions.setUpReq = function setUpReq(objLinks) {
 			req.totLinkNum = objLinks.links[i].length;
 			req.uniqFN_prefix = fName;
 			req.minFileSize = ihg_Globals.minFileSize;
-			
 
 			//if (inner_link.match(/boxtheclown/)) req.init = boxclown_init;
 
@@ -470,7 +464,7 @@ ihg_Functions.setUpReq = function setUpReq(objLinks) {
 ihg_Functions.setUpLinkedList = function setUpLinkedList(req_objs) {
 	var lastObj = req_objs.length - 1;
 
-	for(var i = 0; i < req_objs.length; i++) {
+	for (var i = 0; i < req_objs.length; i++) {
 		if (i == 0) req_objs[i].previousRequest = null;
 		else req_objs[i].previousRequest = req_objs[i-1];
 
