@@ -252,7 +252,7 @@ ihg_Functions.getHostToUse = function getHostToUse(innerLink) {
 				}
 			// Otherwise, return the value as a string, minus the surrounding quotes and
 			// the double back-slashes.  The surrounding quotes and double back-slashes were
-			// originally used so the eval statemnt would interpret the data properly.  Now
+			// originally used so the eval statement would interpret the data properly.  Now
 			// they are useless, but they will be kept for compatibility purposes.
 			else {
 				retval = tempThing.match(/\"(.+)"/)[1].replace(/\\\\/g, '\\');
@@ -271,6 +271,23 @@ ihg_Functions.getHostToUse = function getHostToUse(innerLink) {
 			break;
 			}
 		}
+
+	if (!retval && matches) {
+		var HostIDval = null;
+		for (let FileType in ihg_Globals.LinksByFileExt) {
+			ihg_Globals.LinksByFileExt[FileType].forEach(function([Name,patt,SOI]) {
+				var uPat = new RegExp("^https?:\\/\\/[^/]+\\/[^?]+\\.(?:" + patt + ")$", "i");
+				if (uPat.test(innerLink)) {
+					HostIDval = Name + " " + FileType;
+					}
+				});
+			};
+		if (HostIDval) {
+			retval = new Function("pageData", "pageUrl", "{return {imgUrl: pageUrl, status: \"OK\"};}");
+			return { hostID : HostIDval , maxThreads : 0 , downloadTimeout : 0 , hostFunc : retval };
+			}
+		}
+
     //We don't have a rule to handle this host
     //It must be added to the unknownHosts_list (if it isn't in the exceptions_list)
     if (!retval) {
@@ -303,6 +320,7 @@ ihg_Functions.createExceptionsList = function createExceptionsList() {
 	ihg_Globals.exceptions_list = new Array();
 	ihg_Globals.exceptions_list.push(new Array());
 	ihg_Globals.exceptions_list.push(new Array());
+	let [RegExps_List, Domains_List] = ihg_Globals.exceptions_list;
 	
 	for (var i = 0; i < ihg_Globals.hosts_list.length; i++) {
 		var uPat = ihg_Globals.hosts_list[i].getElementsByTagName("urlpattern")[0].textContent;
@@ -313,16 +331,24 @@ ihg_Functions.createExceptionsList = function createExceptionsList() {
 		var domain = parts[parts.length-2];
 
 		if (!domain) {
-			ihg_Globals.exceptions_list[0].push(new RegExp(uPat));
+			RegExps_List.push(new RegExp(uPat));
 			}
-		else {		
+		else {
 			if (domain.match(/(?:^(?:org|com?|net)\\)|(?:\?:)/)) domain = parts[parts.length-3];
 			domain = domain.replace(/^\)\??/, "");
 			domain = domain.replace(/\\$/, "");
 			domain = domain.replace(/[\+\*]/g, "");
 			domain += ".";
 
-			ihg_Globals.exceptions_list[1].push(domain);
+			if (Domains_List.indexOf(domain) < 0) {
+				Domains_List.push(domain);
+				}
 			}
 		}
+
+	var ext_patt = [];
+	for (let FileType in ihg_Globals.LinksByFileExt) {
+		ext_patt.push(ihg_Globals.LinksByFileExt[FileType].map(function([Name,patt,SOI]){return patt}).join("|"));
+		};
+	RegExps_List.push(new RegExp("^https?:\\/\\/[^/]+\\/[^?]+\\.(?:" + ext_patt.join("|") + ")$", "i"));
 	}

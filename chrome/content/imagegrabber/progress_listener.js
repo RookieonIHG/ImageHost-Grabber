@@ -24,7 +24,7 @@
 
 /* ihg_ProgressListener class:  This is the stream listener class for the channels used to download
 * our files.  It is primarily responsible for sending the downloaded chunks to the corresponding
-* files as the data becomes availble.  Also, It is primarily responsible for monitoring the status 
+* files as the data becomes available.  Also, It is primarily responsible for monitoring the status 
 * and progress of our downloads.
 * 
 * aBuffer is a buffered output stream to the corresponding file.  It should be an implementation
@@ -65,7 +65,7 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 			var shitty = this.bis.readBytes(count);			
 
 			this.fileContents = shitty;
-
+/*
 			// For jpegs, the first two bytes are the start of image (SOI) marker.
 			// the SOI marker is FFD8
 			if (shitty.search(/^\xFF\xD8/) >= 0) this.fileGood = "yes";
@@ -89,7 +89,18 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 			else if (shitty.search(/^\x00{3}\x1c\x66\x74\x79\x70(?:\x6D\x70\x34\x32|\x33\x67\x70\x35|\x69\x73\x6F\x6D|\x46\x41\x43\x45)/) >= 0) this.fileGood = "yes";
 			
 			else this.fileGood = "no";
-		}
+*/
+			var fileGood = false;
+			for (let FileType in ihg_Globals.LinksByFileExt) {
+				if (fileGood) break;
+				ihg_Globals.LinksByFileExt[FileType].forEach(function([Name,patt,SOI]){
+					if (SOI.test(shitty)) {
+						fileGood = true;
+						};
+					});
+				};
+			this.fileGood = (fileGood ? "yes" : "no");
+			}
 		catch(e) { this.fileGood = "yes"; }
 
 		stream.close();

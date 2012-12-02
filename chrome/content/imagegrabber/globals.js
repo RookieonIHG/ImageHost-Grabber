@@ -77,6 +77,17 @@ ihg_Globals.hostFileLoc = null;
 ihg_Globals.hosts_list = null;
 ihg_Globals.unknownHosts_list = new Array();
 ihg_Globals.exceptions_list = null;
+ihg_Globals.LinksByFileExt = {
+	Image: [["Bitmap",	"bmp",				/^\x42\x4D/],
+			["GIF",		"gif",				/^\x47\x49\x46\x38[\x37\x39]\x61/],
+			["Icon",	"ico",				/^\x00\x00\x01\x00/],
+			["JPEG",	"jp(?:eg|[eg])",	/^\xFF\xD8\xFF/],
+			["PNG",		"png",				/^\x89\x50\x4E\x47/]],
+	Video: [["AVI",		"avi",				/^\x52\x49\x46\x46[\x00-\xFF]{4}\x41\x56\x49\x20\x4C\x49\x53\x54/],
+			["FLV",		"flv",				/^\x46\x4C\x56/],
+			["MPEG-4",	"mp4|m4v",			/^\x00{3}\x1C\x66\x74\x79\x70(?:\x6D\x70\x34\x32|\x33\x67\x70\x35|\x69\x73\x6F\x6D|\x46\x41\x43\x45)/],
+			["SWF",		"swf",				/^[\x43\x46]\x57\x53/]]
+	};
 
 ihg_Globals.downloadEmbeddedImages = null;
 ihg_Globals.minEmbeddedHeight = null;
