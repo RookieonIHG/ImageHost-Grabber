@@ -22,6 +22,11 @@
  ***************************  End of GPL Block *******************************/
 
 
+var extregexp = [];
+for (let propName in ihg_Globals.LinksByFileExt) {
+	extregexp.push(ihg_Globals.LinksByFileExt[propName].map(function([Name,patt,SOI]){return patt}).join("|"));
+	};
+var FileEXT = "\\.(?:" + extregexp.join("|") + ")$";
 
 
 
@@ -185,7 +190,7 @@ ihg_Functions.generateFName = function generateFName(reqObj, URLFile) {
 		// If the picture URL is actually a script with some extra stuff at
 		// the end (that stuff should uniquely identify the image, hopefully)
 		// then we'll use the extra stuff as identifying data for the filename.
-		if (pic_url.fileName.match(/(?:jpg|jpeg|swf|bmp|gif|png|avi|flv|ico|mp4|m4v)$/i)) var displayName = pic_url.fileName;
+		if (new RegExp(FileEXT,"i").test(pic_url.fileName)) var displayName = pic_url.fileName;
 		// nsIURL.param was removed in Gecko 9.0
 		//else if (pic_url.param) var displayName = pic_url.fileName + pic_url.param;
 		else if (pic_url.query) var displayName = pic_url.fileName + pic_url.query;
@@ -194,7 +199,7 @@ ihg_Functions.generateFName = function generateFName(reqObj, URLFile) {
 		}
 
 	if (displayName) {
-		if (!displayName.match(/(?:jpg|jpeg|swf|bmp|gif|png|avi|flv|ico|mp4|m4v)$/i))
+		if (!new RegExp(FileEXT,"i").test(displayName))
 			displayName += ".jpg";
 		}
 
@@ -368,11 +373,11 @@ ihg_Functions.cutFName = function cutFName(fname) {
 	var result = fname;
 
 	// the regex splits the full file name into the main file name and the extension
-	var tempVar = result.match(/(.+)\.(jpg|jpeg|swf|bmp|gif|png|avi|flv|ico|mp4|m4v)$/i);
+	var tempVar = result.match(new RegExp("(.+)(" + FileEXT + ")","i"));
 
 	// if the main file name is longer than maxLength chars, then shorten it
 	if(tempVar[1].length > maxLength)
-		result = tempVar[1].substring(0, maxLength-4) + Math.random().toString().substring(2,6) + "." + tempVar[2];
+		result = tempVar[1].substring(0, maxLength-4) + Math.random().toString().substring(2,6) + tempVar[2];
 
 	return result;
 }
