@@ -144,7 +144,7 @@ ihg_Functions.genericHostFunc = function genericHostFunc() {
 	}
 
 	else if(typeof(req.regexp) == "string") {
-		if (req.regexp.match(/Embedded Image/)) {
+		if (req.regexp.match(/^(?:Embedded Image|Link2File)$/)) {
 			var the_url = req.reqURL;
 			// By default, the doStartDownload function uses the "reqURL" property as the
 			// referring url.  For embedded images, we're going to change this to the
@@ -283,25 +283,26 @@ ihg_Functions.getHostToUse = function getHostToUse(innerLink) {
 				});
 			};
 		if (HostIDval) {
-			retval = new Function("pageData", "pageUrl", "{return {imgUrl: pageUrl, status: \"OK\"};}");
-			return { hostID : HostIDval , maxThreads : 0 , downloadTimeout : 0 , hostFunc : retval };
+			// retval = new Function("pageData", "pageUrl", "{return {imgUrl: pageUrl, status: \"OK\"};}");
+			// return { hostID : HostIDval , maxThreads : 0 , downloadTimeout : 0 , hostFunc : retval };
+			return { hostID : HostIDval , maxThreads : 0 , downloadTimeout : 0 , hostFunc : "Link2File" };
 			}
 		}
 
-    //We don't have a rule to handle this host
-    //It must be added to the unknownHosts_list (if it isn't in the exceptions_list)
-    if (!retval) {
-        var urlBase = innerLink.match(/(^https?:\/\/.+?)\//);
-        if (urlBase) urlBase = urlBase[1];
-        else urlBase = innerLink;
-        
-        for (var i = 0; i < ihg_Globals.exceptions_list[1].length; i++) {
-            if (urlBase.indexOf(ihg_Globals.exceptions_list[1][i]) >= 0) return null;
+	//We don't have a rule to handle this host
+	//It must be added to the unknownHosts_list (if it isn't in the exceptions_list)
+	if (!retval) {
+		var urlBase = innerLink.match(/(^https?:\/\/.+?)\//);
+		if (urlBase) urlBase = urlBase[1];
+		else urlBase = innerLink;
+
+		for (var i = 0; i < ihg_Globals.exceptions_list[1].length; i++) {
+			if (urlBase.indexOf(ihg_Globals.exceptions_list[1][i]) >= 0) return null;
 			}
 
-        ihg_Globals.unknownHosts_list.push(urlBase);
+		ihg_Globals.unknownHosts_list.push(urlBase);
 		}
-	
+
 	if (retval) return { hostID : ihg_Globals.lastHost.hostID , maxThreads : ihg_Globals.lastHost.maxThreads , downloadTimeout : ihg_Globals.lastHost.downloadTimeout , hostFunc : retval };
 	else return null;
 	}
