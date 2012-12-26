@@ -20,17 +20,22 @@
 <keyset>
 	<key id="setAllTrue_cmd" key="A" modifiers="accel" oncommand="doSetAll('true');"/>
 	<key id="setAllFalse_cmd" key="C" modifiers="accel" oncommand="doSetAll('false');"/>
-	<key id="invertSelection_cmd" key="I" modifiers="accel" oncommand="doInvertSelection();"/>
+	<!-- <key id="invertSelection_cmd" key="I" modifiers="accel" oncommand="doInvertSelection();"/> -->
+	<key id="invertSelection_cmd" key="I" modifiers="accel" oncommand="doSetAll('toggle');"/>
 	<key id="toggle_cmd" key=" " oncommand="applyCmd('toggle');"/>
 	<key id="openReqUrls_cmd" keycode="VK_RETURN" modifiers="accel" oncommand="applyCmd('open');"/>
 </keyset>
 
 <menupopup id="filter_menu">
-  <menuitem label="&check;" onclick="applyCmd('true');"/>
-  <menuitem label="&uncheck;" onclick="applyCmd('false');"/>
-  <menuitem label="&toggle;" onclick="applyCmd('toggle');" key="toggle_cmd"/>
-  <!--<menuseparator />
-  <menuitem label="Open link in new window" onclick="applyCmd('open');" key="openReqUrls_cmd"/>-->
+	<menuitem label="&check;" onclick="applyCmd('true');"/>
+	<menuitem label="&uncheck;" onclick="applyCmd('false');"/>
+	<menuitem label="&toggle;" onclick="applyCmd('toggle');" key="toggle_cmd"/>
+	<!--<menuseparator />
+	<menuitem label="Open link in new window" onclick="applyCmd('open');" key="openReqUrls_cmd"/>-->
+</menupopup>
+
+<menupopup id="host_list" oncommand="MaskHost(event.target);">
+	<menuitem label="View All..." value="" type="checkbox"/>
 </menupopup>
 
 <tooltip id="typeTip">
@@ -48,18 +53,17 @@
 
 <hbox><description value="&select_the_images_you_want_to_download.value;"/><spacer flex="1"/><label id="selectionCounter"/></hbox>
 
-<tree id="igLinksTree" flex="1" editable="true" onclick="onTreeClicked(event);">
+<tree id="igLinksTree" flex="1" editable="true">
 
 	<treecols>
 		<treecol id="tobeornottobe" label="" type="checkbox" editable="true" width="20" fixed="true" ignoreincolumnpicker="true" ordinal="1"/>
-		<splitter class="tree-splitter" ordinal="2"/>
+		<splitter class="tree-splitter" disabled="true" ordinal="2"/>
 		<treecol id="url" label="&url;" flex="3" persist="width ordinal hidden" ordinal="3"/>
 		<splitter class="tree-splitter" ordinal="4"/>
-		<treecol id="host" label="&host_id;" flex="1" persist="width ordinal hidden" ordinal="5"/>
+		<treecol id="host" label="&host_id;" context="host_list" flex="1" persist="width ordinal hidden" ordinal="5"/>
 	</treecols>
   
-	<treechildren id="list" context="filter_menu">
-	</treechildren>
+	<treechildren id="list" onclick="onTreeClicked(event);" context="filter_menu"/>
 
 </tree>
 
@@ -81,39 +85,36 @@
 		<hbox>
 			<button label="&select_all;" oncommand="doSetAll('true');setFocus('igLinksTree');"/>
 			<button label="&clear_all;" oncommand="doSetAll('false');setFocus('igLinksTree');"/>
-			<button label="&invert_selection;" oncommand="doInvertSelection();setFocus('igLinksTree');"/>
+			<!-- <button label="&invert_selection;" oncommand="doInvertSelection();setFocus('igLinksTree');"/> -->
+			<button label="&invert_selection;" oncommand="doSetAll('toggle');setFocus('igLinksTree');"/>
 			<button label="&toggle_the_highlighted_items;" oncommand="applyCmd('toggle');setFocus('igLinksTree');"/>
 		</hbox>
 		<separator height="10"/>
 		<hbox>
 			<vbox>
-				<hbox>
+				<hbox align="center">
 					<label value="&filter_value;" control="filterValue"/>
 					<textbox id="filterValue"/>
 					<button label="&apply_filter;" oncommand="applyFilter();setFocus('igLinksTree');"/>
 				</hbox>
 				<hbox>
-					<vbox>
-						<label value="&filter_type;" control="filterType" tooltip="typeTip"/>
-						<radiogroup id="filterType" oncommand="setFocus('filterValue');" tooltip="typeTip">
-							<radio label="&type_simple;" value="simple"/>
-							<radio label="&type_regular_expression;" value="regex"/>
-						</radiogroup>
-					</vbox>
-					<vbox>
-						<label value="&apply_filter_on;" control="filterOn"/>
-						<radiogroup id="filterOn" oncommand="setFocus('filterValue');">
-							<radio label="&url;" value="url"/>
-							<radio label="&host_id;" value="host"/>
-						</radiogroup>
-					</vbox>
+					<radiogroup id="filterType" tooltip="typeTip" oncommand="setFocus('filterValue');">
+						<caption label="&filter_type;"/>
+						<radio label="&type_simple;" value="simple"/>
+						<radio label="&type_regular_expression;" value="regex"/>
+					</radiogroup>
+					<radiogroup id="filterOn" oncommand="setFocus('filterValue');">
+						<caption label="&apply_filter_on;"/>
+						<radio label="&url;" value="url"/>
+						<radio label="&host_id;" value="host"/>
+					</radiogroup>
 				</hbox>
 			</vbox>
 			<separator width="20"/>
 			<vbox>
 				<checkbox id="togThumb" label="&toggle_detailed_thumbnail_view;" oncommand="chgPreview();setFocus('igLinksTree');" persist="checked"/>
 				<vbox id="rowHeightBox">
-					<hbox>
+					<hbox align="center">
 						<label value="&new_value_for_row_height;"/>
 						<textbox id="rowHeightVal" value="" size="3" persist="saved"/>
 					</hbox>
