@@ -383,7 +383,7 @@ ihg_Functions.requestObj.prototype = {
 			this.xmlhttp.parent = this;
 		}
 
-		if (typeof(this.regexp) == "string" && this.regexp.search(/^REPLACE: ["']|^Link2File$/) >= 0)
+		if (typeof(this.regexp) == "string" && this.regexp.search(/^REPLACE: ["']|^LINK2FILE$/) >= 0)
 			this.xmlhttp.open("GET", encodeURI('about:blank'), true);
 		else
 			this.xmlhttp.open("GET", this.reqURL, true);

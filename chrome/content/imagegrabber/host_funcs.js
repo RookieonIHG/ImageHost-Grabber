@@ -144,7 +144,7 @@ ihg_Functions.genericHostFunc = function genericHostFunc() {
 	}
 
 	else if(typeof(req.regexp) == "string") {
-		if (req.regexp.match(/^(?:Embedded Image|Link2File)$/)) {
+		if (req.regexp.match(/^(?:Embedded Image|LINK2FILE)$/)) {
 			var the_url = req.reqURL;
 			// By default, the doStartDownload function uses the "reqURL" property as the
 			// referring url.  For embedded images, we're going to change this to the
@@ -285,7 +285,7 @@ ihg_Functions.getHostToUse = function getHostToUse(innerLink) {
 		if (HostIDval) {
 			// retval = new Function("pageData", "pageUrl", "{return {imgUrl: pageUrl, status: \"OK\"};}");
 			// return { hostID : HostIDval , maxThreads : 0 , downloadTimeout : 0 , hostFunc : retval };
-			return { hostID : HostIDval , maxThreads : 0 , downloadTimeout : 0 , hostFunc : "Link2File" };
+			return { hostID : HostIDval , maxThreads : 0 , downloadTimeout : 0 , hostFunc : "LINK2FILE" };
 			}
 		}
 
