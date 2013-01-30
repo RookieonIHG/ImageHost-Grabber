@@ -15,6 +15,7 @@
 
 <!ENTITY  url "URL">
 <!ENTITY  host_id "ID de l'hôte">
+<!ENTITY  show_all "Afficher tout...">
 
 <!ENTITY  no_preview_available "Aucun aperçu disponible.">
 <!ENTITY  preview "Aperçu:">

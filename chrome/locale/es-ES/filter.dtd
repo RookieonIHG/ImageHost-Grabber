@@ -15,6 +15,7 @@
 
 <!ENTITY  url "URL">
 <!ENTITY  host_id "Id. del servidor">
+<!ENTITY  show_all "Show All...">
 
 <!ENTITY  no_preview_available "Vista previa no disponible.">
 <!ENTITY  preview "Vista previa:">

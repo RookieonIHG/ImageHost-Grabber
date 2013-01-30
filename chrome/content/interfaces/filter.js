@@ -62,9 +62,12 @@ function onLoad() {
 		}
 	}
 	
-	if (hostlist.length > 0) {
-		var HostList_popup = doc.getElementById("host_list");
+	var HostList_popup = doc.getElementById("host_list");
+	if (hostlist.length > 1) {
+		HostList_popup.removeAttribute("hidden");
 		hostlist.sort();
+		
+		var menuseparator = HostList_popup.firstChild;
 		
 		for (var i = 0; i < hostlist.length; i++) {
 			var menuItem = doc.createElement("menuitem");
@@ -72,9 +75,10 @@ function onLoad() {
 			menuItem.setAttribute("value", hostlist[i]);
 			menuItem.setAttribute("type", "checkbox");
 			menuItem.setAttribute("checked", "true");
-			HostList_popup.appendChild(menuItem);
+			HostList_popup.insertBefore(menuItem, menuseparator);
 			}
 		}
+	else HostList_popup.setAttribute("hidden", true);
 	
 	if (tree.view.rowCount > 0) tree.view.selection.select(0);
 	chgPreview(true);

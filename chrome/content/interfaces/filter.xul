@@ -35,7 +35,8 @@
 </menupopup>
 
 <menupopup id="host_list" oncommand="MaskHost(event.target);">
-	<menuitem label="View All..." value="" type="checkbox"/>
+	<menuseparator/>
+	<menuitem label="&show_all;" value="" type="checkbox"/>
 </menupopup>
 
 <tooltip id="typeTip">
@@ -51,7 +52,11 @@
 	<label value="&note_both_filters_are_case_insensitive;"/>
 </tooltip>
 
-<hbox><description value="&select_the_images_you_want_to_download.value;"/><spacer flex="1"/><label id="selectionCounter"/></hbox>
+<hbox>
+	<description value="&select_the_images_you_want_to_download.value;"/>
+	<spacer flex="1"/>
+	<label id="selectionCounter"/>
+</hbox>
 
 <tree id="igLinksTree" flex="1" editable="true">
 
@@ -98,16 +103,20 @@
 					<button label="&apply_filter;" oncommand="applyFilter();setFocus('igLinksTree');"/>
 				</hbox>
 				<hbox>
-					<radiogroup id="filterType" tooltip="typeTip" oncommand="setFocus('filterValue');">
-						<caption label="&filter_type;"/>
-						<radio label="&type_simple;" value="simple"/>
-						<radio label="&type_regular_expression;" value="regex"/>
-					</radiogroup>
-					<radiogroup id="filterOn" oncommand="setFocus('filterValue');">
-						<caption label="&apply_filter_on;"/>
-						<radio label="&url;" value="url"/>
-						<radio label="&host_id;" value="host"/>
-					</radiogroup>
+					<vbox tooltip="typeTip">
+						<label value="&filter_type;" control="filterType"/>
+						<radiogroup id="filterType" oncommand="setFocus('filterValue');">
+							<radio label="&type_simple;" value="simple"/>
+							<radio label="&type_regular_expression;" value="regex"/>
+						</radiogroup>
+					</vbox>
+					<vbox>
+						<label value="&apply_filter_on;" control="filterOn"/>
+						<radiogroup id="filterOn" oncommand="setFocus('filterValue');">
+							<radio label="&url;" value="url"/>
+							<radio label="&host_id;" value="host"/>
+						</radiogroup>
+					</vbox>
 				</hbox>
 			</vbox>
 			<separator width="20"/>

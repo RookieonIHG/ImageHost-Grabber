@@ -16,10 +16,10 @@
 <!ENTITY  prefix_directories_to_uniquely_and_chronologically_identify_them "Le Préfixe dossier les identifient de manière unique et par ordre chronologique">
 <!ENTITY  create_separate_directories_for_each_page_when_using_thread_sucker "Créer des dossiers distincts pour chaque page lors de l'utilisation du mode threadsucker">
 <!ENTITY  prefix_filenames_to_reflect_page_order "Préfixer le nom des fichiers afin de refléter l'ordre des pages">
-<!ENTITY  use_last_modified_header "Garder la dernière mise à jour horodatage envoyés par le serveur pour les fichiers téléchargés">
+<!ENTITY  use_last_modified_header "Garder la dernière mise à jour horodatage envoyée par le serveur pour les fichiers téléchargés">
 
-<!ENTITY  show_the_download_directory_box "Afficher le dossier où sera mis le téléchargement (si rien n'est fait, il utilisera le dernier dossier utilisé)">
-<!ENTITY  show_the_image_grabber_menu_in_the_tools_menu "Afficher le menu Image Grabber dans le menu Outils. (si rien n'est fait, il le placera sur la barre du menu principale)">
+<!ENTITY  show_the_download_directory_box "Afficher le dossier où sera mis le téléchargement (sinon, utiliser le dernier dossier choisi)">
+<!ENTITY  show_the_image_grabber_menu_in_the_tools_menu "Afficher le menu Image Grabber dans le menu Outils. (sinon, il s'affichera dans la barre du menu principal)">
 <!ENTITY  alert_restart "Alerte: cela nécessite un redémarrage de &brandShortName;">
 <!ENTITY  remove_duplicate_links "Suppression des liens doublons">
 <!ENTITY  even_across_multiple_pages "Le même sur plusieurs pages.">
