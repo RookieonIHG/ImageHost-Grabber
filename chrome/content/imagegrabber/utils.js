@@ -32,7 +32,7 @@ var FileEXT = "\\.(?:" + extregexp.join("|") + ")$";
 
 ///////////////////////////////   Get the current page number //////////////////////////
 ihg_Functions.getCurPageNum = function getCurPageNum() {
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
 	var getCurP;
@@ -66,7 +66,7 @@ ihg_Functions.getCurPageNum = function getCurPageNum() {
 
 /////////////////  Gets the last page number ////////////////////////
 ihg_Functions.getLastPageNum = function getLastPageNum() {
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
 	var getLastP;
@@ -119,7 +119,7 @@ ihg_Functions.getFormattedDate = function getFormattedDate() {
 
 
 ihg_Functions.setDownloadDir = function setDownloadDir(FpTitle, initDir) {
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
 	var nsIFilePicker = Components.interfaces.nsIFilePicker;
@@ -162,7 +162,7 @@ ihg_Functions.setDownloadDir = function setDownloadDir(FpTitle, initDir) {
 
 
 ihg_Functions.generateFName = function generateFName(reqObj, URLFile) { 
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
 	var desiredFName = reqObj.baseFileName;
@@ -207,7 +207,7 @@ ihg_Functions.generateFName = function generateFName(reqObj, URLFile) {
 	if (!displayName) displayName = Math.random().toString().substring(2) + ".jpg";
 
 	// remove characters from the file name that causes trouble with file system (windows or nsiFile, who knows)
-	displayName = displayName.replace(/[\\/:*?"<>|,]/g, '');
+	displayName = displayName.replace(/^\s+|[\\/:*?"<>|,]/g, '');
 
 	ihg_Functions.LOG("In " + myself + ", displayName is equal to: " + displayName + "\n");
 
@@ -253,7 +253,7 @@ ihg_Functions.getOutputFile = function getOutputFile(reqObj, URLFile) {
 				var mhp = Components.classes["@mozilla.org/network/mime-hdrparam;1"]
 										.getService(Components.interfaces.nsIMIMEHeaderParam);
 				displayName = mhp.getParameter(contDisp, "filename", "", true, {});
-				displayName = displayName.replace(/[\\/:*?"<>|,]/g, '');
+				displayName = displayName.replace(/^\s+|[\\/:*?"<>|,]/g, '');
 				ihg_Functions.LOG("Filename(Response-Header): " + displayName + "\n");
 			
 				if (ihg_Globals.prefix_fileNames) displayName = ihg_Functions.prefixFName(reqObj, displayName);
@@ -340,7 +340,7 @@ ihg_Functions.getFNameFromHeader = function getFNameFromHeader(reqObj, request) 
 		var mhp = Components.classes["@mozilla.org/network/mime-hdrparam;1"]
 									.getService(Components.interfaces.nsIMIMEHeaderParam);
 		displayName = mhp.getParameter(contDisp, "filename", "", true, {});
-		displayName = displayName.replace(/[\\/:*?"<>|,]/g, '');
+		displayName = displayName.replace(/^\s+|[\\/:*?"<>|,]/g, '');
 		ihg_Functions.LOG("Filename(Response-Header): " + displayName + "\n");
 
 		if (ihg_Globals.prefix_fileNames) displayName = ihg_Functions.prefixFName(reqObj, displayName);
@@ -384,7 +384,7 @@ ihg_Functions.cutFName = function cutFName(fname) {
 
 
 ihg_Functions.doStartDownload = function doStartDownload(reqObj, URLFile) {
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 	ihg_Functions.LOG("URLFile is equal to: " + URLFile + "\n");
 	
