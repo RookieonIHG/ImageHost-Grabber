@@ -32,13 +32,7 @@
 	</tooltip>
 </popupset>
 
-<hbox>
-	<menulist id="theList" _label="&select_host;" flex="1">
-		<menupopup>
-			<menuitem label="&select_host;"/>
-		</menupopup>
-	</menulist>
-</hbox>
+<menulist id="theList" label="&select_host;" _label="&select_host;"/>
 
 <grid>
 	<columns>
@@ -65,18 +59,16 @@
 	</rows>
 </grid>
 
-<vbox flex="1">
-	<hbox align="center">
-		<label control="tb_searchPattern" value="&search_pattern;"/>
-		<spacer flex="1"/>
-		<menulist id="searchType" _label="&select_func;">
-			<menupopup>
-				<menuitem label="&select_func;"/>
-			</menupopup>
-		</menulist>
-	</hbox>
+<hbox align="center">
+	<label control="tb_searchPattern" value="&search_pattern;"/>
+	<spacer flex="1"/>
+	<menulist id="searchType" label="&select_func;" _label="&select_func;"/>
+</hbox>
+
+<deck flex="1" selectedIndex="0">
 	<textbox id="tb_searchPattern" multiline="true" flex="1" rows="12" onkeydown="handleKeyDown(event);" style="padding: 0px 0px 0px 3px"/>
-</vbox>
+	<textbox style="padding: 50px"/>
+</deck>
 
 <separator/>
 

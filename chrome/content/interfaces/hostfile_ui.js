@@ -176,27 +176,23 @@ function initWindow2() {
 	 ['Replace','"\\"REPLACE: \'" + uPat + "\', \'...\'\\""'],
 //	 ['Redirect','"\\"REDIRECT: \'" + uPat + "\', \'...\'\\""'],
 	 ['Link2Img','"function(pageData, pageUrl) {" + maxThreads_LineCode + "\\n\\treturn {imgUrl: pageUrl, status: \\"OK\\"};\\n\\t}"'],
-	 ['function','"function(pageData, pageUrl) {" + maxThreads_LineCode + "\\n\\tvar retVal = {};" + \
-					"\\n\\t\\n\\t\\/\\/ Insert your code hereunder to build the target URL\\n\\t\\/\\/ Acceptable values for retVal.status are: \\"OK\\", \\"ABORT\\", \\"RETRY\\" or \\"REQUEUE\\"" + \
-					"\\n\\t\\n\\tvar iUrl = ...;\\n\\t\\n\\tif (!iUrl) {\\n\\t\\tretVal.imgUrl = null;\\n\\t\\tretVal.status = \\"ABORT\\";" + \
-					"\\n\\t\\t}\\n\\telse {\\n\\t\\tretVal.imgUrl = iUrl;\\n\\t\\tretVal.status = \\"OK\\";\\n\\t\\t}\\n\\t\\n\\treturn retVal;\\n\\t}"']]
+	 ['function','"function(pageData, pageUrl) {" + maxThreads_LineCode + "\\n\\tvar retVal = {};' +
+				 '\\n\\t\\n\\t\\/\\/ Insert your code hereunder to build the target URL\\n\\t\\/\\/ Acceptable values for retVal.status are: \\"OK\\", \\"ABORT\\", \\"RETRY\\" or \\"REQUEUE\\"' +
+				 '\\n\\t\\n\\tvar iUrl = ...;\\n\\t\\n\\tif (!iUrl) {\\n\\t\\tretVal.imgUrl = null;\\n\\t\\tretVal.status = \\"ABORT\\";' +
+				 '\\n\\t\\t}\\n\\telse {\\n\\t\\tretVal.imgUrl = iUrl;\\n\\t\\tretVal.status = \\"OK\\";\\n\\t\\t}\\n\\t\\n\\treturn retVal;\\n\\t}"']]
 	 .forEach(function([label, searchPat]) {
 		var newElem = searchType.appendItem(label);
 		var thecommand = "var maxthreads = (document.getElementById(\"cb_hostMaxThreads\").checked ? document.getElementById(\"tb_hostMaxThreads\").value : 0); \
-							var uPat = document.getElementById(\"tb_urlPattern\").value; \
+							var uPat = document.getElementById(\"tb_urlPattern\").value || '...'; \
 							var maxThreads_LineCode = (maxthreads == 0 ? '' : '\\n\\tif (ihg_Globals.appName == \"ImageHost Grabber\") ihg_Globals.maxThreads = ' + maxthreads + ';\\n\\t'); \
-							if (!uPat) uPat = '...'; \
 							document.getElementById(\"tb_searchPattern\").value = " + searchPat + ";";
 		newElem.setAttribute("oncommand", thecommand);
 		});
-
-	// document.getElementById("searchType").setAttribute("label", "Select...");
-	resetTextBoxes();
 	}
 
 function handleKeyDown(event) {
 	// Keycode for Tab
-	if (event.keyCode == 9) {
+	if (event.keyCode == KeyEvent.DOM_VK_TAB) {
 		var pp = event.target;
 		var val = pp.value;
 		var selIdx = pp.selectionStart;
@@ -210,7 +206,7 @@ function handleKeyDown(event) {
 		return false;
 		}
 	// Keycode for Return
-	if (event.keyCode == 13) {
+	if (event.keyCode == KeyEvent.DOM_VK_RETURN) {
 		var pp = event.target;
 		// var val = pp.value;
 		var val = pp.value.slice(0, pp.selectionStart) + pp.value.slice(pp.selectionEnd);
@@ -258,6 +254,8 @@ function resizeResponseTextBox() {
 	}
  */
 function loadHostFile() {
+	window.setCursor('wait');
+
 	hostfile_Globals.hostFileLoc = hostfile_Globals.prefManager.getCharPref("extensions.imagegrabber.hostfileloc");
 
 	hostfile_Globals.hostFileObj = new HostFileService();
@@ -276,6 +274,8 @@ function loadHostFile() {
 		//newElem.setAttribute("onclick", "fillTBs(this.value);");
 		newElem.setAttribute("oncommand", "fillTBs(this.value);");
 		}
+
+	window.setCursor('auto');
 	}
 
 function fillTBs(idx) {
@@ -553,6 +553,7 @@ function mergeHostFile(onlineXML) {
 function resetHostFileLoc() {
 	hostfile_Globals.prefManager.setCharPref("extensions.imagegrabber.hostfileloc", "");
 	loadHostFile();
+	resetTextBoxes();
 }
 
 
