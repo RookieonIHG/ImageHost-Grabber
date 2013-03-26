@@ -19,10 +19,10 @@
 
 <!ENTITY  no_preview_available "Aucun aperçu disponible.">
 <!ENTITY  preview "Aperçu:">
-<!ENTITY  select_all "Sélectionnez tout">
+<!ENTITY  select_all "Sélectionner tout">
 <!ENTITY  clear_all "Effacer tout">
 <!ENTITY  invert_selection "Inverser la sélection">
-<!ENTITY  toggle_the_highlighted_items "Basculer les éléments mis en évidence">
+<!ENTITY  toggle_the_highlighted_items "Basculer les éléments surlignés">
 
 <!ENTITY  filter_value "La valeur de filtrage:">
 <!ENTITY  apply_filter "Appliquer le filtre">
@@ -34,5 +34,5 @@
 <!ENTITY  apply_filter_on "Appliquer le filtre sur:">
 
 <!ENTITY  toggle_detailed_thumbnail_view "Basculer détail/cliché réduit">
-<!ENTITY  new_value_for_row_height "Nouvelle valeur pour la hauteur des lignes:">
+<!ENTITY  new_value_for_row_height "Nouvelle hauteur des lignes:">
 <!ENTITY  change_row_height "Changer la hauteur des lignes">

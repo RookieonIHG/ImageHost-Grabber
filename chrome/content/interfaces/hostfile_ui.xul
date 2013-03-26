@@ -65,10 +65,7 @@
 	<menulist id="searchType" label="&select_func;" _label="&select_func;"/>
 </hbox>
 
-<deck flex="1" selectedIndex="0">
-	<textbox id="tb_searchPattern" multiline="true" flex="1" rows="12" onkeydown="handleKeyDown(event);" style="padding: 0px 0px 0px 3px"/>
-	<textbox style="padding: 50px"/>
-</deck>
+<textbox id="tb_searchPattern" multiline="true" flex="1" rows="12" onkeydown="handleKeyDown(event);" style="padding: 0px 0px 0px 3px;" minheight="100"/>
 
 <separator/>
 
@@ -92,8 +89,6 @@
 	<button onclick="onlineHostF();" label="&update_from_online_host_file;"/>
 </hbox>
 
-<hbox>
-	<textbox flex="1" id="tb_hostFileLoc" readonly="true"/>
-</hbox>
+<textbox id="tb_hostFileLoc" readonly="true"/>
 
 </window>

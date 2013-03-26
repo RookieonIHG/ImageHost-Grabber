@@ -293,7 +293,7 @@ function fillTBs(idx) {
 	var cbMaxThreads = document.getElementById("cb_hostMaxThreads");
 	cbMaxThreads.checked = (maxThreads != null)?true:false;
 	mt_tbout.disabled = !cbMaxThreads.checked;
-	mt_tbout.value = (maxThreads != null)?maxThreads:1;
+	mt_tbout.value = maxThreads || 1;
 
 	var timer_tbout = document.getElementById("tb_downloadTimeout");
 	var timeout = hostfile_Globals.hosts[idx].getAttribute("Timeout");
@@ -301,7 +301,7 @@ function fillTBs(idx) {
 	var cbDLTimeout = document.getElementById("cb_downloadTimeout");
 	cbDLTimeout.checked = (timeout != null)?true:false;
 	timer_tbout.disabled = !cbDLTimeout.checked;
-	timer_tbout.value = (timeout != null)?timeout:1;
+	timer_tbout.value = timeout || 1;
 	
 	var up_tbout = document.getElementById("tb_urlPattern");
 	up_tbout.value = uPat;

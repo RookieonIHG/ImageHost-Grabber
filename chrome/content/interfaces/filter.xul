@@ -68,7 +68,7 @@
 		<treecol id="host" label="&host_id;" context="host_list" flex="1" persist="width ordinal hidden" ordinal="5"/>
 	</treecols>
   
-	<treechildren id="list" onclick="onTreeClicked(event);" context="filter_menu"/>
+	<treechildren id="list" onclick="onTreeClicked(event);" context="filter_menu" minheight="100"/>
 
 </tree>
 
@@ -76,7 +76,7 @@
 
 <hbox height="160">
 	<vbox id="previewBox">
-		<deck id="previewLabel" selectedIndex="0">
+		<deck id="previewLabel">
 			<label value="&no_preview_available;"/>
 			<label value="&preview;"/>
 		</deck>

@@ -97,7 +97,7 @@ function MaskHost(HostID_target) {
 		HostID_target.removeAttribute("checked");
 		}
 	else
-		Array.filter(doc.getElementById("list").childNodes, function(req_row) {return (req_row.firstChild.childNodes[HostIDidx].getAttribute("label") == HostID_target.value)})
+		Array.filter(doc.getElementById("list").childNodes, function(req_row) {return (req_row.firstChild.childNodes[HostIDidx].getAttribute("value") == HostID_target.value)})
 			.forEach(function(req_row) {
 				if (HostID_target.hasAttribute("checked")) req_row.removeAttribute("hidden");
 				else req_row.hidden = true;
@@ -346,8 +346,7 @@ function chgPreview(initialChange) {
 	
 		var rowHeightVal = document.getElementById("rowHeightVal");
 
-		if (rowHeightVal.value) newVal = rowHeightVal.value;
-		else newVal = "150";
+		newVal = rowHeightVal.value || "150";
 
 		rule1 = "treechildren::-moz-tree-row { height: "+newVal+"px; }";
 		rule2 = "treechildren::-moz-tree-image { height: "+newVal+"px; }";

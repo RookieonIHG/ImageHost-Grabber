@@ -91,6 +91,29 @@ function resizeResponseTextBox() {
 	}
  */
 
+function setButtonsAccess() {
+	var servers_list = document.getElementById("tb_searchPattern");
+	
+	var upButton = document.getElementById("up");
+	var downButton = document.getElementById("down");
+	var removeButton = document.getElementById("remove");
+	
+	switch (servers_list.selectedCount) {
+		case 0:
+			upButton.disabled = downButton.disabled = removeButton.disabled = true;
+			break;
+		case 1:
+			upButton.disabled = servers_list.selectedIndex == 0;
+			downButton.disabled = servers_list.selectedIndex == servers_list.childNodes.length - 1;
+			removeButton.disabled = false;
+			break;
+		default:
+			upButton.disabled = true;
+			downButton.disabled = true;
+			removeButton.disabled = false;
+		}
+	}
+
 function loadHostFServersFile() {
 	hostf_servers_Globals.hostFileObj = new HostFileService();
 	hostf_servers_Globals.hFile = hostf_servers_Globals.hostFileObj.getHostf_servers();

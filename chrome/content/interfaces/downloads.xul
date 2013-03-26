@@ -119,8 +119,7 @@
 		<treecol id="status" label="&status;" flex="2" persist="width ordinal hidden"/>
 	</treecols>
 
-	<treechildren id="outBox" context="dl_menu" ondblclick="launchFile();">
-	</treechildren>
+	<treechildren id="outBox" context="dl_menu" ondblclick="launchFile();" minheight="100"/>
 
 </tree>
 
