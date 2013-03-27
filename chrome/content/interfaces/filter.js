@@ -490,4 +490,6 @@ function updateCounter() {
 		}
 	with (doc.getElementById("selectionCounter"))
 		value = strbundle.getFormattedString("images_selected_counter", [counter, tree.view.rowCount]);
+
+	doc.documentElement.getButton("accept").disabled = (counter == 0);
 }
