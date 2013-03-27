@@ -82,6 +82,11 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 	var tmp_req_objs = ihg_Functions.setUpReq(objLinks);
 	tmp_req_objs = ihg_Functions.setUpLinkedList(tmp_req_objs);
 
+	if (tmp_req_objs.length == 0) {
+		alert(ihg_Globals.strings.no_images_or_links_found);
+		return;
+		}
+
 	var time = new Date();
 	var y = time.getTime();
 
