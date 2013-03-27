@@ -77,6 +77,8 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 	if (ihg_Globals.suckMode) var objLinks = ihg_Functions.setUpLinksOBJ(docLinks, filterImages);
 	else var objLinks = ihg_Functions.setUpLinksOBJ(docLinks, filterImages, thumbLinks);
 
+	if (!objLinks) return;
+
 	var tmp_req_objs = ihg_Functions.setUpReq(objLinks);
 	tmp_req_objs = ihg_Functions.setUpLinkedList(tmp_req_objs);
 
