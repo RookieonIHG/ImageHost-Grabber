@@ -84,6 +84,9 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 
 	if (tmp_req_objs.length == 0) {
 		alert(ihg_Globals.strings.no_images_or_links_found);
+		ihg_Functions.updateDownloadStatus(ihg_Globals.strings.running);
+		ihg_Globals.autoCloseWindow = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.autoclosewindow");
+		if (ihg_Globals.autoCloseWindow) ihg_Functions.startCloseCountdown();
 		return;
 		}
 
@@ -121,46 +124,100 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 
 
 ihg_Functions.getLinksAndImages = function getLinksAndImages(content, docLinks, thumbLinks) {
+	if (!ihg_Globals.blacklist) {
+		var blacklistService = new ihg_Functions.blacklistService();
+		ihg_Globals.blacklist = blacklistService.readList();
+	}
+
+	var stringList, regexpList;
+	[stringList, regexpList] = ihg_Functions.setupBlacklistData();
+
 	for (var q = 0; q < content.document.links.length; q++) {
 		var someNode = content.document.links[q];
-		
+		var url = null;
+
 		// Possibly add some code here to handle other javascript type links
 		var jsWrappedUrl = someNode.href.match(/javascript.+(\'|\")(http.+?)\1/);
-		if (jsWrappedUrl) docLinks[ihg_Globals.firstPage].push(jsWrappedUrl[2]);
-		else docLinks[ihg_Globals.firstPage].push(someNode.href);
-		
-		var thumbnail = null;
-		for (var a = 0; a < someNode.childNodes.length; a++) {
-			var someTagName = someNode.childNodes[a].tagName;
-			if (someTagName) {
-				if (someTagName.search(/img/i) >= 0) {
-					thumbnail = { src:someNode.childNodes[a].src,
-								width:someNode.childNodes[a].naturalWidth,
-								height:someNode.childNodes[a].naturalHeight };
-					break;
+		if (jsWrappedUrl) url = jsWrappedUrl[2];
+		else url = someNode.href;
+		if (!ihg_Functions.isBlacklisted(url, stringList, regexpList)) {
+			url = ihg_Functions.removeAnonymizer(url);
+			docLinks[ihg_Globals.firstPage].push(url);
+			
+			var thumbnail = null;
+			for (var a = 0; a < someNode.childNodes.length; a++) {
+				var someTagName = someNode.childNodes[a].tagName;
+				if (someTagName) {
+					if (someTagName.search(/img/i) >= 0) {
+						thumbnail = { src:someNode.childNodes[a].src,
+									width:someNode.childNodes[a].naturalWidth,
+									height:someNode.childNodes[a].naturalHeight };
+						break;
 					}
 				}
 			}
 			thumbLinks[ihg_Globals.firstPage].push(thumbnail);
 		}
+	}
 			
 	if (ihg_Globals.downloadEmbeddedImages) {
 		var imgs = content.document.images;
 		for (var q = 0; q < imgs.length; q++) {
 			if (imgs[q].naturalHeight >= ihg_Globals.minEmbeddedHeight && imgs[q].naturalWidth >= ihg_Globals.minEmbeddedWidth) {
 				// add a tag to the link so we can identify it later
-				docLinks[ihg_Globals.firstPage].push("[embeddedImg]" + imgs[q].src);
-				thumbLinks[ihg_Globals.firstPage].push({ src:imgs[q].src, width:imgs[q].naturalWidth, height:imgs[q].naturalHeight });
+				if (!ihg_Functions.isBlacklisted(imgs[q].src, stringList, regexpList)) {
+					docLinks[ihg_Globals.firstPage].push("[embeddedImg]" + imgs[q].src);
+					thumbLinks[ihg_Globals.firstPage].push({ src:imgs[q].src, width:imgs[q].naturalWidth, height:imgs[q].naturalHeight });
 				}
 			}
 		}
+	}
 
 	if (content.frames) {
 		for (var q = 0; q < content.frames.length; q++) {
 			ihg_Functions.getLinksAndImages(content.frames[q], docLinks, thumbLinks);
-			}
 		}
 	}
+}
+
+
+ihg_Functions.setupBlacklistData = function setupBlacklistData() {
+	var stringList = [];
+	var regexpList = [];
+
+	if (ihg_Globals.blacklist) {
+		for (var i = 0; i < ihg_Globals.blacklist.length; i++) {
+			if (ihg_Globals.blacklist[i].type == "string") 
+				stringList.push(ihg_Globals.blacklist[i].value);
+			else if (ihg_Globals.blacklist[i].type == "regexp")
+				regexpList.push(ihg_Globals.blacklist[i].regexp)
+		}
+	}
+
+	if (stringList.length == 0)
+		stringList = null;
+	if (regexpList.length == 0)
+		regexpList = null;
+	return [stringList, regexpList];
+}
+
+
+ihg_Functions.isBlacklisted = function isBlacklisted(url, stringList, regexpList) {
+	if (stringList) {
+		for (var i = 0; i < stringList.length; i++) {
+			if (stringList[i] == url)
+				return true;
+		}
+	}
+	if (regexpList) {
+		for (var i = 0; i < regexpList.length; i++) {
+			if (regexpList[i].test(url))
+				return true;
+		}
+	}
+
+	return false;
+}
 
 
 ihg_Functions.finishUp = function finishUp(req_objs) {
@@ -335,14 +392,6 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 		for (var j = 0; j < (ihg_Globals.suckMode?docLinks[i].length-1:docLinks[i].length); j++) {
 			// check to see if link has an embedded image tag
 			var isEmbedded = docLinks[i][j].match(/^\[embeddedImg\](.+)/);
-			
-			// gets rid of the anonymizers
-			var tmpMatch = unescape(docLinks[i][j]).match(/https?:\/\/.+(https?:\/\/.+)/);
-			if (tmpMatch) {
-				if (docLinks[i][j].search(/^https?:\/\/[^/]*facebook\.com\//) == -1) {
-					docLinks[i][j] = tmpMatch[1];
-					}
-				}
 			
 			if (isEmbedded) var theHostToUse = { hostID : "Embedded Image" , maxThreads : 0, downloadTimeout : 0, hostFunc : "Embedded Image" };
 			else var theHostToUse = ihg_Functions.getHostToUse(docLinks[i][j]);
@@ -528,8 +577,6 @@ ihg_Functions.getIGPrefs = function getIGPrefs() {
 	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
-	
-
 	ihg_Globals.showDLDir = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.showdldir");
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.showDLDir is equal to: " + ihg_Globals.showDLDir + "\n");
 
@@ -616,6 +663,9 @@ ihg_Functions.getIGPrefs = function getIGPrefs() {
 
 	ihg_Globals.useLastModFromHeader = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.uselastmodfromheader");
  	ihg_Functions.LOG("In " + myself + ", ihg_Globals.useLastModFromHeader is equal to: " + ihg_Globals.useLastModFromHeader + "\n");
+
+ 	ihg_Globals.blacklistFilePath = ihg_Globals.prefManager.getCharPref("extensions.imagegrabber.blacklistfilepath");
+	ihg_Functions.LOG("In " + myself + ", ihg_Globals.blacklistFilePath is equal to: " + ihg_Globals.blacklistFilePath + "\n");
 
 	ihg_Functions.LOG("Exiting " + myself + "\n");
 	}

@@ -534,3 +534,16 @@ ihg_Functions.writeXMLDocumentToFile = function writeXMLDocumentToFile(XMLDocume
 
 	converter.close();
 }
+
+
+ihg_Functions.removeAnonymizer = function removeAnonymizer(url) {
+	var res = url;
+
+	// gets rid of the anonymizers
+	var tmpMatch = unescape(url).match(/^https?:\/\/.+(https?:\/\/.+)/);
+	if (tmpMatch) {
+		if (url.search(/^https?:\/\/[^/]*facebook\.com\//) == -1)
+			res = tmpMatch[1];
+	}
+	return res;
+}
