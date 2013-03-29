@@ -236,17 +236,7 @@ ihg_Functions.dlWinCacheService.prototype = {
 		persist.persistFlags = persist.PERSIST_FLAGS_NO_CONVERSION | persist.PERSIST_FLAGS_REPLACE_EXISTING_FILES | persist.PERSIST_FLAGS_BYPASS_CACHE;
 		persist.saveDocument(newDocument, this.cacheFile, null, null, null, null);
 		*/
-		var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
-		foStream.init(this.cacheFile, 0x02 | 0x08 | 0x20, 0664, 0); // write only | create | truncate
-		
-		var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"].createInstance(Components.interfaces.nsIConverterOutputStream);
-		converter.init(foStream, "UTF-8", 0, 0);
-		converter.writeString("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-		
-		var serializer = Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].createInstance(Components.interfaces.nsIDOMSerializer);
-		serializer.serializeToStream(newDocument, foStream, "UTF-8");
-		
-		converter.close(); 
+		ihg_Functions.writeXMLDocumentToFile(newDocument, this.cacheFile);
 	},
 
 	getCache : function dlWin_getHosts() {
@@ -261,3 +251,90 @@ ihg_Functions.dlWinCacheService.prototype = {
 		return req.responseXML;
 		}
 	}
+
+
+
+ihg_Functions.blacklistService = function blacklistService() {
+	ihg_Functions.LOG("Entering " + arguments.callee.name + "\n");
+
+	var blacklistFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+
+	if (ihg_Globals.blacklistFilePath != "") {
+		blacklistFile.initWithPath(ihg_Globals.blacklistFilePath);
+		if (!blacklistFile.exists())
+			ihg_Globals.blacklistFilePath = "";
+	}
+
+	if (ihg_Globals.blacklistFilePath == "") {
+		var cacheDir =  Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
+		cacheDir.append("ihg_cache");
+		if (!cacheDir.exists() || !cacheDir.isDirectory()) {
+			cacheDir.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
+			}
+
+		blacklistFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		blacklistFile.initWithPath(cacheDir.path);
+		blacklistFile.append("blacklist.xml")
+	}	
+	
+	this.blacklistFile = blacklistFile;
+}
+
+
+ihg_Functions.blacklistService.prototype = {
+	readList : function blacklist_getList() {
+		ihg_Functions.LOG("Entering " + arguments.callee.name + "\n");
+
+		var list = [];
+		if (!this.blacklistFile.exists())
+			return list;
+
+		var fileURI = ihg_Globals.ioService.newFileURI(this.blacklistFile);
+
+		var req = new XMLHttpRequest();
+		req.open("GET", fileURI.spec, false);
+		req.send(null);
+		
+		var content = req.responseXML;
+		var patterns = content.getElementsByTagName("pattern");
+		
+		for (var i = 0; i < patterns.length; i++) {
+			var ptype = patterns[i].getAttribute("type");
+			if (ptype == "string") {
+				list.push({type: ptype, value: patterns[i].textContent});
+			} else if (ptype == "regexp") {
+				try {
+					list.push({type: ptype,
+							   value: patterns[i].textContent,
+							   regexp: new RegExp(patterns[i].textContent, "i")});
+				}
+				catch (ex) {
+					//nothing to do
+				}
+			}
+		}
+
+		return list;
+	},
+
+	writeList : function blacklist_writeList(list) {
+		ihg_Functions.LOG("Entering " + arguments.callee.name + "\n");
+
+		var newDocument = Components.classes["@mozilla.org/xml/xml-document;1"].createInstance(Components.interfaces.nsIDOMXMLDocument);
+		var newRoot = newDocument.createElement("root");
+		newRoot.appendChild(newDocument.createTextNode("\n")); 
+
+		for (var i = 0; i < list.length; i++) { 
+			var newPattern = newDocument.createElement("pattern");
+			newPattern.setAttribute("type", list[i].type);
+			newPattern.appendChild(newDocument.createCDATASection(list[i].value));
+
+			newRoot.appendChild(newPattern); 
+			newRoot.appendChild(newDocument.createTextNode("\n"));
+		}
+
+		newDocument.appendChild(newRoot);
+
+		ihg_Functions.writeXMLDocumentToFile(newDocument, this.blacklistFile);
+	}
+}

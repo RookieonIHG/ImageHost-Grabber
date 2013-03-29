@@ -30,3 +30,4 @@ pref("extensions.imagegrabber.autoclosewindow", false);
 pref("extensions.imagegrabber.removeduplinks", false);
 pref("extensions.imagegrabber.removeduplinksXpages", false);
 pref("extensions.imagegrabber.uselastmodfromheader", false);
+pref("extensions.imagegrabber.blacklistfilepath", "");
