@@ -519,3 +519,18 @@ ihg_Functions.AlertPopup = function AlertPopup(title, message, listener, clickab
 	Components.classes["@mozilla.org/sound;1"].createInstance(Components.interfaces.nsISound)
 		.playEventSound(0);
 }
+
+
+ihg_Functions.writeXMLDocumentToFile = function writeXMLDocumentToFile(XMLDocument, file) {
+	var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
+	foStream.init(file, 0x02 | 0x08 | 0x20, 0644, 0); // write only | create | truncate
+
+	var converter = Components.classes["@mozilla.org/intl/converter-output-stream;1"].createInstance(Components.interfaces.nsIConverterOutputStream);
+	converter.init(foStream, "UTF-8", 0, 0);
+	converter.writeString("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+
+	var serializer = Components.classes["@mozilla.org/xmlextras/xmlserializer;1"].createInstance(Components.interfaces.nsIDOMSerializer);
+	serializer.serializeToStream(XMLDocument, foStream, "UTF-8");
+
+	converter.close();
+}
