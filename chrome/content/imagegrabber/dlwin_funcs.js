@@ -269,10 +269,12 @@ ihg_Functions.startCloseCountdown = function startCloseCountdown() {
 	if (!ig_dl_win) return;
 	
 	var req_objs = ig_dl_win.req_objs;
-	
-	for (var i = 0; i < req_objs.length; i++) {
-		if (req_objs[i].finished == false || req_objs[i].aborted == true) return;
+	if (req_objs) {
+		for (var i = 0; i < req_objs.length; i++) {
+			if (req_objs[i].finished == false || req_objs[i].aborted == true)
+				return;
 		}
+	}
 	
 	ihg_Globals.closeCountdown = 6;
 	
@@ -293,15 +295,16 @@ ihg_Functions.closeWindow = function closeWindow() {
 		if (!ig_dl_win) return;
 		
 		var req_objs = ig_dl_win.req_objs;
-	
-		// We check the download list again, just to make sure that the 
-		// user hasn't added new downloads that are currently in progress
-		for (var i = 0; i < req_objs.length; i++) {
-			if (req_objs[i].finished == false || req_objs[i].aborted == true) {
-				ihg_Functions.updateDownloadStatus(ihg_Globals.strings.running);
-				return;
+		if (req_objs) {
+			// We check the download list again, just to make sure that the 
+			// user hasn't added new downloads that are currently in progress
+			for (var i = 0; i < req_objs.length; i++) {
+				if (req_objs[i].finished == false || req_objs[i].aborted == true) {
+					ihg_Functions.updateDownloadStatus(ihg_Globals.strings.running);
+					return;
 				}
 			}
+		}
 		
 		ig_dl_win.close();
 		}
