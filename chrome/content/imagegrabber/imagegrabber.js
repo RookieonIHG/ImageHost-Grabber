@@ -763,3 +763,9 @@ ihg_Functions.showPreferencesDialog = function showPreferencesDialog() {
 
 	window.openDialog("chrome://imagegrabber/content/interfaces/options.xul", "", features);
 }
+
+
+ihg_Functions.showBlacklistDialog = function showBlacklistDialog() {
+	window.openDialog("chrome://imagegrabber/content/interfaces/blacklist_editor.xul", 
+		"ig-blacklist_editor_win", "chrome, dialog, resizable=yes");
+}
