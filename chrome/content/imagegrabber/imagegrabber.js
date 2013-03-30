@@ -188,9 +188,9 @@ ihg_Functions.setupBlacklistData = function setupBlacklistData() {
 	if (ihg_Globals.blacklist) {
 		for (var i = 0; i < ihg_Globals.blacklist.length; i++) {
 			if (ihg_Globals.blacklist[i].type == "string") 
-				stringList.push(ihg_Globals.blacklist[i].value);
+				stringList.push(ihg_Globals.blacklist[i].testValue);
 			else if (ihg_Globals.blacklist[i].type == "regexp")
-				regexpList.push(ihg_Globals.blacklist[i].regexp)
+				regexpList.push(ihg_Globals.blacklist[i].testValue)
 		}
 	}
 
@@ -204,15 +204,20 @@ ihg_Functions.setupBlacklistData = function setupBlacklistData() {
 
 ihg_Functions.isBlacklisted = function isBlacklisted(url, stringList, regexpList) {
 	if (stringList) {
+		var urlLowerCase = url.toLowerCase();
 		for (var i = 0; i < stringList.length; i++) {
-			if (stringList[i] == url)
+			if (stringList[i] == urlLowerCase) {
+				ihg_Functions.LOG("Blacklisted URL (stringList): " + url + "\n");
 				return true;
+			}
 		}
 	}
 	if (regexpList) {
 		for (var i = 0; i < regexpList.length; i++) {
-			if (regexpList[i].test(url))
+			if (regexpList[i].test(url)) {
+				ihg_Functions.LOG("Blacklisted URL (regexpList): " + url + "\n");
 				return true;
+			}
 		}
 	}
 

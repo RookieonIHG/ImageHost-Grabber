@@ -299,18 +299,17 @@ ihg_Functions.blacklistService.prototype = {
 		var patterns = content.getElementsByTagName("pattern");
 		
 		for (var i = 0; i < patterns.length; i++) {
-			var ptype = patterns[i].getAttribute("type");
-			if (ptype == "string") {
-				list.push({type: ptype, value: patterns[i].textContent});
-			} else if (ptype == "regexp") {
-				try {
-					list.push({type: ptype,
-							   value: patterns[i].textContent,
-							   regexp: new RegExp(patterns[i].textContent, "i")});
+			try {
+				var ptype = patterns[i].getAttribute("type");
+				if (ptype == "string") {
+					list.push({type: ptype, value: patterns[i].textContent, testValue: patterns[i].textContent.toLowerCase()});
 				}
-				catch (ex) {
-					//nothing to do
+				else if (ptype == "regexp") {
+					list.push({type: ptype, value: patterns[i].textContent, testValue: new RegExp(patterns[i].textContent, "i")});
 				}
+			}
+			catch (ex) {
+				//nothing to do
 			}
 		}
 
