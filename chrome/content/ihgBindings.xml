@@ -15,10 +15,11 @@
 				<xul:menuitem anonid="suckthread" label="&suck_the_current_thread.label;" accesskey="&suck_the_current_thread.accesskey;" oncommand="ihg_Functions.leechThread();"/>
 				<xul:menuseparator/>
 				<xul:menuitem label="&host_file_editor.label;" accesskey="&host_file_editor.accesskey;" oncommand="openDialog('chrome://imagegrabber/content/interfaces/hostfile_ui.xul')"/>
-				<xul:menuitem label="&show_dl_window.label;" accesskey="&show_dl_window.accesskey;" oncommand="ihg_Functions.showDLWin('dlwin_exit_state');" />
+				<xul:menuitem label="&blacklist_editor.label;" accesskey="&blacklist_editor.accesskey;" oncommand="ihg_Functions.showBlacklistDialog();"/>
+				<xul:menuitem label="&show_dl_window.label;" accesskey="&show_dl_window.accesskey;" oncommand="ihg_Functions.showDLWin('dlwin_exit_state');"/>
 				<xul:menuseparator/>
-				<xul:menuitem label="&options.label;" accesskey="&options.accesskey;" oncommand="ihg_Functions.showPreferencesDialog();" />
-				<xul:menuitem label="&help.label;" accesskey="&help.accesskey;" oncommand="openDialog('chrome://imagegrabber/locale/help.html', '', 'dialog=no,close,resizable,scrollbars,minimizable,width=800,height=600')" />
+				<xul:menuitem label="&options.label;" accesskey="&options.accesskey;" oncommand="ihg_Functions.showPreferencesDialog();"/>
+				<xul:menuitem label="&help.label;" accesskey="&help.accesskey;" oncommand="openDialog('chrome://imagegrabber/locale/help.html', '', 'dialog=no,close,resizable,scrollbars,minimizable,width=800,height=600')"/>
 			</xul:arrowscrollbox>
 		</content>
 		

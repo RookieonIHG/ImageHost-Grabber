@@ -15,6 +15,9 @@
 <!ENTITY  host_file_editor.label "Editeur de fichier hôte">
 <!ENTITY  host_file_editor.accesskey "E">
 
+<!ENTITY  blacklist_editor.label "Blacklist Editor">
+<!ENTITY  blacklist_editor.accesskey "B">
+
 <!ENTITY  restore_cached_session.label "Restaurer la session en cache">
 <!ENTITY  restore_cached_session.accesskey "R">
 
