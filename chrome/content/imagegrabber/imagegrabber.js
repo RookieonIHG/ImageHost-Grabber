@@ -124,14 +124,6 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 
 
 ihg_Functions.getLinksAndImages = function getLinksAndImages(content, docLinks, thumbLinks) {
-	if (!ihg_Globals.blacklist) {
-		var blacklistService = new ihg_Functions.blacklistService();
-		ihg_Globals.blacklist = blacklistService.readList();
-	}
-
-	var stringList, regexpList;
-	[stringList, regexpList] = ihg_Functions.setupBlacklistData();
-
 	for (var q = 0; q < content.document.links.length; q++) {
 		var someNode = content.document.links[q];
 		var url = null;
@@ -140,24 +132,22 @@ ihg_Functions.getLinksAndImages = function getLinksAndImages(content, docLinks, 
 		var jsWrappedUrl = someNode.href.match(/javascript.+(\'|\")(http.+?)\1/);
 		if (jsWrappedUrl) url = jsWrappedUrl[2];
 		else url = someNode.href;
-		if (!ihg_Functions.isBlacklisted(url, stringList, regexpList)) {
-			url = ihg_Functions.removeAnonymizer(url);
-			docLinks[ihg_Globals.firstPage].push(url);
+		url = ihg_Functions.removeAnonymizer(url);
+		docLinks[ihg_Globals.firstPage].push(url);
 			
-			var thumbnail = null;
-			for (var a = 0; a < someNode.childNodes.length; a++) {
-				var someTagName = someNode.childNodes[a].tagName;
-				if (someTagName) {
-					if (someTagName.search(/img/i) >= 0) {
-						thumbnail = { src:someNode.childNodes[a].src,
-									width:someNode.childNodes[a].naturalWidth,
-									height:someNode.childNodes[a].naturalHeight };
-						break;
-					}
+		var thumbnail = null;
+		for (var a = 0; a < someNode.childNodes.length; a++) {
+			var someTagName = someNode.childNodes[a].tagName;
+			if (someTagName) {
+				if (someTagName.search(/img/i) >= 0) {
+					thumbnail = { src:someNode.childNodes[a].src,
+								width:someNode.childNodes[a].naturalWidth,
+								height:someNode.childNodes[a].naturalHeight };
+					break;
 				}
 			}
-			thumbLinks[ihg_Globals.firstPage].push(thumbnail);
 		}
+		thumbLinks[ihg_Globals.firstPage].push(thumbnail);
 	}
 			
 	if (ihg_Globals.downloadEmbeddedImages) {
@@ -380,6 +370,14 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 		thumbLinks = temp.thumbLinks;
 		}
 
+	if (!ihg_Globals.blacklist) {
+		var blacklistService = new ihg_Functions.blacklistService();
+		ihg_Globals.blacklist = blacklistService.readList();
+	}
+
+	var stringList, regexpList;
+	[stringList, regexpList] = ihg_Functions.setupBlacklistData();
+
 	for (var i = ihg_Globals.firstPage; i <= ihg_Globals.lastPage; i++) {
 		var t_count = 0;
 
@@ -401,7 +399,7 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 			if (isEmbedded) var theHostToUse = { hostID : "Embedded Image" , maxThreads : 0, downloadTimeout : 0, hostFunc : "Embedded Image" };
 			else var theHostToUse = ihg_Functions.getHostToUse(docLinks[i][j]);
 			
-			if (theHostToUse) {
+			if (theHostToUse && !ihg_Functions.isBlacklisted(docLinks[i][j], stringList, regexpList)) {
 				if (ihg_Globals.suckMode) {
 					// The originating page is added to the end of docLinks array if
 					// IHG is run in thread sucker mode.
@@ -430,8 +428,7 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 					if (ihg_Globals.createPageDirs) aFile.append(ihg_Globals.strings.page + i);
 					}
 
-				var doesDirExist = aFile.exists();
-				if (!doesDirExist) aFile.create(1,0755); // 1 for directory, 0 for file
+				if (!aFile.exists()) aFile.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755); // 1 for directory, 0 for file
 				objLinks.dirSave[i][t_count] = aFile.path;
 
 				t_count++;
@@ -443,7 +440,7 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 
 	if (filterImages) {
 		var filtered = ihg_Functions.showFilterDialog(objLinks);
-		if (!filtered) return;
+		if (!filtered) return null;
 	
 		objLinks = filtered.links;
 		}
