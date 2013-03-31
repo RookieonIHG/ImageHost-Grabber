@@ -370,10 +370,8 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 		thumbLinks = temp.thumbLinks;
 		}
 
-	if (!ihg_Globals.blacklist) {
-		var blacklistService = new ihg_Functions.blacklistService();
-		ihg_Globals.blacklist = blacklistService.readList();
-	}
+	var blacklistService = new ihg_Functions.blacklistService();
+	ihg_Globals.blacklist = blacklistService.readList();
 
 	var stringList, regexpList;
 	[stringList, regexpList] = ihg_Functions.setupBlacklistData();
