@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!DOCTYPE dialog SYSTEM "chrome://imagegrabber/locale/blacklist_editor.dtd">
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+
+<dialog id="ig_blacklist_editor_win" title="&blacklist_editor.title;"
+		width="600" height="400" persist="sizemode height width screenX screenY"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+		onload="onLoad();"
+		onunload="onUnLoad();"
+        buttons="accept,cancel"
+        buttonlabelaccept="&save;"
+        ondialogaccept="return doOK();">
+
+<stringbundleset id="stringbundleset">
+    <stringbundle id="imagegrabber-strings" src="chrome://imagegrabber/locale/imagegrabber.properties" />
+</stringbundleset>
+
+<script type="application/x-javascript" src="chrome://imagegrabber/content/interfaces/blacklist_editor.js"/>
+<script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/globals.js"/>
+<script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/imagegrabber.js"/>
+<script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/debug.js"/>
+<script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/file_services.js"/>
+<script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/utils.js"/>
+
+<menupopup id="treeMenu">
+	<menuitem label="&add;" onclick="addPattern();"/>
+	<menuitem id="treeMenuModify" label="&modify;" onclick="modifyPattern();"/>
+	<menuitem id="treeMenuRemove" label="&remove;" onclick="removePattern();"/>
+</menupopup>
+
+<vbox flex="1">
+	<description value="&blacklist_editor.description;"/>
+
+	<hbox flex="1">
+		<tree id="blacklistTree" flex="1" hidecolumnpicker="true" seltype="single">
+			<treecols>
+				<treecol ordinal="1" id="patternType" label="&type;" persist="width ordinal" flex="1"/>
+				<splitter ordinal="2" class="tree-splitter"/>
+				<treecol ordinal="3" id="patternValue" label="&value;" persist="width ordinal" flex="3"/>
+			</treecols>
+  
+			<treechildren id="list" context="treeMenu" minwidth="200" minheight="100"/>
+		</tree>
+
+		<vbox>
+			<spacer flex="1"/>
+			<button id="addButton" label="&add;" oncommand="addPattern();"/>
+			<button id="modifyButton" label="&modify;" oncommand="modifyPattern();"/>
+			<button id="removeButton" label="&remove;" oncommand="removePattern();"/>
+			<spacer flex="1"/>
+		</vbox>
+	</hbox>
+
+	<separator height="15"/>
+
+	<vbox>
+		<label value="&blacklist_file_path;"/>
+		<hbox>
+			<textbox id="blacklistFilePath" readonly="true" flex="1"/>
+			<button label="&change;" oncommand="changeFile();"/>
+		</hbox>
+	</vbox>
+
+	<separator height="15"/>
+</vbox>
+
+</dialog>

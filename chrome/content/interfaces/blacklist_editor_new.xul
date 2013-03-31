@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE dialog SYSTEM "chrome://imagegrabber/locale/blacklist_editor.dtd">
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+
+
+<dialog id="ig_blacklist_editor_new_win" title="&blacklist_editor_new.title;"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+		onload="onLoad();"
+		onunload="onUnLoad();"
+        buttons="accept,cancel"
+        ondialogaccept="return doOK();">
+
+<script type="application/x-javascript" src="chrome://imagegrabber/content/interfaces/blacklist_editor_new.js"/>
+
+<vbox flex="1">
+	<description value="&blacklist_editor_new.description;"/>
+
+	<separator height="15"/>
+
+	<vbox>
+		<hbox>
+			<label value="&blacklist_editor_new.type;" control="patternType"/>
+			<radiogroup id="patternType" oncommand="setFocus('patternValue');">
+				<radio label="&string;" value="string"/>
+				<radio label="&regexp;" value="regexp"/>
+			</radiogroup>
+		</hbox>
+
+		<separator height="15"/>
+
+		<hbox>
+			<label value="&blacklist_editor_new.value;" control="patternValue"/>
+			<textbox id="patternValue" flex="1"/>
+		</hbox>
+
+		<separator height="15"/>
+	</vbox>
+</vbox>
+
+</dialog>
