@@ -39,7 +39,9 @@
  *
  */
 ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
-	ihg_Functions.LOG("Entering function hostGrabber.\n");
+	var myself = arguments.callee.name;
+	ihg_Functions.LOG("Entering " + myself + "\n");
+
 	if (!docLinks) {
 		ihg_Globals.strbundle = document.getElementById("imagegrabber-strings");
 		ihg_Functions.read_locale_strings();
@@ -155,10 +157,8 @@ ihg_Functions.getLinksAndImages = function getLinksAndImages(content, docLinks, 
 		for (var q = 0; q < imgs.length; q++) {
 			if (imgs[q].naturalHeight >= ihg_Globals.minEmbeddedHeight && imgs[q].naturalWidth >= ihg_Globals.minEmbeddedWidth) {
 				// add a tag to the link so we can identify it later
-				if (!ihg_Functions.isBlacklisted(imgs[q].src, stringList, regexpList)) {
-					docLinks[ihg_Globals.firstPage].push("[embeddedImg]" + imgs[q].src);
-					thumbLinks[ihg_Globals.firstPage].push({ src:imgs[q].src, width:imgs[q].naturalWidth, height:imgs[q].naturalHeight });
-				}
+				docLinks[ihg_Globals.firstPage].push("[embeddedImg]" + imgs[q].src);
+				thumbLinks[ihg_Globals.firstPage].push({ src:imgs[q].src, width:imgs[q].naturalWidth, height:imgs[q].naturalHeight });
 			}
 		}
 	}
@@ -196,7 +196,7 @@ ihg_Functions.isBlacklisted = function isBlacklisted(url, stringList, regexpList
 	if (stringList) {
 		var urlLowerCase = url.toLowerCase();
 		for (var i = 0; i < stringList.length; i++) {
-			if (stringList[i] == urlLowerCase) {
+			if (urlLowerCase.indexOf(stringList[i]) >= 0) {
 				ihg_Functions.LOG("Blacklisted URL (stringList): " + url + "\n");
 				return true;
 			}
@@ -373,8 +373,7 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 	var blacklistService = new ihg_Functions.blacklistService();
 	ihg_Globals.blacklist = blacklistService.readList();
 
-	var stringList, regexpList;
-	[stringList, regexpList] = ihg_Functions.setupBlacklistData();
+	var [stringList, regexpList] = ihg_Functions.setupBlacklistData();
 
 	for (var i = ihg_Globals.firstPage; i <= ihg_Globals.lastPage; i++) {
 		var t_count = 0;
@@ -574,7 +573,7 @@ ihg_Functions.LinksOBJ = function LinksOBJ() {
 
 ////////////////////////  Get imagegrabber preferences  ////////////////////////
 ihg_Functions.getIGPrefs = function getIGPrefs() {
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
 	ihg_Globals.showDLDir = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.showdldir");
@@ -674,7 +673,7 @@ ihg_Functions.getIGPrefs = function getIGPrefs() {
 
 //////////////////////   Initiliaze the variables //////////////////////////
 ihg_Functions.initVars = function initVars(skipDirDialog) {
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
 	var doc = content.document;
