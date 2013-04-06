@@ -129,7 +129,7 @@ function addPattern() {
 showNewDialog = function showNewDialog() {
 	var params = {inn: null, out: null};
 	window.openDialog("chrome://imagegrabber/content/interfaces/blacklist_editor_new.xul", 
-			"ig-filter_win", "chrome, dialog, modal", params);
+			"ig-filter_win", "chrome, dialog, modal, centerscreen, resizable", params);
 	return params.out;
 } 
 
