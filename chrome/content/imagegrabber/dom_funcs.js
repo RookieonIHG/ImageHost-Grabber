@@ -26,12 +26,12 @@
 
 /////////////////////////////    Used to get the links    /////////////////////////////
 ihg_Functions.getLinks = function getLinks(sometext) {
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
 	var re;
-	if (!ihg_Globals.downloadEmbeddedImages) re = new RegExp("<a.+?>", "ig");
-	else re = new RegExp("<(?:a|img).+?>", "ig");
+	if (!ihg_Globals.downloadEmbeddedImages) re = new RegExp("<a\\b.+?>", "ig");
+	else re = new RegExp("<(?:a|img)\\b.+?>", "ig");
 
 	var filtered = sometext.replace(/\r?\n/g, " ");
 	filtered = filtered.match(re);
@@ -68,10 +68,10 @@ ihg_Functions.getLinks = function getLinks(sometext) {
 
 ////////////////////////////    Used to get an image source given the ID   /////////////////////////
 ihg_Functions.getImgSrcById = function getImgSrcById(sometext, theID){
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
-	var re = new RegExp("<img.+?>", "ig");
+	var re = new RegExp("<img\\b.+?>", "ig");
 	var filtered = sometext.replace(/\r?\n/g, " ");
 	filtered = filtered.match(re);
 
@@ -104,10 +104,10 @@ ihg_Functions.getImgSrcById = function getImgSrcById(sometext, theID){
 
 ////////////////////////////    Used to get the frame tags    /////////////////////////
 ihg_Functions.getFrameTags = function getFrameTags(sometext){
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
-	var re = new RegExp("<frame.+?>", "ig");
+	var re = new RegExp("<frame\\b.+?>", "ig");
 	var filtered = sometext.replace(/\r?\n/g, " ");
 	filtered = filtered.match(re);
 
@@ -120,10 +120,10 @@ ihg_Functions.getFrameTags = function getFrameTags(sometext){
 
 ////////////////////////////    Used to get the image tags    /////////////////////////
 ihg_Functions.getImgTags = function getImgTags(sometext){
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
-	var re = new RegExp("<img.+?>", "ig");
+	var re = new RegExp("<img\\b.+?>", "ig");
 	var filtered = sometext.replace(/\r?\n/g, " ");
 	filtered = filtered.match(re);
 
@@ -135,7 +135,7 @@ ihg_Functions.getImgTags = function getImgTags(sometext){
 
 //////////////////   Gets the image source from an image tag /////////////////
 ihg_Functions.getImgSrcFromTag = function getImgSrcFromTag(sometext){
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
 	var filtered = sometext;
@@ -158,7 +158,7 @@ ihg_Functions.getImgSrcFromTag = function getImgSrcFromTag(sometext){
 
 ///////////////////////////  Get the data in a <p> node  ///////////////////////////////
 ihg_Functions.getPNodeData = function getPNodeData(sometext){
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
 	var re = new RegExp("<p>.+?</p>", "igm");
