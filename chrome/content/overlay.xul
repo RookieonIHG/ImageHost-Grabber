@@ -40,8 +40,8 @@
 
 
 <keyset>
-	<key id="ihg-getAll_cmd" keycode="VK_PAGE_DOWN" modifiers="accel shift" oncommand="ihg_Functions.hostGrabber(null, false);"/>
-	<key id="ihg-getSelected_cmd" keycode="VK_PAGE_UP" modifiers="accel shift" oncommand="ihg_Functions.hostGrabber(null, true);"/>
+	<key id="ihg-getAll_cmd" keycode="VK_PAGE_DOWN" modifiers="shift" oncommand="ihg_Functions.hostGrabber(null, false);"/>
+	<key id="ihg-getSelected_cmd" keycode="VK_PAGE_UP" modifiers="shift" oncommand="ihg_Functions.hostGrabber(null, true);"/>
 </keyset>
 
 <popupset>
