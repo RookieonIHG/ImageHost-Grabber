@@ -196,7 +196,7 @@ ihg_Functions.isBlacklisted = function isBlacklisted(url, stringList, regexpList
 	if (stringList) {
 		var urlLowerCase = url.toLowerCase();
 		for (var i = 0; i < stringList.length; i++) {
-			if (urlLowerCase.indexOf(stringList[i]) >= 0) {
+			if (urlLowerCase == stringList[i]) {
 				ihg_Functions.LOG("Blacklisted URL (stringList): " + url + "\n");
 				return true;
 			}
