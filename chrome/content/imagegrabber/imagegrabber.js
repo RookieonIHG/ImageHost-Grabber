@@ -196,7 +196,7 @@ ihg_Functions.isBlacklisted = function isBlacklisted(url, stringList, regexpList
 	if (stringList) {
 		var urlLowerCase = url.toLowerCase();
 		for (var i = 0; i < stringList.length; i++) {
-			if (urlLowerCase.indexOf(stringList[i]) >= 0) {
+			if (urlLowerCase == stringList[i]) {
 				ihg_Functions.LOG("Blacklisted URL (stringList): " + url + "\n");
 				return true;
 			}
@@ -368,12 +368,14 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 		var temp = ihg_Functions.removeDuplicates(docLinks, thumbLinks);
 		docLinks = temp.docLinks;
 		thumbLinks = temp.thumbLinks;
-		}
+	}
 
 	var blacklistService = new ihg_Functions.blacklistService();
 	ihg_Globals.blacklist = blacklistService.readList();
 
 	var [stringList, regexpList] = ihg_Functions.setupBlacklistData();
+
+	var dirsToCreate = [];
 
 	for (var i = ihg_Globals.firstPage; i <= ihg_Globals.lastPage; i++) {
 		var t_count = 0;
@@ -402,11 +404,11 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 					// IHG is run in thread sucker mode.
 					objLinks.originatingPage[i][t_count] = docLinks[i][docLinks[i].length-1];
 					objLinks.thumbs[i][t_count] = null;
-					}
+				}
 				else {
 					objLinks.originatingPage[i][t_count] = content.document.location.href;
 					objLinks.thumbs[i][t_count] = thumbLinks[i][j];
-					}
+				}
 				objLinks.hostFunc[i][t_count] = theHostToUse.hostFunc;
 				objLinks.links[i][t_count] = isEmbedded?isEmbedded[1]:docLinks[i][j];
 				objLinks.hostID[i][t_count] = theHostToUse.hostID;
@@ -423,27 +425,40 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 				// Create a directory for each page if in suck mode
 				if (ihg_Globals.suckMode) {
 					if (ihg_Globals.createPageDirs) aFile.append(ihg_Globals.strings.page + i);
-					}
+				}
 
-				if (!aFile.exists()) aFile.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755); // 1 for directory, 0 for file
+				var dirInList = false;
+				for (var z = 0; z < dirsToCreate.length; z++) {
+					if (dirsToCreate[z].path == aFile.path) {
+						dirInList = true;
+						break;
+					}
+				}
+				if (!dirInList) dirsToCreate.push(aFile);
 				objLinks.dirSave[i][t_count] = aFile.path;
 
 				t_count++;
-				} //end of if statement
+			} //end of if statement
 
-			} // end of inner-for loop
+		} // end of inner-for loop
 
-		} // end of outer-for loop
+	} // end of outer-for loop
 
 	if (filterImages) {
 		var filtered = ihg_Functions.showFilterDialog(objLinks);
 		if (!filtered) return null;
 	
 		objLinks = filtered.links;
+	}
+
+	for (var z = 0; z < dirsToCreate.length; z++) {
+		if (!dirsToCreate[z].exists()) {
+			dirsToCreate[z].create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755); // 1 for directory, 0 for file
 		}
+	}
 	
 	return objLinks;
-	} //end of function
+} //end of function
 
 
 
