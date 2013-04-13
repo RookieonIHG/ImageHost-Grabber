@@ -74,63 +74,76 @@
 
 <separator height="10"/>
 
-<hbox height="160">
-	<vbox id="previewBox">
-		<deck id="previewLabel">
-			<label value="&no_preview_available;"/>
-			<label value="&preview;"/>
-		</deck>
-		<hbox width="200">
-			<spacer flex="1"/>
-			<image id="thumbnail" src="" width="" height=""/>
-			<spacer flex="1"/>
-		</hbox>
-	</vbox>
+<hbox>
 	<vbox>
-		<hbox>
-			<button label="&select_all;" oncommand="doSetAll('true');setFocus('igLinksTree');"/>
-			<button label="&clear_all;" oncommand="doSetAll('false');setFocus('igLinksTree');"/>
-			<!-- <button label="&invert_selection;" oncommand="doInvertSelection();setFocus('igLinksTree');"/> -->
-			<button label="&invert_selection;" oncommand="doSetAll('toggle');setFocus('igLinksTree');"/>
-			<button label="&toggle_the_highlighted_items;" oncommand="applyCmd('toggle');setFocus('igLinksTree');"/>
-		</hbox>
-		<separator height="10"/>
-		<hbox>
-			<vbox>
-				<hbox align="center">
-					<label value="&filter_value;" control="filterValue"/>
-					<textbox id="filterValue"/>
-					<button label="&apply_filter;" oncommand="applyFilter();setFocus('igLinksTree');"/>
-				</hbox>
+		<deck id="previewLoc" height="165" minwidth="200">
+			<vbox id="previewBox">
+				<deck id="previewLabel">
+					<label value="&no_preview_available;"/>
+					<label value="&preview;"/>
+				</deck>
+				<separator height="5"/>
 				<hbox>
-					<vbox tooltip="typeTip">
-						<label value="&filter_type;" control="filterType"/>
-						<radiogroup id="filterType" oncommand="setFocus('filterValue');">
-							<radio label="&type_simple;" value="simple"/>
-							<radio label="&type_regular_expression;" value="regex"/>
-						</radiogroup>
-					</vbox>
-					<vbox>
-						<label value="&apply_filter_on;" control="filterOn"/>
-						<radiogroup id="filterOn" oncommand="setFocus('filterValue');">
-							<radio label="&url;" value="url"/>
-							<radio label="&host_id;" value="host"/>
-						</radiogroup>
-					</vbox>
+					<spacer flex="1"/>
+					<image id="thumbnail" src="" width="" height=""/>
+					<spacer flex="1"/>
 				</hbox>
 			</vbox>
-			<separator width="20"/>
-			<vbox>
-				<checkbox id="togThumb" label="&toggle_detailed_thumbnail_view;" oncommand="chgPreview();setFocus('igLinksTree');" persist="checked"/>
-				<vbox id="rowHeightBox">
-					<hbox align="center">
-						<label value="&new_value_for_row_height;"/>
-						<textbox id="rowHeightVal" value="" size="3" persist="saved"/>
-					</hbox>
-					<button label="&change_row_height;" oncommand="chgRowHeight();setFocus('igLinksTree');"/>
-				</vbox>
+			<vbox id="rowHeightBox">
+				<hbox align="center">
+					<label value="&new_value_for_row_height;"/>
+					<spacer flex="1"/>
+					<textbox id="rowHeightVal" value="" size="2" persist="saved"/>
+				</hbox>
+				<button label="&change_row_height;" oncommand="chgRowHeight();setFocus('igLinksTree');"/>
 			</vbox>
+		</deck>
+		<separator flex="1"/>
+		<button label="&toggle_detailed_thumbnail_view;" oncommand="document.getElementById('togThumb').click();"/>
+		<checkbox id="togThumb" oncommand="chgPreview();setFocus('igLinksTree');" persist="checked" hidden="true"/>
+	</vbox>
+	<spacer minwidth="25" flex="1"/>
+	<vbox>
+		<vbox>
+			<hbox>
+				<button label="&select_all;" oncommand="doSetAll('true');setFocus('igLinksTree');" flex="1"/>
+				<button label="&clear_all;" oncommand="doSetAll('false');setFocus('igLinksTree');" flex="1"/>
+				<!-- <button label="&invert_selection;" oncommand="doInvertSelection();setFocus('igLinksTree');"/> -->
+				<button label="&invert_selection;" oncommand="doSetAll('toggle');setFocus('igLinksTree');" flex="1"/>
+			</hbox>
+			<button label="&toggle_the_highlighted_items;" oncommand="applyCmd('toggle');setFocus('igLinksTree');"/>
+		</vbox>
+		<separator height="10"/>
+		<vbox>
+			<hbox align="center">
+				<label value="&filter_value;" control="filterValue"/>
+				<textbox id="filterValue"/>
+				<button label="&apply_filter;" oncommand="applyFilter();setFocus('igLinksTree');"/>
+			</hbox>
+			<hbox>
+				<vbox tooltip="typeTip">
+					<label value="&filter_type;" control="filterType"/>
+					<radiogroup id="filterType" oncommand="setFocus('filterValue');">
+						<radio label="&type_simple;" value="simple"/>
+						<radio label="&type_regular_expression;" value="regex"/>
+					</radiogroup>
+				</vbox>
+				<vbox>
+					<label value="&apply_filter_on;" control="filterOn"/>
+					<radiogroup id="filterOn" oncommand="setFocus('filterValue');">
+						<radio label="&url;" value="url"/>
+						<radio label="&host_id;" value="host"/>
+					</radiogroup>
+				</vbox>
+			</hbox>
+		</vbox>
+		<separator flex="1"/>
+		<hbox>
+			<spacer flex="1"/>
+			<button dlgtype="accept"/>
+			<button dlgtype="cancel"/>
 		</hbox>
 	</vbox>
 </hbox>
+
 </dialog>

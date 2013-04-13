@@ -135,7 +135,7 @@ function doOK() {
 				newObjLinks.downloadTimeout[i].push(objLinks.downloadTimeout[i][j]);
 				newObjLinks.originatingPage[i].push(objLinks.originatingPage[i][j]);
 			}
-			
+		
 		}
 	}
 
@@ -297,8 +297,9 @@ function chgPreview(initialChange) {
 	var togThumb = document.getElementById("togThumb");
 	var isChecked = togThumb.checked;
 
-	var pbox = document.getElementById("previewBox");
-	var rbox = document.getElementById("rowHeightBox");
+	var prevLoc = document.getElementById("previewLoc");
+	// var pbox = document.getElementById("previewBox");
+	// var rbox = document.getElementById("rowHeightBox");
 	
 	var ss = 1;
 	var cssRules = document.styleSheets[ss].cssRules;
@@ -307,7 +308,7 @@ function chgPreview(initialChange) {
 	var numRows = list.childNodes.length;
 	
 
-	if (isChecked) {	
+	if (isChecked) {
 		var indices = new Array();
 		
 		for(var a = 0; a < cssRules.length; a++) {
@@ -325,8 +326,9 @@ function chgPreview(initialChange) {
 			var treeCell = document.getElementById("url_" + b);
 			treeCell.setAttribute("src",null);
 		}
-		pbox.hidden = false;
-		rbox.hidden = true;
+		// pbox.hidden = false;
+		// rbox.hidden = true;
+		prevLoc.selectedIndex = 0;
 	}
 	else {
 		if (initialChange) {
@@ -364,8 +366,9 @@ function chgPreview(initialChange) {
 				if (objLinks.thumbs[a][b]) treeCell.setAttribute("src", objLinks.thumbs[a][b].src);
 			}
 		}
-		pbox.hidden = true;
-		rbox.hidden = false;
+		// pbox.hidden = true;
+		// rbox.hidden = false;
+		prevLoc.selectedIndex = 1;
 	}
 	list.hidden = true;
 	setTimeout("document.getElementById('list').hidden = false;",100);

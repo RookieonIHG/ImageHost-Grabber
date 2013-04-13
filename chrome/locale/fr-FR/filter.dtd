@@ -33,6 +33,6 @@
 
 <!ENTITY  apply_filter_on "Appliquer le filtre sur:">
 
-<!ENTITY  toggle_detailed_thumbnail_view "Basculer détail/cliché réduit">
+<!ENTITY  toggle_detailed_thumbnail_view "Mode Détail / Vignette">
 <!ENTITY  new_value_for_row_height "Nouvelle hauteur des lignes:">
 <!ENTITY  change_row_height "Changer la hauteur des lignes">
