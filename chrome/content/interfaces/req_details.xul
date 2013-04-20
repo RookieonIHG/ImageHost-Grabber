@@ -33,6 +33,7 @@ const gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper
 	</columns>
 	<rows>
 		<row align="center"><label value="&request_url;"/><textbox id="reqURL" readonly="true"/></row>
+		<row align="center"><label value="&source_url;"/><textbox id="originatingPage" readonly="true"/></row>
 		<row align="center"><label value="&regular_expression;"/><textbox id="regexp" readonly="true"/></row>
 		<row align="center"><label value="&target_directory;"/><textbox id="dirSave" readonly="true"/></row>
 	</rows>
