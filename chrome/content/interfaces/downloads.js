@@ -412,6 +412,7 @@ function rightOn() {
 	detail_win.document.getElementById("totLinkNum").value = reqObj.totLinkNum;
 	detail_win.document.getElementById("curLinkNum").value = reqObj.curLinkNum;
 	detail_win.document.getElementById("reqURL").value = reqObj.reqURL;
+	detail_win.document.getElementById("originatingPage").value = reqObj.originatingPage;
 	detail_win.document.getElementById("regexp").value = reqObj.regexp;
 	detail_win.document.getElementById("dirSave").value = reqObj.dirSave;
 	detail_win.document.getElementById("readyState").value = reqObj.xmlhttp.readyState;
