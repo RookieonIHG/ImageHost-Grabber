@@ -123,15 +123,12 @@ function sortHosts() {
 	for (var i = 0; i < tmpList.length; i++) {
 		for (var j = 0; j < hostfile_Globals.hosts.length; j++) {
 			if (tmpList[i] == hostfile_Globals.hosts[j].getAttribute("id")) {
-				tmpList[i] = hostfile_Globals.hosts[j];
+				hostfile_Globals.hFile.firstChild.appendChild(hostfile_Globals.hosts[j]);
 				break;
 				}
 			}
 		}
 
-	for (var i = 0; i < tmpList.length; i++) {
-		hostfile_Globals.hFile.firstChild.appendChild(tmpList[i]);
-		}
 	}
 
 function initWindow() {
@@ -270,9 +267,7 @@ function loadHostFile() {
 	menu_popup.removeAllItems();
 
 	for (var i = 0; i < hostfile_Globals.hosts.length; i++) {
-		var newElem = menu_popup.appendItem(hostfile_Globals.hosts[i].getAttribute("id"), i);
-		//newElem.setAttribute("onclick", "fillTBs(this.value);");
-		newElem.setAttribute("oncommand", "fillTBs(this.value);");
+		menu_popup.appendItem(hostfile_Globals.hosts[i].getAttribute("id"), i);
 		}
 
 	window.setCursor('auto');
@@ -316,7 +311,7 @@ function fillTBs(idx) {
 
 	// document.getElementById("searchType").setAttribute("label", "Select...");
 	with (document.getElementById("searchType")) {
-		value = "-1";
+		selectedIndex = -1;
 		setAttribute("label", getAttribute("_label"));
 		}
 	}
@@ -559,9 +554,10 @@ function resetHostFileLoc() {
 
 function resetTextBoxes() {
 	with (document.getElementById("theList")) {
-		value = "-1";
+		selectedIndex = -1;
 		setAttribute("label", getAttribute("_label"));
 		}
+	
 	document.getElementById("tb_hostLabel").value = "";
 	document.getElementById("cb_hostMaxThreads").checked = false;
 	document.getElementById("tb_hostMaxThreads").disabled = true;
@@ -578,7 +574,7 @@ function resetTextBoxes() {
 	document.getElementById("but_delHost").disabled = true;
 	
 	with (document.getElementById("searchType")) {
-		value = "-1";
+		selectedIndex = -1;
 		setAttribute("label", getAttribute("_label"));
 		}
 	}
