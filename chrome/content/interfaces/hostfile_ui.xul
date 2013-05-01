@@ -36,20 +36,20 @@
 
 <grid>
 	<columns>
-		<column />
-		<column flex="1" />
+		<column/>
+		<column flex="1"/>
 	</columns>
-	<rows>
+	<rows oninput="validate(event.target);">
 		<row align="center">
 			<label control="tb_hostLabel" value="&host_label;"/>
 			<hbox align="center">
 				<textbox id="tb_hostLabel" flex="1"/>
-				
-				<checkbox id="cb_hostMaxThreads" label="&host_max_threads;" tooltip="host_max_threads-tip" oncommand="document.getElementById('tb_hostMaxThreads').disabled = !this.checked"/>
-				<textbox id="tb_hostMaxThreads" type="number" min="1" max="&maxThreads_HighLimit;" size="2" disabled="true"/>
-				
-				<checkbox id="cb_downloadTimeout" label="&timeout;" tooltip="timeout-tip" oncommand="document.getElementById('tb_downloadTimeout').disabled = !this.checked"/>
-				<textbox id="tb_downloadTimeout" type="number" min="1" max="60" size="2" disabled="true"/>
+				<hbox onchange="validate(event.target);">
+					<checkbox id="cb_hostMaxThreads" label="&host_max_threads;" tooltip="host_max_threads-tip" oncommand="document.getElementById('tb_hostMaxThreads').disabled = !this.checked; validate(this);"/>
+					<textbox id="tb_hostMaxThreads" type="number" min="1" max="&maxThreads_HighLimit;" size="2" disabled="true"/>
+					<checkbox id="cb_downloadTimeout" label="&timeout;" tooltip="timeout-tip" oncommand="document.getElementById('tb_downloadTimeout').disabled = !this.checked; validate(this);"/>
+					<textbox id="tb_downloadTimeout" type="number" min="1" max="60" size="2" disabled="true"/>
+				</hbox>
 			</hbox>
 		</row>
 		<row align="center">
@@ -62,10 +62,10 @@
 <hbox align="center">
 	<label control="tb_searchPattern" value="&search_pattern;"/>
 	<spacer flex="1"/>
-	<menulist id="searchType" label="&select_func;" _label="&select_func;"/>
+	<menulist id="searchType" label="&select_func;" _label="&select_func;" oncommand="validate(this);"/>
 </hbox>
 
-<textbox id="tb_searchPattern" multiline="true" flex="1" rows="12" onkeydown="handleKeyDown(event);" style="padding: 0px 0px 0px 3px;" minheight="100"/>
+<textbox id="tb_searchPattern" multiline="true" flex="1" rows="12" onkeydown="handleKeyDown(event);" oninput="validate(this);" style="padding: 0px 0px 0px 3px;" minheight="100"/>
 
 <separator/>
 
@@ -73,7 +73,7 @@
 	<button onclick="resetTextBoxes();" label="&reset_form;"/>
 	<spacer flex="1"/>
 	<button id="but_updateFile" disabled="true" oncommand="updateHostFile();" label="&update_file;"/>
-	<button id="but_addHost" oncommand="addHost();" label="&add_host;"/>
+	<button id="but_addHost" disabled="true" oncommand="addHost();" label="&add_host;"/>
 	<button id="but_delHost" disabled="true" oncommand="deleteHost();" label="&delete_host;"/>
 	<spacer flex="1"/>
 	<button onclick="openDialog('chrome://imagegrabber/content/interfaces/hostf_servers_ui.xul');" label="&modify_hostf_servers;"/>

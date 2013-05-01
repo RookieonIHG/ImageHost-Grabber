@@ -36,6 +36,8 @@ hostfile_Globals.addonPath = "";
 ihg_Globals.strbundle = document.getElementById("imagegrabber-strings");
 ihg_Functions.read_locale_strings();
 
+var theSortedList = [];
+
 function HostFileService() {
 	var id = "{E4091D66-127C-11DB-903A-DE80D2EFDFE8}"; // imagegrabber's ID
 	var hostFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
@@ -51,7 +53,7 @@ function HostFileService() {
 	// with the path where the extension is located
 	try {
 		hostf_servers = Components.classes["@mozilla.org/extensions/manager;1"]
-      		    .getService(Components.interfaces.nsIExtensionManager).getInstallLocation(id).getItemLocation(id); 
+				.getService(Components.interfaces.nsIExtensionManager).getInstallLocation(id).getItemLocation(id);
 		if(hostfile_Globals.hostFileLoc == "") hostFile.initWithPath(hostf_servers.path);
 		}
 	// For those who are still using the antiquated Firefox versions
@@ -78,9 +80,9 @@ HostFileService.prototype = {
 
 		for (var i = 0; i < hostfile_Globals.hosts.length; i++) newHosts[i] = hostfile_Globals.hosts[i].cloneNode(true);
 
-		for (var i = 0; i < newHosts.length; i++) { 
+		for (var i = 0; i < newHosts.length; i++) {
 			newRoot.appendChild(hostfile_Globals.hFile.createTextNode("\n")); 
-			newRoot.appendChild(newHosts[i]); 
+			newRoot.appendChild(newHosts[i]);
 			newRoot.appendChild(hostfile_Globals.hFile.createTextNode("\n")); 
 			}
 		hostfile_Globals.hFile.removeChild(hostfile_Globals.hFile.firstChild);
@@ -118,11 +120,11 @@ HostFileService.prototype = {
 	}
 
 function sortHosts() {
-	var tmpList = Array.map(hostfile_Globals.hosts, function(host) {return host.getAttribute("id")}).sort();
+	theSortedList = Array.map(hostfile_Globals.hosts, function(host) {return host.getAttribute("id")}).sort();
 
-	for (var i = 0; i < tmpList.length; i++) {
+	for (var i = 0; i < theSortedList.length; i++) {
 		for (var j = 0; j < hostfile_Globals.hosts.length; j++) {
-			if (tmpList[i] == hostfile_Globals.hosts[j].getAttribute("id")) {
+			if (theSortedList[i] == hostfile_Globals.hosts[j].getAttribute("id")) {
 				hostfile_Globals.hFile.firstChild.appendChild(hostfile_Globals.hosts[j]);
 				break;
 				}
@@ -244,6 +246,25 @@ function handleKeyDown(event) {
 function handleKeyUp(event) {
 	return event.keyCode;
 }
+
+function validate(inputItem) {
+	var valid_Host = true;
+
+	['hostLabel','urlPattern','searchPattern']
+	.forEach(function (inputTB){
+		if (document.getElementById('tb_'+inputTB).value == "") valid_Host = false;
+		/* Don't know how to stop the forEach loop here... */
+	});
+
+	if (valid_Host) {
+		document.getElementById("but_updateFile").disabled = !(document.getElementById('theList').selectedItem);
+		document.getElementById("but_addHost").disabled = (document.getElementById('tb_hostLabel').value == document.getElementById('theList').label);
+	}
+	else {
+		document.getElementById("but_updateFile").disabled = true;
+		document.getElementById("but_addHost").disabled = true;
+	}
+}
 /* 
 function resizeResponseTextBox() {
 	var rBoxThing = document.getElementById("tb_searchPattern");
@@ -284,7 +305,7 @@ function fillTBs(idx) {
 
 	var mt_tbout = document.getElementById("tb_hostMaxThreads");
 	var maxThreads = hostfile_Globals.hosts[idx].getAttribute("maxThreads");
-	
+
 	var cbMaxThreads = document.getElementById("cb_hostMaxThreads");
 	cbMaxThreads.checked = (maxThreads != null)?true:false;
 	mt_tbout.disabled = !cbMaxThreads.checked;
@@ -297,7 +318,7 @@ function fillTBs(idx) {
 	cbDLTimeout.checked = (timeout != null)?true:false;
 	timer_tbout.disabled = !cbDLTimeout.checked;
 	timer_tbout.value = timeout || 1;
-	
+
 	var up_tbout = document.getElementById("tb_urlPattern");
 	up_tbout.value = uPat;
 
@@ -305,7 +326,7 @@ function fillTBs(idx) {
 	if(!sPat.match(/function/)) sp_tbout.value = sPat.replace("\\\\", "\\", "g");
 	else sp_tbout.value = sPat;
 
-	document.getElementById("but_updateFile").disabled = false;
+	document.getElementById("but_updateFile").disabled = true;
 	document.getElementById("but_addHost").disabled = true;
 	document.getElementById("but_delHost").disabled = false;
 
@@ -317,10 +338,16 @@ function fillTBs(idx) {
 	}
 
 function updateHostFile() {
+	var label = document.getElementById("tb_hostLabel").value;
+
+	if (document.getElementById('theList').label != label && theSortedList.indexOf(label) >= 0) {
+		alert("HostID already exists");
+		return;
+	}
+
 	var urlPattern = document.getElementById("tb_urlPattern").value;
 	var searchPattern = document.getElementById("tb_searchPattern").value;
 	if (!searchPattern.match(/function/)) searchPattern = searchPattern.replace(/\\(?!\")/g, "\\\\");
-	var label = document.getElementById("tb_hostLabel").value;
 	var maxThreads = document.getElementById("tb_hostMaxThreads").value;
 	var timeout = document.getElementById("tb_downloadTimeout").value;
 	var cb_maxThreads = document.getElementById("cb_hostMaxThreads").checked;
@@ -365,10 +392,16 @@ function updateHostFile() {
 	}
 
 function addHost() {
+	var label = document.getElementById("tb_hostLabel").value;
+
+	if (theSortedList.indexOf(label) >= 0) {
+		alert("HostID already exists");
+		return;
+	}
+
 	var urlPattern = document.getElementById("tb_urlPattern").value;
 	var searchPattern = document.getElementById("tb_searchPattern").value;
 	if (!searchPattern.match(/function/)) searchPattern = searchPattern.replace(/\\(?!\")/g, "\\\\");
-	var label = document.getElementById("tb_hostLabel").value;
 	var maxThreads = document.getElementById("tb_hostMaxThreads").value;
 	var timeout = document.getElementById("tb_downloadTimeout").value;
 	var cb_maxThreads = document.getElementById("cb_hostMaxThreads").checked;
@@ -570,7 +603,7 @@ function resetTextBoxes() {
 	document.getElementById("tb_searchPattern").value = "";
 	
 	document.getElementById("but_updateFile").disabled = true;
-	document.getElementById("but_addHost").disabled = false;
+	document.getElementById("but_addHost").disabled = true;
 	document.getElementById("but_delHost").disabled = true;
 	
 	with (document.getElementById("searchType")) {
