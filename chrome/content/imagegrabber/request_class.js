@@ -387,6 +387,11 @@ ihg_Functions.requestObj.prototype = {
 			this.xmlhttp.open("GET", encodeURI('about:blank'), true);
 		else
 			this.xmlhttp.open("GET", this.reqURL, true);
+
+		if (this.xmlhttp.channel instanceof Components.interfaces.nsIHttpChannelInternal) {
+			this.xmlhttp.channel.forceAllowThirdPartyCookie = true;
+		}
+
 		if (this.referer) this.xmlhttp.setRequestHeader("Referer", this.referer);
 		this.xmlhttp.onreadystatechange = this.init2;
 		this.xmlhttp.onload = this.hostFunc;
