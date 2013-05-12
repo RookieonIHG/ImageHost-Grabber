@@ -431,9 +431,10 @@ ihg_Functions.doStartDownload = function doStartDownload(reqObj, URLFile) {
 	if (!reqObj.notResumable) aResChan.QueryInterface(Components.interfaces.nsIResumableChannel);
 	aResChan.QueryInterface(Components.interfaces.nsIHttpChannel);
 
-	if (aResChan instanceof Components.interfaces.nsIHttpChannelInternal) {
-		aResChan.forceAllowThirdPartyCookie = true;
+	try {
+		aResChan.QueryInterface(Components.interfaces.nsIHttpChannelInternal).forceAllowThirdPartyCookie = true;
 	}
+	catch(e) { /* Requires Gecko 1.9.2 */ }
 
 	// tell that channel to resume at the given byte position
 	if (!reqObj.notResumable && startPos != 0) aResChan.resumeAt(startPos, "");

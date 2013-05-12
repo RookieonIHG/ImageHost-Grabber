@@ -388,9 +388,10 @@ ihg_Functions.requestObj.prototype = {
 		else
 			this.xmlhttp.open("GET", this.reqURL, true);
 
-		if (this.xmlhttp.channel instanceof Components.interfaces.nsIHttpChannelInternal) {
-			this.xmlhttp.channel.forceAllowThirdPartyCookie = true;
+		try {
+			this.xmlhttp.channel.QueryInterface(Components.interfaces.nsIHttpChannelInternal).forceAllowThirdPartyCookie = true;
 		}
+		catch(e) { /* Requires Gecko 1.9.2 */ }
 
 		if (this.referer) this.xmlhttp.setRequestHeader("Referer", this.referer);
 		this.xmlhttp.onreadystatechange = this.init2;
