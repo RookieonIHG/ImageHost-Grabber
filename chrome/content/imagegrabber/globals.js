@@ -88,7 +88,8 @@ ihg_Globals.LinksByFileExt = {
 			["FLV",		"flv",				/^\x46\x4C\x56/],
 			["MPEG",	"mpe?g",			/^\x00\x00\x01[\xB0-\xBF]/],
 			["MPEG-4",	"mp4|m4v",			/^\x00{3}\x1C\x66\x74\x79\x70(?:\x6D\x70\x34\x32|\x33\x67\x70\x35|\x69\x73\x6F\x6D|\x46\x41\x43\x45)/],
-			["SWF",		"swf",				/^[\x43\x46]\x57\x53/]]
+			["SWF",		"swf",				/^[\x43\x46]\x57\x53/]],
+	Generic: [["ZIP",   "zip|xpi|jar",      /^\x50\x4B\x03\x04/]]
 	};
 
 ihg_Globals.downloadEmbeddedImages = null;
