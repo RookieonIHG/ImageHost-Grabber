@@ -182,7 +182,7 @@ ihg_Functions.setUp_suckerReq = function setUp_suckerReq() {
 	
 	for (var i = 0; i < forums.length; i++) {
 		var uPatNode = forums[i].getElementsByTagName("urlpattern")[0];
-		var uPat = new RegExp(uPatNode.textContent);
+		var uPat = new RegExp(uPatNode.textContent, "i");
 		if (threadsucker_Globals.threadURL.match(uPat)) {
 			var sPatNode = forums[i].getElementsByTagName("searchpattern")[0];
 			tempThing = sPatNode.textContent;
