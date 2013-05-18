@@ -380,13 +380,13 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 	for (var i = ihg_Globals.firstPage; i <= ihg_Globals.lastPage; i++) {
 		var t_count = 0;
 
-		objLinks.links[i] = new Array();
-		objLinks.thumbs[i] = new Array();
-		objLinks.dirSave[i] = new Array();
-		objLinks.hostFunc[i] = new Array();
-		objLinks.hostID[i] = new Array();
-		objLinks.maxThreads[i] = new Array();
-		objLinks.downloadTimeout[i] = new Array();
+		objLinks.links[i] = [];
+		objLinks.thumbs[i] = [];
+		objLinks.dirSave[i] = [];
+		objLinks.hostFunc[i] = [];
+		objLinks.hostID[i] = [];
+		objLinks.maxThreads[i] = [];
+		objLinks.downloadTimeout[i] = [];
 		
 		// Added to give a proper referring url for embedded images
 		objLinks.originatingPage[i] = new Array();
@@ -395,10 +395,17 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 			// check to see if link has an embedded image tag
 			var isEmbedded = docLinks[i][j].match(/^\[embeddedImg\](.+)/);
 			
-			if (isEmbedded) var theHostToUse = { hostID : "Embedded Image" , maxThreads : 0, downloadTimeout : 0, hostFunc : "Embedded Image" };
-			else var theHostToUse = ihg_Functions.getHostToUse(docLinks[i][j]);
-			
-			if (theHostToUse && !ihg_Functions.isBlacklisted(docLinks[i][j], stringList, regexpList)) {
+			var theHostToUse, targetURL;
+			if (isEmbedded) {
+				theHostToUse = {hostID: "Embedded Image", maxThreads: 0, downloadTimeout: 0, hostFunc: "Embedded Image"};
+				targetURL = isEmbedded[1];
+			}
+			else {
+				theHostToUse = ihg_Functions.getHostToUse(docLinks[i][j]);
+				targetURL = docLinks[i][j];
+			}
+
+			if (theHostToUse && !ihg_Functions.isBlacklisted(targetURL, stringList, regexpList)) {
 				if (ihg_Globals.suckMode) {
 					// The originating page is added to the end of docLinks array if
 					// IHG is run in thread sucker mode.
