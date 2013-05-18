@@ -201,7 +201,6 @@
 }]]></searchpattern>
 </forum>
 
-
 <forum id="paheal">
 <urlpattern>http:\/\/.+\.paheal\.net\/post\/list\/?</urlpattern>
 <searchpattern><![CDATA[function(threadURL) {
@@ -263,6 +262,13 @@
 	var tmp = threadURL.replace(/pageID=\d+/, "pageID=" + threadsucker_Globals.linkIndex);
 	if (!tmp.match(/pageID=\d+/)) tmp = threadURL + "&pageID=" + threadsucker_Globals.linkIndex;
 	return tmp;
+}]]></searchpattern>
+</forum>
+
+<forum id="extreme-board">
+<urlpattern>http:\/\/(?:www\.)?extreme-board\.com\/.+\/\d+(?:-\d+)?\.htm</urlpattern>
+<searchpattern><![CDATA[function(threadURL) {
+	return threadURL.match(/http:\/\/(?:www\.)?extreme-board\.com\/.+\/\d+/) + "-" + threadsucker_Globals.linkIndex + ".htm";
 }]]></searchpattern>
 </forum>
 
