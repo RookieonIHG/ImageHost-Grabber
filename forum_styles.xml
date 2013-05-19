@@ -338,6 +338,13 @@
 </forum>
 
 <forum id="vBulletin mod5">
+<urlpattern>http:\/\/.+\/f\d+\/[\w-]+?-\d+(?:-\d+)?\.html</urlpattern>
+<searchpattern><![CDATA[function(threadURL) {
+	return threadURL.match(/(http:\/\/.+\/f\d+\/[\w-]+?-\d+)(?:-\d+)?\.html/)[1] + "-" + threadsucker_Globals.linkIndex + ".html";
+}]]></searchpattern>
+</forum>
+
+<forum id="vBulletin mod6">
 <urlpattern>http:\/\/.+\/\d+-[\w-]+\.html</urlpattern>
 <searchpattern><![CDATA[function(threadURL) {
 	var tmp = threadURL.replace(/-\d+\.html$/, "-" + threadsucker_Globals.linkIndex + ".html");
