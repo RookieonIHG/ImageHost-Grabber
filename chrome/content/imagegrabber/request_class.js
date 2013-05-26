@@ -117,7 +117,7 @@ ihg_Functions.requestObj.prototype = {
 
 		if (this.finished) return;
 
-		ihg_Functions.updateDownloadProgress(null, this.uniqID, null, null, ihg_Globals.strings.request_aborted + "  " + (additional_message?additional_message:""));
+		ihg_Functions.updateDownloadProgress(null, this.uniqID, null, null, ihg_Globals.strings.request_aborted + "  " + (additional_message || ""));
 		ihg_Functions.LOG(retryURL + " has been aborted.\n");
 
 		this.inprogress = false;
@@ -408,7 +408,7 @@ ihg_Functions.requestObj.prototype = {
 		},
 
 	init2 : function req_init2() {
-		var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+		var myself = arguments.callee.name;
 		ihg_Functions.LOG("Entering " + myself + "\n");
 
 		var req = this.parent;
@@ -440,8 +440,8 @@ ihg_Functions.requestObj.prototype = {
 				this.onload = null;
 				req.callwrapper.cancel();
 				this.abort();
-				ihg_Functions.doStartDownload(req, req.reqURL);
 				ihg_Functions.updateDownloadProgress(null, req.uniqID, req.reqURL, null, ihg_Globals.strings.starting_download);
+				ihg_Functions.doStartDownload(req, req.reqURL);
 				return;
 				}
 			}
