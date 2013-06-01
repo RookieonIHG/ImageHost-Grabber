@@ -36,11 +36,11 @@
 // https://developer.mozilla.org/En/Creating_Sandboxed_HTTP_Connections
 
 ihg_Functions.ihg_ProgressListener = function ihg_ProgressListener() {
-	this.buffer = new Object();
+	this.buffer = {};
 
 	this.refURL = "";
-	this.reqObj = new Object();
-	this.aFile = new Object();
+	this.reqObj = {};
+	this.aFile = {};
 
 	this.fileGood = "";
 	this.fileContents = "";
@@ -49,11 +49,11 @@ ihg_Functions.ihg_ProgressListener = function ihg_ProgressListener() {
 
 	this.resumable = true;
 
-	this.request = new Object();
+	this.request = {};
 }
 
 ihg_Functions.ihg_ProgressListener.prototype = {
-	checkFile : function() {
+	checkFile: function () {
 		var fileURI = ihg_Globals.ioService.newFileURI(this.aFile);
 		var channel = ihg_Globals.ioService.newChannelFromURI(fileURI);
 
@@ -93,21 +93,23 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 			var fileGood = false;
 			for (let FileType in ihg_Globals.LinksByFileExt) {
 				if (fileGood) break;
-				ihg_Globals.LinksByFileExt[FileType].forEach(function([Name,patt,SOI]){
-					if (SOI.test(shitty)) {
-						fileGood = true;
-						};
-					});
-				};
-			this.fileGood = (fileGood ? "yes" : "no");
+				ihg_Globals.LinksByFileExt[FileType].forEach(function ([Name, patt, SOI]) {
+					if (!fileGood) {
+						fileGood = SOI.test(shitty);
+					}
+				});
 			}
-		catch(e) { this.fileGood = "yes"; }
+			this.fileGood = (fileGood ? "yes" : "no");
+		}
+		catch (e) { 
+			this.fileGood = "yes";
+		}
 
 		stream.close();
 	},
 
 	// nsIInterfaceRequestor
-	getInterface : function (aIID) {
+	getInterface: function (aIID) {
 		try {
 			return this.QueryInterface(aIID);
 		}
@@ -116,22 +118,23 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 		}
 	},
 
-	retry : function() {
-
+	retry: function () {
 		var toDieOrNot = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.killmenow");
 		if (toDieOrNot && !this.override_stop) {
 			ihg_Functions.LOG("In function requestObj.retry, received the call to die!\n");
-			return; }
+			return;
+		}
 		this.request.cancel(Components.results.NS_OK);
 	},
 
-	onStartRequest : function(request, context){
-
+	onStartRequest: function (request, context){
 		var toDieOrNot = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.killmenow");
 		if (toDieOrNot && !this.reqObj.override_stop) return;
 		if (this.reqObj.aborted) return;
 
-		if (request.status == Components.results.NS_ERROR_NOT_RESUMABLE) this.resumable = false;
+		if (request.status == Components.results.NS_ERROR_NOT_RESUMABLE) {
+			this.resumable = false;
+		}
 		else if (request.status == Components.results.NS_ERROR_CONNECTION_REFUSED) {
 			// This happens sometimes when downloading images from imagebam.
 			// Filename is not available when this happens, so we need
@@ -149,7 +152,7 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 				}
 			}
 
-			var resumeDownload = this.reqObj.curProgress > 0 && this.reqObj.maxProgress > 0;
+			var resumeDownload = (this.reqObj.curProgress > 0 && this.reqObj.maxProgress > 0);
 
 			if (ihg_Globals.fileExistsBehavior == "skip" && this.aFile.exists() 
 					&& !this.reqObj.overwrite && !resumeDownload) {
@@ -158,7 +161,6 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 				ihg_Functions.LOG("File " + this.aFile.path + " already exists. Skipping....\n");
 				return;
 			}
-
 
 			if (ihg_Globals.fileExistsBehavior == "rename" && !this.reqObj.overwrite && !resumeDownload) {
 				// This causes files to not overwrite themselves.  It's good... trust me
@@ -183,10 +185,11 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 
 			if (resumeDownload) {
 				try { os.init(this.aFile, 0x02 | 0x10, 0664, null); }
-				catch(e) { os.init(this.aFile, 0x02 | 0x08 | 0x20, 0664, null); }
+				catch (e) { os.init(this.aFile, 0x02 | 0x08 | 0x20, 0664, null); }
 			}
-			else
+			else {
 				os.init(this.aFile, 0x02 | 0x08 | 0x20, 0664, null);
+			}
 
 			this.buffer = Components.classes["@mozilla.org/network/buffered-output-stream;1"].
 			createInstance(Components.interfaces.nsIBufferedOutputStream);
@@ -208,13 +211,12 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 		ihg_Functions.CCallWrapper.asyncExecute(this.callwrapper);
 	},
 
-	onStopRequest : function(request, context){
+	onStopRequest: function (request, context){
 		try { 
 			this.buffer.close(); 
 			this.callwrapper.cancel();
 		}
-		catch(e) { }
-
+		catch (e) { }
 
 		var toDieOrNot = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.killmenow");
 		if (toDieOrNot && !this.reqObj.override_stop) return;
@@ -222,7 +224,7 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 
 		aStatus = request.status;
 
-		if(aStatus == 0) 	{
+		if (aStatus == 0) 	{
 			if (this.reqObj.curProgress < this.reqObj.maxProgress && this.reqObj.maxProgress != -1) {
 				var retry_dick = "(" + String(ihg_Globals.maxRetries - this.reqObj.retryNum + 1) + " " + ihg_Globals.strings.of + " " + String(ihg_Globals.maxRetries) + ")";
 				ihg_Functions.updateDownloadProgress(null, this.reqObj.uniqID, null, null, ihg_Globals.strings.download_did_not_complete + " " + retry_dick)
@@ -233,8 +235,8 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 			}
 
 			this.checkFile();
-			if(this.fileGood == "no") {
-				if(this.fileContents.match(/Error: Unavailable/)) {
+			if (this.fileGood == "no") {
+				if (this.fileContents.match(/Error: Unavailable/)) {
 					ihg_Functions.updateDownloadProgress(null, this.reqObj.uniqID, null, 100, ihg_Globals.strings.error_from_server);
 				}
 				else {
@@ -258,8 +260,8 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 						if (remoteLastModStr) {
 							var remoteLastMod = new Date(remoteLastModStr);
 							this.aFile.lastModifiedTime = remoteLastMod;
-							}
 						}
+					}
 					catch (e) { /* Last-Modified not available */ }
 				}
 			}
@@ -277,7 +279,6 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 			// if (download_timeout <= 0 || this.reqObj.maxThreads == 0) {
 				// req_obj.unlock();
 			// }
-
 			
 			if (ihg_Globals.downloadTimeout > 0) {
 				if (this.reqObj.cp.hostTimer["global"] == null) {
@@ -306,7 +307,7 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 			else this.reqObj.unlock();
 		}
 
-		if(aStatus != 0) {
+		if (aStatus != 0) {
 			ihg_Functions.LOG("onStateChange has resulted in a non-successful status code inside of the persist progress listener.\n");
 			ihg_Functions.LOG("In onStateChange, this.refURL is equal to" + this.refURL + "\n");
 			ihg_Functions.LOG("In onStateChange, request.name is equal to " + request.name + "\n");
@@ -337,27 +338,25 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 
 		this.onChannelRedirect(oldChannel, newChannel, flags);
 		callback.onRedirectVerifyCallback(0);
-		},
+	},
 
-	onDataAvailable : function(request, context, stream, offset, count) { 
+	onDataAvailable: function (request, context, stream, offset, count) { 
 		this.reqObj.curProgress += count;
 
 		try { 
 			this.callwrapper.cancel();
-			while(count > 0) count -= this.buffer.writeFrom(stream, count);
+			while (count > 0) count -= this.buffer.writeFrom(stream, count);
 		}
-		catch(e) { }
-
+		catch (e) { }
 
 		var curProgress = this.reqObj.curProgress;
 		var maxProgress = this.reqObj.maxProgress;
-
 
 		var toDieOrNot = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.killmenow");
 		if ((toDieOrNot && !this.reqObj.override_stop) || this.reqObj.aborted) {
 			request.cancel(Components.results.NS_OK);
 			try { this.buffer.close(); }
-			catch(e) {}
+			catch (e) {}
 			return;
 		}
 
@@ -369,28 +368,29 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 	},
 
 	// nsIProgressEventSink (not implementing will cause annoying exceptions)
-	onProgress : function (aRequest, aContext, aProgress, aProgressMax) { 
+	onProgress: function (aRequest, aContext, aProgress, aProgressMax) { 
 		// aProgressMax: numeric value indicating maximum number of bytes that will be transfered (or 0xFFFFFFFFFFFFFFFF if total is unknown).
 		if (this.reqObj.maxProgress == 0) {
-			if (aProgressMax == 0xFFFFFFFFFFFFFFFF ) this.reqObj.maxProgress = -1;
+			if (aProgressMax == 0xFFFFFFFFFFFFFFFF) this.reqObj.maxProgress = -1;
 			else this.reqObj.maxProgress = aProgressMax;
 		}
 		//if (this.reqObj.maxProgress == -1) this.request.cancel(Components.results.NS_ERROR_ABORT);
 	},
 
-	onStatus : function (aRequest, aContext, aStatus, aStatusArg) { },
+	onStatus: function (aRequest, aContext, aStatus, aStatusArg) { },
 
 	// nsIHttpEventSink (not implementing will cause annoying exceptions)
-	onRedirect : function (aOldChannel, aNewChannel) { },
+	onRedirect: function (aOldChannel, aNewChannel) { },
 
 	// we are faking an XPCOM interface, so we need to implement QI
-	QueryInterface : function(aIID) {
+	QueryInterface: function (aIID) {
 		if (aIID.equals(Components.interfaces.nsISupports) ||
-				aIID.equals(Components.interfaces.nsIInterfaceRequestor) ||
-				aIID.equals(Components.interfaces.nsIChannelEventSink) || 
-				aIID.equals(Components.interfaces.nsIProgressEventSink) ||
-				aIID.equals(Components.interfaces.nsIHttpEventSink) ||
-				aIID.equals(Components.interfaces.nsIStreamListener)) return this;
+			aIID.equals(Components.interfaces.nsIInterfaceRequestor) ||
+			aIID.equals(Components.interfaces.nsIChannelEventSink) || 
+			aIID.equals(Components.interfaces.nsIProgressEventSink) ||
+			aIID.equals(Components.interfaces.nsIHttpEventSink) ||
+			aIID.equals(Components.interfaces.nsIStreamListener))
+			return this;
 
 		throw Components.results.NS_NOINTERFACE;
 	}
