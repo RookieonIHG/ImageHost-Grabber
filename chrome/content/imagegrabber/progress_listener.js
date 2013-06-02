@@ -61,8 +61,9 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 
 		try {
 			var count = stream.available();
+			count = (count < 64 ? count : 64);
 			this.bis.setInputStream(stream);
-			var shitty = this.bis.readBytes(count);			
+			var shitty = this.bis.readBytes(count);
 
 			this.fileContents = shitty;
 /*
@@ -222,9 +223,9 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 		if (toDieOrNot && !this.reqObj.override_stop) return;
 		if (this.reqObj.aborted) return;
 
-		aStatus = request.status;
+		var aStatus = request.status;
 
-		if (aStatus == 0) 	{
+		if (aStatus == 0) {
 			if (this.reqObj.curProgress < this.reqObj.maxProgress && this.reqObj.maxProgress != -1) {
 				var retry_dick = "(" + String(ihg_Globals.maxRetries - this.reqObj.retryNum + 1) + " " + ihg_Globals.strings.of + " " + String(ihg_Globals.maxRetries) + ")";
 				ihg_Functions.updateDownloadProgress(null, this.reqObj.uniqID, null, null, ihg_Globals.strings.download_did_not_complete + " " + retry_dick)
@@ -306,8 +307,7 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 			}
 			else this.reqObj.unlock();
 		}
-
-		if (aStatus != 0) {
+		else { /* aStatus != 0 */
 			ihg_Functions.LOG("onStateChange has resulted in a non-successful status code inside of the persist progress listener.\n");
 			ihg_Functions.LOG("In onStateChange, this.refURL is equal to" + this.refURL + "\n");
 			ihg_Functions.LOG("In onStateChange, request.name is equal to " + request.name + "\n");
