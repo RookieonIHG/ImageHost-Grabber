@@ -1313,7 +1313,7 @@
 </host>
 
 <host id="danbooru.donmai">
-<urlpattern>^http:\/\/danbooru\.donmai\.us\/post\/show\/.+</urlpattern>
+<urlpattern>^http:\/\/danbooru\.donmai\.us\/(post\/show\/.+|posts\/\d+)</urlpattern>
 <searchpattern>"ID: image"</searchpattern>
 </host>
 
@@ -3577,6 +3577,11 @@
 <searchpattern>"ID: show_image"</searchpattern>
 </host>
 
+<host id="imgcloud">
+<urlpattern>^http:\/\/(?:www\.)?imgcloud\.co\/img-</urlpattern>
+<searchpattern>"class='centred(?:_resized)?'"</searchpattern>
+</host>
+
 <host id="imgdepot">
 <urlpattern>^http:\/\/imgdepot\.org\/show\/.+</urlpattern>
 <searchpattern>"REPLACE: '\/show\/' , '/images/'"</searchpattern>
@@ -5074,6 +5079,21 @@
 <searchpattern>"subject"</searchpattern>
 </host>
 
+<host id="pantyhoz">
+<urlpattern>^http:\/\/(?:www\.)?pantyhoz\.net\/product_info\.php\?.*products_id=[^?]+$</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var retVal = {imgUrl: null, status: "ABORT"};
+	
+	var iUrl = pageData.match(/<div class="main"><div class="desc2"><img src="(.+?)"/);
+	if (iUrl) {
+		retVal.imgUrl = iUrl[1];
+		retVal.status = "OK";
+	}
+
+	return retVal;
+}]]></searchpattern>
+</host>
+
 <host id="partyimg">
 <urlpattern>^http:\/\/partyimg\.info\/viewer\.php\?</urlpattern>
 <searchpattern>"REPLACE: 'viewer\\.php\\?file=' , 'images/'"</searchpattern>
@@ -6089,6 +6109,14 @@
 <searchpattern><![CDATA[function(pageData, pageUrl) {
 	return {imgUrl: pageUrl, status: "OK"};
 	}]]></searchpattern>
+</host>
+
+<host id="rdlnk">
+<urlpattern>^http:\/\/rdlnk\.co\/\w+\/\?rdu=.+</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	var iUrl = pageUrl.replace(/^http:\/\/rdlnk\.co\/\w+\/\?rdu=/, '');
+	return {imgUrl: iUrl, status: "REQUEUE"};
+}]]></searchpattern>
 </host>
 
 <host id="recapped">
@@ -7202,22 +7230,19 @@
 <host id="tumblr">
 <urlpattern>^http:\/\/.+\.tumblr\.com\/post\/.+</urlpattern>
 <searchpattern><![CDATA[function(pageData, pageUrl) {
-	var retVal = {};
+	var retVal = {imgUrl: null, status: "ABORT"};
 	
 	var iUrl = pageData.match(/href="(http:\/\/[^\/]+\.tumblr\.com\/photo\/\d+\/.+?)"/);
+	if (!iUrl) iUrl = pageData.match(/href="(.+?)"[^>]+class="download image"/);
 	if (!iUrl) iUrl = pageData.match(/src="(http:\/\/[^\/]+\.tumblr\.com.+tumblr_.+?)"/);
 
-	if (!iUrl) {
-		retVal.imgUrl = null;
-		retVal.status = "ABORT";
-		}
-	else {
+	if (iUrl) {
 		retVal.imgUrl = iUrl[1];
 		retVal.status = "OK";
-		}
+	}
 
 	return retVal;
-	}]]></searchpattern>
+}]]></searchpattern>
 </host>
 
 <host id="turboimagehost">
@@ -7779,6 +7804,13 @@
 
 	return retVal;
 	}]]></searchpattern>
+</host>
+
+<host id="xbbs.asia">
+<urlpattern>^http:\/\/(?:www\.)?xbbs\.asia\/attachment\.php\?attachmentid=</urlpattern>
+<searchpattern><![CDATA[function(pageData, pageUrl) {
+	return {imgUrl: pageUrl, status: "OK"};
+}]]></searchpattern>
 </host>
 
 <host id="xhamster">
