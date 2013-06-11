@@ -282,11 +282,11 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 			// }
 			
 			if (ihg_Globals.downloadTimeout > 0) {
-				if (this.reqObj.cp.hostTimer["global"] == null) {
-					this.reqObj.cp.hostLocked["global"] = true;
+				if (hostTimer["global"] == null) {
+					hostLocked["global"] = true;
 					
-					this.reqObj.cp.hostTimer["global"] = new ihg_Functions.CCallWrapper(this.reqObj, ihg_Globals.downloadTimeout, 'clearHostTimer', "locking of " + this.reqObj.uniqID);
-					ihg_Functions.CCallWrapper.asyncExecute(this.reqObj.cp.hostTimer["global"]);
+					hostTimer["global"] = new ihg_Functions.CCallWrapper(this.reqObj, ihg_Globals.downloadTimeout, 'clearHostTimer', "locking of " + this.reqObj.uniqID);
+					ihg_Functions.CCallWrapper.asyncExecute(hostTimer["global"]);
 				}
 				this.reqObj.unlock();	
 			}
@@ -294,14 +294,14 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 				// If the downloadTimeout is imposed from the host definition, then we should continue
 				// checking for other hosts that are not limited by downloadTimeout.  Otherwise, all
 				// downloads should be limited by downloadTimeout
-				if (this.reqObj.cp.hostTimer[hostID] == null) {
+				if (hostTimer[hostID] == null) {
 					// We "lock" the host after the first completed download in a set of downloads.
 					// This gives enough opportunity for either the global maxThreads to be met, or
 					// for the host-specified maxThreads to be met, before locking the host.
-					this.reqObj.cp.hostLocked[hostID] = true;
+					hostLocked[hostID] = true;
 					
-					this.reqObj.cp.hostTimer[hostID] = new ihg_Functions.CCallWrapper(this.reqObj, this.reqObj.downloadTimeout, 'clearHostTimer', "locking of " + this.reqObj.uniqID);
-					ihg_Functions.CCallWrapper.asyncExecute(this.reqObj.cp.hostTimer[hostID]);
+					hostTimer[hostID] = new ihg_Functions.CCallWrapper(this.reqObj, this.reqObj.downloadTimeout, 'clearHostTimer', "locking of " + this.reqObj.uniqID);
+					ihg_Functions.CCallWrapper.asyncExecute(hostTimer[hostID]);
 				}
 				this.reqObj.unlock();
 			}

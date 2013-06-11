@@ -72,8 +72,8 @@
 <hbox>
 	<button onclick="resetTextBoxes();" label="&reset_form;"/>
 	<spacer flex="1"/>
-	<button id="but_updateFile" disabled="true" oncommand="updateHostFile();" label="&update_file;"/>
-	<button id="but_addHost" disabled="true" oncommand="addHost();" label="&add_host;"/>
+	<button id="but_updateFile" disabled="true" oncommand="updateHostFile(false);" label="&update_file;"/>
+	<button id="but_addHost" disabled="true" oncommand="updateHostFile(true);" label="&add_host;"/>
 	<button id="but_delHost" disabled="true" oncommand="deleteHost();" label="&delete_host;"/>
 	<spacer flex="1"/>
 	<button onclick="openDialog('chrome://imagegrabber/content/interfaces/hostf_servers_ui.xul');" label="&modify_hostf_servers;"/>

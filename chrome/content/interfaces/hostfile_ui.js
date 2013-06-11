@@ -175,10 +175,9 @@ function initWindow2() {
 	 ['Replace','"\\"REPLACE: \'" + uPat + "\', \'...\'\\""'],
 //	 ['Redirect','"\\"REDIRECT: \'" + uPat + "\', \'...\'\\""'],
 	 ['Link2Img','"function(pageData, pageUrl) {" + maxThreads_LineCode + "\\n\\treturn {imgUrl: pageUrl, status: \\"OK\\"};\\n\\t}"'],
-	 ['function','"function(pageData, pageUrl) {" + maxThreads_LineCode + "\\n\\tvar retVal = {};' +
+	 ['function','"function(pageData, pageUrl) {" + maxThreads_LineCode + "\\n\\t\\/\\/ Default returned value when no image or link URL found\\n\\tvar retVal = {imgUrl: null, status: \\"ABORT\\"};' +
 				 '\\n\\t\\n\\t\\/\\/ Insert your code hereunder to build the target URL\\n\\t\\/\\/ Acceptable values for retVal.status are: \\"OK\\", \\"ABORT\\", \\"RETRY\\" or \\"REQUEUE\\"' +
-				 '\\n\\t\\n\\tvar iUrl = ...;\\n\\t\\n\\tif (!iUrl) {\\n\\t\\tretVal.imgUrl = null;\\n\\t\\tretVal.status = \\"ABORT\\";' +
-				 '\\n\\t\\t}\\n\\telse {\\n\\t\\tretVal.imgUrl = iUrl;\\n\\t\\tretVal.status = \\"OK\\";\\n\\t\\t}\\n\\t\\n\\treturn retVal;\\n\\t}"']]
+				 '\\n\\t\\n\\tvar iUrl = ...;\\n\\t\\n\\tif (iUrl) {\\n\\t\\tretVal.imgUrl = iUrl;\\n\\t\\tretVal.status = \\"OK\\";\\n\\t\\t}\\n\\t\\n\\treturn retVal;\\n\\t}"']]
 	 .forEach(function([label, searchPat]) {
 		var newElem = searchType.appendItem(label);
 		var thecommand = "var maxthreads = (document.getElementById(\"cb_hostMaxThreads\").checked ? document.getElementById(\"tb_hostMaxThreads\").value : 0); \
@@ -337,42 +336,65 @@ function fillTBs(idx) {
 		}
 	}
 
-function updateHostFile() {
+function updateHostFile(newHost) {
 	var label = document.getElementById("tb_hostLabel").value;
 
-	if (document.getElementById('theList').label != label && theSortedList.indexOf(label) >= 0) {
-		alert("HostID already exists");
-		return;
+	if (theSortedList.indexOf(label) >= 0) {
+		if (newHost || (document.getElementById('theList').label != label)) {
+			alert("HostID already exists");
+			return;
+		}
 	}
 
 	var urlPattern = document.getElementById("tb_urlPattern").value;
+	try {
+		new RegExp(urlPattern);
+	}
+	catch(e) {
+		alert("The URL Pattern is not a valid Regular Expression...\n" + urlPattern + "\n" + e);
+		return;
+	}
+
 	var searchPattern = document.getElementById("tb_searchPattern").value;
 	if (!searchPattern.match(/function/)) searchPattern = searchPattern.replace(/\\(?!\")/g, "\\\\");
 	var maxThreads = document.getElementById("tb_hostMaxThreads").value;
 	var timeout = document.getElementById("tb_downloadTimeout").value;
 	var cb_maxThreads = document.getElementById("cb_hostMaxThreads").checked;
 	var cb_timeout = document.getElementById("cb_downloadTimeout").checked;
+
 	var menupopup = document.getElementById("theList");
-	var idx = menupopup.value;
 
-	hostfile_Globals.hosts[idx].setAttribute("id", label);
+	var currentHost = newHost ? hostfile_Globals.hFile.createElement("host") : hostfile_Globals.hosts[menupopup.value];
+	var uPatNode = newHost ? hostfile_Globals.hFile.createElement("urlpattern") : currentHost.getElementsByTagName("urlpattern")[0];
+	var sPatNode = newHost ? hostfile_Globals.hFile.createElement("searchpattern") : currentHost.getElementsByTagName("searchpattern")[0];
 	
-	if (cb_maxThreads == false)	hostfile_Globals.hosts[idx].removeAttribute("maxThreads");
-	else hostfile_Globals.hosts[idx].setAttribute("maxThreads", maxThreads);
+	currentHost.setAttribute("id", label);
 	
-	if (cb_timeout == false) hostfile_Globals.hosts[idx].removeAttribute("Timeout");
-	else hostfile_Globals.hosts[idx].setAttribute("Timeout", timeout);
+	if (cb_maxThreads == false)	currentHost.removeAttribute("maxThreads");
+	else currentHost.setAttribute("maxThreads", maxThreads);
 
-	var uPatNode = hostfile_Globals.hosts[idx].getElementsByTagName("urlpattern")[0];
+	if (cb_timeout == false) currentHost.removeAttribute("Timeout");
+	else currentHost.setAttribute("Timeout", timeout);
+
 	uPatNode.textContent = urlPattern;
 
-	var sPatNode = hostfile_Globals.hosts[idx].getElementsByTagName("searchpattern")[0];
 	if (searchPattern.match(/function/)) {
 		var cData = hostfile_Globals.hFile.createCDATASection(searchPattern);
-		sPatNode.removeChild(sPatNode.firstChild);
+		if (!newHost) sPatNode.removeChild(sPatNode.firstChild);
 		sPatNode.appendChild(cData);
 		}
 	else sPatNode.textContent = searchPattern;
+
+	if (newHost) {
+		currentHost.appendChild(hostfile_Globals.hFile.createTextNode("\n"));
+		currentHost.appendChild(uPatNode);
+		currentHost.appendChild(hostfile_Globals.hFile.createTextNode("\n"));
+		currentHost.appendChild(sPatNode);
+		currentHost.appendChild(hostfile_Globals.hFile.createTextNode("\n"));
+
+		hostfile_Globals.hFile.firstChild.appendChild(currentHost);
+		hostfile_Globals.hFile.firstChild.appendChild(hostfile_Globals.hFile.createTextNode("\n\n"));
+	}
 
 	sortHosts();
 
