@@ -56,6 +56,18 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 			return;
 			}
 
+		try {
+			if (content.document.documentElement.outerHTML &&
+				content.document.documentElement.outerHTML.match(/src="http:\/\/assets\.tumblr\.com\/assets\/scripts\/archive\/archive\.js/) &&
+				content.document.URL.match(/\/archive/)) {
+				ihg_Functions.getTumblrPage(content.document.URL, filterImages);
+				return;
+			}
+		}
+		catch (e) {
+			/* nothing to do */
+		}
+
 		var docLinks = new Array();
 		var thumbLinks = new Array();
 		
