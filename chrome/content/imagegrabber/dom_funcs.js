@@ -40,22 +40,24 @@ ihg_Functions.getLinks = function getLinks(sometext) {
 	var caca = [];
 	ihg_Functions.LOG("In " + myself + ", fixing to find the links.\n");
 	
-	for (var j = 0; j < filtered.length; j++) {
-		if (filtered[j]) {
- 			if (!ihg_Globals.downloadEmbeddedImages) theLinks[j] = filtered[j].match(/href\s*=\s*('|").+?\1/i);
-            else theLinks[j] = filtered[j].match(/(?:href|src)\s*=\s*('|").+?\1/i);
-			if (theLinks[j]) {
-				var isEmbedded = (ihg_Globals.downloadEmbeddedImages && theLinks[j][0].match(/^src/i));
-				theLinks[j] = theLinks[j][0].split(/(?:href|src)\s*=\s*/i);
-				theLinks[j][1] = theLinks[j][1].replace(/["']/g, "");
-				theLinks[j][1] = theLinks[j][1].replace(/&amp;/ig, '&');
+	if (filtered) {
+		for (var j = 0; j < filtered.length; j++) {
+			if (filtered[j]) {
+				if (!ihg_Globals.downloadEmbeddedImages) theLinks[j] = filtered[j].match(/href\s*=\s*('|").+?\1/i);
+	            else theLinks[j] = filtered[j].match(/(?:href|src)\s*=\s*('|").+?\1/i);
+				if (theLinks[j]) {
+					var isEmbedded = (ihg_Globals.downloadEmbeddedImages && theLinks[j][0].match(/^src/i));
+					theLinks[j] = theLinks[j][0].split(/(?:href|src)\s*=\s*/i);
+					theLinks[j][1] = theLinks[j][1].replace(/["']/g, "");
+					theLinks[j][1] = theLinks[j][1].replace(/&amp;/ig, '&');
 
-				var url = theLinks[j][1];
-				if (ihg_Globals.downloadEmbeddedImages && isEmbedded)
-					url = "[embeddedImg]" + url;
-				else 
-					url = ihg_Functions.removeAnonymizer(url);
-				caca.push(url);
+					var url = theLinks[j][1];
+					if (ihg_Globals.downloadEmbeddedImages && isEmbedded)
+						url = "[embeddedImg]" + url;
+					else
+						url = ihg_Functions.removeAnonymizer(url);
+					caca.push(url);
+				}
 			}
 		}
 	}
