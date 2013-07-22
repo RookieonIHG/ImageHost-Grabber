@@ -7391,9 +7391,9 @@ return retVal;
 	
 	var iUrl = pageData.match(/href="(http:\/\/[^\/]+\.tumblr\.com\/photo\/\d+\/.+?)"/);
 	if (!iUrl) iUrl = pageData.match(/href="(.+?)"[^>]+class="download image"/);
-	if (!iUrl) iUrl = pageData.match(/src="(http:\/\/[^\/]+\.tumblr\.com\/[^"]+tumblr_[^"]+_1280\.\w{3,4})"/);
-	if (!iUrl) iUrl = pageData.match(/src="(http:\/\/[^\/]+\.tumblr\.com\/[^"]+tumblr_[^"]+_500\.\w{3,4})"/);
-	if (!iUrl) iUrl = pageData.match(/src="(http:\/\/[^\/]+\.tumblr\.com\/[^"]+tumblr_[^"]+_400\.\w{3,4})"/);
+	if (!iUrl) iUrl = pageData.match(/src="(http:\/\/[^\/]+\.tumblr\.com\/[^"]*tumblr_[^"]+_1280\.\w{3,4})"/);
+	if (!iUrl) iUrl = pageData.match(/src="(http:\/\/[^\/]+\.tumblr\.com\/[^"]*tumblr_[^"]+_500\.\w{3,4})"/);
+	if (!iUrl) iUrl = pageData.match(/src="(http:\/\/[^\/]+\.tumblr\.com\/[^"]*tumblr_[^"]+_400\.\w{3,4})"/);
 
 	if (iUrl) {
 		retVal.imgUrl = iUrl[1];
