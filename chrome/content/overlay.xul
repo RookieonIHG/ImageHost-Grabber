@@ -66,6 +66,11 @@
 	</toolbarbutton>
 </toolbarpalette>
 
+<vbox id="appmenuSecondaryPane">
+	<menu id="menu_IGappmenu" label="ImageHost Grabber" class="menu-iconic ihgmenu" insertbefore="appmenu_customize">
+		<menupopup class="ihgmenuset"/>
+	</menu>
+</vbox>
 
 <menubar id="main-menubar">
 	<menu id="menu_IGmain" label="ImageHost Grabber" accesskey="I" insertafter="helpMenu">
