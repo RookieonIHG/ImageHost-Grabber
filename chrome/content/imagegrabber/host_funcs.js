@@ -313,8 +313,8 @@ ihg_Functions.createExceptionsList = function createExceptionsList() {
 	
 	for (var i = 0; i < ihg_Globals.hosts_list.length; i++) {
 		var uPat = ihg_Globals.hosts_list[i].getElementsByTagName("urlpattern")[0].textContent;
-		var h = uPat.match(/(?:\^)?http(?:.*?):\\\/\\\/((.+?\\\/)|.+)/i);
-		
+		var h = uPat.match(/^\^?http(?:s\??)?:(?:\\\/){2}((.+?\\\/)|.+)/i);
+
 		if (!h) continue;
 		var parts = h[1].split(".");
 		var domain = parts[parts.length-2];

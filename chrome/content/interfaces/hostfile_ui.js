@@ -349,6 +349,10 @@ function updateHostFile(newHost) {
 	var urlPattern = document.getElementById("tb_urlPattern").value;
 	try {
 		new RegExp(urlPattern);
+		if (!/^\^?http(?:s\??)?:(?:\\\/){2}/.test(urlPattern)) {
+			alert("The URL Pattern should begin with 'http:\\/\\/' detection pattern...");
+			return;
+		}
 	}
 	catch(e) {
 		alert("The URL Pattern is not a valid Regular Expression...\n" + urlPattern + "\n" + e);
