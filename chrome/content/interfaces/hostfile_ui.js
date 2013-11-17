@@ -33,6 +33,8 @@ hostfile_Globals.hostFileObj = null;
 hostfile_Globals.hostFileLoc = "";
 hostfile_Globals.addonPath = "";
 
+promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+
 ihg_Globals.strbundle = document.getElementById("imagegrabber-strings");
 ihg_Functions.read_locale_strings();
 
@@ -341,7 +343,7 @@ function updateHostFile(newHost) {
 
 	if (theSortedList.indexOf(label) >= 0) {
 		if (newHost || (document.getElementById('theList').label != label)) {
-			alert("HostID already exists");
+			promptService.alert(this, null, "HostID already exists");
 			return;
 		}
 	}
@@ -349,13 +351,30 @@ function updateHostFile(newHost) {
 	var urlPattern = document.getElementById("tb_urlPattern").value;
 	try {
 		new RegExp(urlPattern);
-		if (!/^\^?http(?:s\??)?:(?:\\\/){2}/.test(urlPattern)) {
-			alert("The URL Pattern should begin with 'http:\\/\\/' detection pattern...");
+		var SchemeName_Patt = /^\^?http(?:s\??)?:\\\/\\\//i;
+		if (SchemeName_Patt.test(urlPattern)) {
+			var wo_scheme_name = urlPattern.replace(SchemeName_Patt, "");
+			var authority_SP = wo_scheme_name.match(/^(?:\[[^\[\]]+\]|[^\[\]])+?(?=\\?\/|\$?$)/);
+			if (authority_SP) {
+				try {
+					new RegExp(authority_SP[0]);
+				}
+				catch(E) {
+					promptService.alert(this, null, "The part of URL Pattern in charge of Domain recognition should be a valid Regular Expression\n" + authority_SP + "\n" + E);
+					return;
+				}
+			}
+			else {
+				promptService.alert(this, null, "Can't get the Regular Expression in charge of Domain recognition");
+			}
+		}
+		else {
+			promptService.alert(this, null, "The URL Pattern should begin with 'http:\\/\\/' Scheme Name detection pattern...");
 			return;
 		}
 	}
 	catch(e) {
-		alert("The URL Pattern is not a valid Regular Expression...\n" + urlPattern + "\n" + e);
+		promptService.alert(this, null, "The URL Pattern is not a valid Regular Expression...\n" + urlPattern + "\n" + e);
 		return;
 	}
 
@@ -421,7 +440,7 @@ function addHost() {
 	var label = document.getElementById("tb_hostLabel").value;
 
 	if (theSortedList.indexOf(label) >= 0) {
-		alert("HostID already exists");
+		promptService.alert(this, null, "HostID already exists");
 		return;
 	}
 
@@ -574,7 +593,7 @@ function mergeHostFile(onlineXML) {
 	for (var i = 0; i < tmpList.length; i++)
 		mergFile.firstChild.appendChild(tmpList[i]);
 
-	var overWriteMode = confirm(ihg_Globals.strings.overwrite_mode);
+	var overWriteMode = promptService.confirm(this, null, ihg_Globals.strings.overwrite_mode);
 			
 	for (var i=0; i < mergHosts.length; i++) {
 		for (var j=0; j < hostfile_Globals.hosts.length; j++) {
