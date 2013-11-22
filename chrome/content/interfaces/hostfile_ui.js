@@ -366,6 +366,7 @@ function updateHostFile(newHost) {
 			}
 			else {
 				promptService.alert(this, null, "Can't get the Regular Expression in charge of Domain recognition");
+				return;
 			}
 		}
 		else {
