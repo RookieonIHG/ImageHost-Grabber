@@ -343,7 +343,7 @@ function updateHostFile(newHost) {
 
 	if (theSortedList.indexOf(label) >= 0) {
 		if (newHost || (document.getElementById('theList').label != label)) {
-			promptService.alert(this, null, "HostID already exists");
+			promptService.alert(this, null, ihg_Globals.strings.hostID_already_exists);
 			return;
 		}
 	}
@@ -360,22 +360,22 @@ function updateHostFile(newHost) {
 					new RegExp(authority_SP[0]);
 				}
 				catch(E) {
-					promptService.alert(this, null, "The part of URL Pattern in charge of Domain recognition should be a valid Regular Expression\n" + authority_SP + "\n" + E);
+					promptService.alert(this, null, ihg_Globals.strings.URL_Domain_search_not_RegExp + "\n" + authority_SP + "\n" + E);
 					return;
 				}
 			}
 			else {
-				promptService.alert(this, null, "Can't get the Regular Expression in charge of Domain recognition");
+				promptService.alert(this, null, ihg_Globals.strings.URL_Domain_search_not_found);
 				return;
 			}
 		}
 		else {
-			promptService.alert(this, null, "The URL Pattern should begin with 'http:\\/\\/' Scheme Name detection pattern...");
+			promptService.alert(this, null, ihg_Globals.strings.URL_Pattern_wo_SchemeName);
 			return;
 		}
 	}
 	catch(e) {
-		promptService.alert(this, null, "The URL Pattern is not a valid Regular Expression...\n" + urlPattern + "\n" + e);
+		promptService.alert(this, null, ihg_Globals.strings.URL_Pattern_not_RegExp + "\n" + urlPattern + "\n" + e);
 		return;
 	}
 
@@ -441,7 +441,7 @@ function addHost() {
 	var label = document.getElementById("tb_hostLabel").value;
 
 	if (theSortedList.indexOf(label) >= 0) {
-		promptService.alert(this, null, "HostID already exists");
+		promptService.alert(this, null, ihg_Globals.strings.hostID_already_exists);
 		return;
 	}
 
