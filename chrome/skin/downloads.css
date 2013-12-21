@@ -1,20 +1,21 @@
-treechildren::-moz-tree-row(odd) {
+treechildren[zebra="true"]::-moz-tree-row(odd) {
 	background-color: whitesmoke;
 }
 treechildren::-moz-tree-row(selected) {
-	background-color: #3399FF;
+	/* old:#3399FF; dodgerblue = #1E90FF*/
+	background-color: dodgerblue !important;
 }
 treechildren::-moz-tree-row(container) {
-	background-color: lightgrey;
+	background-color: lightgrey !important;
 	border: 1px solid darkgrey;
 }
 treechildren::-moz-tree-row(container, selected) {
-	background-color: blue;
+	background-color: blue !important;
 	border: 1px solid darkblue;
 }
 treechildren::-moz-tree-cell-text(selected) {
 	font-weight: bold;
-	color: #FFFFFF;
+	color: white;
 }
 treechildren::-moz-tree-line {
 	visibility: visible;

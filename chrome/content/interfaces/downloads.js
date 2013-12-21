@@ -30,16 +30,69 @@ ihg_downloads_Globals.prefManager = Components.classes["@mozilla.org/preferences
 ihg_Globals.strbundle = document.getElementById("imagegrabber-strings");
 ihg_Functions.read_locale_strings();
 
+promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+
+
+function onClose(event) {
+	var boolSaveUncompleteSession = document.getElementById("cbSaveUncompleteSession");
+	boolSaveUncompleteSession.setAttribute("checked", "false");
+	
+	if (typeof req_objs === "undefined" || req_objs.length == 0) return;
+	
+	for (var i = req_objs.length; i--; ) {
+		try {
+			var daNode = document.getElementById(req_objs[i].uniqID);
+			var someShit = daNode.nodeName;
+		}
+		catch(e) { continue; }
+
+		if (req_objs[i].inprogress == false && req_objs[i].finished == true && req_objs[i].aborted == false) {
+			if (i == 0) return;
+			continue;
+		}
+		
+		break;
+	}
+	
+	var buttonflag = promptService.BUTTON_TITLE_SAVE		 * promptService.BUTTON_POS_0 +
+					 promptService.BUTTON_TITLE_DONT_SAVE	 * promptService.BUTTON_POS_2 +
+					 promptService.BUTTON_TITLE_CANCEL		 * promptService.BUTTON_POS_1 +
+					 promptService.BUTTON_POS_1_DEFAULT		 +											// CANCEL by default
+					 promptService.BUTTON_DELAY_ENABLE;
+	
+	var ConfirmClose = promptService.confirmEx(
+		this,
+		null,
+		"About to close " + document.title + " window...\nDo you want to save session?",
+		buttonflag,
+		null, null, null,																				// default button labels (defined in 'buttonflag')
+		null,																							// Checkbox not used
+		{value:false});																					// Checkbox value; CANCEL=return(1)
+	
+	if (ConfirmClose == 1) {
+		event.stopPropagation();
+		event.preventDefault();
+		return;
+	}
+	
+	boolSaveUncompleteSession.setAttribute("checked", (ConfirmClose == 0));
+}
+
+
 function onUnLoad() {
 	killme();
+	var boolSaveUncompleteSession = document.getElementById("cbSaveUncompleteSession");
 	var boolAutoSave = document.getElementById("cbAutoSaveSession");
+	if (boolSaveUncompleteSession.checked)
+		saveSession()
+	else
 	if (boolAutoSave.checked)
-		saveSession("dlwin_exit_state");
+		saveSession("dlwin_exit_state")
 }
 
 
 function saveSession(fileName) {
-	if (typeof(req_objs) == "undefined") return;
+	if (typeof req_objs === "undefined") return;
 
 	var cacheDir =  Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
 
@@ -154,11 +207,11 @@ function exportSession() {
 		fp.file.copyTo(newDir, null);
 	}
 	catch(e) {
-		alert(ihg_Globals.strings.failed_to_copy_session);
+		promptService.alert(this, null, ihg_Globals.strings.failed_to_copy_session);
 		return;
 	}
 
-	alert(ihg_Globals.strings.session_file_sucessfully_copied);
+	promptService.alert(this, null, ihg_Globals.strings.session_file_sucessfully_copied);
 }
 
 
@@ -398,6 +451,7 @@ function view_details() {
 	else {
 		detail_win.reqObj = req_objs[shit];
 		rightOn();
+		detail_win.focus();
 	}
 }
 
@@ -433,7 +487,7 @@ function launchFile() {
 	var shit = daNode.id;
 
 	if (req_objs[shit].fileName == "") {
-		alert(ihg_Globals.strings.no_file_to_open_yet);
+		promptService.alert(this, null, ihg_Globals.strings.no_file_to_open_yet);
 		return;
 	}
 

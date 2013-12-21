@@ -11,6 +11,8 @@
 <window title="&imagehost_grabber_download_progress;" id="ig_dl_win"  
 	width="640" height="480" persist="sizemode height width screenX screenY"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	onfocus="SetLayout();"
+	onclose="onClose(event);"
 	onunload="onUnLoad();">
 
 <stringbundleset id="stringbundleset">
@@ -31,10 +33,18 @@
 <script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/update.js" />
 <script type="application/x-javascript" src="chrome://imagegrabber/content/host_modules/myspace.js" />
 <script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/debug.js" />
+
 <script>
-	var ihg_prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-	ihg_Globals.debugOut = ihg_prefManager.getBoolPref("extensions.imagegrabber.enabledebug");
-	ihg_Globals.conLogOut = ihg_prefManager.getBoolPref("extensions.imagegrabber.enableconlog");
+	ihg_Globals.debugOut = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.enabledebug");
+	ihg_Globals.conLogOut = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.enableconlog");
+</script>
+
+<script type="application/x-javascript">
+<![CDATA[
+function SetLayout() {
+	document.getElementById('outBox').setAttribute('zebra', document.getElementById('cbZebra').checked);
+}
+]]>
 </script>
 
 <keyset>
@@ -70,8 +80,10 @@
 <hbox>
 	<button label="&window_options;" type="menu">
 		<menupopup>
+			<checkbox label="&zebra_scheme;" id="cbZebra" persist="checked" oncommand="SetLayout();"/>
 			<checkbox label="&suppress_popup;" id="cbSupPop" persist="checked"/>
 			<checkbox label="&save_session_on_exit;" id="cbAutoSaveSession" persist="checked" />
+			<checkbox label="" id="cbSaveUncompleteSession" hidden="true" persist="checked" />
 			<checkbox label="&auto_clear_finished;" id="cbAutoClear" persist="checked" oncommand="autoClearForm();"/>
 		</menupopup>
 	</button>

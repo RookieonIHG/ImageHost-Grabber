@@ -10,6 +10,7 @@
 <!ENTITY  open_url "Open URL">
 <!ENTITY  view_request_details "Anfragedetails anzeigen">
 
+<!ENTITY  zebra_scheme "Jailbird Stripes Scheme">
 <!ENTITY  auto_clear_finished "Fertige Jobs automatisch entfernen">
 <!ENTITY  suppress_popup "Popup unterdrücken">
 <!ENTITY  clear_all_finished "Alle fertigen Jobs entfernen">
