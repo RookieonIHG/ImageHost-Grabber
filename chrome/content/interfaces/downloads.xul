@@ -83,7 +83,6 @@ function SetLayout() {
 			<checkbox label="&zebra_scheme;" id="cbZebra" persist="checked" oncommand="SetLayout();"/>
 			<checkbox label="&suppress_popup;" id="cbSupPop" persist="checked"/>
 			<checkbox label="&save_session_on_exit;" id="cbAutoSaveSession" persist="checked" />
-			<checkbox label="" id="cbSaveUncompleteSession" hidden="true" persist="checked" />
 			<checkbox label="&auto_clear_finished;" id="cbAutoClear" persist="checked" oncommand="autoClearForm();"/>
 		</menupopup>
 	</button>

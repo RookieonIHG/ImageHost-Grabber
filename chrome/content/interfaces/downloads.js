@@ -34,11 +34,9 @@ promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].ge
 
 
 function onClose(event) {
-	var boolSaveUncompleteSession = document.getElementById("cbSaveUncompleteSession");
-	boolSaveUncompleteSession.setAttribute("checked", "false");
-	
 	if (typeof req_objs === "undefined" || req_objs.length == 0) return;
 	
+	var undelayed_confirm = false;
 	for (var i = req_objs.length; i--; ) {
 		try {
 			var daNode = document.getElementById(req_objs[i].uniqID);
@@ -46,19 +44,23 @@ function onClose(event) {
 		}
 		catch(e) { continue; }
 
-		if (req_objs[i].inprogress == false && req_objs[i].finished == true && req_objs[i].aborted == false) {
-			if (i == 0) return;
-			continue;
+		if (req_objs[i].inprogress == true) {
+			undelayed_confirm = false;
+			break;
+		}
+		if (req_objs[i].finished == false || req_objs[i].aborted == true) {
+			undelayed_confirm = true;
 		}
 		
-		break;
+		if (i == 0 && undelayed_confirm == false) return;
 	}
 	
 	var buttonflag = promptService.BUTTON_TITLE_SAVE		 * promptService.BUTTON_POS_0 +
 					 promptService.BUTTON_TITLE_DONT_SAVE	 * promptService.BUTTON_POS_2 +
 					 promptService.BUTTON_TITLE_CANCEL		 * promptService.BUTTON_POS_1 +
-					 promptService.BUTTON_POS_1_DEFAULT		 +											// CANCEL by default
-					 promptService.BUTTON_DELAY_ENABLE;
+					 promptService.BUTTON_POS_1_DEFAULT;												// CANCEL by default
+	if (undelayed_confirm == false)
+		buttonflag += promptService.BUTTON_DELAY_ENABLE;
 	
 	var ConfirmClose = promptService.confirmEx(
 		this,
@@ -69,25 +71,21 @@ function onClose(event) {
 		null,																							// Checkbox not used
 		{value:false});																					// Checkbox value; CANCEL=return(1)
 	
-	if (ConfirmClose == 1) {
-		event.stopPropagation();
-		event.preventDefault();
-		return;
+	switch (ConfirmClose) {
+		case 0:	killme();
+				if (saveSession() == true) return;
+		case 1:	event.stopPropagation();
+				event.preventDefault();
+		default:return;
 	}
-	
-	boolSaveUncompleteSession.setAttribute("checked", (ConfirmClose == 0));
 }
 
 
 function onUnLoad() {
 	killme();
-	var boolSaveUncompleteSession = document.getElementById("cbSaveUncompleteSession");
 	var boolAutoSave = document.getElementById("cbAutoSaveSession");
-	if (boolSaveUncompleteSession.checked)
-		saveSession()
-	else
 	if (boolAutoSave.checked)
-		saveSession("dlwin_exit_state")
+		saveSession("dlwin_exit_state");
 }
 
 
@@ -130,10 +128,11 @@ function saveSession(fileName) {
 
 	var rv = fp.show();
 
-	if (rv == nsIFilePicker.returnCancel) return;
+	if (rv == nsIFilePicker.returnCancel) return false;
 
 	var cacheFile = new ihg_Functions.dlWinCacheService(fp.file.path);
 	cacheFile.writeCache(req_objs);
+	return true;
 }
 
 
@@ -251,6 +250,8 @@ function reset_retryCount() {
 
 
 function restart_child() {
+	var maxRetries = ihg_downloads_Globals.prefManager.getIntPref("extensions.imagegrabber.numretries");
+
 	var daNodes = getTreeSelection();
 
 	for (var s = 0; s < daNodes.length; s++) {
@@ -259,7 +260,7 @@ function restart_child() {
 		req_objs[idx].reqURL = req_objs[idx].origURL;
 		req_objs[idx].curProgress = 0;
 		req_objs[idx].maxProgress = 0;
-		req_objs[idx].retryNum++;
+		req_objs[idx].retryNum = maxRetries;
 		req_objs[idx].overwrite = true;
 		req_objs[idx].override_stop = true;
 		req_objs[idx].retry();
