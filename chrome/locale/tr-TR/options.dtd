@@ -20,10 +20,11 @@
 
 <!ENTITY  show_the_download_directory_box "Kaydedilecek Yeri Sor(Bu Seçenek Isaretsizse Son Indirme Klasörü Kullanilir)">
 <!ENTITY  show_the_image_grabber_menu_in_the_tools_menu "Araçlar Menüsünde Image Grabber Menüsünü Göster(Bu Seçenek Isaretsizse Ana Menüde Konumlanir)">
-<!ENTITY  alert_restart "alert: this requires a restart of &brandShortName;">
+<!ENTITY  alert_restart "This requires a restart of &brandShortName;">
 <!ENTITY  remove_duplicate_links "Ayni linkleri sil">
 <!ENTITY  even_across_multiple_pages "Farkli sayfalardan bile olsa">
 <!ENTITY  close_download_window "Bütün indirmeler bittikten sonra indirme penceresini kapat">
+<!ENTITY  without_delay "without delay.">
 <!ENTITY  keep_download_window_contents "Farkli Sayfalardan Bile Olsa Ayni Linkleri Sil">
 
 <!ENTITY  download_embedded_images "Gömülü resimleri indir">

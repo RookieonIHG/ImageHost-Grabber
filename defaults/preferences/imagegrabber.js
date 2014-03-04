@@ -27,6 +27,7 @@ pref("extensions.imagegrabber.hostfautoupdate", true);
 pref("extensions.imagegrabber.hostfupdateconfirm", false);
 pref("extensions.imagegrabber.hostfmergebehavior", "ask");
 pref("extensions.imagegrabber.autoclosewindow", false);
+pref("extensions.imagegrabber.closewindowimmediately", false);
 pref("extensions.imagegrabber.removeduplinks", true);
 pref("extensions.imagegrabber.removeduplinksXpages", true);
 pref("extensions.imagegrabber.uselastmodfromheader", false);

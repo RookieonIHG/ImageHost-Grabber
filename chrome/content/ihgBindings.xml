@@ -50,7 +50,7 @@
 		<implementation>
 			<property name="id" onget="return this.getAttribute('id');" onset="return this.setAttribute('id', val);"/>
 			<property name="disabled" onget="return this.getAttribute('disabled');" onset="return this.setAttribute('disabled', val);"/>
-		</implementation>					
+		</implementation>
 	</binding>
 	
 	<binding id="ihgToolTip" extends="chrome://global/content/bindings/popup.xml#tooltip">

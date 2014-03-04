@@ -1,7 +1,7 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
 .ihgmenu {
-	list-style-image: url("chrome://imagegrabber/skin/images/imagegrabber.png");
+	list-style-image: url("chrome://imagegrabber/skin/images/imagegrabber-16x16.png");
 }
 
 #imagehostgrabber-toolbarbutton {

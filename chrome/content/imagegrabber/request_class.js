@@ -22,6 +22,10 @@
  ***************************  End of GPL Block *******************************/
 
 
+windowWatcher = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
+
+
+
 /* requestObj class:  It's necessary to  create a class that encompasses the XMLHttpRequest
  * class.  Each new instance of requestObj will create a new instance of XMLHttpRequest.
  * What this does is it allows the XMLHttpRequest object to access data that is not part
@@ -167,10 +171,11 @@ ihg_Functions.requestObj.prototype = {
 		ihg_Functions.LOG("In function req_retry, fixing to execute xmlhttp.abort\n");		
 		if (this.xmlhttp) this.xmlhttp.abort();
 
-		this.retryNum--;
-
-		var retry_dick = "(" + String(ihg_Globals.maxRetries - this.retryNum) + " " + ihg_Globals.strings.of + " " + String(ihg_Globals.maxRetries) + ")";
-		ihg_Functions.updateDownloadProgress(null, this.uniqID, this.reqURL, null, ihg_Globals.strings.restarting_http + retry_dick);
+		if (arguments.callee.caller != this.requeue) {
+			this.retryNum--;
+			var retry_dick = "(" + String(ihg_Globals.maxRetries - this.retryNum) + " " + ihg_Globals.strings.of + " " + String(ihg_Globals.maxRetries) + ")";
+			ihg_Functions.updateDownloadProgress(null, this.uniqID, this.reqURL, null, ihg_Globals.strings.restarting_http + retry_dick);
+			}
 
 		this.retried = true;
 		this.init();
@@ -188,9 +193,8 @@ ihg_Functions.requestObj.prototype = {
 			}
 
 		this.regexp = newHostToUse.hostFunc;
-
+		this.hostID = newHostToUse.hostID;
 		this.reqURL = newPageUrl;
-		this.retryNum++;
 
 		this.retry();
 
@@ -203,11 +207,12 @@ ihg_Functions.requestObj.prototype = {
 
 		ihg_Functions.clearFromWin(this.uniqID);
 		this.inprogress = false;
-		
+
 		var toDieOrNot = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.killmenow");
 		if (toDieOrNot) {
 			ihg_Functions.LOG("In function requestObj.unlock, received the call to die!\n");
-			return; }
+			return;
+			}
 
 		this.queueHandler();
 		},
@@ -309,9 +314,8 @@ ihg_Functions.requestObj.prototype = {
 					observe: function(subject, topic, data) {
 						switch(topic) {
 							case "alertclickcallback":
-								var ig_dl_win_obj = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
-								ig_dl_win = ig_dl_win_obj.getWindowByName("ig-dl_win", null);
-								ig_dl_win.focus();
+								let ig_dl_win = windowWatcher.getWindowByName("ig-dl_win", null);
+								if (ig_dl_win) ig_dl_win.focus();
 								break;
 							case "alertfinished":
 								ihg_Globals.autoCloseWindow = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.autoclosewindow");
@@ -383,7 +387,7 @@ ihg_Functions.requestObj.prototype = {
 			this.xmlhttp.parent = this;
 		}
 
-		if (typeof(this.regexp) == "string" && this.regexp.search(/^REPLACE: ["']|^LINK2FILE$/) >= 0)
+		if (typeof this.regexp === "string" && (this.regexp === "LINK2FILE" || /^REPLACE: ["']/.test(this.regexp)))
 			this.xmlhttp.open("GET", encodeURI('about:blank'), true);
 		else
 			this.xmlhttp.open("GET", this.reqURL, true);
@@ -409,13 +413,11 @@ ihg_Functions.requestObj.prototype = {
 
 	init2 : function req_init2() {
 		var myself = arguments.callee.name;
-		ihg_Functions.LOG("Entering " + myself + "\n");
-
 		var req = this.parent;
 
-		ihg_Functions.LOG("In " + myself + ", this.readyState: " + this.readyState + "\n");
+		ihg_Functions.LOG("Entering " + myself + " with uniqID of:" + req.uniqID + ", this.readyState: " + this.readyState + "\n");
 
-		if (this.readyState == 2) {
+		if (this.readyState == this.HEADERS_RECEIVED) {
 			if (this.status >= 400 && this.status < 500) {
 				req.abort(ihg_Globals.strbundle.getFormattedString("http_status_code", [this.status]));
 				return;
@@ -425,7 +427,7 @@ ihg_Functions.requestObj.prototype = {
 			if (!contType) return;
 			if (contType.match(/image\/.+/)) {
 				if (req.minFileSize > 0) {
-					if (typeof(req.regexp) == "string" && req.regexp.match(/Embedded Image/)) {
+					if (req.regexp === "Embedded Image") {
 						var contLength = this.getResponseHeader("Content-Length");
 						if (contLength && contLength < req.minFileSize) { 
 							// req.abort(document.getElementById("imagegrabber-strings").getFormattedString("file_too_short", [req.minFileSize/1024]));

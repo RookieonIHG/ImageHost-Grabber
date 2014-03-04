@@ -28,7 +28,7 @@
 // Functions used to update the host file (hostf.xml)
 
 ihg_Functions.autoUpdate = function autoUpdate() {
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)\s*{/)[1];
+	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
 	var hostFileObj = new ihg_Functions.HostFileService();

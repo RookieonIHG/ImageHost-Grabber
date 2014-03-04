@@ -20,10 +20,11 @@
 
 <!ENTITY  show_the_download_directory_box "Show the Download Directory box (if unchecked, will use the last directory used)">
 <!ENTITY  show_the_image_grabber_menu_in_the_tools_menu "Show the Image Grabber menu in the tools menu. (if unchecked, places it on the main menubar)">
-<!ENTITY  alert_restart "alert: this requires a restart of &brandShortName;">
+<!ENTITY  alert_restart "This requires a restart of &brandShortName;">
 <!ENTITY  remove_duplicate_links "Remove duplicate links">
 <!ENTITY  even_across_multiple_pages "even across multiple pages.">
 <!ENTITY  close_download_window "Close download window when all downloads are finished">
+<!ENTITY  without_delay "without delay.">
 <!ENTITY  keep_download_window_contents "Keep Download Window Contents (even after closed)">
 
 <!ENTITY  download_embedded_images "Download embedded images">

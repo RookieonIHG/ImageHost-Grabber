@@ -23,6 +23,8 @@
 
 
 
+promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+
 
 /* function hostGrabber:
  *
@@ -97,7 +99,7 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 	tmp_req_objs = ihg_Functions.setUpLinkedList(tmp_req_objs);
 
 	if (tmp_req_objs.length == 0) {
-		alert(ihg_Globals.strings.no_images_or_links_found);
+		promptService.alert(null, null, ihg_Globals.strings.no_images_or_links_found);
 		ihg_Functions.updateDownloadStatus(ihg_Globals.strings.running);
 		ihg_Globals.autoCloseWindow = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.autoclosewindow");
 		if (ihg_Globals.autoCloseWindow) ihg_Functions.startCloseCountdown();
@@ -651,13 +653,13 @@ ihg_Functions.getIGPrefs = function getIGPrefs() {
 	ihg_Globals.downloadTimeout *= 1000;
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.downloadTimeout is equal to: " + ihg_Globals.downloadTimeout + "\n");
 
- 	ihg_Globals.downloadEmbeddedImages = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.downloadembeddedimages");
- 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.downloadEmbeddedImages is equal to: " + ihg_Globals.downloadEmbeddedImages + "\n");
+	ihg_Globals.downloadEmbeddedImages = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.downloadembeddedimages");
+	ihg_Functions.LOG("In " + myself + ", ihg_Globals.downloadEmbeddedImages is equal to: " + ihg_Globals.downloadEmbeddedImages + "\n");
 	
 	ihg_Globals.minEmbeddedHeight = ihg_Globals.prefManager.getIntPref("extensions.imagegrabber.minembeddedheight");
 	ihg_Globals.minEmbeddedWidth = ihg_Globals.prefManager.getIntPref("extensions.imagegrabber.minembeddedwidth");
- 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.minEmbeddedHeight is equal to: " + ihg_Globals.minEmbeddedHeight + "\n");
- 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.minEmbeddedWidth is equal to: " + ihg_Globals.minEmbeddedWidth + "\n");
+	ihg_Functions.LOG("In " + myself + ", ihg_Globals.minEmbeddedHeight is equal to: " + ihg_Globals.minEmbeddedHeight + "\n");
+	ihg_Functions.LOG("In " + myself + ", ihg_Globals.minEmbeddedWidth is equal to: " + ihg_Globals.minEmbeddedWidth + "\n");
 	
 	ihg_Globals.minFileSize = ihg_Globals.prefManager.getIntPref("extensions.imagegrabber.minfilesize");
 	ihg_Globals.minFileSize *= 1024;
@@ -683,21 +685,24 @@ ihg_Functions.getIGPrefs = function getIGPrefs() {
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.cacheDLWin is equal to: " + ihg_Globals.cacheDLWin + "\n");
 	
 	ihg_Globals.hostfAutoUpdate = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.hostfautoupdate");
- 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.hostfAutoUpdate is equal to: " + ihg_Globals.hostfAutoUpdate + "\n");
+	ihg_Functions.LOG("In " + myself + ", ihg_Globals.hostfAutoUpdate is equal to: " + ihg_Globals.hostfAutoUpdate + "\n");
 	
 	ihg_Globals.hostfUpdateConfirm = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.hostfupdateconfirm");
- 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.hostfUpdateConfirm is equal to: " + ihg_Globals.hostfUpdateConfirm + "\n");
+	ihg_Functions.LOG("In " + myself + ", ihg_Globals.hostfUpdateConfirm is equal to: " + ihg_Globals.hostfUpdateConfirm + "\n");
 	
 	ihg_Globals.hostfMergeBehavior = ihg_Globals.prefManager.getCharPref("extensions.imagegrabber.hostfmergebehavior");
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.hostfMergeBehavior is equal to: " + ihg_Globals.hostfMergeBehavior + "\n");
 	
 	ihg_Globals.autoCloseWindow = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.autoclosewindow");
- 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.autoCloseWindow is equal to: " + ihg_Globals.autoCloseWindow + "\n");
+	ihg_Functions.LOG("In " + myself + ", ihg_Globals.autoCloseWindow is equal to: " + ihg_Globals.autoCloseWindow + "\n");
+	
+	ihg_Globals.closeWindowImmediately = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.closewindowimmediately");
+ 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.closeWindowImmediately is equal to: " + ihg_Globals.closeWindowImmediately + "\n");
 
 	ihg_Globals.useLastModFromHeader = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.uselastmodfromheader");
  	ihg_Functions.LOG("In " + myself + ", ihg_Globals.useLastModFromHeader is equal to: " + ihg_Globals.useLastModFromHeader + "\n");
 
- 	ihg_Globals.blacklistFilePath = ihg_Globals.prefManager.getCharPref("extensions.imagegrabber.blacklistfilepath");
+	ihg_Globals.blacklistFilePath = ihg_Globals.prefManager.getCharPref("extensions.imagegrabber.blacklistfilepath");
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.blacklistFilePath is equal to: " + ihg_Globals.blacklistFilePath + "\n");
 
 	ihg_Functions.LOG("Exiting " + myself + "\n");
@@ -748,7 +753,7 @@ ihg_Functions.initVars = function initVars(skipDirDialog) {
 			return false; }
 
 		if (ihg_Globals.firstPage > ihg_Globals.lastPage) {
-			alert(ihg_Globals.strings.the_first_page + " " + ihg_Globals.firstPage + ihg_Globals.strings.greather_than_last + " " + ihg_Globals.lastPage);
+			promptService.alert(null, null, ihg_Globals.strings.the_first_page + " " + ihg_Globals.firstPage + ihg_Globals.strings.greather_than_last + " " + ihg_Globals.lastPage);
 			ihg_Functions.LOG("In " + myself + ", quitting because ihg_Globals.firstPage > ihg_Globals.lastPage.\n");
 			return false;
 			}

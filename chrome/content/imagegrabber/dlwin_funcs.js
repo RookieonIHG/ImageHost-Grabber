@@ -21,15 +21,15 @@
  *
  ***************************  End of GPL Block *******************************/
 
+windowWatcher = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
 
 
 
 ihg_Functions.clearFromWin =  function clearFromWin(reqID, ignoreAutoClear) {
-	var ig_dl_win_obj = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
-	ig_dl_win = ig_dl_win_obj.getWindowByName("ig-dl_win", null);
+	ig_dl_win = windowWatcher.getWindowByName("ig-dl_win", null);
 	if (!ig_dl_win) return;
 
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
 	ihg_Functions.LOG("In " + myself + ", reqID: " + reqID + "\n");
@@ -70,11 +70,10 @@ ihg_Functions.clearFromWin =  function clearFromWin(reqID, ignoreAutoClear) {
 ihg_Functions.addDownloadReqObjs = function addDownloadReqObjs(req_objs) {
 	if (!req_objs || req_objs.length == 0) return;
 
-	var ig_dl_win_obj = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
-	ig_dl_win = ig_dl_win_obj.getWindowByName("ig-dl_win", null);
+	ig_dl_win = windowWatcher.getWindowByName("ig-dl_win", null);
 	if (!ig_dl_win) return;
 
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
 	var doc = ig_dl_win.document;
@@ -144,11 +143,10 @@ ihg_Functions.addDownloadReqObjs = function addDownloadReqObjs(req_objs) {
 
 
 ihg_Functions.addDownloadProgress = function addDownloadProgress(page_stat, some_id, fName, status_text) {
-	var ig_dl_win_obj = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
-	ig_dl_win = ig_dl_win_obj.getWindowByName("ig-dl_win", null);
+	ig_dl_win = windowWatcher.getWindowByName("ig-dl_win", null);
 	if (!ig_dl_win) return;
 
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
 	var doc = ig_dl_win.document;
@@ -196,11 +194,10 @@ ihg_Functions.addDownloadProgress = function addDownloadProgress(page_stat, some
  * column.
  */
 ihg_Functions.updateDownloadProgress = function updateDownloadProgress(page_stat, some_id, fname, progress, status) {
-	var ig_dl_win_obj = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
-	ig_dl_win = ig_dl_win_obj.getWindowByName("ig-dl_win", null);
+	ig_dl_win = windowWatcher.getWindowByName("ig-dl_win", null);
 	if (!ig_dl_win) return;
 
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
 	var doc = ig_dl_win.document;
@@ -238,11 +235,10 @@ ihg_Functions.updateDownloadProgress = function updateDownloadProgress(page_stat
 
 
 ihg_Functions.updateDownloadStatus = function updateDownloadStatus(someText) {
-	var ig_dl_win_obj = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
-	ig_dl_win = ig_dl_win_obj.getWindowByName("ig-dl_win", null);
+	ig_dl_win = windowWatcher.getWindowByName("ig-dl_win", null);
 	if (!ig_dl_win) return;
 
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
 	var doc = ig_dl_win.document;
@@ -253,8 +249,7 @@ ihg_Functions.updateDownloadStatus = function updateDownloadStatus(someText) {
 	
 	
 ihg_Functions.setFocus = function setFocus() {
-	var ig_dl_win_obj = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
-	ig_dl_win = ig_dl_win_obj.getWindowByName("ig-dl_win", null);
+	ig_dl_win = windowWatcher.getWindowByName("ig-dl_win", null);
 	if (!ig_dl_win) return;
 	
 	var tree = ig_dl_win.document.getElementById("igTree");
@@ -264,8 +259,7 @@ ihg_Functions.setFocus = function setFocus() {
 
 
 ihg_Functions.startCloseCountdown = function startCloseCountdown() {
-	var ig_dl_win_obj = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
-	ig_dl_win = ig_dl_win_obj.getWindowByName("ig-dl_win", null);
+	ig_dl_win = windowWatcher.getWindowByName("ig-dl_win", null);
 	if (!ig_dl_win) return;
 	
 	var req_objs = ig_dl_win.req_objs;
@@ -276,7 +270,7 @@ ihg_Functions.startCloseCountdown = function startCloseCountdown() {
 		}
 	}
 	
-	ihg_Globals.closeCountdown = 6;
+	ihg_Globals.closeCountdown = ihg_Globals.closeWindowImmediately ?  0 : 5;
 	
 	if (ihg_Globals.closeInterval) clearInterval(ihg_Globals.closeInterval);
 	ihg_Globals.closeInterval = setInterval(ihg_Functions.closeWindow, 800);
@@ -284,14 +278,15 @@ ihg_Functions.startCloseCountdown = function startCloseCountdown() {
 
 
 ihg_Functions.closeWindow = function closeWindow() {
-	ihg_Globals.closeCountdown--;
+	ig_dl_win = windowWatcher.getWindowByName("ig-dl_win", null);
 	
-	if (ihg_Globals.closeCountdown < 1) {
+	if (ig_dl_win && ihg_Globals.closeCountdown > 0)
+		ihg_Functions.updateDownloadStatus(ihg_Globals.strings.closing + " (" + ihg_Globals.closeCountdown-- + ")...");
+	else {
 		clearInterval(ihg_Globals.closeInterval);
 		ihg_Globals.closeInterval = null;
+		ihg_Globals.closeCountdown = null;
 		
-		var ig_dl_win_obj = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
-		ig_dl_win = ig_dl_win_obj.getWindowByName("ig-dl_win", null);
 		if (!ig_dl_win) return;
 		
 		var req_objs = ig_dl_win.req_objs;
@@ -308,6 +303,4 @@ ihg_Functions.closeWindow = function closeWindow() {
 		
 		ig_dl_win.close();
 		}
-	else
-		ihg_Functions.updateDownloadStatus(ihg_Globals.strings.closing + " (" + ihg_Globals.closeCountdown + ")...");
 }

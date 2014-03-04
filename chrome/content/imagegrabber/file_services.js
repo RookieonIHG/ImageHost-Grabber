@@ -31,7 +31,7 @@
 ihg_Functions.CacheFileService = function CacheFileService(cacheFileID) {
 	if (!cacheFileID) throw "IHG error: cacheFileID is null in CacheFileService";
 
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
 	var cacheFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
@@ -53,7 +53,7 @@ ihg_Functions.CacheFileService.prototype = {
 	writeCache : function cache_writeCache(someStuff, append_or_not) {	// set to false to overwrite; default is false
 		if(!someStuff) throw "IHG error: someStuff is null in cache_writeCache";
 
-		var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+		var myself = arguments.callee.name;
 		ihg_Functions.LOG("Entering " + myself + "\n");
 
 		var f_perms = 0755;  // this is ignored on windows
@@ -73,7 +73,7 @@ ihg_Functions.CacheFileService.prototype = {
 	getCache : function cache_getCache() {
 		if( !this.cacheFile.exists() ) return null;
 
-		var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+		var myself = arguments.callee.name;
 		ihg_Functions.LOG("Entering " + myself + "\n");
 
 		var fileURI = ihg_Globals.ioService.newFileURI(this.cacheFile);
@@ -93,21 +93,21 @@ ihg_Functions.CacheFileService.prototype = {
 
 
 ihg_Functions.forumStyleFileService = function forumStyleFileService() {
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
 	var forumStyleFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 	forumStyleFile.initWithPath(ihg_Globals.addonPath);
 	forumStyleFile.append("forum_styles.xml");
 	this.forumStyleFile = forumStyleFile;
-}
+	}
 
 
 ihg_Functions.forumStyleFileService.prototype = {
 	getForumStyles : function forum_getForumStyles() {
 		if( !this.forumStyleFile.exists() ) return null;
 
-		var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+		var myself = arguments.callee.name;
 		ihg_Functions.LOG("Entering " + myself + "\n");
 
 		var fileURI = ihg_Globals.ioService.newFileURI(this.forumStyleFile);
@@ -128,7 +128,7 @@ ihg_Functions.HostFileService = function HostFileService() {
 	var hostFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 	var hostf_servers = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
 	if (ihg_Globals.hostFileLoc != "") {
@@ -156,7 +156,7 @@ ihg_Functions.HostFileService.prototype = {
 	getHosts : function host_getHosts() {
 		if( !this.hostFile.exists() ) return null;
 
-		var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+		var myself = arguments.callee.name;
 		ihg_Functions.LOG("Entering " + myself + "\n");
 
 		var fileURI = ihg_Globals.ioService.newFileURI(this.hostFile);
@@ -187,7 +187,7 @@ ihg_Functions.HostFileService.prototype = {
 ihg_Functions.dlWinCacheService = function dlWinCacheService(cacheFilePath) {
 	if (!cacheFilePath) throw "IHG error: cacheFilePath is null in dlWinCacheService";
 
-	var myself = String(arguments.callee).match(/(function.*)\(.*\)[\n\s]*{/m)[1];
+	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
 	var cacheFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);

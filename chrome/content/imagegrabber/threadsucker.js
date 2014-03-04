@@ -42,7 +42,8 @@ threadsucker_Globals.doc_req = null;
 ihg_Functions.leechThread = function leechThread(activeElement) {
 	if (activeElement) {
 		if (!activeElement.href) {
-			alert(ihg_Globals.strings.need_to_right_click_on_link);
+			var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
+			promptService.alert(this, null, ihg_Globals.strings.need_to_right_click_on_link);
 			throw "IHG: In leechThread, invalid activeElement passed to function.";
 		}
 		threadsucker_Globals.threadURL = activeElement.href;

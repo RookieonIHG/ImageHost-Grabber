@@ -22,6 +22,7 @@
  ***************************  End of GPL Block *******************************/
 
 
+promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
 
 
 //////////////////////  Initialize the logFile Object  //////////////////////
@@ -77,7 +78,7 @@ ihg_Functions.initLogFile = function initLogFile() {
 /////////////////  Dump to the log file (for Debug)  /////////////////////
 
 ihg_Functions.LOG = function LOG( message ) {
-	if(!ihg_Globals.debugOut) return;
+	if (!ihg_Globals.debugOut) return;
 
 	try {
 		if(!ihg_Globals.logFile.path) ihg_Functions.initLogFile();
@@ -115,7 +116,7 @@ ihg_Functions.LOG = function LOG( message ) {
 //////////////  Dump to the log file (for Console)  ///////////////////
 
 ihg_Functions.CON_LOG = function CON_LOG( message ) {
-	if(!ihg_Globals.conLogOut) return;
+	if (!ihg_Globals.conLogOut) return;
 
 	try {
 		if(!ihg_Globals.logFile.path) ihg_Functions.initLogFile();
@@ -167,7 +168,7 @@ ihg_Functions.clearLog = function clearLog() {
 	ihg_Globals.fileOut.write("", 0);
 	ihg_Globals.fileOut.close();
 
-	alert(ihg_Globals.strings.debug_log_cleared);
+	promptService.alert(null, null, ihg_Globals.strings.debug_log_cleared);
 	}
 
 
@@ -196,11 +197,11 @@ ihg_Functions.copyLog = function copyLog() {
 		ihg_Globals.logFile.copyTo(newDir, null);
 		}
 	catch(e) {
-		alert(ihg_Globals.strings.failed_to_copy);
+		promptService.alert(null, null, ihg_Globals.strings.failed_to_copy);
 		return;
 		}
 
-	alert(ihg_Globals.strings.log_file_copied);
+	promptService.alert(null, null, ihg_Globals.strings.log_file_copied);
 	}
 
 
