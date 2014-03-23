@@ -7,6 +7,8 @@
 <!ENTITY  host_options "Host Options">
 <!ENTITY  debugging "Debugging">
 
+<!ENTITY  restart_Firefox "Restart &brandShortName; now!">
+
 <!ENTITY  what_to_do_if_file_exists_in_target_location "What to do if file exists in target location?">
 <!ENTITY  rename_file "Rename File">
 <!ENTITY  skip_file "Skip File">

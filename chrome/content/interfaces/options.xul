@@ -67,6 +67,24 @@ function setPrefGlobVars() {
 // This is a variable length function to allow multiple targetId's
 // i.e.:	toggleEnableState(controlId, invertState, targetId1, targetId2, ...)
 
+function checkRestart() {
+	let RestartApp_button = document.getElementById("restartApp");
+	if (['showInTools','enableConLog','enableDebug'].some(function(prefId) {
+			let pref = document.getElementById(prefId);
+			return (pref.value != pref.valueFromPreferences);
+			})) {
+		RestartApp_button.removeAttribute("disabled");
+		}
+	else {
+		RestartApp_button.setAttribute("disabled", true);
+		};
+	}
+
+function restartApp() {
+	let nsIAppStartup = Components.interfaces.nsIAppStartup;
+    Components.classes["@mozilla.org/toolkit/app-startup;1"].getService(nsIAppStartup).quit(nsIAppStartup.eForceQuit | nsIAppStartup.eRestart);
+}
+
 function toggleEnableState() {
 	var args = toggleEnableState.arguments;
 
@@ -124,7 +142,7 @@ function toggleEnableState() {
 
 	<preferences>
 		<preference id="showDLDir" name="extensions.imagegrabber.showdldir" type="bool"/>
-		<preference id="showInTools" name="extensions.imagegrabber.showintools" type="bool"/>
+		<preference id="showInTools" name="extensions.imagegrabber.showintools" type="bool" onchange="checkRestart();"/>
 		<preference id="removeDupLinks" name="extensions.imagegrabber.removeduplinks" type="bool"/>
 		<preference id="removeDupLinksXpages" name="extensions.imagegrabber.removeduplinksXpages" type="bool"/>
 		<preference id="autoCloseWindow" name="extensions.imagegrabber.autoclosewindow" type="bool"/>
@@ -259,20 +277,25 @@ function toggleEnableState() {
 <prefpane id="debug" label="&debugging;" orient="vertical">
 
 	<preferences>
-		<preference id="enableDebug" name="extensions.imagegrabber.enabledebug" type="bool"/>
-		<preference id="enableConLog" name="extensions.imagegrabber.enableconlog" type="bool"/>
+		<preference id="enableConLog" name="extensions.imagegrabber.enableconlog" type="bool" onchange="checkRestart();"/>
+		<preference id="enableDebug" name="extensions.imagegrabber.enabledebug" type="bool" onchange="checkRestart();"/>
 	</preferences>
 
-	<label>&disclaimer;</label>
-	<label>&disclaimer_line1;</label>
-	<label>&disclaimer_line2;</label>
-	<label>&disclaimer_line3;</label>
+	<description class="header" value="&disclaimer;"/>
+	<description class="indent">&disclaimer_line1;</description>
+	<description class="indent">&disclaimer_line2;</description>
+	<description class="indent">&disclaimer_line3;</description>
 	<separator height="15"/>
-	<checkbox id="cb_enableConLog" preference="enableConLog" label="&enable_console_logging;" onclick="promptService.alert(this.window, null, '&read_disclaimer;');"/>
-	<checkbox id="cb_enableDebug" preference="enableDebug" label="&enable_debugging_logging;" onclick="promptService.alert(this.window, null, '&read_disclaimer;');"/>
+	<checkbox id="cb_enableConLog" preference="enableConLog" label="&enable_console_logging;" onclick="promptService.alert(this.window, null, (!this.checked ? '&read_disclaimer;\n' : '') + '&alert_restart;');"/>
+	<checkbox id="cb_enableDebug" preference="enableDebug" label="&enable_debugging_logging;" onclick="promptService.alert(this.window, null, (!this.checked ? '&read_disclaimer;\n' : '') + '&alert_restart;');"/>
 	<button id="but_clear" label="&clear_log;" oncommand="ihg_Functions.clearLog();"/>
 	<button id="but_copy" label="&copy_log_to_local_folder;" oncommand="ihg_Functions.copyLog();"/>
 
 </prefpane>
+
+<button id="restartApp" label="&restart_Firefox;" class="button-link" oncommand="acceptDialog();restartApp();" disabled="true"/>
+<spacer flex="1"/>
+<button dlgtype="accept"/>
+<button dlgtype="cancel"/>
 
 </prefwindow>

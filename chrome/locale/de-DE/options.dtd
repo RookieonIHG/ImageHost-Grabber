@@ -7,6 +7,8 @@
 <!ENTITY  host_options "Hostoptionen">
 <!ENTITY  debugging "Fehlersuche (Debugging)">
 
+<!ENTITY  restart_Firefox "Restart &brandShortName; now!">
+
 <!ENTITY  what_to_do_if_file_exists_in_target_location "Was soll geschehen, wenn eine Datei bereits am Zielort vorhanden ist?">
 <!ENTITY  rename_file "Datei umbenennen">
 <!ENTITY  skip_file "Datei überspringen">

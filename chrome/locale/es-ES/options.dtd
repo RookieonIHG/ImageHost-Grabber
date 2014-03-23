@@ -7,6 +7,8 @@
 <!ENTITY  host_options "Opciones de descarga">
 <!ENTITY  debugging "Depuración">
 
+<!ENTITY  restart_Firefox "Restart &brandShortName; now!">
+
 <!ENTITY  what_to_do_if_file_exists_in_target_location "¿Qué hacer si el archivo ya existe?">
 <!ENTITY  rename_file "Renombrar el archivo">
 <!ENTITY  skip_file "Ignorar el archivo">
