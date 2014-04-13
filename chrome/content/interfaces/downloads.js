@@ -65,7 +65,7 @@ function onClose(event) {
 	var ConfirmClose = promptService.confirmEx(
 		this,
 		null,
-		"About to close " + document.title + " window...\nDo you want to save session?",
+		ihg_Globals.strbundle.getFormattedString("close_confirm_progress_window",[document.title]),
 		buttonflag,
 		null, null, null,																				// default button labels (defined in 'buttonflag')
 		null,																							// Checkbox not used
@@ -76,6 +76,7 @@ function onClose(event) {
 				if (saveSession() == true) return;
 		case 1:	event.stopPropagation();
 				event.preventDefault();
+		case 2:
 		default:return;
 	}
 }
@@ -90,7 +91,7 @@ function onUnLoad() {
 
 
 function saveSession(fileName) {
-	if (typeof req_objs === "undefined") return;
+	if (typeof req_objs === "undefined" || req_objs.length == 0) return;
 
 	var cacheDir =  Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
 
@@ -400,6 +401,8 @@ function delete_from_req_objs(removeList) {
 function killme() {
 	ihg_downloads_Globals.prefManager.setBoolPref("extensions.imagegrabber.killmenow", true);
 
+	if (typeof req_objs === "undefined" || req_objs.length == 0) return;
+
 	var statLabel = document.getElementById("statLabel");
 	statLabel.value = ihg_Globals.strings.stopping_the_program;
 
@@ -416,7 +419,7 @@ function killme() {
 function reviveme() {
 	ihg_downloads_Globals.prefManager.setBoolPref("extensions.imagegrabber.killmenow", false);
 
-	if (req_objs.length == 0) return;
+	if (typeof req_objs === "undefined" || req_objs.length == 0) return;
 
 	var statLabel = document.getElementById("statLabel");
 	statLabel.value = ihg_Globals.strings.reviving_the_program;

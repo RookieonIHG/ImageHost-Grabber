@@ -61,4 +61,4 @@
 <!ENTITY  enable_console_logging "Activer le journal de la console d'erreurs">
 <!ENTITY  enable_debugging_logging "Activer le journal des événements notifiés par ImageHost Grabber">
 <!ENTITY  clear_log "Effacer le journal">
-<!ENTITY  copy_log_to_local_folder "Copie du journal dans un dossier local">
+<!ENTITY  copy_log_to_local_folder "Copier le journal dans un dossier local">
