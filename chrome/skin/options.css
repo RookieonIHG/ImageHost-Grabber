@@ -31,7 +31,7 @@ radio[pane="debug"] {
 button.button-link {
 	-moz-appearance: none;
 	background: transparent;
-	border: none !important;
+	border: none;
 	box-shadow: none;
 	font-weight: bold;
 	text-decoration: underline;
@@ -41,11 +41,12 @@ button.button-link {
 
 button.button-link:not([disabled]) {
 	color: #0066CC;
+	text-shadow: 1px 1px white;
+	cursor: pointer;
 }
 
 button.button-link:not([disabled]):hover,
 button.button-link:not([disabled]):focus {
-	text-shadow: 1px 1px 2px white, 0 0 3em blue;
-	cursor: pointer;
 	color: #3DA1FF;
+	text-shadow: 1px 1px white, 0 0 2em blue;
 }
