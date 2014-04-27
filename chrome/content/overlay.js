@@ -1,19 +1,21 @@
 function ihg_initOverlay() {
 	document.getElementById("contentAreaContextMenu").addEventListener("popupshowing", ihg_contextMenuInit, false);
+	document.getElementById("menu_ToolsPopup").addEventListener("popupshowing", ihg_showInTools, false);
 		
 	/* Set the correct place for the ImageHost Grabber menu */
 	/* This could possibly be done with XBL to make it tidier */
-	var prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-	var showInTools = prefManager.getBoolPref("extensions.imagegrabber.showintools");
+	// var prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+	var showInTools = document.getElementById("showInTools").value;
+	document.getElementById('menu_IGmain').setAttribute('hidden', showInTools);
 
-	var mainMenu = document.getElementById("menu_IGmain");
-	mainMenu.setAttribute("hidden", showInTools);
+	// var mainMenu = document.getElementById("menu_IGmain");
+	// mainMenu.setAttribute("hidden", showInTools);
 
-	var igSep = document.getElementById("igSep");
-	igSep.setAttribute("hidden", !showInTools);
+	// var igSep = document.getElementById("igSep");
+	// igSep.setAttribute("hidden", !showInTools);
 
-	var igTools = document.getElementById("menu_IGtools");
-	igTools.setAttribute("hidden", !showInTools);
+	// var igTools = document.getElementById("menu_IGtools");
+	// igTools.setAttribute("hidden", !showInTools);
 	
 	/* Get the correct add-on path for IHG and store it globally
 	 *
@@ -38,6 +40,13 @@ function ihg_initOverlay() {
 		}
 		AddonManager.getAddonByID(id, tempFunc);
 	}	
+}
+
+function ihg_destroyOverlay() {
+	document.getElementById("contentAreaContextMenu").removeEventListener("popupshowing", ihg_contextMenuInit, false);
+	document.getElementById("menu_ToolsPopup").removeEventListener("popupshowing", ihg_showInTools, false);
+
+	if (ihg_Globals.conLogOut) ihg_Functions.unregisterConsoleListener();
 }
 
 function ihg_toolbarButtonCommand(event) {
@@ -76,6 +85,14 @@ function isThread(URL) {
 	}
 	
 	return false;
+}
+
+function ihg_showInTools() {
+	if (this.state == 'open') return;
+
+	let showInTools = document.getElementById("showInTools").value;
+	document.getElementById('igSep').setAttribute('hidden', !showInTools);
+	document.getElementById('menu_IGtools').setAttribute('hidden', !showInTools);
 }
 
 function ihg_contextMenuInit() {

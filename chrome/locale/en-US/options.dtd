@@ -54,7 +54,7 @@
 <!ENTITY  host_timeout_seconds "Time to wait in seconds">
 
 <!ENTITY  disclaimer "DISCLAIMER:">
-<!ENTITY  disclaimer_line1 "Enabling/Disabling the following options will require a restart of &brandShortName; in order to take affect.">
+<!ENTITY  disclaimer_line1 "Enabling/Disabling the following options will require a restart of &brandShortName; in order to take effect.">
 <!ENTITY  disclaimer_line2 "They should only be enabled temporarily to log a specific event, and then disabled right away.">
 <!ENTITY  disclaimer_line3 "Leaving them enabled will cause &brandShortName; to run slow, chew up memory, and eat up hard drive space.">
 <!ENTITY  read_disclaimer "Make sure have read and understood the disclaimer.">
