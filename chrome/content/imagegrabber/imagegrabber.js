@@ -789,6 +789,19 @@ ihg_Functions.showFilterDialog = function showFilterDialog(objLinks) {
 } 
 
 ihg_Functions.showPreferencesDialog = function showPreferencesDialog() {
+	var ihg_optionsURL = "chrome://imagegrabber/content/interfaces/options.xul";
+
+	var winMediator = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
+	var windows = winMediator.getEnumerator(null);
+
+	while (windows.hasMoreElements()) {
+		var win = windows.getNext();
+		if (win.document.documentURI == ihg_optionsURL) {
+			win.focus();
+			return;
+		}
+	}
+
 	var features = "chrome,titlebar,toolbar,centerscreen";
 	try {
 		var instantApply = ihg_Globals.prefManager.getBoolPref("browser.preferences.instantApply");
@@ -797,7 +810,7 @@ ihg_Functions.showPreferencesDialog = function showPreferencesDialog() {
 		features += ",modal";
 	}
 
-	window.openDialog("chrome://imagegrabber/content/interfaces/options.xul", "", features);
+	window.openDialog(ihg_optionsURL, "", features);
 }
 
 
