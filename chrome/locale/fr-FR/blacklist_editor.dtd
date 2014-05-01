@@ -1,5 +1,5 @@
-<!ENTITY  blacklist_editor.title "Blacklist Editor">
-<!ENTITY  blacklist_editor.description "Edit your blacklist:">
+<!ENTITY  blacklist_editor.title "Editeur de 'Liste noire'">
+<!ENTITY  blacklist_editor.description "Editer votre 'Liste noire':">
 
 <!ENTITY  save "Enregistrer">
 
@@ -10,13 +10,13 @@
 <!ENTITY  modify "Modifier">
 <!ENTITY  remove "Supprimer">
 
-<!ENTITY  blacklist_file_path "Current blacklist file:">
-<!ENTITY  change "Change">
+<!ENTITY  blacklist_file_path "'Liste noire' active:">
+<!ENTITY  change "Changer">
 
-<!ENTITY  blacklist_editor_new.title "Blacklist Editor">
+<!ENTITY  blacklist_editor_new.title "Editeur de 'Liste noire'">
 <!ENTITY  blacklist_editor_new.description "Entrer le Nouveau motif:">
 <!ENTITY  blacklist_editor_new.type "Type:">
 <!ENTITY  blacklist_editor_new.value "Valeur:">
 
-<!ENTITY  string "Chaîne de caractères">
-<!ENTITY  regexp "Expression Régulière">
+<!ENTITY  string "ChaÃ®ne de caractÃ¨res">
+<!ENTITY  regexp "Expression RÃ©guliÃ¨re">

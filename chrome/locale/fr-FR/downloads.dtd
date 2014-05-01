@@ -3,8 +3,8 @@
 <!ENTITY  open_file "Ouvrir le fichier">
 <!ENTITY  open_folder "Ouvrir le dossier contenant le fichier">
 <!ENTITY  remove_from_list "Retirer de la liste">
-<!ENTITY  abort_download_request "Abandonner téléchargement / demande">
-<!ENTITY  retry_download_request "Réessayer de télécharger / demande">
+<!ENTITY  abort_download_request "Abandonner téléchargement/requête">
+<!ENTITY  retry_download_request "Reprendre téléchargement/requête">
 <!ENTITY  restart_download "Redémarrer téléchargement">
 <!ENTITY  reset_the_retry_count_to_zero "Réinitialiser le nombre de tentatives à zéro">
 <!ENTITY  open_url "Ouvrir une URL">
@@ -24,7 +24,7 @@
 <!ENTITY  status "Statut">
 
 <!ENTITY  export_list "Exporter la liste en HTML ...">
-<!ENTITY  max_requests "Max. demandes:">
+<!ENTITY  max_requests "Max. requêtes:">
 <!ENTITY  max_requests.tooltiptext "Maximum de requêtes HTTP simultanées">
 <!ENTITY  max_retries "Max. tentatives:">
 <!ENTITY  max_retries.tooltiptext "Nombre maximal de tentatives pour chaque lien">

@@ -20,7 +20,7 @@
 <!ENTITY  prefix_filenames_to_reflect_page_order "Préfixer le nom des fichiers afin de refléter l'ordre des pages">
 <!ENTITY  use_last_modified_header "Garder la dernière mise à jour horodatage envoyée par le serveur pour les fichiers téléchargés">
 
-<!ENTITY  show_the_download_directory_box "Afficher le dossier où sera mis le téléchargement (sinon, utiliser le dernier dossier choisi)">
+<!ENTITY  show_the_download_directory_box "Sélectionner le dossier où sera sauvegardé le téléchargement (sinon, utiliser le dernier dossier choisi)">
 <!ENTITY  show_the_image_grabber_menu_in_the_tools_menu "Afficher le menu Image Grabber dans le menu Outils. (sinon, il s'affichera dans la barre du menu principal)">
 <!ENTITY  alert_restart "Cela nécessite un redémarrage de &brandShortName;">
 <!ENTITY  remove_duplicate_links "Suppression des liens doublons">
