@@ -413,6 +413,12 @@ function killme() {
 			req_objs[i].abort();
 		}
 	}
+
+	for (let hostID in req_objs[0].cp.hostTimer) {
+		if (req_objs[0].cp.hostTimer[hostID] != null)
+			req_objs[0].cp.hostTimer[hostID].cancel();
+		delete req_objs[0].cp.hostTimer[hostID];
+	};
 }
 
 

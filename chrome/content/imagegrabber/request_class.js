@@ -77,11 +77,11 @@ ihg_Functions.requestObj = function requestObj() {
 	// start the next download or set of downloads.
 	//
 	// Syntax: reqObj.cp.hostLocked[hostID] = true
-	this.cp.hostLocked = new Object();
+	// this.cp.hostLocked = new Object();
 	
 	// Each locked host has a corresponding timer.  It should be set at the end of
 	// the first to finish in a download set, and cleared at the end of the timeout period.
-	this.cp.hostTimer = new Object();
+	// this.cp.hostTimer = new Object();
 
 	this.nextRequest = new Object();
 	this.previousRequest = new Object();
@@ -95,11 +95,22 @@ ihg_Functions.requestObj = function requestObj() {
 
 
 ihg_Functions.requestObj.prototype = {
-	curThread : 0,
+	constructor : ihg_Functions.requestObj,
 	
+	curThread : 0,
 	curHostThread : 0,
 	
-	constructor : ihg_Functions.requestObj,
+	// A host is "locked" when the host has a "Timeout" attribute and is waiting to
+	// start the next download or set of downloads.
+	
+	// Each locked host has a corresponding timer.  It should be set at the end of
+	// the first to finish in a download set, and cleared at the end of the timeout period.
+	
+	// Syntax:
+	// init  :	reqObj.cp.hostTimer[hostID] = new ihg_Functions.CCallWrapper(...);
+	// clear :	reqObj.cp.hostTimer[hostID] = null;
+	// cancel:	reqObj.cp.hostTimer[hostID].cancel();
+	hostTimer : [],
 
 	debugLog : function req_debugLog () {
 		if (!ihg_Globals.debugOut) return;
@@ -220,11 +231,9 @@ ihg_Functions.requestObj.prototype = {
 	clearHostTimer : function req_clearHostTimer() {
 		if (this.cp.hostTimer["global"] != null) {
 			this.cp.hostTimer["global"] = null;
-			this.cp.hostLocked["global"] = false;
 			}
 		else {
 			this.cp.hostTimer[this.hostID] = null;
-			this.cp.hostLocked[this.hostID] = false;
 			}
 		
 		this.queueHandler();
@@ -309,6 +318,11 @@ ihg_Functions.requestObj.prototype = {
 			}
 		else {
 			if (this.countThreads() == 0) {
+				for (let hostID in this.cp.hostTimer) {
+					if (this.cp.hostTimer[hostID] != null)
+						this.cp.hostTimer[hostID].cancel();
+					delete this.cp.hostTimer[hostID];
+					};
 
 				var listener = {
 					observe: function(subject, topic, data) {
@@ -363,8 +377,8 @@ ihg_Functions.requestObj.prototype = {
 			return;
 			}
 
-		if (this.cp.hostLocked["global"] == true) return;
-		if (this.cp.hostLocked[this.hostID] == true) return;
+		if (this.cp.hostTimer["global"] != null) return;
+		if (this.cp.hostTimer[this.hostID] != null) return;
 		
 		if (this.finished || this.inprogress) {
 			ihg_Functions.LOG("In function requestObj.init with uniqID of: " + this.uniqID + 

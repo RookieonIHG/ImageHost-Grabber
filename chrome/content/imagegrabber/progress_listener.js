@@ -270,7 +270,6 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 			this.reqObj.finished = true;
 
 			var hostID = this.reqObj.hostID;
-			var hostLocked = this.reqObj.cp.hostLocked;
 			var hostTimer = this.reqObj.cp.hostTimer;
 			
 			// Seeing as how there is an option for a host-specific downloadTimeout, then it stands to reason
@@ -283,12 +282,9 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 			
 			if (ihg_Globals.downloadTimeout > 0) {
 				if (hostTimer["global"] == null) {
-					hostLocked["global"] = true;
-					
 					hostTimer["global"] = new ihg_Functions.CCallWrapper(this.reqObj, ihg_Globals.downloadTimeout, 'clearHostTimer', "locking of " + this.reqObj.uniqID);
 					ihg_Functions.CCallWrapper.asyncExecute(hostTimer["global"]);
 				}
-				this.reqObj.unlock();	
 			}
 			else if (this.reqObj.downloadTimeout > 0) {
 				// If the downloadTimeout is imposed from the host definition, then we should continue
@@ -298,14 +294,12 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 					// We "lock" the host after the first completed download in a set of downloads.
 					// This gives enough opportunity for either the global maxThreads to be met, or
 					// for the host-specified maxThreads to be met, before locking the host.
-					hostLocked[hostID] = true;
 					
 					hostTimer[hostID] = new ihg_Functions.CCallWrapper(this.reqObj, this.reqObj.downloadTimeout, 'clearHostTimer', "locking of " + this.reqObj.uniqID);
 					ihg_Functions.CCallWrapper.asyncExecute(hostTimer[hostID]);
 				}
-				this.reqObj.unlock();
 			}
-			else this.reqObj.unlock();
+			this.reqObj.unlock();
 		}
 		else { /* aStatus != 0 */
 			ihg_Functions.LOG("onStateChange has resulted in a non-successful status code inside of the persist progress listener.\n");
