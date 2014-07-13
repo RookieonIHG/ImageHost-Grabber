@@ -20,7 +20,7 @@
 
 <!ENTITY  page_status "Statut page">
 <!ENTITY  file_name "Nom de fichier">
-<!ENTITY  progress "Progrès">
+<!ENTITY  progress "Progression">
 <!ENTITY  status "Statut">
 
 <!ENTITY  export_list "Exporter la liste en HTML ...">

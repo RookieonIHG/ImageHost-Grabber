@@ -25,6 +25,7 @@
 <!ENTITY  alert_restart "This requires a restart of &brandShortName;">
 <!ENTITY  remove_duplicate_links "Ayni linkleri sil">
 <!ENTITY  even_across_multiple_pages "Farkli sayfalardan bile olsa">
+<!ENTITY  suppress_close_download_confirmation_dialog "Suppress Close download window confirmation dialog">
 <!ENTITY  close_download_window "Bütün indirmeler bittikten sonra indirme penceresini kapat">
 <!ENTITY  without_delay "without delay.">
 <!ENTITY  keep_download_window_contents "Farkli Sayfalardan Bile Olsa Ayni Linkleri Sil">

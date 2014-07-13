@@ -141,8 +141,9 @@ function toggleEnableState() {
 		<preference id="showInTools" name="extensions.imagegrabber.showintools" type="bool"/>
 		<preference id="removeDupLinks" name="extensions.imagegrabber.removeduplinks" type="bool"/>
 		<preference id="removeDupLinksXpages" name="extensions.imagegrabber.removeduplinksXpages" type="bool"/>
+		<preference id="DLWindowSuppressCloseConfirm" name="extensions.imagegrabber.dlwindowcloseconfirm" type="bool" inverted="true"/>
 		<preference id="autoCloseWindow" name="extensions.imagegrabber.autoclosewindow" type="bool"/>
-		<preference id="closewindowimmediately" name="extensions.imagegrabber.closewindowimmediately" type="bool"/>
+		<preference id="DLWindowCloseImmediately" name="extensions.imagegrabber.dlwindowcloseimmediately" type="bool"/>
 		<preference id="cacheDLWin" name="extensions.imagegrabber.cachedlwin" type="bool"/>
 	</preferences>
 
@@ -151,9 +152,10 @@ function toggleEnableState() {
 	<checkbox id="cb_removeDupLinks" preference="removeDupLinks" label="&remove_duplicate_links;"
 		onsyncfrompreference="toggleEnableState(this.id, false, 'cb_removeDupLinksXpages');"/>
 	<checkbox id="cb_removeDupLinksXpages" preference="removeDupLinksXpages" label="&even_across_multiple_pages;" class="indent"/>
+	<checkbox id="cb_DLWindowSuppressCloseConfirm" preference="DLWindowSuppressCloseConfirm" label="&suppress_close_download_confirmation_dialog;"/>
 	<checkbox id="cb_autoCloseWindow" preference="autoCloseWindow" label="&close_download_window;"
-		onsyncfrompreference="toggleEnableState(this.id, false, 'cb_closewindowimmediately');"/>
-	<checkbox id="cb_closewindowimmediately" preference="closewindowimmediately" label="&without_delay;" class="indent"/>
+		onsyncfrompreference="toggleEnableState(this.id, false, 'cb_DLWindowCloseImmediately');"/>
+	<checkbox id="cb_DLWindowCloseImmediately" preference="DLWindowCloseImmediately" label="&without_delay;" class="indent"/>
 	<checkbox id="cb_cacheDLWin" hidden="true" preference="cacheDLWin" label="&keep_download_window_contents;"/>
 
 </prefpane>
@@ -284,9 +286,9 @@ function toggleEnableState() {
 <prefpane id="debug" label="&debugging;" orient="vertical">
 
 	<preferences>
+		<preference id="showInConsole" name="javascript.options.showInConsole" type="bool"/>
 		<preference id="enableConLog" name="extensions.imagegrabber.enableconlog" type="bool"
 			onchange="if (document.getElementById('showInConsole').value != this.value) document.getElementById('cb_showInConsole').click(); checkRestart();"/>
-		<preference id="showInConsole" name="javascript.options.showInConsole" type="bool"/>
 		<preference id="enableDebug" name="extensions.imagegrabber.enabledebug" type="bool" onchange="checkRestart();"/>
 	</preferences>
 

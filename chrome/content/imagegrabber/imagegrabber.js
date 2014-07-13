@@ -323,6 +323,7 @@ ihg_Functions.getDLCache = function getDLCache(fileName) {
 	var req_objs = new Array();
 	for (var h = 0; h < reqList.length; h++) {
 		req_objs[h] = new ihg_Functions.requestObj();
+		req_objs[h].debugLog();
 		var props = reqList[h].getElementsByTagName("prop");
 		for (var i = 0; i < props.length; i++) {
 			var propType = props[i].getAttribute("type");
@@ -349,9 +350,8 @@ ihg_Functions.getDLCache = function getDLCache(fileName) {
 				}
 
 			req_objs[h][propName] = propValue;
-			req_objs[h].hostFunc = ihg_Functions.genericHostFunc;
-			req_objs[h].debugLog();
 			}
+		req_objs[h].hostFunc = ihg_Functions.genericHostFunc;
 		req_objs[h].inprogress = false;
 		req_objs[req_objs[h].uniqID] = req_objs[h];
 		}
@@ -696,11 +696,11 @@ ihg_Functions.getIGPrefs = function getIGPrefs() {
 	ihg_Globals.autoCloseWindow = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.autoclosewindow");
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.autoCloseWindow is equal to: " + ihg_Globals.autoCloseWindow + "\n");
 	
-	ihg_Globals.closeWindowImmediately = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.closewindowimmediately");
- 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.closeWindowImmediately is equal to: " + ihg_Globals.closeWindowImmediately + "\n");
+	ihg_Globals.DLWindowCloseImmediately = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.dlwindowcloseimmediately");
+	ihg_Functions.LOG("In " + myself + ", ihg_Globals.DLWindowCloseImmediately is equal to: " + ihg_Globals.DLWindowCloseImmediately + "\n");
 
 	ihg_Globals.useLastModFromHeader = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.uselastmodfromheader");
- 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.useLastModFromHeader is equal to: " + ihg_Globals.useLastModFromHeader + "\n");
+	ihg_Functions.LOG("In " + myself + ", ihg_Globals.useLastModFromHeader is equal to: " + ihg_Globals.useLastModFromHeader + "\n");
 
 	ihg_Globals.blacklistFilePath = ihg_Globals.prefManager.getCharPref("extensions.imagegrabber.blacklistfilepath");
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.blacklistFilePath is equal to: " + ihg_Globals.blacklistFilePath + "\n");
@@ -717,7 +717,7 @@ ihg_Functions.initVars = function initVars(skipDirDialog) {
 
 	var doc = content.document;
 	
-	ihg_Globals.docTitle = doc.title.replace(/[\\/:*?"<>|,]/g, '').replace(/\./g,'').replace(/ - Mozilla Firefox$/,'');
+	ihg_Globals.docTitle = doc.title.replace(/[\\/:*?"<>|,]/g, '').replace(/\./g,'').replace(/ - Mozilla Firefox$/,'').trim();
 
 	if (ihg_Globals.docTitle.length > 89) ihg_Globals.docTitle = ihg_Globals.docTitle.substring(0, 89);
 

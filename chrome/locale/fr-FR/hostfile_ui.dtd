@@ -16,7 +16,7 @@
 <!ENTITY  search_pattern "Motif à rechercher">
 <!ENTITY  select_func "Modèles...">
 
-<!ENTITY  update_file "Enregistrer">
+<!ENTITY  update_file "MàJ de l'hôte">
 <!ENTITY  reset_form "Effacer le Formulaire">
 <!ENTITY  add_host "Ajouter l'hôte">
 <!ENTITY  delete_host "Supprimer l'hôte">

@@ -36,6 +36,8 @@ promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].ge
 function onClose(event) {
 	if (typeof req_objs === "undefined" || req_objs.length == 0) return;
 	
+	var DLWindowSuppressCloseConfirm = document.getElementById("DLWindowSuppressCloseConfirm");
+	
 	var undelayed_confirm = false;
 	for (var i = req_objs.length; i--; ) {
 		try {
@@ -59,17 +61,23 @@ function onClose(event) {
 					 promptService.BUTTON_TITLE_DONT_SAVE	 * promptService.BUTTON_POS_2 +
 					 promptService.BUTTON_TITLE_CANCEL		 * promptService.BUTTON_POS_1 +
 					 promptService.BUTTON_POS_1_DEFAULT;												// CANCEL by default
+	
 	if (undelayed_confirm == false)
 		buttonflag += promptService.BUTTON_DELAY_ENABLE;
+	else if (DLWindowSuppressCloseConfirm.value) return;
+	
+	var check = {value:DLWindowSuppressCloseConfirm.value};
 	
 	var ConfirmClose = promptService.confirmEx(
 		this,
 		null,
 		ihg_Globals.strbundle.getFormattedString("close_confirm_progress_window",[document.title]),
 		buttonflag,
-		null, null, null,																				// default button labels (defined in 'buttonflag')
-		null,																							// Checkbox not used
-		{value:false});																					// Checkbox value; CANCEL=return(1)
+		null, null, null,																				// default button labels
+		ihg_Globals.strings.dont_bother_close_confirm,													// Checkbox label "Stop bothering me with confirm message !"
+		check);																							// Checkbox value; CANCEL=return(1)
+	
+	DLWindowSuppressCloseConfirm.value = check.value;
 	
 	switch (ConfirmClose) {
 		case 0:	killme();
@@ -338,8 +346,9 @@ function autoClearForm() {
 
 
 function clear_form() {
-	var outBox = document.getElementById("outBox");
+	if (typeof req_objs === "undefined" || req_objs.length == 0) return;
 
+	var outBox = document.getElementById("outBox");
 	var removeList = new Array();
 
 	for (var i = 0; i < req_objs.length; i++) {

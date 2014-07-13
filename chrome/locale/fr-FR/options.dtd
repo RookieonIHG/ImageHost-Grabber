@@ -25,6 +25,7 @@
 <!ENTITY  alert_restart "Cela nécessite un redémarrage de &brandShortName;">
 <!ENTITY  remove_duplicate_links "Suppression des liens doublons">
 <!ENTITY  even_across_multiple_pages "ainsi qu'au travers des pages multiples">
+<!ENTITY  suppress_close_download_confirmation_dialog "Supprimer la demande de confirmation de fermeture de la fenêtre de téléchargement">
 <!ENTITY  close_download_window "Fermer la fenêtre de téléchargement lorsque tout ceux-ci sont terminés">
 <!ENTITY  without_delay "sans délai ou compte à rebours.">
 <!ENTITY  keep_download_window_contents "Garder le contenu de la fenêtre de téléchargement (même après fermeture)">

@@ -243,7 +243,7 @@ ihg_Functions.ihg_ProgressListener.prototype = {
 				else {
 					var retry_dick = "(" + String(ihg_Globals.maxRetries - this.reqObj.retryNum + 1) + " " + ihg_Globals.strings.of + " " + String(ihg_Globals.maxRetries) + ")";
 					ihg_Functions.updateDownloadProgress(null, this.reqObj.uniqID, null, null, ihg_Globals.strings.file_not_good + " " + retry_dick)
-					ihg_Functions.LOG("File did not download correctly, " + this.refURL + ", " + this.reqObj.uniqID + ", Retrying!");
+					ihg_Functions.LOG("File did not download correctly (unknown SOI), " + this.refURL + ", " + this.reqObj.uniqID + ", Retrying!\n");
 					//this.reqObj.overwrite = true;
 					this.aFile.remove(true);
 					this.reqObj.curProgress = 0;

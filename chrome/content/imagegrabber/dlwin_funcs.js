@@ -270,7 +270,7 @@ ihg_Functions.startCloseCountdown = function startCloseCountdown() {
 		}
 	}
 	
-	ihg_Globals.closeCountdown = ihg_Globals.closeWindowImmediately ?  0 : 5;
+	ihg_Globals.closeCountdown = ihg_Globals.DLWindowCloseImmediately ?  0 : 5;
 	
 	if (ihg_Globals.closeInterval) clearInterval(ihg_Globals.closeInterval);
 	ihg_Globals.closeInterval = setInterval(ihg_Functions.closeWindow, 800);

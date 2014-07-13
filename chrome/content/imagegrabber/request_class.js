@@ -307,8 +307,8 @@ ihg_Functions.requestObj.prototype = {
 		var next_req = this.firstRequest.getNextAvailable();
 		if (next_req) {
 			while (next_req) {
-				if (this.countThreads() < ihg_Globals.maxThreads) {
-					next_req.init();
+				if (next_req.countThreads() < ihg_Globals.maxThreads) {
+					if (next_req.maxThreads == 0 || next_req.cp.curHostThread < next_req.maxThreads) next_req.init();
 					
 					next_req = next_req.nextRequest;
 					if (next_req) next_req = next_req.getNextAvailable();
@@ -381,8 +381,7 @@ ihg_Functions.requestObj.prototype = {
 		if (this.cp.hostTimer[this.hostID] != null) return;
 		
 		if (this.finished || this.inprogress) {
-			ihg_Functions.LOG("In function requestObj.init with uniqID of: " + this.uniqID + 
-			    "\nfinished: " + this.finished + ", inprogress: " + this.inprogress + "\n");
+			ihg_Functions.LOG("In function requestObj.init with uniqID of: " + this.uniqID + "\n\t\tfinished: " + this.finished + ", inprogress: " + this.inprogress + "\n");
 			return;
 			}
 

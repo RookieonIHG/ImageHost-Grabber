@@ -47,6 +47,10 @@ function SetLayout() {
 ]]>
 </script>
 
+<preferences>
+	<preference id="DLWindowSuppressCloseConfirm" name="extensions.imagegrabber.dlwindowcloseconfirm" type="bool" inverted="true" instantApply="true"/>
+</preferences>
+
 <keyset>
 	<key id="minimize_cmd" keycode="VK_ESCAPE" oncommand="window.minimize();"/>
 	<key id="launchFile_cmd" keycode="VK_RETURN" oncommand="launchFile();"/>
