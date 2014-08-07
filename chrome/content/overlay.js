@@ -1,6 +1,6 @@
 function ihg_initOverlay() {
 	document.getElementById("contentAreaContextMenu").addEventListener("popupshowing", ihg_contextMenuInit, false);
-	document.getElementById("menu_ToolsPopup").addEventListener("popupshowing", ihg_showInTools, false);
+	document.getElementById("menu_ToolsPopup").addEventListener("popupshowing", ihg_showInToolsInit, false);
 		
 	/* Set the correct place for the ImageHost Grabber menu */
 	/* This could possibly be done with XBL to make it tidier */
@@ -22,7 +22,8 @@ function ihg_initOverlay() {
 	 * This has to be done because "AddonManager" is asynchronous,
 	 * thus, making it difficult to use in the file services.
 	 */
-	var id = "{E4091D66-127C-11DB-903A-DE80D2EFDFE8}"; // imagegrabber's ID
+	var id = ihg_Globals.addonID; // imagegrabber's ID
+	var ihgDefaultBranch = ihg_Globals.prefManager.getDefaultBranch("extensions.imagegrabber.");
 	var nsLocFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 
 	// This should work for Firefox v1.5 to v3.6  It returns a file object initialized
@@ -40,11 +41,13 @@ function ihg_initOverlay() {
 		}
 		AddonManager.getAddonByID(id, tempFunc);
 	}	
+
+	ihgDefaultBranch.setCharPref("enable@startup", stringify({enableConLog: ihg_Globals.conLogOut, enableDebug: ihg_Globals.debugOut}));
 }
 
 function ihg_destroyOverlay() {
 	document.getElementById("contentAreaContextMenu").removeEventListener("popupshowing", ihg_contextMenuInit, false);
-	document.getElementById("menu_ToolsPopup").removeEventListener("popupshowing", ihg_showInTools, false);
+	document.getElementById("menu_ToolsPopup").removeEventListener("popupshowing", ihg_showInToolsInit, false);
 
 	if (ihg_Globals.conLogOut) ihg_Functions.unregisterConsoleListener();
 }
@@ -87,7 +90,7 @@ function isThread(URL) {
 	return false;
 }
 
-function ihg_showInTools() {
+function ihg_showInToolsInit() {
 	if (this.state == 'open') return;
 
 	let showInTools = document.getElementById("showInTools").value;

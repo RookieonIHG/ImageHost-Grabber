@@ -35,8 +35,9 @@
 <script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/debug.js" />
 
 <script>
-	ihg_Globals.debugOut = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.enabledebug");
-	ihg_Globals.conLogOut = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.enableconlog");
+	var Initial_pref = parse(ihg_Globals.prefManager.getCharPref("extensions.imagegrabber.enable@startup"));
+	ihg_Globals.debugOut = Initial_pref.enableDebug;
+	ihg_Globals.conLogOut = Initial_pref.enableConLog;
 </script>
 
 <script type="application/x-javascript">

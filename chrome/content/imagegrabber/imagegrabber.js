@@ -393,7 +393,7 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 
 	for (var i = ihg_Globals.firstPage; i <= ihg_Globals.lastPage; i++) {
 		var t_count = 0;
-
+/* 
 		objLinks.links[i] = [];
 		objLinks.thumbs[i] = [];
 		objLinks.dirSave[i] = [];
@@ -404,6 +404,8 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 		
 		// Added to give a proper referring url for embedded images
 		objLinks.originatingPage[i] = new Array();
+ */
+		for (let LinksOBJProp in objLinks) objLinks[LinksOBJProp][i] = new Array();
 
 		for (var j = 0; j < (ihg_Globals.suckMode?docLinks[i].length-1:docLinks[i].length); j++) {
 			// check to see if link has an embedded image tag
@@ -721,7 +723,7 @@ ihg_Functions.initVars = function initVars(skipDirDialog) {
 
 	if (ihg_Globals.docTitle.length > 89) ihg_Globals.docTitle = ihg_Globals.docTitle.substring(0, 89);
 
-	ihg_Globals.docTitle = ihg_Globals.docTitle.replace(/\s+$/, '');
+	ihg_Globals.docTitle = ihg_Globals.docTitle.trim();
 
 	ihg_Functions.LOG("In " + myself + ", about to call getIGPrefs().\n");
 	ihg_Functions.getIGPrefs();

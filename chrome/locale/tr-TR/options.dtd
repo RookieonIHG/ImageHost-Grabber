@@ -42,7 +42,7 @@
 
 <!ENTITY  host_file_update "Sunucu dosyasi güncelleme:">
 <!ENTITY  enable_automatic_update "Otomatik güncellestirmeyi etkinlestir.">
-<!ENTITY  suppress_confirmation_dialog "Dogrulama penceresini bastir">
+<!ENTITY  suppress_host_file_update_confirmation_dialog "Dogrulama penceresini bastir">
 <!ENTITY  merge_behavior "Birlestirme tarzi:">
 <!ENTITY  merge_host_file_ask "Sor">
 <!ENTITY  merge_host_file_overwrite "Mevcut sunucularin üzerine yaz ve yenileri ekle">

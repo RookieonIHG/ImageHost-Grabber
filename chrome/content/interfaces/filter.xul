@@ -20,7 +20,6 @@
 <keyset>
 	<key id="setAllTrue_cmd" key="A" modifiers="accel" oncommand="doSetAll('true');"/>
 	<key id="setAllFalse_cmd" key="C" modifiers="accel" oncommand="doSetAll('false');"/>
-	<!-- <key id="invertSelection_cmd" key="I" modifiers="accel" oncommand="doInvertSelection();"/> -->
 	<key id="invertSelection_cmd" key="I" modifiers="accel" oncommand="doSetAll('toggle');"/>
 	<key id="toggle_cmd" key=" " oncommand="applyCmd('toggle');"/>
 	<key id="openReqUrls_cmd" keycode="VK_RETURN" modifiers="accel" oncommand="applyCmd('open');"/>
@@ -93,7 +92,7 @@
 				<hbox align="center">
 					<label value="&new_value_for_row_height;"/>
 					<spacer flex="1"/>
-					<textbox id="rowHeightVal" value="" size="2" persist="saved"/>
+					<textbox id="rowHeightVal" type="number" min="18" max="150" size="2" hidespinbuttons="true" persist="saved"/>
 				</hbox>
 				<button label="&change_row_height;" oncommand="chgRowHeight();setFocus('igLinksTree');"/>
 			</vbox>
@@ -108,7 +107,6 @@
 			<hbox>
 				<button label="&select_all;" oncommand="doSetAll('true');setFocus('igLinksTree');" flex="1"/>
 				<button label="&clear_all;" oncommand="doSetAll('false');setFocus('igLinksTree');" flex="1"/>
-				<!-- <button label="&invert_selection;" oncommand="doInvertSelection();setFocus('igLinksTree');"/> -->
 				<button label="&invert_selection;" oncommand="doSetAll('toggle');setFocus('igLinksTree');" flex="1"/>
 			</hbox>
 			<button label="&toggle_the_highlighted_items;" oncommand="applyCmd('toggle');setFocus('igLinksTree');"/>

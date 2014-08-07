@@ -83,13 +83,12 @@ ihg_Functions.genericHostFunc = function genericHostFunc() {
 	if (typeof req.regexp === "function") {
 		var retVal = req.regexp(pageData, pageUrl);
 
+		if (retVal.imgUrl) retVal.imgUrl = retVal.imgUrl.replace(/&amp;/g, '&');
 		if (retVal.fileName) req.baseFileName = retVal.fileName;
 		if (retVal.referer) req.referer = retVal.referer;
 
 		if (retVal.status === "OK") {
-			var ioservice = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
-
-			var someURI = ioservice.newURI(pageUrl, null, null);
+			var someURI = ihg_Globals.ioService.newURI(pageUrl, null, null);
 			the_url = someURI.resolve(retVal.imgUrl);
 		}
 		else if (retVal.status === "ABORT") {
@@ -222,8 +221,8 @@ ihg_Functions.getHostToUse = function getHostToUse(innerLink) {
 			ihg_Functions.LOG(tempThing + "\n");
 			
 			// If the searchpattern is a function, dynamically create a function for it
-			if (tempThing.search(/^function/) >= 0) {			
-				var cunt = tempThing.match(/function\((.+),(.+)\)/);
+			if (tempThing.search(/^function/) >= 0) {
+				var cunt = tempThing.match(/function\((.+?),(.+?)\)/);
 				ihg_Functions.LOG(cunt.toSource() + "\n");
 				
 				var aa = tempThing.replace(/[\n\f\r]/g, 'NEWLINE');

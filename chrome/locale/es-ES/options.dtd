@@ -42,7 +42,7 @@
 
 <!ENTITY  host_file_update "Actualización del archivo de servidores:">
 <!ENTITY  enable_automatic_update "Habilitar actualización automática">
-<!ENTITY  suppress_confirmation_dialog "Suprimir diálogo de confirmación">
+<!ENTITY  suppress_host_file_update_confirmation_dialog "Suprimir diálogo de confirmación">
 <!ENTITY  merge_behavior "Comportamiento al actualizar:">
 <!ENTITY  merge_host_file_ask "Preguntar">
 <!ENTITY  merge_host_file_overwrite "Sobreescribir los servidores actuales y añadir los nuevos">

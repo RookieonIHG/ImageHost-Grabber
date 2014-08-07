@@ -42,7 +42,7 @@
 
 <!ENTITY  host_file_update "Mise à jour du Fichier Hôte:">
 <!ENTITY  enable_automatic_update "Activer la mise à jour automatique">
-<!ENTITY  suppress_confirmation_dialog "Supprimer la fenêtre de confirmation">
+<!ENTITY  suppress_host_file_update_confirmation_dialog "Supprimer la fenêtre de confirmation">
 <!ENTITY  merge_behavior "Fusionner:">
 <!ENTITY  merge_host_file_ask "Demander">
 <!ENTITY  merge_host_file_overwrite "Remplacer les hôtes actuels et ajouter les nouveaux hôtes">

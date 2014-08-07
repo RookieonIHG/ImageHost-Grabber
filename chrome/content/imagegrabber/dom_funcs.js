@@ -29,9 +29,7 @@ ihg_Functions.getLinks = function getLinks(sometext) {
 	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
-	var re;
-	if (!ihg_Globals.downloadEmbeddedImages) re = new RegExp("<a\\b.+?>", "ig");
-	else re = new RegExp("<(?:a|img)\\b.+?>", "ig");
+	var re = ihg_Globals.downloadEmbeddedImages ? /<(?:a|img)\b.+?>/ig : /<a\b.+?>/ig;
 
 	var filtered = sometext.replace(/\r?\n/g, " ");
 	filtered = filtered.match(re);
@@ -43,8 +41,8 @@ ihg_Functions.getLinks = function getLinks(sometext) {
 	if (filtered) {
 		for (var j = 0; j < filtered.length; j++) {
 			if (filtered[j]) {
-				if (!ihg_Globals.downloadEmbeddedImages) theLinks[j] = filtered[j].match(/href\s*=\s*('|").+?\1/i);
-	            else theLinks[j] = filtered[j].match(/(?:href|src)\s*=\s*('|").+?\1/i);
+				if (!ihg_Globals.downloadEmbeddedImages) theLinks[j] = filtered[j].match(/\bhref\s*=\s*('|").+?\1/i);
+	            else theLinks[j] = filtered[j].match(/\b(?:href|src)\s*=\s*('|").+?\1/i);
 				if (theLinks[j]) {
 					var isEmbedded = (ihg_Globals.downloadEmbeddedImages && theLinks[j][0].match(/^src/i));
 					theLinks[j] = theLinks[j][0].split(/(?:href|src)\s*=\s*/i);
@@ -73,20 +71,21 @@ ihg_Functions.getImgSrcById = function getImgSrcById(sometext, theID){
 	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
-	var re = new RegExp("<img\\b.+?>", "ig");
 	var filtered = sometext.replace(/\r?\n/g, " ");
-	filtered = filtered.match(re);
+	filtered = filtered.match(/<img\b.+?>/ig);
 
 	var theLinks = new Array();
 		
-	var re = new RegExp("id\\s*=\\s*(\"|')?" + theID + "\\1[\\s>]");
+	// var re = new RegExp("\\bid\\s*=\\s*(\"|')?" + theID + "\\1[\\s>]");
 
 	ihg_Functions.LOG("In " + myself + ", fixing to find the image.\n");
 	if (filtered) {
 		for (var j = 0; j < filtered.length; j++) {
 			if (filtered[j]) {
-				if (re.test(filtered[j])) {
-					theLinks[j] = filtered[j].match(/src\s*=\s*("|')?(.+?)\1[\s>]/i);
+				// if (re.test(filtered[j])) {
+				var idAttr = filtered[j].match(/\bid\s*=\s*("|')?(.+?)\1[\s>]/i);
+				if (idAttr && idAttr[2] == theID) {
+					theLinks[j] = filtered[j].match(/\bsrc\s*=\s*("|')?(.+?)\1[\s>]/i);
 					if (theLinks[j]) {
 						var caca = theLinks[j][2].replace(/&amp;/ig, '&');
 						}
@@ -109,9 +108,8 @@ ihg_Functions.getFrameTags = function getFrameTags(sometext){
 	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
-	var re = new RegExp("<frame\\b.+?>", "ig");
 	var filtered = sometext.replace(/\r?\n/g, " ");
-	filtered = filtered.match(re);
+	filtered = filtered.match(/<frame\b.+?>/ig);
 
 	ihg_Functions.LOG("In " + myself + ", filtered is equal to: " + filtered + "\n");
 	return filtered;
@@ -125,9 +123,8 @@ ihg_Functions.getImgTags = function getImgTags(sometext){
 	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
-	var re = new RegExp("<img\\b.+?>", "ig");
 	var filtered = sometext.replace(/\r?\n/g, " ");
-	filtered = filtered.match(re);
+	filtered = filtered.match(/<img\b.+?>/ig);
 
 	ihg_Functions.LOG("In " + myself + ", filtered is equal to: " + filtered + "\n");
 	return filtered;
@@ -144,7 +141,7 @@ ihg_Functions.getImgSrcFromTag = function getImgSrcFromTag(sometext){
 	
 	ihg_Functions.LOG("In " + myself + ", fixing to find the image.\n");
 	if (filtered) {
-		var theSrc = filtered.match(/src\s*=\s*("|')?(.+?)\1[\s>]/i);
+		var theSrc = filtered.match(/\bsrc\s*=\s*("|')?(.+?)\1[\s>]/i);
 		if (theSrc) {
 			theSrc[2] = theSrc[2].replace(/&amp;/ig, '&');
 		}
@@ -163,8 +160,7 @@ ihg_Functions.getPNodeData = function getPNodeData(sometext){
 	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
-	var re = new RegExp("<p>.+?</p>", "igm");
-	var filtered = sometext.match(re);
+	var filtered = sometext.match(/<p>.+?<\/p>/igm);
 
 	ihg_Functions.LOG("In " + myself + ", fixing to get the p nodes.\n");
 	if(filtered) {

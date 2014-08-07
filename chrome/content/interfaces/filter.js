@@ -113,13 +113,14 @@ function doOK() {
 	var currentId = 0;
 	
 	for (var i = firstPage; i <= lastPage; i++) {
-		newObjLinks.links[i] = new Array();
-		newObjLinks.dirSave[i] = new Array();
-		newObjLinks.hostFunc[i] = new Array();
-		newObjLinks.hostID[i] = new Array();
-		newObjLinks.maxThreads[i] = new Array();
-		newObjLinks.downloadTimeout[i] = new Array();
-		newObjLinks.originatingPage[i] = new Array();
+		// newObjLinks.links[i] = new Array();
+		// newObjLinks.dirSave[i] = new Array();
+		// newObjLinks.hostFunc[i] = new Array();
+		// newObjLinks.hostID[i] = new Array();
+		// newObjLinks.maxThreads[i] = new Array();
+		// newObjLinks.downloadTimeout[i] = new Array();
+		// newObjLinks.originatingPage[i] = new Array();
+		for (let ObjLinkProp in newObjLinks) {newObjLinks[ObjLinkProp][i] = new Array();};
 		
 		for (var j = 0; j < objLinks.links[i].length; j++, currentId++) {
 			if (doc.getElementById("req_" + currentId).getAttribute("hidden") == "true") continue;
@@ -127,13 +128,14 @@ function doOK() {
 			var shakespeare = doc.getElementById("tobeornottobe_" + currentId);
 			
 			if (shakespeare.getAttribute("value") == "true") {
-				newObjLinks.links[i].push(objLinks.links[i][j]);
-				newObjLinks.dirSave[i].push(objLinks.dirSave[i][j]);
-				newObjLinks.hostFunc[i].push(objLinks.hostFunc[i][j]);
-				newObjLinks.hostID[i].push(objLinks.hostID[i][j]);
-				newObjLinks.maxThreads[i].push(objLinks.maxThreads[i][j]);
-				newObjLinks.downloadTimeout[i].push(objLinks.downloadTimeout[i][j]);
-				newObjLinks.originatingPage[i].push(objLinks.originatingPage[i][j]);
+				// newObjLinks.links[i].push(objLinks.links[i][j]);
+				// newObjLinks.dirSave[i].push(objLinks.dirSave[i][j]);
+				// newObjLinks.hostFunc[i].push(objLinks.hostFunc[i][j]);
+				// newObjLinks.hostID[i].push(objLinks.hostID[i][j]);
+				// newObjLinks.maxThreads[i].push(objLinks.maxThreads[i][j]);
+				// newObjLinks.downloadTimeout[i].push(objLinks.downloadTimeout[i][j]);
+				// newObjLinks.originatingPage[i].push(objLinks.originatingPage[i][j]);
+				for (let ObjLinkProp in newObjLinks) {newObjLinks[ObjLinkProp][i].push(objLinks[ObjLinkProp][i][j]);};
 			}
 		
 		}
@@ -166,13 +168,9 @@ function setFocus(someId) {
 function doSetAll(value) {
 	var doc = this.document;
 	var tree = doc.getElementById("igLinksTree");
+	var CheckboxColIdx = tree.columns.getNamedColumn("tobeornottobe").index;
 	
 	for (var i = 0; i < tree.view.rowCount; i++) {  
-		// var shakespeare = doc.getElementById("tobeornottobe_" + i);
-		// shakespeare.setAttribute("value", value);
-		// var row = doc.getElementById("row_" + i);
-		// row.setAttribute("properties", value == "true"?"checked":"");
-		var CheckboxColIdx = tree.columns.getNamedColumn("tobeornottobe").index;
 		var row = tree.view.getItemAtIndex(i).firstChild;
 		var shakespeare = row.childNodes[CheckboxColIdx];
 		var newVal = (value == "toggle" ? !(shakespeare.getAttribute("value") == "true") : value == "true");
@@ -346,12 +344,10 @@ function chgPreview(initialChange) {
 			}
 		}
 	
-		var rowHeightVal = document.getElementById("rowHeightVal");
-
-		newVal = rowHeightVal.value || "150";
+		newVal = document.getElementById("rowHeightVal").value || "150";
 
 		rule1 = "treechildren::-moz-tree-row { height: "+newVal+"px; }";
-		rule2 = "treechildren::-moz-tree-image { height: "+newVal+"px; }";
+		rule2 = "treechildren::-moz-tree-image { height: "+(newVal-2)+"px; }";
 		document.styleSheets[ss].insertRule(rule1,0);
 		document.styleSheets[ss].insertRule(rule2,cssRules.length);
 	
@@ -376,7 +372,6 @@ function chgPreview(initialChange) {
 
 
 function chgRowHeight() {
-	var rowHeightVal = document.getElementById("rowHeightVal");
 	var list = document.getElementById("list");
 	
 	var ss = 1;
@@ -394,11 +389,10 @@ function chgRowHeight() {
 		document.styleSheets[ss].deleteRule(indices[a]);
 	}
 
-	if (rowHeightVal.value) newVal = rowHeightVal.value;
-	else newVal = "150";
+	newVal = document.getElementById("rowHeightVal").value || "150";
 	
 	rule1 = "treechildren::-moz-tree-row { height: "+newVal+"px; }";
-	rule2 = "treechildren::-moz-tree-image { height: "+newVal+"px; }";
+	rule2 = "treechildren::-moz-tree-image { height: "+(newVal-2)+"px; }";
 	document.styleSheets[ss].insertRule(rule1,0);
 	document.styleSheets[ss].insertRule(rule2,cssRules.length);
 
@@ -419,7 +413,6 @@ function changeImage() {
 		}
 	
 	var thumb = doc.getElementById("thumbnail");
-	
 	var previewLabel = doc.getElementById("previewLabel");
 	if (!objLinks.thumbs[firstPage][current]) {
 		//There's no thumbnail to show...

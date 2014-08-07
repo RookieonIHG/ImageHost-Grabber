@@ -29,6 +29,7 @@ var ihg_Globals = new Object();
 var ihg_Functions = new Object();
 
 ihg_Globals.appName = "ImageHost Grabber";
+ihg_Globals.addonID = "{E4091D66-127C-11DB-903A-DE80D2EFDFE8}"; // imagegrabber's ID
 
 ihg_Globals.strbundle = null;
 ihg_Globals.strings = new Object();
@@ -36,7 +37,7 @@ ihg_Globals.strings = new Object();
 ihg_Globals.ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 ihg_Globals.prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
 ihg_Globals.fileOut = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
-ihg_Globals.logFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+ihg_Globals.LocalFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 
 ihg_Globals.AUTO_RENAME = null;
 ihg_Globals.fileExistsBehavior = null;

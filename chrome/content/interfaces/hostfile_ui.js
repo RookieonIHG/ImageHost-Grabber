@@ -585,14 +585,11 @@ function mergeHostFile(onlineXML) {
 	for (var i = 0; i < tmpList.length; i++) {
 		for (var j = 0; j < mergHosts.length; j++) {
 			if (tmpList[i] == mergHosts[j].getAttribute("id")) {
-				tmpList[i] = mergHosts[j];
+				mergFile.firstChild.appendChild(mergHosts[j]);
 				break;
 				}
 			}
 		}
-
-	for (var i = 0; i < tmpList.length; i++)
-		mergFile.firstChild.appendChild(tmpList[i]);
 
 	var overWriteMode = promptService.confirm(this, null, ihg_Globals.strings.overwrite_mode);
 			

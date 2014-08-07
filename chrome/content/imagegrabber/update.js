@@ -97,24 +97,16 @@ ihg_Functions.mergeHostFile = function mergeHostFile(onlineXML, hostFileObj) {
 	var hFile = hostFileObj.getHosts();
 	var hosts = hFile.getElementsByTagName("host");
 	
-	var tmpList = new Array();
-	
-	for (var i=0; i < mergHosts.length; i++)
-		tmpList[i] = mergHosts[i].getAttribute("id");
-
-	tmpList = tmpList.sort();
+	var tmpList = Array.map(mergHosts, function(host) {return host.getAttribute("id")}).sort();
 
 	for (var i = 0; i < tmpList.length; i++) {
 		for (var j = 0; j < mergHosts.length; j++) {
 			if (tmpList[i] == mergHosts[j].getAttribute("id")) {
-				tmpList[i] = mergHosts[j].cloneNode(true);
+				mergFile.firstChild.appendChild(mergHosts[j]);
 				break;
 				}
 			}
 		}
-
-	for (var i = 0; i < tmpList.length; i++)
-		mergFile.firstChild.replaceChild(tmpList[i], mergHosts[i]);
 
 	var overWriteMode = false;
 	if (ihg_Globals.hostfMergeBehavior == "ask") overWriteMode = confirm(ihg_Globals.strings.overwrite_mode);
@@ -143,24 +135,15 @@ ihg_Functions.mergeHostFile = function mergeHostFile(onlineXML, hostFileObj) {
 	
 	
 ihg_Functions.sortHosts = function sortHosts(hFile, hosts) {
-	var tmpList = new Array();
-
-	for (var i=0; i < hosts.length; i++)
-		tmpList[i] = hosts[i].getAttribute("id");
-
-	tmpList = tmpList.sort();
+	var tmpList = Array.map(hosts, function(host) {return host.getAttribute("id")}).sort();
 
 	for (var i = 0; i < tmpList.length; i++) {
 		for (var j = 0; j < hosts.length; j++) {
 			if (tmpList[i] == hosts[j].getAttribute("id")) {
-				tmpList[i] = hosts[j].cloneNode(true);
+				hFile.firstChild.appendChild(hosts[j]);
 				break;
 				}
 			}
-		}
-
-	for (var i = 0; i < tmpList.length; i++) {
-		hFile.firstChild.replaceChild(tmpList[i], hosts[i]);
 		}
 	}
 	

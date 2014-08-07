@@ -21,39 +21,39 @@
  *
  ***************************  End of GPL Block *******************************/
 
-
+LogFile = null;
 promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
 
 
 //////////////////////  Initialize the logFile Object  //////////////////////
 
 ihg_Functions.initLogFile = function initLogFile() {
-	var id = "{E4091D66-127C-11DB-903A-DE80D2EFDFE8}"; // imagegrabber's ID
+	var id = ihg_Globals.addonID; // imagegrabber's ID
 
 	// This should work for Firefox v1.5+  It returns a file object initialized
 	// with the path where the extension is located
 	try {
-		ihg_Globals.logFile = Components.classes["@mozilla.org/extensions/manager;1"]
+		LogFile = Components.classes["@mozilla.org/extensions/manager;1"]
 	      	    .getService(Components.interfaces.nsIExtensionManager).getInstallLocation(id).getItemLocation(id); 
 		}
 	// For those who are still using the antiquated Firefox versions
 	catch(e) {
-		ihg_Globals.logFile = Components.classes["@mozilla.org/file/directory_service;1"]
+		LogFile = Components.classes["@mozilla.org/file/directory_service;1"]
 			    .getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
-		ihg_Globals.logFile.append("extensions");
-		ihg_Globals.logFile.append(id);
+		LogFile.append("extensions");
+		LogFile.append(id);
 		}
 
 
-	ihg_Globals.logFile.append("logs");
+	LogFile.append("logs");
 
 	// Create the logs directory if it's not already there
-	if( !(ihg_Globals.logFile.exists()) )  ihg_Globals.logFile.create(1, 0755);
+	if( !(LogFile.exists()) )  LogFile.create(1, 0755);
 
-	ihg_Globals.logFile.append("log.txt");
+	LogFile.append("log.txt");
 
 	// Create the log file if it's not already there
-	if( !(ihg_Globals.logFile.exists()) )  ihg_Globals.logFile.create(0, 0755);
+	if( !(LogFile.exists()) )  LogFile.create(0, 0755);
 	}
 
 
@@ -81,7 +81,7 @@ ihg_Functions.LOG = function LOG( message ) {
 	if (!ihg_Globals.debugOut) return;
 
 	try {
-		if(!ihg_Globals.logFile.path) ihg_Functions.initLogFile();
+		if(!LogFile.path) ihg_Functions.initLogFile();
 		}
 	catch(e) {
 		ihg_Functions.initLogFile();
@@ -98,11 +98,11 @@ ihg_Functions.LOG = function LOG( message ) {
 	var count = outMessage.length;
 
 	try {
-		ihg_Globals.fileOut.init(ihg_Globals.logFile, f_flags, f_perms, null);
+		ihg_Globals.fileOut.init(LogFile, f_flags, f_perms, null);
 		}
 	catch(e) {
-		ihg_Globals.logFile.create(0, 0755);
-		ihg_Globals.fileOut.init(ihg_Globals.logFile, f_flags, f_perms, null);
+		LogFile.create(0, 0755);
+		ihg_Globals.fileOut.init(LogFile, f_flags, f_perms, null);
 		}
 		
 	ihg_Globals.fileOut.write(outMessage, count);
@@ -119,7 +119,7 @@ ihg_Functions.CON_LOG = function CON_LOG( message ) {
 	if (!ihg_Globals.conLogOut) return;
 
 	try {
-		if(!ihg_Globals.logFile.path) ihg_Functions.initLogFile();
+		if(!LogFile.path) ihg_Functions.initLogFile();
 		}
 	catch(e) {
 		ihg_Functions.initLogFile();
@@ -136,11 +136,11 @@ ihg_Functions.CON_LOG = function CON_LOG( message ) {
 	var count = outMessage.length;
 
 	try {
-		ihg_Globals.fileOut.init(ihg_Globals.logFile, f_flags, f_perms, null);
+		ihg_Globals.fileOut.init(LogFile, f_flags, f_perms, null);
 		}
 	catch(e) {
-		ihg_Globals.logFile.create(0, 0755);
-		ihg_Globals.fileOut.init(ihg_Globals.logFile, f_flags, f_perms, null);
+		LogFile.create(0, 0755);
+		ihg_Globals.fileOut.init(LogFile, f_flags, f_perms, null);
 		}
 		
 	ihg_Globals.fileOut.write(outMessage, count);
@@ -157,13 +157,13 @@ ihg_Functions.clearLog = function clearLog() {
 	var f_flags = 0x02 | 0x20;
 
 	try {
-		if(!ihg_Globals.logFile.path) ihg_Functions.initLogFile();
+		if(!LogFile.path) ihg_Functions.initLogFile();
 		}
 	catch(e) {
 		ihg_Functions.initLogFile();
 		}
 
-	ihg_Globals.fileOut.init(ihg_Globals.logFile, f_flags, f_perms, null);
+	ihg_Globals.fileOut.init(LogFile, f_flags, f_perms, null);
 
 	ihg_Globals.fileOut.write("", 0);
 	ihg_Globals.fileOut.close();
@@ -179,7 +179,7 @@ ihg_Functions.clearLog = function clearLog() {
 
 ihg_Functions.copyLog = function copyLog() {
 	try {
-		if(!ihg_Globals.logFile.path) ihg_Functions.initLogFile();
+		if(!LogFile.path) ihg_Functions.initLogFile();
 		}
 	catch(e) {
 		ihg_Functions.initLogFile();
@@ -194,7 +194,7 @@ ihg_Functions.copyLog = function copyLog() {
 	newDir.initWithPath(copyToDir);
 
 	try {
-		ihg_Globals.logFile.copyTo(newDir, null);
+		LogFile.copyTo(newDir, null);
 		}
 	catch(e) {
 		promptService.alert(null, null, ihg_Globals.strings.failed_to_copy);

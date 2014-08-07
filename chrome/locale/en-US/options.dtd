@@ -42,7 +42,7 @@
 
 <!ENTITY  host_file_update "Host file update:">
 <!ENTITY  enable_automatic_update "Enable automatic update">
-<!ENTITY  suppress_confirmation_dialog "Suppress confirmation dialog">
+<!ENTITY  suppress_host_file_update_confirmation_dialog "Suppress confirmation dialog">
 <!ENTITY  merge_behavior "Merge behavior:">
 <!ENTITY  merge_host_file_ask "Ask">
 <!ENTITY  merge_host_file_overwrite "Overwrite current hosts and add new hosts">

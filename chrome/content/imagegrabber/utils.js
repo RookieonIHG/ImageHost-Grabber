@@ -22,6 +22,25 @@
  ***************************  End of GPL Block *******************************/
 
 
+
+if (!String.prototype.trim) {						// String.trim is not natively available before FF3.5
+  String.prototype.trim = function () {
+    return this.replace(/^\s+|\s+$/g, '');
+  };
+}
+
+var parse = stringify = function() { throw "IHG error: No JSON implementation available"; }
+try {
+	parse = JSON.parse;
+	stringify = JSON.stringify;
+}
+catch(e) {
+	// not available before FF3.5
+	let nsIJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
+	parse = function(source) nsIJSON.decode(source);
+	stringify = function(value, replacer, space) nsIJSON.encode(value, replacer);
+}
+
 var extregexp = [];
 for (let propName in ihg_Globals.LinksByFileExt) {
 	extregexp.push(ihg_Globals.LinksByFileExt[propName].map(function([Name,patt,SOI]){return patt}).join("|"));
@@ -203,11 +222,11 @@ ihg_Functions.generateFName = function generateFName(reqObj, URLFile) {
 			displayName += ".jpg";
 		}
 
-	// if we still haven't got a file name to use, make a random one to use
-	if (!displayName) displayName = Math.random().toString().substring(2) + ".jpg";
-
 	// remove characters from the file name that causes trouble with file system (windows or nsiFile, who knows)
-	displayName = displayName.replace(/^\s+|[\\/:*?"<>|,]/g, '');
+	displayName = displayName.replace(/[\\/:*?"<>|,]/g, '').trim();
+
+	// if we still haven't got a file name to use, make a random one to use
+	if (!displayName || displayName == "") displayName = Math.random().toString().substring(2) + ".jpg";
 
 	ihg_Functions.LOG("In " + myself + ", displayName is equal to: " + displayName + "\n");
 
@@ -221,7 +240,8 @@ ihg_Functions.generateFName = function generateFName(reqObj, URLFile) {
 			var indxVal = displayName.indexOf("_");
 			if (indxVal != -1) displayName = displayName.substr(indxVal+1);
 			
-			if (reqUrl.search(/imagevenue\.com\//) >= 0) displayName = displayName.replace(/(.+)_12[23]_\d+lo(\..{3,4})$/, "$1$2");
+			// if (reqUrl.search(/imagevenue\.com\//) >= 0) displayName = displayName.replace(/(.+)_12[23]_\d+lo(\..{3,4})$/, "$1$2");
+			if (reqUrl.search(/imagevenue\.com\//) >= 0) displayName = displayName.replace(/\B_12[23]_\d+lo(?=\..{3,4}$)/, "");
 			
 			ihg_Functions.LOG("In " + myself + ", displayName is equal to: " + displayName + "\n");
 			}
@@ -253,7 +273,7 @@ ihg_Functions.getOutputFile = function getOutputFile(reqObj, URLFile) {
 				var mhp = Components.classes["@mozilla.org/network/mime-hdrparam;1"]
 										.getService(Components.interfaces.nsIMIMEHeaderParam);
 				displayName = mhp.getParameter(contDisp, "filename", "", true, {});
-				displayName = displayName.replace(/^\s+|[\\/:*?"<>|,]/g, '');
+				displayName = displayName.replace(/[\\/:*?"<>|,]/g, '').trim();
 				ihg_Functions.LOG("Filename(Response-Header): " + displayName + "\n");
 			
 				if (ihg_Globals.prefix_fileNames) displayName = ihg_Functions.prefixFName(reqObj, displayName);
@@ -340,7 +360,7 @@ ihg_Functions.getFNameFromHeader = function getFNameFromHeader(reqObj, request) 
 		var mhp = Components.classes["@mozilla.org/network/mime-hdrparam;1"]
 									.getService(Components.interfaces.nsIMIMEHeaderParam);
 		displayName = mhp.getParameter(contDisp, "filename", "", true, {});
-		displayName = displayName.replace(/^\s+|[\\/:*?"<>|,]/g, '');
+		displayName = displayName.replace(/[\\/:*?"<>|,]/g, '').trim();
 		ihg_Functions.LOG("Filename(Response-Header): " + displayName + "\n");
 
 		if (ihg_Globals.prefix_fileNames) displayName = ihg_Functions.prefixFName(reqObj, displayName);
