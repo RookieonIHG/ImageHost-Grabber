@@ -75,17 +75,10 @@ ihg_Functions.initLogFile = function initLogFile() {
  ***************************************************************************/
 
 
-/////////////////  Dump to the log file (for Debug)  /////////////////////
+/////////////////  Dump to the log file  /////////////////////////////////
 
-ihg_Functions.LOG = function LOG( message ) {
-	if (!ihg_Globals.debugOut) return;
-
-	try {
-		if(!LogFile.path) ihg_Functions.initLogFile();
-		}
-	catch(e) {
-		ihg_Functions.initLogFile();
-		}
+ihg_Functions.Dump2LOG = function Dump2LOG( message ) {
+	if(!LogFile || !LogFile.path) ihg_Functions.initLogFile();
 
 	var f_perms = 0755;  // this is ignored on windows
 	var f_flags = 0x02 | 0x10;
@@ -113,38 +106,20 @@ ihg_Functions.LOG = function LOG( message ) {
 
 
 
-//////////////  Dump to the log file (for Console)  ///////////////////
+/////////////////  Dump to the log file (for Debug)  /////////////////////
 
-ihg_Functions.CON_LOG = function CON_LOG( message ) {
-	if (!ihg_Globals.conLogOut) return;
-
-	try {
-		if(!LogFile.path) ihg_Functions.initLogFile();
-		}
-	catch(e) {
-		ihg_Functions.initLogFile();
+ihg_Functions.LOG = function LOG( message ) {
+	if (ihg_Globals.debugOut) ihg_Functions.Dump2LOG(message);
 		}
 
-	var f_perms = 0755;  // this is ignored on windows
-	var f_flags = 0x02 | 0x10;
 
-	var the_date = String(Date()).split(" ");
-	var dateForm = the_date[4] + " " + the_date[2] + " " + the_date[1] + " " + the_date[3];
 
-	var outMessage = dateForm + "\t" + message;
 
-	var count = outMessage.length;
 
-	try {
-		ihg_Globals.fileOut.init(LogFile, f_flags, f_perms, null);
-		}
-	catch(e) {
-		LogFile.create(0, 0755);
-		ihg_Globals.fileOut.init(LogFile, f_flags, f_perms, null);
-		}
+/////////////////  Dump to the log file (for Console)  ///////////////////
 		
-	ihg_Globals.fileOut.write(outMessage, count);
-	ihg_Globals.fileOut.close();
+ihg_Functions.CON_LOG = function CON_LOG( message ) {
+	if (ihg_Globals.conLogOut) ihg_Functions.Dump2LOG(message);
 	}
 
 
@@ -156,12 +131,7 @@ ihg_Functions.clearLog = function clearLog() {
 	var f_perms = 0755;  // this is ignored on windows
 	var f_flags = 0x02 | 0x20;
 
-	try {
-		if(!LogFile.path) ihg_Functions.initLogFile();
-		}
-	catch(e) {
-		ihg_Functions.initLogFile();
-		}
+	if (!LogFile || !LogFile.path) ihg_Functions.initLogFile();
 
 	ihg_Globals.fileOut.init(LogFile, f_flags, f_perms, null);
 
@@ -178,12 +148,7 @@ ihg_Functions.clearLog = function clearLog() {
 /////////////  Copys the log file to some location   //////////////
 
 ihg_Functions.copyLog = function copyLog() {
-	try {
-		if(!LogFile.path) ihg_Functions.initLogFile();
-		}
-	catch(e) {
-		ihg_Functions.initLogFile();
-		}
+	if (!LogFile || !LogFile.path) ihg_Functions.initLogFile();
 
 	var copyToDir = ihg_Functions.setDownloadDir(ihg_Globals.strings.pick_a_folder, null);
 

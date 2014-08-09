@@ -1,5 +1,5 @@
 <!ENTITY  blacklist_editor.title "Editeur de 'Liste noire'">
-<!ENTITY  blacklist_editor.description "Editer votre 'Liste noire':">
+<!ENTITY  blacklist_editor.description "Liens à 'bannir':">
 
 <!ENTITY  save "Enregistrer">
 
