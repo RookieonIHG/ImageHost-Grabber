@@ -28,29 +28,16 @@ hostf_servers_Globals.ioService = Components.classes["@mozilla.org/network/io-se
 hostf_servers_Globals.hosts = null;
 hostf_servers_Globals.hFile = null;
 hostf_servers_Globals.hostFileObj = null;
+hostf_servers_Globals.addonPath = null;
 
 ihg_Globals.strbundle = document.getElementById("imagegrabber-strings");
 ihg_Functions.read_locale_strings();
 
 
 function HostFileService() {
-	var id = "{E4091D66-127C-11DB-903A-DE80D2EFDFE8}"; // imagegrabber's ID
 	var hostf_servers = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 
-	// This should work for Firefox v1.5+  It returns a file object initialized
-	// with the path where the extension is located
-	try {
-		hostf_servers = Components.classes["@mozilla.org/extensions/manager;1"]
-      		    .getService(Components.interfaces.nsIExtensionManager).getInstallLocation(id).getItemLocation(id); 
-		}
-	// For those who are still using the antiquated Firefox versions
-	catch(e) {
-		hostf_servers = Components.classes["@mozilla.org/file/directory_service;1"]
-			    .getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
-		hostf_servers.append("extensions");
-		hostf_servers.append(id);
-		}
-
+	hostf_servers.initWithPath(hostf_servers_Globals.addonPath);
 	hostf_servers.append("hostf_servers.xml");
 
 	this.hostf_servers = hostf_servers;
@@ -78,18 +65,6 @@ HostFileService.prototype = {
 
 	}
 
-/* 
-function initWindow() {
-	window.addEventListener("resize", resizeResponseTextBox, false);
-	//resizeResponseTextBox();
-	loadHostFServersFile();
-	}
-
-function resizeResponseTextBox() {
-	var rBoxThing = document.getElementById("tb_searchPattern");
-	rBoxThing.height = window.innerHeight - 100;
-	}
- */
 
 function setButtonsAccess() {
 	var servers_list = document.getElementById("tb_searchPattern");
@@ -115,6 +90,8 @@ function setButtonsAccess() {
 	}
 
 function loadHostFServersFile() {
+	hostf_servers_Globals.addonPath = document.getElementById("addonPath").value;
+
 	hostf_servers_Globals.hostFileObj = new HostFileService();
 	hostf_servers_Globals.hFile = hostf_servers_Globals.hostFileObj.getHostf_servers();
 	hostf_servers_Globals.hosts = hostf_servers_Globals.hFile.getElementsByTagName("server");

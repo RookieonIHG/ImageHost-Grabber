@@ -120,11 +120,11 @@ ihg_Functions.forumStyleFileService.prototype = {
 		}
 	}
 
+
 // The HostFileService class simply reads the data from the host file, then passes it along
 // as a XML document that can be parsed with the DOM (Document Object Model).
 // Check out https://developer.mozilla.org/En/DOM for a description of the DOM
 ihg_Functions.HostFileService = function HostFileService() {
-	var id = "{E4091D66-127C-11DB-903A-DE80D2EFDFE8}"; // imagegrabber's ID
 	var hostFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 	var hostf_servers = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 
@@ -133,20 +133,16 @@ ihg_Functions.HostFileService = function HostFileService() {
 
 	if (ihg_Globals.hostFileLoc != "") {
 		hostFile.initWithPath(ihg_Globals.hostFileLoc);
-		var fuckwhore = hostFile.exists();
-		if (!fuckwhore) ihg_Globals.hostFileLoc = "";
+		if (!hostFile.exists()) ihg_Globals.hostFileLoc = "";
 		}
-
 	if (ihg_Globals.hostFileLoc == "") {
-		var hostFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 		hostFile.initWithPath(ihg_Globals.addonPath);
 		hostFile.append("hostf.xml");
 		}
 
-	var hostf_servers = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 	hostf_servers.initWithPath(ihg_Globals.addonPath);
 	hostf_servers.append("hostf_servers.xml");
-	
+
 	this.hostFile = hostFile;
 	this.hostf_servers = hostf_servers;
 	}

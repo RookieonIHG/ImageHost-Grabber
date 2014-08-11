@@ -30,7 +30,6 @@ hostfile_Globals.prefManager = Components.classes["@mozilla.org/preferences-serv
 hostfile_Globals.hosts = null;
 hostfile_Globals.hFile = null;
 hostfile_Globals.hostFileObj = null;
-hostfile_Globals.hostFileLoc = "";
 hostfile_Globals.addonPath = "";
 
 promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
@@ -41,37 +40,24 @@ ihg_Functions.read_locale_strings();
 var theSortedList = [];
 
 function HostFileService() {
-	var id = "{E4091D66-127C-11DB-903A-DE80D2EFDFE8}"; // imagegrabber's ID
 	var hostFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 	var hostf_servers = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 
-	if(hostfile_Globals.hostFileLoc != "") {
-		hostFile.initWithPath(hostfile_Globals.hostFileLoc);
-		var fuckwhore = hostFile.exists();
-		if (!fuckwhore) hostfile_Globals.hostFileLoc = "";
+	var hostFileLoc = document.getElementById("hostfileloc");
+	if (hostFileLoc.value != "") {
+		hostFile.initWithPath(hostFileLoc.value);
+		if (!hostFile.exists()) hostFileLoc.value = "";
+		}
+	if (hostFileLoc.value == "") {
+		hostFile.initWithPath(hostfile_Globals.addonPath);
+		hostFile.append("hostf.xml");
 		}
 
-	// This should work for Firefox v1.5+  It returns a file object initialized
-	// with the path where the extension is located
-	try {
-		hostf_servers = Components.classes["@mozilla.org/extensions/manager;1"]
-				.getService(Components.interfaces.nsIExtensionManager).getInstallLocation(id).getItemLocation(id);
-		if(hostfile_Globals.hostFileLoc == "") hostFile.initWithPath(hostf_servers.path);
-		}
-	// For those who are still using the antiquated Firefox versions
-	catch(e) {
-		hostf_servers = Components.classes["@mozilla.org/file/directory_service;1"]
-			    .getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
-		hostf_servers.append("extensions");
-		hostf_servers.append(id);
-		if(hostfile_Globals.hostFileLoc == "") hostFile.initWithPath(hostf_servers.path);
-		}
-
-	if(hostfile_Globals.hostFileLoc == "") hostFile.append("hostf.xml");
+	hostf_servers.initWithPath(hostfile_Globals.addonPath);
 	hostf_servers.append("hostf_servers.xml");
 
-	this.hostf_servers = hostf_servers;
 	this.hostFile = hostFile;
+	this.hostf_servers = hostf_servers;
 	}
 
 
@@ -83,9 +69,9 @@ HostFileService.prototype = {
 		for (var i = 0; i < hostfile_Globals.hosts.length; i++) newHosts[i] = hostfile_Globals.hosts[i].cloneNode(true);
 
 		for (var i = 0; i < newHosts.length; i++) {
-			newRoot.appendChild(hostfile_Globals.hFile.createTextNode("\n")); 
+			newRoot.appendChild(hostfile_Globals.hFile.createTextNode("\n"));
 			newRoot.appendChild(newHosts[i]);
-			newRoot.appendChild(hostfile_Globals.hFile.createTextNode("\n")); 
+			newRoot.appendChild(hostfile_Globals.hFile.createTextNode("\n"));
 			}
 		hostfile_Globals.hFile.removeChild(hostfile_Globals.hFile.firstChild);
 		hostfile_Globals.hFile.appendChild(newRoot);
@@ -93,10 +79,10 @@ HostFileService.prototype = {
 		var persist = Components.classes["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"].createInstance(Components.interfaces.nsIWebBrowserPersist);
 		persist.persistFlags = persist.PERSIST_FLAGS_NO_CONVERSION | persist.PERSIST_FLAGS_REPLACE_EXISTING_FILES | persist.PERSIST_FLAGS_BYPASS_CACHE;
 		persist.saveDocument(hostfile_Globals.hFile, this.hostFile, null, null, null, null);
-	},
+		},
 
 	getHosts : function host_getHosts() {
-		if( !this.hostFile.exists() ) return null;
+		if ( !this.hostFile.exists() ) return null;
 
 		var fileURI = hostfile_Globals.ioService.newFileURI(this.hostFile);
 
@@ -108,7 +94,7 @@ HostFileService.prototype = {
 		},
 
 	getHostf_servers : function() {
-		if( !this.hostf_servers.exists() ) return null;
+		if ( !this.hostf_servers.exists() ) return null;
 
 		var fileURI = hostfile_Globals.ioService.newFileURI(this.hostf_servers);
 
@@ -118,7 +104,6 @@ HostFileService.prototype = {
 		
 		return req.responseXML;
 		}
-
 	}
 
 function sortHosts() {
@@ -135,30 +120,10 @@ function sortHosts() {
 
 	}
 
+
 function initWindow() {
-	var id = "{E4091D66-127C-11DB-903A-DE80D2EFDFE8}"; // imagegrabber's ID
-	var nsLocFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+	hostfile_Globals.addonPath = document.getElementById("addonPath").value;
 
-	// This should work for Firefox v1.5 to v3.6  It returns a file object initialized
-	// with the path where the extension is located	
-	try {
-		nsLocFile = Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces.nsIExtensionManager).getInstallLocation(id).getItemLocation(id); 
-		hostfile_Globals.addonPath = nsLocFile.path;
-		initWindow2();
-	}
-
-	// For 4.0+ series
-	catch (e) {
-		Components.utils.import("resource://gre/modules/AddonManager.jsm"); 
-		var tempFunc = function(addon) {
-			hostfile_Globals.addonPath = addon.getResourceURI("").QueryInterface(Components.interfaces.nsIFileURL).file.path;
-			initWindow2();
-		}
-		AddonManager.getAddonByID(id, tempFunc);
-	}	
-}
-
-function initWindow2() {
 	//var tb_searchPattern = document.getElementById("tb_searchPattern");
 	//tb_searchPattern.addEventListener("keydown", handleKeyDown, false);
 	//document.onkeydown = handleKeyDown;
@@ -274,8 +239,6 @@ function resizeResponseTextBox() {
  */
 function loadHostFile() {
 	window.setCursor('wait');
-
-	hostfile_Globals.hostFileLoc = hostfile_Globals.prefManager.getCharPref("extensions.imagegrabber.hostfileloc");
 
 	hostfile_Globals.hostFileObj = new HostFileService();
 	hostfile_Globals.hFile = hostfile_Globals.hostFileObj.getHosts();
@@ -530,7 +493,7 @@ function changeHostFile() {
 
 	if (res == nsIFilePicker.returnOK) {
  		if (fp.file && (fp.file.path.length > 0)) {
-			hostfile_Globals.prefManager.setCharPref("extensions.imagegrabber.hostfileloc", fp.file.path);
+			document.getElementById("hostfileloc").value = fp.file.path;
 			loadHostFile();
 			resetTextBoxes();
 			}
@@ -559,9 +522,8 @@ function mergeHostFile(onlineXML) {
 		var nsIFilePicker = Components.interfaces.nsIFilePicker;
 		var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 
-
 		var FpTitle=ihg_Globals.strings.pick_host_file;
-		
+
 		fp.init(top.window, FpTitle, nsIFilePicker.modeOpen);
 		var res = fp.show();
 
@@ -622,7 +584,7 @@ function mergeHostFile(onlineXML) {
 
 
 function resetHostFileLoc() {
-	hostfile_Globals.prefManager.setCharPref("extensions.imagegrabber.hostfileloc", "");
+	document.getElementById("hostfileloc").value = "";
 	loadHostFile();
 	resetTextBoxes();
 }

@@ -1,22 +1,12 @@
 function ihg_initOverlay() {
 	document.getElementById("contentAreaContextMenu").addEventListener("popupshowing", ihg_contextMenuInit, false);
 	document.getElementById("menu_ToolsPopup").addEventListener("popupshowing", ihg_showInToolsInit, false);
-		
+
 	/* Set the correct place for the ImageHost Grabber menu */
 	/* This could possibly be done with XBL to make it tidier */
-	// var prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
 	var showInTools = document.getElementById("showInTools").value;
 	document.getElementById('menu_IGmain').setAttribute('hidden', showInTools);
 
-	// var mainMenu = document.getElementById("menu_IGmain");
-	// mainMenu.setAttribute("hidden", showInTools);
-
-	// var igSep = document.getElementById("igSep");
-	// igSep.setAttribute("hidden", !showInTools);
-
-	// var igTools = document.getElementById("menu_IGtools");
-	// igTools.setAttribute("hidden", !showInTools);
-	
 	/* Get the correct add-on path for IHG and store it globally
 	 *
 	 * This has to be done because "AddonManager" is asynchronous,
@@ -24,23 +14,27 @@ function ihg_initOverlay() {
 	 */
 	var id = ihg_Globals.addonID; // imagegrabber's ID
 	var ihgDefaultBranch = ihg_Globals.prefManager.getDefaultBranch("extensions.imagegrabber.");
-	var nsLocFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-
-	// This should work for Firefox v1.5 to v3.6  It returns a file object initialized
-	// with the path where the extension is located	
-	try {
-		nsLocFile = Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces.nsIExtensionManager).getInstallLocation(id).getItemLocation(id); 
-		ihg_Globals.addonPath = nsLocFile.path;
-	}
 
 	// For 4.0+ series
-	catch (e) {
-		Components.utils.import("resource://gre/modules/AddonManager.jsm"); 
+	try {
+		Components.utils.import("resource://gre/modules/AddonManager.jsm");
 		var tempFunc = function(addon) {
 			ihg_Globals.addonPath = addon.getResourceURI("").QueryInterface(Components.interfaces.nsIFileURL).file.path;
+			ihgDefaultBranch.setCharPref("addonPath", ihg_Globals.addonPath);
+			ihgDefaultBranch.lockPref("addonPath");
 		}
 		AddonManager.getAddonByID(id, tempFunc);
-	}	
+	}
+
+	// This should work for Firefox v1.5 to v3.6
+	// It returns a file object initialized with the path where the extension is located
+	catch (e) {
+		let nsLocFile = Components.classes["@mozilla.org/extensions/manager;1"]
+						.getService(Components.interfaces.nsIExtensionManager).getInstallLocation(id).getItemLocation(id);
+		ihg_Globals.addonPath = nsLocFile.path;
+		ihgDefaultBranch.setCharPref("addonPath", ihg_Globals.addonPath);
+		ihgDefaultBranch.lockPref("addonPath");
+	}
 
 	ihgDefaultBranch.setCharPref("enable@startup", stringify({enableConLog: ihg_Globals.conLogOut, enableDebug: ihg_Globals.debugOut}));
 }

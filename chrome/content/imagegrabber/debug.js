@@ -22,29 +22,15 @@
  ***************************  End of GPL Block *******************************/
 
 LogFile = null;
+MsgBuffer = [];
 promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
 
 
 //////////////////////  Initialize the logFile Object  //////////////////////
 
 ihg_Functions.initLogFile = function initLogFile() {
-	var id = ihg_Globals.addonID; // imagegrabber's ID
-
-	// This should work for Firefox v1.5+  It returns a file object initialized
-	// with the path where the extension is located
-	try {
-		LogFile = Components.classes["@mozilla.org/extensions/manager;1"]
-	      	    .getService(Components.interfaces.nsIExtensionManager).getInstallLocation(id).getItemLocation(id); 
-		}
-	// For those who are still using the antiquated Firefox versions
-	catch(e) {
-		LogFile = Components.classes["@mozilla.org/file/directory_service;1"]
-			    .getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
-		LogFile.append("extensions");
-		LogFile.append(id);
-		}
-
-
+	LogFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+	LogFile.initWithPath(ihg_Globals.addonPath);
 	LogFile.append("logs");
 
 	// Create the logs directory if it's not already there
@@ -78,17 +64,22 @@ ihg_Functions.initLogFile = function initLogFile() {
 /////////////////  Dump to the log file  /////////////////////////////////
 
 ihg_Functions.Dump2LOG = function Dump2LOG( message ) {
-	if(!LogFile || !LogFile.path) ihg_Functions.initLogFile();
+	var the_date = String(Date()).split(" ");
+	var dateForm = the_date[4] + " " + the_date[2] + " " + the_date[1] + " " + the_date[3];
+	MsgBuffer.push(dateForm + "\t" + message);
+
+	if (!LogFile || !LogFile.path) {
+		if (!ihg_Globals.addonPath) {
+			try {
+				ihg_Globals.addonPath = ihg_Globals.prefManager.getCharPref("extensions.imagegrabber.addonPath");
+				}
+			catch(e) {return;}
+			}
+		ihg_Functions.initLogFile();
+		}
 
 	var f_perms = 0755;  // this is ignored on windows
 	var f_flags = 0x02 | 0x10;
-
-	var the_date = String(Date()).split(" ");
-	var dateForm = the_date[4] + " " + the_date[2] + " " + the_date[1] + " " + the_date[3];
-
-	var outMessage = dateForm + "\t" + message;
-
-	var count = outMessage.length;
 
 	try {
 		ihg_Globals.fileOut.init(LogFile, f_flags, f_perms, null);
@@ -97,8 +88,13 @@ ihg_Functions.Dump2LOG = function Dump2LOG( message ) {
 		LogFile.create(0, 0755);
 		ihg_Globals.fileOut.init(LogFile, f_flags, f_perms, null);
 		}
-		
-	ihg_Globals.fileOut.write(outMessage, count);
+
+	while (MsgBuffer.length) {
+		var outMessage = MsgBuffer.shift();
+		var count = outMessage.length;
+		ihg_Globals.fileOut.write(outMessage, count);
+		}
+
 	ihg_Globals.fileOut.close();
 	}
 
@@ -110,14 +106,14 @@ ihg_Functions.Dump2LOG = function Dump2LOG( message ) {
 
 ihg_Functions.LOG = function LOG( message ) {
 	if (ihg_Globals.debugOut) ihg_Functions.Dump2LOG(message);
-		}
+	}
 
 
 
 
 
 /////////////////  Dump to the log file (for Console)  ///////////////////
-		
+
 ihg_Functions.CON_LOG = function CON_LOG( message ) {
 	if (ihg_Globals.conLogOut) ihg_Functions.Dump2LOG(message);
 	}
@@ -202,10 +198,9 @@ ihg_Globals.consoleListener = {
 	observe : function(msgObj) { ihg_Functions.CON_LOG(msgObj.message + "\n"); },
 
 	QueryInterface: function (iid) {
-		if (!iid.equals(Components.interfaces.nsIConsoleListener) &&
-	            !iid.equals(Components.interfaces.nsISupports)) {
+		if (!iid.equals(Components.interfaces.nsIConsoleListener) && !iid.equals(Components.interfaces.nsISupports)) {
 			throw Components.results.NS_ERROR_NO_INTERFACE;
+			}
+		return this;
 		}
-	        return this;
 	}
-}

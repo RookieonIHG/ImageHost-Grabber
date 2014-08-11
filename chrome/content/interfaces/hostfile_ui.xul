@@ -21,6 +21,11 @@
 <script type="text/javascript"><![CDATA[
 ]]></script>
 
+<preferences>
+	<preference id="addonPath" name="extensions.imagegrabber.addonPath" type="string"/>
+	<preference id="hostfileloc" name="extensions.imagegrabber.hostfileloc" type="string" instantApply="true"/>
+</preferences>
+
 <popupset>
 	<tooltip id="host_max_threads-tip">
 		<label value="&host_max_threads.tooltiptext;" class="tooltip-label"/>
