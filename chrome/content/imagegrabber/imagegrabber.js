@@ -614,6 +614,9 @@ ihg_Functions.getIGPrefs = function getIGPrefs() {
 	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
+	ihg_Globals.addonPath = ihg_Globals.prefManager.getCharPref("extensions.imagegrabber.addonPath");
+	ihg_Functions.LOG("In " + myself + ", ihg_Globals.addonPath is equal to: " + ihg_Globals.addonPath + "\n");
+
 	ihg_Globals.showDLDir = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.showdldir");
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.showDLDir is equal to: " + ihg_Globals.showDLDir + "\n");
 
