@@ -50,3 +50,7 @@ button.button-link:not([disabled]):focus {
 	color: #3DA1FF;
 	text-shadow: 1px 1px white, 0 0 2em blue;
 }
+
+textbox[type="number"][hidespinbuttons="true"] {
+	padding: 0px 2px !important;
+}

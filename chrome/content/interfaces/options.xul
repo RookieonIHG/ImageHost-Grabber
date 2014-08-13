@@ -28,6 +28,7 @@
 <![CDATA[
 var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
 
+ihg_Globals.addonPath = ihg_Globals.prefManager.getCharPref("extensions.imagegrabber.addonPath");
 var Initial_pref = parse(ihg_Globals.prefManager.getCharPref("extensions.imagegrabber.enable@startup"));
 
 function setEnableStates() {

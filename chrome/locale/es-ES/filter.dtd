@@ -1,5 +1,7 @@
 <!ENTITY  select_the_images_you_want_to_download.title "Seleccione las imágenes que desea descargar">
 <!ENTITY  select_the_images_you_want_to_download.value "Seleccione las imágenes que desea descargar:">
+<!ENTITY  target_folder.label "Target Folder">
+<!ENTITY  target_folder.tip "Browse for Target Folder">
 
 <!ENTITY  check "Marcar">
 <!ENTITY  uncheck "Desmarcar">

@@ -5,16 +5,25 @@
 
 <dialog id="ig_filter_win" title="&select_the_images_you_want_to_download.title;"
 		width="720" height="540" persist="sizemode height width screenX screenY"
-        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+		xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 		onload="onLoad();"
 		onunload="onUnLoad();"
-        buttons="accept,cancel"
-        ondialogaccept="return doOK();">
-		
+		buttons="accept,cancel"
+		ondialogaccept="return doOK();">
+
 <stringbundleset id="stringbundleset">
     <stringbundle id="imagegrabber-strings" src="chrome://imagegrabber/locale/imagegrabber.properties" />
 </stringbundleset>
 
+<preferences>
+	<preference id="lastDLDir"		  name="extensions.imagegrabber.lastdldir"		  instantApply="true" type="string"/>
+	<preference id="lastDLDirHistory" name="extensions.imagegrabber.lastdldirhistory" instantApply="true" type="string"/>
+</preferences>
+
+<script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/globals.js" />
+<script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/imagegrabber.js" />
+<script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/debug.js" />
+<script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/utils.js" />
 <script type="application/x-javascript" src="chrome://imagegrabber/content/interfaces/filter.js" />
 
 <keyset>
@@ -51,8 +60,14 @@
 	<label value="&note_both_filters_are_case_insensitive;"/>
 </tooltip>
 
-<hbox>
-	<description value="&select_the_images_you_want_to_download.value;"/>
+<hbox align="center">
+	<label value="&target_folder.label;:" control="DLDirList"/>
+	<menulist id="DLDirList" editable="true" flex="999" maxwidth="600"
+			onfocus="this.open='true';"
+			onpopuphiding="setFocus('igLinksTree');"
+			onselect="setFocus('igLinksTree');"/>
+	<toolbarbutton id="DLDirNew" tooltiptext="&target_folder.tip;"
+		oncommand="var CurDLDir = document.getElementById('DLDirList'); CurDLDir.label = ihg_Functions.setDownloadDir(ihg_Globals.strings.setDownloadDir, CurDLDir.label) || CurDLDir.label;"/>
 	<spacer flex="1"/>
 	<label id="selectionCounter"/>
 </hbox>

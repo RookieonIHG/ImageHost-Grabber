@@ -1,3 +1,7 @@
+toolbarbutton#DLDirNew {
+	list-style-image: url(chrome://global/skin/dirListing/folder.png);
+}
+
 treechildren::-moz-tree-row {
 	height: 150px;
 }
@@ -43,4 +47,8 @@ treechildren::-moz-tree-checkbox(disabled) {
 }
 treechildren::-moz-tree-image {
 	height: 150px;
+}
+
+textbox[type="number"][hidespinbuttons="true"] {
+	padding: 0px 2px !important;
 }

@@ -12,20 +12,28 @@ function onUnLoad() {
 function onLoad() {
 	with (document.getElementById("rowHeightVal"))
 		value = getAttribute("saved");
-		
+
+	ihg_Globals.strbundle = document.getElementById("imagegrabber-strings");
+	ihg_Functions.read_locale_strings();
+
+	var lastDLDirHistory = document.getElementById("lastDLDirHistory");
+	var DLDirList = document.getElementById("DLDirList");
+	parse(lastDLDirHistory.value).forEach(function(DLDir) {DLDirList.appendItem(DLDir)});
+	DLDirList.selectedIndex = 0;
+
 	objLinks = params.inn.links;
 	firstPage = params.inn.firstPage;
 	lastPage = params.inn.lastPage;
-	
+
 	var doc = this.document;
 	var list = doc.getElementById("list");
-	
+
 	var tree = doc.getElementById("igLinksTree");
 	tree.onselect = changeImage;
 
 	var hostlist = [];
 	var currentId = 0;
-	
+
 	for (var i = firstPage; i <= lastPage; i++) {
 		for (var j = 0; j < objLinks.links[i].length; j++, currentId++) {
 			var treeItem = doc.createElement("treeitem");
@@ -34,7 +42,7 @@ function onLoad() {
 			var treeRow = doc.createElement("treerow");
 			treeRow.setAttribute("properties", "checked");
 			treeRow.setAttribute("id", "row_" + currentId);
-	
+
 			var treeCell0 = doc.createElement("treecell");
 			treeCell0.setAttribute("value", "true");
 			treeCell0.setAttribute("id", "tobeornottobe_" + currentId);
@@ -51,9 +59,9 @@ function onLoad() {
 			treeCell2.setAttribute("value", objLinks.hostID[i][j]);
 			treeCell2.setAttribute("editable", "false");
 			treeCell2.setAttribute("id", "host_" + currentId);
-			
+
 			if (hostlist.indexOf(objLinks.hostID[i][j]) < 0) hostlist.push(objLinks.hostID[i][j]);
-			
+
 			treeRow.appendChild(treeCell0);
 			treeRow.appendChild(treeCell1);
 			treeRow.appendChild(treeCell2);
@@ -61,12 +69,12 @@ function onLoad() {
 			list.appendChild(treeItem);
 		}
 	}
-	
+
 	var HostList_popup = doc.getElementById("host_list");
 	if (hostlist.length > 1) {
 		HostList_popup.removeAttribute("hidden");
 		hostlist.sort();
-		
+
 		var menuseparator = HostList_popup.firstChild;
 		
 		for (var i = 0; i < hostlist.length; i++) {
@@ -79,10 +87,11 @@ function onLoad() {
 			}
 		}
 	else HostList_popup.setAttribute("hidden", true);
-	
+
 	if (tree.view.rowCount > 0) tree.view.selection.select(0);
 	chgPreview(true);
 	updateCounter();
+	setFocus('igLinksTree');
 }
 
 
@@ -141,15 +150,23 @@ function doOK() {
 		}
 	}
 
+	var baseDirSave = document.getElementById("DLDirList").label;
+	var lastDLDirHistory = document.getElementById("lastDLDirHistory");
+	var lastDLDirHistoryValue = parse(lastDLDirHistory.value);
+	lastDLDirHistoryValue = lastDLDirHistoryValue.filter(function (dldir) {return dldir != baseDirSave});
+	if (lastDLDirHistoryValue.unshift(baseDirSave) > 8) lastDLDirHistoryValue.pop();
+	lastDLDirHistory.value = stringify(lastDLDirHistoryValue);
+	document.getElementById("lastDLDir").value = baseDirSave;
+
 	params.out = {links:newObjLinks};
-    
+
 	return true;
 }
 
 
 function LinksOBJ() {
 	this.links = new Array();
-	this.dirSave = new Array();
+//	this.dirSave = new Array();
 	this.hostFunc = new Array();
 	this.hostID = new Array();
 	this.maxThreads = new Array();
@@ -462,14 +479,12 @@ function onTreeClicked(event) {
 	var row = {}, col = {}, child = {};
 	tbo.getCellAt(event.clientX, event.clientY, row, col, child);
 	if (col.value.type != Components.interfaces.nsITreeColumn.TYPE_CHECKBOX) return;
-	
-	// var shakespeare = doc.getElementById("tobeornottobe_" + row.value);
-	// var currentRow = doc.getElementById("row_" + row.value);
+
 	var currentRow = tree.view.getItemAtIndex(row.value).firstChild;
 	var value = tbo.view.getCellValue(row.value, col.value);
 
 	currentRow.setAttribute("properties", value=="true"?"checked":"");
-	
+
 	updateCounter();
 }
 

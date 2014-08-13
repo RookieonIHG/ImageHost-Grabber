@@ -1,9 +1,11 @@
 <!ENTITY  select_the_images_you_want_to_download.title "Sélectionnez les images que vous souhaitez télécharger:">
 <!ENTITY  select_the_images_you_want_to_download.value "Sélectionnez les images que vous souhaitez télécharger:">
+<!ENTITY  target_folder.label "Dossier cible">
+<!ENTITY  target_folder.tip "Sélectionner le dossier cible">
 
-<!ENTITY  check "Vérifiez">
-<!ENTITY  uncheck "Décochez">
-<!ENTITY  toggle "Basculer">
+<!ENTITY  check "Cocher">
+<!ENTITY  uncheck "Décocher">
+<!ENTITY  toggle "Inverser">
 
 <!ENTITY  simple "Simple:">
 <!ENTITY  it_allows_you_to_use_these_wildcards "Il vous permet d'utiliser ces caractères génériques:">

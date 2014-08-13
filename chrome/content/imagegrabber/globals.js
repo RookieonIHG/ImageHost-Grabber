@@ -64,6 +64,7 @@ ihg_Globals.suckMode = null;
 
 ihg_Globals.showDLDir = null;
 ihg_Globals.lastDLDir = null;
+ihg_Globals.lastDLDirHistory = [];
 
 ihg_Globals.lastSessionDir = null;
 

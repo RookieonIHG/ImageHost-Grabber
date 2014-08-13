@@ -52,7 +52,7 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 
 		// Initialize variables if not already initialized
 		// WTF is feelItRex?
-		var feelItRex = ihg_Functions.initVars();
+		var feelItRex = ihg_Functions.initVars(filterImages);
 		if (!feelItRex) {
 			ihg_Functions.LOG("In hostGrabber, call to function initVars failed for some reason.\n");
 			return;
@@ -374,7 +374,7 @@ ihg_Functions.getDLCache = function getDLCache(fileName) {
  */
 ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thumbLinks) {
 	var objLinks = new ihg_Functions.LinksOBJ();
-	var dateString = ihg_Functions.getFormattedDate();
+//	var dateString = ihg_Functions.getFormattedDate();
 
 	// Need to send thumbLinks to removeDuplicates to keep the 
 	// indices between docLinks and thumbLinks the same
@@ -382,14 +382,14 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 		var temp = ihg_Functions.removeDuplicates(docLinks, thumbLinks);
 		docLinks = temp.docLinks;
 		thumbLinks = temp.thumbLinks;
-	}
+		}
 
 	var blacklistService = new ihg_Functions.blacklistService();
 	ihg_Globals.blacklist = blacklistService.readList();
 
 	var [stringList, regexpList] = ihg_Functions.setupBlacklistData();
 
-	var dirsToCreate = [];
+//	var dirsToCreate = [];
 
 	for (var i = ihg_Globals.firstPage; i <= ihg_Globals.lastPage; i++) {
 		var t_count = 0;
@@ -427,17 +427,17 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 					// IHG is run in thread sucker mode.
 					objLinks.originatingPage[i][t_count] = docLinks[i][docLinks[i].length-1];
 					objLinks.thumbs[i][t_count] = null;
-				}
+					}
 				else {
 					objLinks.originatingPage[i][t_count] = content.document.location.href;
 					objLinks.thumbs[i][t_count] = thumbLinks[i][j];
-				}
+					}
 				objLinks.hostFunc[i][t_count] = theHostToUse.hostFunc;
 				objLinks.links[i][t_count] = isEmbedded?isEmbedded[1]:docLinks[i][j];
 				objLinks.hostID[i][t_count] = theHostToUse.hostID;
 				objLinks.maxThreads[i][t_count] = theHostToUse.maxThreads;
 				objLinks.downloadTimeout[i][t_count] = theHostToUse.downloadTimeout;
-				
+/* 
 				// Create an instance of the local file object
 				var aFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 				aFile.initWithPath(ihg_Globals.baseDirSave);
@@ -448,7 +448,7 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 				// Create a directory for each page if in suck mode
 				if (ihg_Globals.suckMode) {
 					if (ihg_Globals.createPageDirs) aFile.append(ihg_Globals.strings.page + i);
-				}
+					}
 
 				var dirInList = false;
 				for (var z = 0; z < dirsToCreate.length; z++) {
@@ -459,27 +459,27 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 				}
 				if (!dirInList) dirsToCreate.push(aFile);
 				objLinks.dirSave[i][t_count] = aFile.path;
-
+ */
 				t_count++;
-			} //end of if statement
+				} //end of if statement
 
-		} // end of inner-for loop
+			} // end of inner-for loop
 
-	} // end of outer-for loop
+		} // end of outer-for loop
 
 	if (filterImages) {
 		var filtered = ihg_Functions.showFilterDialog(objLinks);
 		if (!filtered) return null;
-	
-		objLinks = filtered.links;
-	}
 
+		objLinks = filtered.links;
+		}
+/* 
 	for (var z = 0; z < dirsToCreate.length; z++) {
 		if (!dirsToCreate[z].exists()) {
 			dirsToCreate[z].create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755); // 1 for directory, 0 for file
+			}
 		}
-	}
-	
+ */
 	return objLinks;
 } //end of function
 
@@ -495,15 +495,40 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
  *
  */
 ihg_Functions.setUpReq = function setUpReq(objLinks) {
+	var dateString = ihg_Functions.getFormattedDate();
+	ihg_Globals.baseDirSave = ihg_Globals.prefManager.getCharPref("extensions.imagegrabber.lastdldir");
+
+	// Create an instance of the local file object
+	var aFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+	aFile.initWithPath(ihg_Globals.baseDirSave);
+
+	// Create a directory for the doc title if option is set
+	if (ihg_Globals.createDocTitSF) aFile.append((ihg_Globals.prefix_directories?(dateString + "_"):"") + ihg_Globals.docTitle);
+
+	// And create it if not exists
+	if (!aFile.exists()) {
+		aFile.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755); // 1 for directory, 0 for file
+		}
+
 	var temp_array = new Array();
 	var count = 0;
 
 	for (var i = ihg_Globals.firstPage; i <= ihg_Globals.lastPage; i++) {
+		// Create a directory for each page if in suck mode
+		var aPageFile = aFile.clone();
+		if (ihg_Globals.suckMode && ihg_Globals.createPageDirs) {
+			aPageFile.append(ihg_Globals.strings.page + i);
+			// And create it if not exists
+			if (!aPageFile.exists()) {
+				aPageFile.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755); // 1 for directory, 0 for file
+				}
+			}
+
 		var fName = ihg_Functions.getFormattedDate();
 
 		for (var j = 0; j < objLinks.links[i].length; j++) {
 			var inner_link = objLinks.links[i][j];
-			var dir_save = objLinks.dirSave[i][j];
+//			var dir_save = objLinks.dirSave[i][j];
 			var host_ID = objLinks.hostID[i][j];
 			var host_maxThreads = objLinks.maxThreads[i][j];
 			var host_downloadTimeout = objLinks.downloadTimeout[i][j];
@@ -519,7 +544,7 @@ ihg_Functions.setUpReq = function setUpReq(objLinks) {
 				
 			req.reqURL = req.origURL = inner_link;
 			req.originatingPage = objLinks.originatingPage[i][j];
-			req.dirSave = dir_save;
+			req.dirSave = aPageFile.path;
 			req.retryNum = ihg_Globals.maxRetries;
 			req.pageNum = i;
 			req.curLinkNum = j;
@@ -596,7 +621,7 @@ ihg_Functions.setUpLinkedList = function setUpLinkedList(req_objs) {
  */
 ihg_Functions.LinksOBJ = function LinksOBJ() {
 	this.links = new Array();
-	this.dirSave = new Array();
+//	this.dirSave = new Array();
 	this.hostFunc = new Array();
 	this.thumbs = new Array();
 	this.hostID = new Array();
@@ -622,6 +647,7 @@ ihg_Functions.getIGPrefs = function getIGPrefs() {
 
 	try {
 		ihg_Globals.lastDLDir = ihg_Globals.prefManager.getCharPref("extensions.imagegrabber.lastdldir");
+		ihg_Globals.lastDLDirHistory = parse(ihg_Globals.prefManager.getCharPref("extensions.imagegrabber.lastdldirhistory"));
 		ihg_Globals.lastSessionDir = ihg_Globals.prefManager.getCharPref("extensions.imagegrabber.lastsessiondir");
 		}
 	catch(err) {
@@ -630,6 +656,7 @@ ihg_Functions.getIGPrefs = function getIGPrefs() {
 		}
 
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.lastDLDir is equal to: " + ihg_Globals.lastDLDir + "\n");
+	ihg_Functions.LOG("In " + myself + ", ihg_Globals.lastDLDirHistory is equal to: " + ihg_Globals.lastDLDirHistory + "\n");
 
 	ihg_Globals.AUTO_RENAME = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.autorename");
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.AUTO_RENAME is equal to: " + ihg_Globals.AUTO_RENAME + "\n");
@@ -740,6 +767,9 @@ ihg_Functions.initVars = function initVars(skipDirDialog) {
 			ihg_Functions.LOG("In " + myself + ", user cancelled the request.\n");
 			return false; }
 		ihg_Globals.prefManager.setCharPref("extensions.imagegrabber.lastdldir", ihg_Globals.baseDirSave);
+		ihg_Globals.lastDLDirHistory = ihg_Globals.lastDLDirHistory.filter(function (dldir) {return dldir != ihg_Globals.baseDirSave});
+		if (ihg_Globals.lastDLDirHistory.unshift(ihg_Globals.baseDirSave) > 8) ihg_Globals.lastDLDirHistory.pop();
+		ihg_Globals.prefManager.setCharPref("extensions.imagegrabber.lastdldirhistory", stringify(ihg_Globals.lastDLDirHistory));
 		}
 	else ihg_Globals.baseDirSave = ihg_Globals.lastDLDir;
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.baseDirSave is equal to: " + ihg_Globals.baseDirSave + "\n");

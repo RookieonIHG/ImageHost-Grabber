@@ -22,7 +22,6 @@
 
 <!ENTITY  show_the_download_directory_box "Sélectionner le dossier où sera sauvegardé le téléchargement (sinon, utiliser le dernier dossier choisi)">
 <!ENTITY  show_the_image_grabber_menu_in_the_tools_menu "Afficher le menu Image Grabber dans le menu Outils. (sinon, il s'affichera dans la barre du menu principal)">
-<!ENTITY  alert_restart "Cela nécessite un redémarrage de &brandShortName;">
 <!ENTITY  remove_duplicate_links "Suppression des liens doublons">
 <!ENTITY  even_across_multiple_pages "ainsi qu'au travers des pages multiples">
 <!ENTITY  suppress_close_download_confirmation_dialog "Supprimer la demande de confirmation de fermeture de la fenêtre de téléchargement">
@@ -59,6 +58,7 @@
 <!ENTITY  disclaimer_line2 "À n'activer que temporairement pour tracer un événement spécifique, à désactiver immédiatement après.">
 <!ENTITY  disclaimer_line3 "Laisser ces options actives ralentira &brandShortName;, grignotera la mémoire, et encombrera l'espace disque.">
 <!ENTITY  read_disclaimer "Assurez-vous d\u0027avoir lu et compris l\u0027avertissement.">
+<!ENTITY  alert_restart "Cela nécessite un redémarrage de &brandShortName;">
 <!ENTITY  enable_console_logging "Activer le journal de la console d'erreurs">
 <!ENTITY  enable_debugging_logging "Activer le journal des événements notifiés par ImageHost Grabber">
 <!ENTITY  clear_log "Effacer le journal">

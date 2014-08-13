@@ -6,6 +6,7 @@ pref("extensions.imagegrabber.statwinbufsize", 5000);
 pref("extensions.imagegrabber.showintools", true);
 pref("extensions.imagegrabber.showdldir", true);
 pref("extensions.imagegrabber.lastdldir", "");
+pref("extensions.imagegrabber.lastdldirhistory", "[]");
 pref("extensions.imagegrabber.lastsessiondir", "");
 pref("extensions.imagegrabber.enabledebug", false);
 pref("extensions.imagegrabber.enableconlog", false);
