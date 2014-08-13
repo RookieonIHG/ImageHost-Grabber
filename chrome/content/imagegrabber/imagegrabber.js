@@ -140,33 +140,35 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 
 
 ihg_Functions.getLinksAndImages = function getLinksAndImages(content, docLinks, thumbLinks) {
-	for (var q = 0; q < content.document.links.length; q++) {
-		var someNode = content.document.links[q];
-		var url = null;
+	if (content.document.links) {
+		for (var q = 0; q < content.document.links.length; q++) {
+			var someNode = content.document.links[q];
+			var url = null;
 
-		// Possibly add some code here to handle other javascript type links
-		var jsWrappedUrl = someNode.href.match(/javascript.+(\'|\")(http.+?)\1/);
-		if (jsWrappedUrl) url = jsWrappedUrl[2];
-		else url = someNode.href;
-		url = ihg_Functions.removeAnonymizer(url);
-		docLinks[ihg_Globals.firstPage].push(url);
-			
-		var thumbnail = null;
-		for (var a = 0; a < someNode.childNodes.length; a++) {
-			var someTagName = someNode.childNodes[a].tagName;
-			if (someTagName) {
-				if (someTagName.search(/img/i) >= 0) {
-					thumbnail = { src:someNode.childNodes[a].src,
-								width:someNode.childNodes[a].naturalWidth,
-								height:someNode.childNodes[a].naturalHeight };
-					break;
+			// Possibly add some code here to handle other javascript type links
+			var jsWrappedUrl = someNode.href.match(/javascript.+(\'|\")(http.+?)\1/);
+			if (jsWrappedUrl) url = jsWrappedUrl[2];
+			else url = someNode.href;
+			url = ihg_Functions.removeAnonymizer(url);
+			docLinks[ihg_Globals.firstPage].push(url);
+
+			var thumbnail = null;
+			for (var a = 0; a < someNode.childNodes.length; a++) {
+				var someTagName = someNode.childNodes[a].tagName;
+				if (someTagName) {
+					if (someTagName.search(/img/i) >= 0) {
+						thumbnail = { src:someNode.childNodes[a].src,
+									width:someNode.childNodes[a].naturalWidth,
+									height:someNode.childNodes[a].naturalHeight };
+						break;
+					}
 				}
 			}
+			thumbLinks[ihg_Globals.firstPage].push(thumbnail);
 		}
-		thumbLinks[ihg_Globals.firstPage].push(thumbnail);
 	}
 			
-	if (ihg_Globals.downloadEmbeddedImages) {
+	if (content.document.images && ihg_Globals.downloadEmbeddedImages) {
 		var imgs = content.document.images;
 		for (var q = 0; q < imgs.length; q++) {
 			if (imgs[q].naturalHeight >= ihg_Globals.minEmbeddedHeight && imgs[q].naturalWidth >= ihg_Globals.minEmbeddedWidth) {
@@ -191,7 +193,7 @@ ihg_Functions.setupBlacklistData = function setupBlacklistData() {
 
 	if (ihg_Globals.blacklist) {
 		for (var i = 0; i < ihg_Globals.blacklist.length; i++) {
-			if (ihg_Globals.blacklist[i].type == "string") 
+			if (ihg_Globals.blacklist[i].type == "string")
 				stringList.push(ihg_Globals.blacklist[i].testValue);
 			else if (ihg_Globals.blacklist[i].type == "regexp")
 				regexpList.push(ihg_Globals.blacklist[i].testValue)
@@ -821,7 +823,7 @@ ihg_Functions.showFilterDialog = function showFilterDialog(objLinks) {
 	window.openDialog("chrome://imagegrabber/content/interfaces/filter.xul", 
 			"ig-filter_win", "chrome, dialog, modal, resizable=yes", params);
 	return params.out;
-} 
+}
 
 ihg_Functions.showPreferencesDialog = function showPreferencesDialog() {
 	var ihg_optionsURL = "chrome://imagegrabber/content/interfaces/options.xul";
