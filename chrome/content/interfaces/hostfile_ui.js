@@ -25,8 +25,6 @@
 
 var hostfile_Globals = new Object();
 
-hostfile_Globals.ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
-hostfile_Globals.prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
 hostfile_Globals.hosts = null;
 hostfile_Globals.hFile = null;
 hostfile_Globals.hostFileObj = null;
@@ -34,8 +32,6 @@ hostfile_Globals.addonPath = "";
 
 promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
 
-ihg_Globals.strbundle = document.getElementById("imagegrabber-strings");
-ihg_Functions.read_locale_strings();
 
 var theSortedList = [];
 
@@ -84,7 +80,7 @@ HostFileService.prototype = {
 	getHosts : function host_getHosts() {
 		if ( !this.hostFile.exists() ) return null;
 
-		var fileURI = hostfile_Globals.ioService.newFileURI(this.hostFile);
+		var fileURI = ihg_Globals.ioService.newFileURI(this.hostFile);
 
 		var req = new XMLHttpRequest();
 		req.open("GET", fileURI.spec, false);
@@ -96,7 +92,7 @@ HostFileService.prototype = {
 	getHostf_servers : function() {
 		if ( !this.hostf_servers.exists() ) return null;
 
-		var fileURI = hostfile_Globals.ioService.newFileURI(this.hostf_servers);
+		var fileURI = ihg_Globals.ioService.newFileURI(this.hostf_servers);
 
 		var req = new XMLHttpRequest();
 		req.open("GET", fileURI.spec, false);
@@ -531,7 +527,7 @@ function mergeHostFile(onlineXML) {
 		if (!fp.file) return false;
 		if (!(fp.file.path.length > 0)) return false;
 
-		var fileURI = hostfile_Globals.ioService.newFileURI(fp.file);
+		var fileURI = ihg_Globals.ioService.newFileURI(fp.file);
 		var req = new XMLHttpRequest();
 		req.open("GET", fileURI.spec, false);
 		req.send(null);

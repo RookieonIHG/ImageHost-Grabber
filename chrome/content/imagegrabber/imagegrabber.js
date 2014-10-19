@@ -45,9 +45,6 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
 	if (!docLinks) {
-		ihg_Globals.strbundle = document.getElementById("imagegrabber-strings");
-		ihg_Functions.read_locale_strings();
-	
 		ihg_Globals.suckMode = false;
 
 		// Initialize variables if not already initialized
@@ -254,9 +251,6 @@ ihg_Functions.finishUp = function finishUp(req_objs) {
 
 
 ihg_Functions.showDLWin = function showDLWin(fileName) {
-	ihg_Globals.strbundle = document.getElementById("imagegrabber-strings");
-	ihg_Functions.read_locale_strings();
-	
 	ihg_Functions.initVars(true); // true to suppress directory selection dialog
 
 	var req_objs = ihg_Functions.getDLCache(fileName);
@@ -807,15 +801,6 @@ ihg_Functions.initVars = function initVars(skipDirDialog) {
 	ihg_Functions.LOG("Exiting " + myself + "\n");
 	return true;
 	}
-
-ihg_Functions.read_locale_strings = function read_locale_strings() {
-	var enumerator = ihg_Globals.strbundle.strings;
-	while (enumerator.hasMoreElements()) {
-		var property = enumerator.getNext().QueryInterface(Components.interfaces.nsIPropertyElement);
-		if (property.value.search(/%(\d+\$)?S/) >= 0) continue;	// This is most probably a formatted string...
-		ihg_Globals.strings[property.key] = property.value;
-		}
-}
 
 
 ihg_Functions.showFilterDialog = function showFilterDialog(objLinks) {

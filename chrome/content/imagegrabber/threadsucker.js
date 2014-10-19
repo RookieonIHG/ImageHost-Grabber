@@ -49,15 +49,11 @@ ihg_Functions.leechThread = function leechThread(activeElement) {
 		threadsucker_Globals.threadURL = activeElement.href;
 	}
 	else threadsucker_Globals.threadURL = content.document.URL;
-	
-	ihg_Globals.strbundle = document.getElementById("imagegrabber-strings");
-	ihg_Functions.read_locale_strings();
 
 	ihg_Globals.suckMode = true;
 
-	
 	threadsucker_Globals.useCacheIfAvail = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.cachethreadsuck");
-	
+
 	threadsucker_Globals.cacheThang = new Array();
 
 	var continueOrNot = ihg_Functions.initVars();

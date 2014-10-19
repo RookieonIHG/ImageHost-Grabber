@@ -27,9 +27,6 @@ content.window = window;
 var ihg_downloads_Globals = new Object();
 ihg_downloads_Globals.prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
 
-ihg_Globals.strbundle = document.getElementById("imagegrabber-strings");
-ihg_Functions.read_locale_strings();
-
 promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
 
 
@@ -101,7 +98,7 @@ function onUnLoad() {
 function saveSession(fileName) {
 	if (typeof req_objs === "undefined" || req_objs.length == 0) return;
 
-	var cacheDir =  Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
+	var cacheDir = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
 
 	cacheDir.append("ihg_cache");
 	if (!cacheDir.exists() || !cacheDir.isDirectory()) { 
@@ -156,9 +153,6 @@ function loadSession() {
 	// for (var i = children.length - 1; i >= 0; i--)
 		// outBox.removeChild(children[i]);
 	
-	ihg_Globals.strbundle = document.getElementById("imagegrabber-strings");
-	ihg_Functions.read_locale_strings();
-	
 	ihg_Functions.initVars(true); // true to suppress directory selection dialog
 	
 	if (!this.req_objs) {
@@ -188,7 +182,7 @@ function exportSession() {
 		cacheDir.initWithPath(ihg_Globals.lastSessionDir);
 	}
 	else {
-		var cacheDir =  Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
+		var cacheDir = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
 		
 		cacheDir.append("ihg_cache");
 		if (!cacheDir.exists() || !cacheDir.isDirectory())
@@ -208,7 +202,6 @@ function exportSession() {
 	if (!copyToDir) return;
 
 	var newDir = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-
 	newDir.initWithPath(copyToDir);
 
 	try {
@@ -511,7 +504,6 @@ function launchFile() {
 	}
 
 	var aLocalFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-
 	aLocalFile.initWithPath(req_objs[shit].dirSave);
 	aLocalFile.append(req_objs[shit].fileName);
 
@@ -528,7 +520,6 @@ function revealFile() {
 	var shit = daNode.id;
 
 	var aLocalFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-
 	aLocalFile.initWithPath(req_objs[shit].dirSave);
 	aLocalFile.append(req_objs[shit].fileName);
 

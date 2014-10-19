@@ -1,12 +1,8 @@
 var blacklistService = null;
-var strbundle = null;
 
 
 function onLoad() {
 	ihg_Functions.getIGPrefs();
-
-	var doc = this.document;
-	strbundle = doc.getElementById("imagegrabber-strings");
 
 	initData();
 	setFocus("blacklistTree");
@@ -54,13 +50,8 @@ function showList(pattList) {
 		var treeRow = doc.createElement("treerow");
 		treeRow.setAttribute("id", "row_" + i);
 
-		var patternType = pattList[i].type;
-		if (patternType == "string") 
-			patternType = strbundle.getString("string");
-		else if (patternType == "regexp")
-			patternType = strbundle.getString("regexp");
 		var treeCell0 = doc.createElement("treecell");
-		treeCell0.setAttribute("label", patternType);
+		treeCell0.setAttribute("label", ihg_Globals.strings[pattList[i].type]);
 		treeCell0.setAttribute("value", pattList[i].type);
 		treeCell0.setAttribute("editable", "false");
 		treeCell0.setAttribute("id", "value_" + i);
@@ -155,7 +146,7 @@ function modifyPattern() {
 
 	var input = {value: patternValue};   
 	var check = {value: false};
-	var modified = promptService.prompt(this, ihg_Globals.appName, strbundle.getString("enter_new_value"), 
+	var modified = promptService.prompt(this, ihg_Globals.appName, ihg_Globals.strings.enter_new_value,
 										input, null, check);
 
 	if (modified && input.value != "") {
@@ -197,7 +188,7 @@ function changeFile() {
 	var nsIFilePicker = Components.interfaces.nsIFilePicker;
 	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 
-	var title = strbundle.getString("select_blacklist_file");
+	var title = ihg_Globals.strings.select_blacklist_file;
 		
 	fp.init(this, title, nsIFilePicker.modeOpen);
 	if (blacklistService.blacklistFile) {

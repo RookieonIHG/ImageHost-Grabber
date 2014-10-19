@@ -13,9 +13,6 @@ function onLoad() {
 	with (document.getElementById("rowHeightVal"))
 		value = getAttribute("saved");
 
-	ihg_Globals.strbundle = document.getElementById("imagegrabber-strings");
-	ihg_Functions.read_locale_strings();
-
 	var lastDLDirHistory = document.getElementById("lastDLDirHistory");
 	var DLDirList = document.getElementById("DLDirList");
 	parse(lastDLDirHistory.value).forEach(function(DLDir) {DLDirList.appendItem(DLDir)});
@@ -491,8 +488,6 @@ function onTreeClicked(event) {
 
 function updateCounter() {
 	var doc = this.document;
-	var strbundle = doc.getElementById("imagegrabber-strings");
-
 	var tree = doc.getElementById("igLinksTree");
 	var counter = 0;
 
@@ -500,7 +495,7 @@ function updateCounter() {
 		if (tree.view.getItemAtIndex(i).firstChild.getAttribute("properties") == "checked") counter++;
 		}
 	with (doc.getElementById("selectionCounter"))
-		value = strbundle.getFormattedString("images_selected_counter", [counter, tree.view.rowCount]);
+		value = ihg_Globals.strbundle.getFormattedString("images_selected_counter", [counter, tree.view.rowCount]);
 
 	doc.documentElement.getButton("accept").disabled = (counter == 0);
 }

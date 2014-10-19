@@ -24,14 +24,11 @@
 
 var hostf_servers_Globals = new Object();
 
-hostf_servers_Globals.ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 hostf_servers_Globals.hosts = null;
 hostf_servers_Globals.hFile = null;
 hostf_servers_Globals.hostFileObj = null;
 hostf_servers_Globals.addonPath = null;
 
-ihg_Globals.strbundle = document.getElementById("imagegrabber-strings");
-ihg_Functions.read_locale_strings();
 
 
 function HostFileService() {
@@ -54,7 +51,7 @@ HostFileService.prototype = {
 	getHostf_servers : function() {
 		if( !this.hostf_servers.exists() ) return null;
 
-		var fileURI = hostf_servers_Globals.ioService.newFileURI(this.hostf_servers);
+		var fileURI = ihg_Globals.ioService.newFileURI(this.hostf_servers);
 
 		var req = new XMLHttpRequest();
 		req.open("GET", fileURI.spec, false);

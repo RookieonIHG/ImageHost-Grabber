@@ -32,9 +32,6 @@ ihg_Globals.addonPath = ihg_Globals.prefManager.getCharPref("extensions.imagegra
 var Initial_pref = parse(ihg_Globals.prefManager.getCharPref("extensions.imagegrabber.enable@startup"));
 
 function setEnableStates() {
-	ihg_Globals.strbundle = document.getElementById("imagegrabber-strings");
-	ihg_Functions.read_locale_strings();
-
 	toggleEnableState('cb_downloadTimeout', false, 'tb_downloadTimeout', 'lab_downloadTimeout');
 	handleDLTimeoutControl();
 	}
