@@ -64,12 +64,12 @@
 	<label value="&target_folder.label;:" control="DLDirList"/>
 	<menulist id="DLDirList" editable="true" flex="999" maxwidth="600"
 			onfocus="this.open='true';"
-			onpopuphiding="setFocus('igLinksTree');"
-			onselect="setFocus('igLinksTree');"/>
+			onpopuphiding="this.blur();"
+			onselect="this.setAttribute('tooltiptext', this.value);"/>
 	<toolbarbutton id="DLDirNew" tooltiptext="&target_folder.tip;"
-		oncommand="var CurDLDir = document.getElementById('DLDirList'); CurDLDir.label = ihg_Functions.setDownloadDir(ihg_Globals.strings.setDownloadDir, CurDLDir.label) || CurDLDir.label;"/>
+		oncommand="var CurDLDir = document.getElementById('DLDirList'); CurDLDir.setAttribute('tooltiptext', CurDLDir.label = ihg_Functions.setDownloadDir(ihg_Globals.strings.setDownloadDir, CurDLDir.label) || CurDLDir.label);"/>
 	<spacer flex="1"/>
-	<label id="selectionCounter"/>
+	<label id="selectionCounter" _value="&selectionCounter.value;"/>
 </hbox>
 
 <tree id="igLinksTree" flex="1" editable="true">

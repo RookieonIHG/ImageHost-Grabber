@@ -1,7 +1,9 @@
 <!ENTITY  select_the_images_you_want_to_download.title "Sélectionnez les images que vous souhaitez télécharger:">
 <!ENTITY  select_the_images_you_want_to_download.value "Sélectionnez les images que vous souhaitez télécharger:">
+
 <!ENTITY  target_folder.label "Dossier cible">
 <!ENTITY  target_folder.tip "Sélectionner le dossier cible">
+<!ENTITY  selectionCounter.value "__ image sur __ sélectionnée;__ images sur __ sélectionnées">
 
 <!ENTITY  check "Cocher">
 <!ENTITY  uncheck "Décocher">

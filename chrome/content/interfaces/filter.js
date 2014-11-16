@@ -3,6 +3,8 @@ var firstPage;
 var lastPage;
 var params = window.arguments[0];
 
+ihgPlural = {};
+
 
 function onUnLoad() {
 	with (document.getElementById("rowHeightVal"))
@@ -13,9 +15,31 @@ function onLoad() {
 	with (document.getElementById("rowHeightVal"))
 		value = getAttribute("saved");
 
+	try {
+		Components.utils.import("resource://gre/modules/PluralForm.jsm");
+		[ihgPlural.get, ihgPlural.numForms] = PluralForm.makeGetter(ihg_Globals.strings.pluralRule);
+		}
+	catch (e) {																			// Components.utils.import not available before FF3.0
+		let aRuleNum = ihg_Globals.strings.pluralRule;
+		if (aRuleNum < 0 || aRuleNum > 15 || isNaN(aRuleNum)) aRuleNum = 0;				// pluralRule is in range [0-15]
+		let index = [0, 1, 1, 2, 3, 2, 2, 2, 2, 2, 3, 4, 3, 3, 2, 1][aRuleNum];			// the most common rule index is used here...
+		ihgPlural.get = function(aNum, aWords) aWords.split(/;/)[index];
+		ihgPlural.numForms = function() 1;
+		}
+	ihgPlural.getFormatted = function(aNum, aWords, anArray) {
+		let words = ihgPlural.get(aNum, aWords);
+		anArray.forEach(function(value) {words = words.replace(/%S|\b__\b/, value);});
+		return words;
+		}
+
 	var lastDLDirHistory = document.getElementById("lastDLDirHistory");
 	var DLDirList = document.getElementById("DLDirList");
-	parse(lastDLDirHistory.value).forEach(function(DLDir) {DLDirList.appendItem(DLDir)});
+	parse(lastDLDirHistory.value).forEach(function(DLDir) {
+		with (DLDirList.appendItem(DLDir)) {
+			setAttribute("crop", "start");
+			setAttribute("tooltiptext", DLDir);
+			}
+		});
 	DLDirList.selectedIndex = 0;
 
 	objLinks = params.inn.links;
@@ -495,7 +519,7 @@ function updateCounter() {
 		if (tree.view.getItemAtIndex(i).firstChild.getAttribute("properties") == "checked") counter++;
 		}
 	with (doc.getElementById("selectionCounter"))
-		value = ihg_Globals.strbundle.getFormattedString("images_selected_counter", [counter, tree.view.rowCount]);
+		value = ihgPlural.getFormatted(counter, getAttribute("_value"), [counter, tree.view.rowCount]);
 
 	doc.documentElement.getButton("accept").disabled = (counter == 0);
 }
