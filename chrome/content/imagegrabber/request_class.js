@@ -1,6 +1,6 @@
 /****************************** Start of GPL Block ****************************
- *   ImageHost Grabber - Imagegrabber is a firefox extension designed to 
- *   download pictures from image hosts such as imagevenue, imagebeaver, and 
+ *   ImageHost Grabber - Imagegrabber is a firefox extension designed to
+ *   download pictures from image hosts such as imagevenue, imagebeaver, and
  *   others (see help file for a full list of supported hosts).
  *
  *   Copyright (C) 2007   Matthew McMullen.
@@ -21,16 +21,17 @@
  *
  ***************************  End of GPL Block *******************************/
 
+eTLDService = Components.classes["@mozilla.org/network/effective-tld-service;1"].getService(Components.interfaces.nsIEffectiveTLDService);
 
 windowWatcher = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
 
 
 
-/* requestObj class:  It's necessary to  create a class that encompasses the XMLHttpRequest
+/* requestObj class:  It's necessary to create a class that encompasses the XMLHttpRequest
  * class.  Each new instance of requestObj will create a new instance of XMLHttpRequest.
  * What this does is it allows the XMLHttpRequest object to access data that is not part
  * of the XMLHttpRequest class definition.  The difference between this and adding a property
- * or member on the fly (i.e. object.whatever = somestuff), is that the data is guaranteed to 
+ * or member on the fly (i.e. object.whatever = somestuff), is that the data is guaranteed to
  * be accessible using this technique.  Whereas, when adding members on the fly, XMLHttpRequest
  * had a bad tendency of losing the data that was assigned to it on the fly.
  */
@@ -39,6 +40,7 @@ ihg_Functions.requestObj = function requestObj() {
 	// These are the properties that need to be set (by someone) for each instance of the class
 	this.origURL = "";
 	this.reqURL = "";
+	this.Server = "";
 	this.hostFunc = new Function();
 	this.hostID = null;
 	this.maxThreads = 0;
@@ -72,7 +74,7 @@ ihg_Functions.requestObj = function requestObj() {
 	this.stopped = false;
 	this.retried = false;
 	this.notResumable = false;
-	
+
 	// A host is "locked" when the host has a "Timeout" attribute and is waiting to
 	// start the next download or set of downloads.
 	//
@@ -91,15 +93,27 @@ ihg_Functions.requestObj = function requestObj() {
 	this.progListener = new Object();
 
 	this.xmlhttp = null;
+
+	this.watch('reqURL', function(id, oldval, newval) {
+		let reqURI = ihg_Globals.ioService.newURI(newval, null, null);
+		try {
+			this.Server = eTLDService.getBaseDomain(reqURI);
+			}
+		catch (e) {
+			this.Server = reqURI.host;
+			}
+		return newval;
+		});
 	}
 
 
 ihg_Functions.requestObj.prototype = {
 	constructor : ihg_Functions.requestObj,
-	
+
 	curThread : 0,
 	curHostThread : 0,
-	
+	curServerThread : 0,
+
 	// A host is "locked" when the host has a "Timeout" attribute and is waiting to
 	// start the next download or set of downloads.
 	
@@ -115,12 +129,22 @@ ihg_Functions.requestObj.prototype = {
 	debugLog : function req_debugLog () {
 		if (!ihg_Globals.debugOut) return;
 
-		function var_out(a,b,c) { 
+		function var_out(a,b,c) {
 			ihg_Functions.LOG("In requestObj with uniqID of " + this.uniqID +
-			    ", Property: " + a + ", Old Val: " + b + ", New Val: " + c + "\n");
+				", Property: " + a + ", Old Val: " + b + ", New Val: " + c + "\n");
+			if (a == 'reqURL') {
+				let reqURI = ihg_Globals.ioService.newURI(c, null, null);
+				try {
+					this.Server = eTLDService.getBaseDomain(reqURI);
+					}
+				catch (e) {
+					this.Server = reqURI.host;
+					}
+				}
 			return c;
 			}
 		this.watch('reqURL', var_out);
+		this.watch('Server', var_out);
 		this.watch('retryNum', var_out);
 		this.watch('curLinkNum', var_out);
 		this.watch('finished', var_out);
@@ -179,7 +203,7 @@ ihg_Functions.requestObj.prototype = {
 		this.finished = false;
 		this.aborted = false;
 
-		ihg_Functions.LOG("In function req_retry, fixing to execute xmlhttp.abort\n");		
+		ihg_Functions.LOG("In function req_retry, fixing to execute xmlhttp.abort\n");
 		if (this.xmlhttp) this.xmlhttp.abort();
 
 		if (arguments.callee.caller != this.requeue) {
@@ -203,9 +227,11 @@ ihg_Functions.requestObj.prototype = {
 			return;
 			}
 
-		this.regexp = newHostToUse.hostFunc;
-		this.hostID = newHostToUse.hostID;
 		this.reqURL = newPageUrl;
+		this.hostID = newHostToUse.hostID;
+		this.maxThreads = newHostToUse.maxThreads;
+		this.downloadTimeout = newHostToUse.downloadTimeout;
+		this.regexp = newHostToUse.hostFunc;
 
 		this.retry();
 
@@ -238,7 +264,7 @@ ihg_Functions.requestObj.prototype = {
 		
 		this.queueHandler();
 		},
-	
+
 	errHandler : function req_errHandler(event) {
 		ihg_Functions.LOG("Entering function requestObj.errHandler\n");
 
@@ -287,14 +313,14 @@ ihg_Functions.requestObj.prototype = {
 
 	getNextAvailable : function req_getNextAvailable() {
 		var toDieOrNot = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.killmenow");
-		
+
 		var next_obj = this;
 		while (next_obj) {
 			if (!(next_obj.inprogress || next_obj.finished)) {
 				if (!toDieOrNot) break;
 				if (next_obj.override_stop) break;
 				}
-			
+
 			next_obj = next_obj.nextRequest;
 			}
 		return next_obj;
@@ -303,19 +329,22 @@ ihg_Functions.requestObj.prototype = {
 	queueHandler : function req_queueHandler() {
 		//The next line and the loop allow for on-the-fly adaptation
 		ihg_Globals.maxThreads = ihg_Globals.prefManager.getIntPref("extensions.imagegrabber.maxthreads");
-		
+
+		var Server = null;
 		var next_req = this.firstRequest.getNextAvailable();
-		if (next_req) {
-			while (next_req) {
-				if (next_req.countThreads() < ihg_Globals.maxThreads) {
-					if (next_req.maxThreads == 0 || next_req.cp.curHostThread < next_req.maxThreads) next_req.init();
-					
-					next_req = next_req.nextRequest;
-					if (next_req) next_req = next_req.getNextAvailable();
-					}
-				else break;
-				}
-			}
+		if (next_req) do {
+			next_req.init();
+			// as in this loop 'next_req' is returned by 'getNextAvailable',
+			// we are sure that 'init' method called 'countThreads'
+			// and refreshed 'this.cp.curThread'.
+			if (next_req.cp.curThread >= ihg_Globals.maxThreads) break;
+			if (next_req.cp.curServerThread >= maxThread_perServer) Server = next_req.Server;
+
+			do {
+				next_req = next_req.nextRequest;
+				} while (next_req && next_req.Server == Server);
+			if (next_req) next_req = next_req.getNextAvailable();
+			} while (next_req)
 		else {
 			if (this.countThreads() == 0) {
 				for (let hostID in this.cp.hostTimer) {
@@ -348,18 +377,21 @@ ihg_Functions.requestObj.prototype = {
 	countThreads : function req_countThreads() {
 		var numThreads = 0;
 		var numHostThreads = 0;
+		var numServerThreads = 0;
 		
 		var nextReq = this.firstRequest;
 		while (nextReq) {
 			if (nextReq.inprogress) {
 				if (!nextReq.finished) numThreads++;
 				if (nextReq.hostID == this.hostID) numHostThreads++;
+				if (nextReq.Server == this.Server) numServerThreads++;
 				}
 			nextReq = nextReq.nextRequest;
 			}
-			
+		
 		this.cp.curThread = numThreads;
 		this.cp.curHostThread = numHostThreads;
+		this.cp.curServerThread = numServerThreads;
 		
 		return numThreads;
 		},
@@ -367,8 +399,18 @@ ihg_Functions.requestObj.prototype = {
 	init : function req_init() {
 		ihg_Functions.LOG("Entering function requestObj.init with uniqID of: " + this.uniqID + "\n");
 
+		if (this.finished || this.inprogress) {
+			ihg_Functions.LOG("In function requestObj.init with uniqID of: " + this.uniqID + "\n\t\tfinished: " + this.finished + ", inprogress: " + this.inprogress + "\n");
+			return;
+			}
+
 		if (this.countThreads() >= ihg_Globals.maxThreads) {
 			ihg_Functions.LOG("In function requestObj.init with uniqID of: " + this.uniqID + ", curThread >= ihg_Globals.maxThreads (" + ihg_Globals.maxThreads + ")\n");
+			return;
+			}
+
+		if (this.cp.curServerThread >= maxThread_perServer) {
+			ihg_Functions.LOG("In function requestObj.init with uniqID of: " + this.uniqID + ", curServerThread >= maxThread_perServer (" + maxThread_perServer + ")\n");
 			return;
 			}
 
@@ -379,13 +421,11 @@ ihg_Functions.requestObj.prototype = {
 
 		if (this.cp.hostTimer["global"] != null) return;
 		if (this.cp.hostTimer[this.hostID] != null) return;
-		
-		if (this.finished || this.inprogress) {
-			ihg_Functions.LOG("In function requestObj.init with uniqID of: " + this.uniqID + "\n\t\tfinished: " + this.finished + ", inprogress: " + this.inprogress + "\n");
-			return;
-			}
 
 		this.inprogress = true;
+		this.cp.curThread++;
+		this.cp.curHostThread++;
+		this.cp.curServerThread++;
 
 		if (!this.retried) {
 			ihg_Functions.updateDownloadProgress(null, this.uniqID, this.reqURL, null, ihg_Globals.strings.starting_http);
@@ -430,7 +470,7 @@ ihg_Functions.requestObj.prototype = {
 
 		ihg_Functions.LOG("Entering " + myself + " with uniqID of:" + req.uniqID + ", this.readyState: " + this.readyState + "\n");
 
-		if (this.readyState == this.HEADERS_RECEIVED) {
+		if (this.readyState == Components.interfaces.nsIXMLHttpRequest.HEADERS_RECEIVED) {
 			if (this.status >= 400 && this.status < 500) {
 				req.abort(ihg_Globals.strbundle.getFormattedString("http_status_code", [this.status]));
 				return;
@@ -451,7 +491,7 @@ ihg_Functions.requestObj.prototype = {
 							}
 						}
 					}
-					
+				
 				this.onload = null;
 				req.callwrapper.cancel();
 				this.abort();
@@ -461,5 +501,12 @@ ihg_Functions.requestObj.prototype = {
 				}
 			}
 		}
-
 	} // end of class prototype
+
+
+try {
+	maxThread_perServer = ihg_Globals.prefManager.getIntPref("network.http.max-persistent-connections-per-server") || 15;
+	}
+catch(e) {
+	maxThread_perServer = 15;
+	}
