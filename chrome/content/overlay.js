@@ -37,6 +37,10 @@ function ihg_initOverlay() {
 	}
 
 	ihgDefaultBranch.setCharPref("enable@startup", stringify({enableConLog: ihg_Globals.conLogOut, enableDebug: ihg_Globals.debugOut}));
+
+	// DEBUG CODE
+	// ihg_Globals.ConsoleWin = GetConsoleWindow();
+	// END DEBUG CODE
 }
 
 function ihg_destroyOverlay() {
@@ -44,6 +48,29 @@ function ihg_destroyOverlay() {
 	document.getElementById("menu_ToolsPopup").removeEventListener("popupshowing", ihg_showInToolsInit, false);
 
 	if (ihg_Globals.conLogOut) ihg_Functions.unregisterConsoleListener();
+}
+
+function GetConsoleWindow() {
+	var nsIWindowWatcher = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
+	var ihgConsoleWindow = nsIWindowWatcher.getWindowByName("IhgConsoleWindow", null);
+
+	var winArgs = {
+		Callback : ihgConsoleWindow_onloaded
+	}
+
+	winArgs.wrappedJSObject = winArgs;
+
+	if (!ihgConsoleWindow)
+	{
+		ihgConsoleWindow = nsIWindowWatcher.openWindow(null, "chrome://imagegrabber/content/interfaces/console.xul", "IhgConsoleWindow", "resizable,scrollbars=yes", winArgs);
+	}
+
+	return ihgConsoleWindow;
+}
+
+function ihgConsoleWindow_onloaded()
+{
+    ihg_Globals.Console = ihg_Globals.ConsoleWin.Accessor;
 }
 
 function ihg_toolbarButtonCommand(event) {

@@ -2,16 +2,15 @@
 <RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  
   <RDF:Description RDF:about="rdf:#$dxLld3"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="1.5"
-                   em:maxVersion="24.*" />
-  
+                   em:maxVersion="30.*" />
+
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="{E4091D66-127C-11DB-903A-DE80D2EFDFE8}"
                    em:name="ImageHost Grabber"
-                   em:version="1.6.6.20130722"
+                   em:version="1.6.6.20140620"
                    em:creator="Cybormatt"
                    em:description="Downloads all the images hosted on many of the popular free image hosts."
                    em:homepageURL="http://imagehost-grabber.com/"
@@ -27,7 +26,7 @@
     <em:unpack>true</em:unpack>
     <em:updateURL>http://imagehost-grabber.com/xpi_files/imagegrabber/beta/update.rdf</em:updateURL>
     <em:updateKey>MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCo9rfIHZsHy3OJQkGWS+tqElkqSmYt64g7N2BiLIbwD1uU/ZL+zOr4efNX6WNyzST3SFkXaVJHsY/PTKMCQWh0Kapvk0GaItrPFe5kXExCcRE/+Iv6Aic7HluYM6YPnx510s9xVq3S9SZTx/jKS2gBFEvo0ARh7fZi6sdbIjLP9wIDAQAB</em:updateKey>
-    
+
     <em:localized>
       <Description>
         <em:locale>fr-FR</em:locale>
@@ -42,9 +41,9 @@
         <em:contributor>Rookie</em:contributor>
       </Description>
     </em:localized>
+
   </RDF:Description>
-  
+
   <RDF:Description RDF:about="urn:mozilla:extension:file:imagegrabber.jar"
                    em:package="content/" />
-  
 </RDF:RDF>

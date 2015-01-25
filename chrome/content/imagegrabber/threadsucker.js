@@ -1,23 +1,23 @@
 /****************************** Start of GPL Block ****************************
- *   ImageHost Grabber - Imagegrabber is a firefox extension designed to 
- *   download pictures from image hosts such as imagevenue, imagebeaver, and 
- *   others (see help file for a full list of supported hosts).
+ *	ImageHost Grabber - Imagegrabber is a firefox extension designed to
+ *	download pictures from image hosts such as imagevenue, imagebeaver, and
+ *	others (see help file for a full list of supported hosts).
  *
- *   Copyright (C) 2007   Matthew McMullen.
- * 
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
+ *	Copyright (C) 2007   Matthew McMullen.
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
+ *	This program is free software; you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation; either version 2 of the License, or
+ *	(at your option) any later version.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *	This program is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with this program; if not, write to the Free Software
+ *	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  ***************************  End of GPL Block *******************************/
 
@@ -50,6 +50,8 @@ ihg_Functions.leechThread = function leechThread(activeElement) {
 	}
 	else threadsucker_Globals.threadURL = content.document.URL;
 
+	// ihg_Globals.Console.WriteLine("ThreadURL: " + threadsucker_Globals.threadURL);
+
 	ihg_Globals.suckMode = true;
 
 	threadsucker_Globals.useCacheIfAvail = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.cachethreadsuck");
@@ -58,7 +60,7 @@ ihg_Functions.leechThread = function leechThread(activeElement) {
 
 	var continueOrNot = ihg_Functions.initVars();
 	if (!continueOrNot) return;
-	
+
 	threadsucker_Globals.curReqNum = 0;
 	threadsucker_Globals.curForumPage = ihg_Globals.firstPage;
 	threadsucker_Globals.linkIndex = ihg_Globals.firstPage;
@@ -98,7 +100,7 @@ ihg_Functions.finishUp2 = function finishUp2() {
 		ihg_Functions.updateDownloadStatus(ihg_Globals.strings.dont_know_how + " " + threadsucker_Globals.threadURL);
 		return;
 		}
-		
+
 	threadsucker_Globals.doc_req[0].init();
 	}
 
@@ -110,21 +112,22 @@ ihg_Functions.getRDun = function getRDun() {
 	var req = this.parent;
 	req.callwrapper.cancel();
 
-	
 	var toDieOrNot = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.killmenow");
 	if (toDieOrNot) return;
 
 	var ref_url = req.reqURL;
 	var pageData = this.responseText;
 
+	// ihg_Globals.Console.WriteLine("------------>\n\n" + pageData + "\n\n------------>");
+
 	var pageNum = req.pageNum;
 
 	if (ref_url.match(/campusbug/)) pageNum++;
-	
+
 	ihg_Functions.updateDownloadStatus(ihg_Globals.strings.getting_link_information + " " + pageNum);
 
 	var tempLinks = ihg_Functions.getLinks(pageData);
-	
+
 	// add the ref_url to the end of the array so it can be used later
 	tempLinks[tempLinks.length] = ref_url;
 	for (var i=0; i < tempLinks.length; i++) {
@@ -137,7 +140,7 @@ ihg_Functions.getRDun = function getRDun() {
 			isEmbedded = true;
 			tempLinks[i] = tempLinks[i].replace(/^\[embeddedImg\]/, "");
 			}
-			
+
 		try  {
 			var someURI = ihg_Globals.ioService.newURI(tempLinks[i], null, null);
 			}
@@ -145,7 +148,7 @@ ihg_Functions.getRDun = function getRDun() {
 			var someURI = ihg_Globals.ioService.newURI(ref_url, null, null);
 			tempLinks[i] = someURI.resolve(tempLinks[i]);
 			}
-			
+
 		if (isEmbedded) tempLinks[i] = "[embeddedImg]" + tempLinks[i];
 		}
 
@@ -176,7 +179,7 @@ ihg_Functions.setUp_suckerReq = function setUp_suckerReq() {
 	var forums = fsFile.getElementsByTagName("forum");
 
 	var tempThing = null;
-	
+
 	for (var i = 0; i < forums.length; i++) {
 		var uPatNode = forums[i].getElementsByTagName("urlpattern")[0];
 		var uPat = new RegExp(uPatNode.textContent, "i");
@@ -189,7 +192,7 @@ ihg_Functions.setUp_suckerReq = function setUp_suckerReq() {
 
 	var temp_array = new Array();
 	if (!tempThing) return temp_array; // It means we don't know how to handle this forum yet
-	
+
 	var count = 0;
 
 	while (threadsucker_Globals.linkIndex <= ihg_Globals.lastPage) {
@@ -199,7 +202,7 @@ ihg_Functions.setUp_suckerReq = function setUp_suckerReq() {
 		var aa = tempThing.replace(/[\n\f\r]/g, 'NEWLINE');
 		var bb = aa.match(/{(.+)}/)[1];
 		var cc = bb.replace(/NEWLINE/g, '\n');
-		
+
 		var retval = new Function(cunt[1], cc);
 
 		var tmpURL = retval(threadsucker_Globals.threadURL);
@@ -210,12 +213,13 @@ ihg_Functions.setUp_suckerReq = function setUp_suckerReq() {
 			return;
 			}
 
+		// ihg_Globals.Console.WriteLine("tmpURL: " + tmpURL);
 
-		var req = new ihg_Functions.requestObj();
+		var req = new ihg_Classes.requestObj();
 
 		req.hostFunc = ihg_Functions.getRDun;
 		req.queueHandler = ihg_Functions.sucker_queueHandler;
-				
+
 		req.reqURL = tmpURL;
 		req.retryNum = ihg_Globals.maxRetries;
 		req.pageNum = threadsucker_Globals.linkIndex;

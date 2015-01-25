@@ -1,23 +1,23 @@
 /****************************** Start of GPL Block ****************************
- *   ImageHost Grabber - Imagegrabber is a firefox extension designed to 
- *   download pictures from image hosts such as imagevenue, imagebeaver, and 
- *   others (see help file for a full list of supported hosts).
+ *	ImageHost Grabber - Imagegrabber is a firefox extension designed to
+ *	download pictures from image hosts such as imagevenue, imagebeaver, and
+ *	others (see help file for a full list of supported hosts).
  *
- *   Copyright (C) 2007   Matthew McMullen.
- * 
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
+ *	Copyright (C) 2007   Matthew McMullen.
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
+ *	This program is free software; you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation; either version 2 of the License, or
+ *	(at your option) any later version.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *	This program is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with this program; if not, write to the Free Software
+ *	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  ***************************  End of GPL Block *******************************/
 
@@ -29,12 +29,12 @@ promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].ge
 /* function hostGrabber:
  *
  * Takes one parameter: 
- * docLinks:		a multi-dimensional array of strings where the first dimension
+ * docLinks:	a multi-dimensional array of strings where the first dimension
  *				represents the first page and the second dimension represents
  *				all the links for that page
  *
  * If docLinks is null (such is the case if you don't use the thread sucker), then the
- * function will create a docLinks and fill it with the links on the current page.  Also,
+ * function will create a docLinks and fill it with the links on the current page. Also,
  * it will be assumed that suckMode is false if docLinks is null.
  *
  * Returns nothing.
@@ -260,7 +260,7 @@ ihg_Functions.showDLWin = function showDLWin(fileName) {
 	ig_dl_win = ig_dl_win_obj.getWindowByName("ig-dl_win", null);
 	if (!ig_dl_win) {
 		ig_dl_win = ig_dl_win_obj.openWindow(null, "chrome://imagegrabber/content/interfaces/downloads.xul", "ig-dl_win", "resizable,scrollbars=yes", null);
-		
+
 		if (req_objs) {
 			ig_dl_win.req_objs = req_objs;
 
@@ -286,24 +286,24 @@ ihg_Functions.getDLCache = function getDLCache(fileName) {
 	}
 	else {
 		var cacheDir =  Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
-		
+
 		cacheDir.append("ihg_cache");
 		if (!cacheDir.exists() || !cacheDir.isDirectory()) {
 			cacheDir.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
 			}
-		
+
 		if (fileName) {
 			cacheDir.append(fileName);
 			target = cacheDir.path;
 		}
 	}
-	
+
 	if (!fileName) {
 		var nsIFilePicker = Components.interfaces.nsIFilePicker;
 		var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 		fp.init(window, null, nsIFilePicker.modeOpen);
 		fp.displayDirectory = cacheDir;
-			
+
 		var rv = fp.show();
 		if (rv == nsIFilePicker.returnCancel) return null;
 		target = fp.file.path;
@@ -318,7 +318,7 @@ ihg_Functions.getDLCache = function getDLCache(fileName) {
 	var reqList = cacheDoc.getElementsByTagName("reqObj");
 	var req_objs = new Array();
 	for (var h = 0; h < reqList.length; h++) {
-		req_objs[h] = new ihg_Functions.requestObj();
+		req_objs[h] = new ihg_Classes.requestObj();
 		req_objs[h].debugLog();
 		var props = reqList[h].getElementsByTagName("prop");
 		for (var i = 0; i < props.length; i++) {
@@ -331,11 +331,11 @@ ihg_Functions.getDLCache = function getDLCache(fileName) {
 			if (propType == "function") {
 				var tempThing = props[i].textContent;
 				var cunt = tempThing.match(/function anonymous\((.+),(.+)\)/);
-				
+
 				var aa = tempThing.replace(/[\n\f\r]/g, 'NEWLINE');
 				var bb = aa.match(/{(.+)}/)[1];
 				var cc = bb.replace(/NEWLINE/g, '\n');
-				
+
 				propValue = new Function(cunt[1], cunt[2], cc);
 				}
 			else if (propType == "string") var propValue = props[i].textContent;
@@ -361,7 +361,7 @@ ihg_Functions.getDLCache = function getDLCache(fileName) {
 /* function setUpLinksOBJ:
  *
  * Takes one parameter:
- * docLinks:		a multi-dimensional array of strings where the first dimension
+ * docLinks:	a multi-dimensional array of strings where the first dimension
  *				represents the first page and the second dimension represents
  *				all the links for that page
  *
@@ -397,7 +397,7 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 		objLinks.hostID[i] = [];
 		objLinks.maxThreads[i] = [];
 		objLinks.downloadTimeout[i] = [];
-		
+
 		// Added to give a proper referring url for embedded images
 		objLinks.originatingPage[i] = new Array();
  */
@@ -406,7 +406,7 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 		for (var j = 0; j < (ihg_Globals.suckMode?docLinks[i].length-1:docLinks[i].length); j++) {
 			// check to see if link has an embedded image tag
 			var isEmbedded = docLinks[i][j].match(/^\[embeddedImg\](.+)/);
-			
+
 			var theHostToUse, targetURL;
 			if (isEmbedded) {
 				theHostToUse = {hostID: "Embedded Image", maxThreads: 0, downloadTimeout: 0, hostFunc: "Embedded Image"};
@@ -529,15 +529,15 @@ ihg_Functions.setUpReq = function setUpReq(objLinks) {
 			var host_maxThreads = objLinks.maxThreads[i][j];
 			var host_downloadTimeout = objLinks.downloadTimeout[i][j];
 			var host_func = objLinks.hostFunc[i][j];
-			
-			var req = new ihg_Functions.requestObj();
-			
+
+			var req = new ihg_Classes.requestObj();
+
 			req.hostID = host_ID;
 			req.maxThreads = host_maxThreads;
 			req.downloadTimeout = host_downloadTimeout;
 			req.regexp = host_func;
 			req.hostFunc = ihg_Functions.genericHostFunc;
-				
+
 			req.reqURL = req.origURL = inner_link;
 			req.originatingPage = objLinks.originatingPage[i][j];
 			req.dirSave = aPageFile.path;
@@ -591,7 +591,7 @@ ihg_Functions.setUpLinkedList = function setUpLinkedList(req_objs) {
 
 		req_objs[i].firstRequest = req_objs[0];
 		req_objs[i].lastRequest = req_objs[lastObj];
-		
+
 		req_objs[i].index = i;
 		}
 
@@ -602,17 +602,17 @@ ihg_Functions.setUpLinkedList = function setUpLinkedList(req_objs) {
 
 /* LinksOBJ class constructor:
  *
- * links:	 	a multi-dimensional array of strings.  The first dimension represents 
- * 			the page number.  The second dimension represents the links belonging 
+ * links:	a multi-dimensional array of strings.  The first dimension represents
+ *			the page number.  The second dimension represents the links belonging
  *			to that page. 
  *
- * dirSave:		a multi-dimensional array of strings.  The first dimension represents 
- *			the page number.  The second dimension represents the directory where 
+ * dirSave:	a multi-dimensional array of strings.  The first dimension represents
+ *			the page number.  The second dimension represents the directory where
  *			the image will be saved.
  *
- * hostFunc:	a multi-dimensional array of functions.  The first dimension represents
- *			the page number.  The second dimension an actual function that will be 
- * 			used to handle the requests.
+ * hostFunc: a multi-dimensional array of functions.  The first dimension represents
+ *			the page number.  The second dimension an actual function that will be
+ *			used to handle the requests.
  *
  */
 ihg_Functions.LinksOBJ = function LinksOBJ() {
@@ -623,7 +623,7 @@ ihg_Functions.LinksOBJ = function LinksOBJ() {
 	this.hostID = new Array();
 	this.maxThreads = new Array();
 	this.downloadTimeout = new Array();
-	
+
 	// The following is added to give a proper referring url when downloading embedded images
 	this.originatingPage = new Array();
 	}
@@ -683,12 +683,12 @@ ihg_Functions.getIGPrefs = function getIGPrefs() {
 
 	ihg_Globals.downloadEmbeddedImages = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.downloadembeddedimages");
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.downloadEmbeddedImages is equal to: " + ihg_Globals.downloadEmbeddedImages + "\n");
-	
+
 	ihg_Globals.minEmbeddedHeight = ihg_Globals.prefManager.getIntPref("extensions.imagegrabber.minembeddedheight");
 	ihg_Globals.minEmbeddedWidth = ihg_Globals.prefManager.getIntPref("extensions.imagegrabber.minembeddedwidth");
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.minEmbeddedHeight is equal to: " + ihg_Globals.minEmbeddedHeight + "\n");
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.minEmbeddedWidth is equal to: " + ihg_Globals.minEmbeddedWidth + "\n");
-	
+
 	ihg_Globals.minFileSize = ihg_Globals.prefManager.getIntPref("extensions.imagegrabber.minfilesize");
 	ihg_Globals.minFileSize *= 1024;
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.minFileSize is equal to: " + ihg_Globals.minFileSize + "\n");
@@ -711,19 +711,19 @@ ihg_Functions.getIGPrefs = function getIGPrefs() {
 
 	ihg_Globals.cacheDLWin = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.cachedlwin");
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.cacheDLWin is equal to: " + ihg_Globals.cacheDLWin + "\n");
-	
+
 	ihg_Globals.hostfAutoUpdate = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.hostfautoupdate");
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.hostfAutoUpdate is equal to: " + ihg_Globals.hostfAutoUpdate + "\n");
-	
+
 	ihg_Globals.hostfUpdateConfirm = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.hostfupdateconfirm");
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.hostfUpdateConfirm is equal to: " + ihg_Globals.hostfUpdateConfirm + "\n");
-	
+
 	ihg_Globals.hostfMergeBehavior = ihg_Globals.prefManager.getCharPref("extensions.imagegrabber.hostfmergebehavior");
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.hostfMergeBehavior is equal to: " + ihg_Globals.hostfMergeBehavior + "\n");
-	
+
 	ihg_Globals.autoCloseWindow = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.autoclosewindow");
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.autoCloseWindow is equal to: " + ihg_Globals.autoCloseWindow + "\n");
-	
+
 	ihg_Globals.DLWindowCloseImmediately = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.dlwindowcloseimmediately");
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.DLWindowCloseImmediately is equal to: " + ihg_Globals.DLWindowCloseImmediately + "\n");
 
@@ -744,7 +744,7 @@ ihg_Functions.initVars = function initVars(skipDirDialog) {
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
 	var doc = content.document;
-	
+
 	ihg_Globals.docTitle = doc.title.replace(/[\\/:*?"<>|,]/g, '').replace(/\./g,'').replace(/ - Mozilla Firefox$/,'').trim();
 
 	if (ihg_Globals.docTitle.length > 89) ihg_Globals.docTitle = ihg_Globals.docTitle.substring(0, 89);
@@ -755,7 +755,6 @@ ihg_Functions.initVars = function initVars(skipDirDialog) {
 	ihg_Functions.getIGPrefs();
 
 	if (ihg_Globals.showDLDir && !skipDirDialog) {
-		
 		ihg_Functions.LOG("In " + myself + ", about to get ihg_Globals.baseDirSave\n");
 
 		ihg_Globals.baseDirSave = ihg_Functions.setDownloadDir(ihg_Globals.strings.setDownloadDir, ihg_Globals.lastDLDir);
@@ -805,7 +804,7 @@ ihg_Functions.initVars = function initVars(skipDirDialog) {
 
 ihg_Functions.showFilterDialog = function showFilterDialog(objLinks) {
 	var params = { inn:{links:objLinks, firstPage:ihg_Globals.firstPage, lastPage:ihg_Globals.lastPage}, out:null };
-	window.openDialog("chrome://imagegrabber/content/interfaces/filter.xul", 
+	window.openDialog("chrome://imagegrabber/content/interfaces/filter.xul",
 			"ig-filter_win", "chrome, dialog, modal, resizable=yes", params);
 	return params.out;
 }

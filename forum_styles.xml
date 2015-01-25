@@ -77,6 +77,31 @@
 }]]></searchpattern>
 </forum>
 
+<forum id="loc.gov">
+<urlpattern>http:\/\/(?:www\.)?loc\.gov\/pictures\/search\/\?(?:st|co|sp)=[^ &amp;=]*(?:\&amp;(?:st|co|sp)=[^ &amp;=]*)?(?:\&amp;(?:st|co|sp)=[^ &amp;=]*)?</urlpattern>
+<searchpattern><![CDATA[function(threadURL) {
+	var matches = threadURL.match(/(http:\/\/(?:www\.)?loc\.gov\/pictures\/search\/)\?(st|co|sp)=([^ &=]*)(?:\&(st|co|sp)=([^ &=]*))?(?:\&(st|co|sp)=([^ &=]*))?/);
+	var baseUrl = matches[1];
+
+	var sp = "sp=" + threadsucker_Globals.linkIndex;
+	var co = null;
+	var st = null;
+
+	for (var i = 2; i < matches.length; i += 2) {
+		if (matches[i] == null) continue;
+		if (matches[i] == "sp") continue;
+		if (matches[i] == "co") co = "co=" + matches[i+1];
+		if (matches[i] == "st") st = "st=" + matches[i+1];
+	}
+
+	if (st == null) st = "st=gallery";
+
+	var url = baseUrl + "?" + sp + "&" + co + "&" + st;
+
+	return url;
+}]]></searchpattern>
+</forum>
+
 <forum id="lu.scio.us">
 <urlpattern>http:\/\/lu\.scio\.us\/.+\/albums\/.+\/page\/</urlpattern>
 <searchpattern><![CDATA[function(threadURL) {

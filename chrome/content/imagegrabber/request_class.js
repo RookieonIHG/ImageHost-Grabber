@@ -35,7 +35,7 @@ windowWatcher = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].ge
  * be accessible using this technique.  Whereas, when adding members on the fly, XMLHttpRequest
  * had a bad tendency of losing the data that was assigned to it on the fly.
  */
-ihg_Functions.requestObj = function requestObj() {
+ihg_Classes.requestObj = function requestObj() {
 	this.uniqID = "req_" + (Math.floor(1e9 * (1 + Math.random()))).toString().substring(1);
 	// These are the properties that need to be set (by someone) for each instance of the class
 	this.origURL = "";
@@ -107,8 +107,8 @@ ihg_Functions.requestObj = function requestObj() {
 	}
 
 
-ihg_Functions.requestObj.prototype = {
-	constructor : ihg_Functions.requestObj,
+ihg_Classes.requestObj.prototype = {
+	constructor : ihg_Classes.requestObj,
 
 	curThread : 0,
 	curHostThread : 0,

@@ -27,6 +27,7 @@
 ///////////////////////////   Global Variables ////////////////////////////////
 var ihg_Functions = new Object();
 var ihg_Globals = new Object();
+var ihg_Classes = new Object();
 
 ihg_Globals.appName = "ImageHost Grabber";
 ihg_Globals.addonID = "{E4091D66-127C-11DB-903A-DE80D2EFDFE8}"; // imagegrabber's ID
@@ -93,25 +94,25 @@ ihg_Globals.hosts_list = null;
 ihg_Globals.unknownHosts_list = new Array();
 ihg_Globals.exceptions_list = null;
 ihg_Globals.LinksByFileExt = {
-	Image: [["Bitmap",	"bmp",				/^\x42\x4D/],
-			["GIF",		"gif",				/^\x47\x49\x46\x38[\x37\x39]\x61/],
-			["Icon",	"ico",				/^\x00\x00\x01\x00/],
-			["JPEG",	"jp(?:eg|[eg])",	/^\xFF\xD8\xFF/],
-			["PNG",		"png",				/^\x89\x50\x4E\x47/],
-			["TIFF",	"tiff?",			/^(?:\x49\x49\x2A\x00|\x4D\x4D\x00\x2A)/]],
-	Media: [["Windows",	"asf|wm[av]",		/^\x30\x26\xB2\x75\x8E\x66\xCF\x11\xA6\xD9\x00\xAA\x00\x62\xCE\x6C/]],
-	Video: [["AVI",		"avi",				/^\x52\x49\x46\x46[\x00-\xFF]{4}\x41\x56\x49\x20\x4C\x49\x53\x54/],
-			["FLV",		"flv",				/^\x46\x4C\x56/],
-			["MOV",		"mov",				/^\x00{3}\x1C\x66\x74\x79\x70\x71\x74\x20\x20/],
-			["MPEG",	"mpe?g",			/^\x00\x00\x01[\xB0-\xBF]/],
-			["MPEG-4",	"mp4|m4v",			/^\x00{3}\x18\x66\x74\x79\x70(?:\x6D\x70\x34\x32|\x33\x67\x70\x35)|\x00{3}[\x14\x20]\x66\x74\x79\x70\x69\x73\x6F\x6D|\x00{3}\x1C\x66\x74\x79\x70\x46\x41\x43\x45/],
-			["SWF",		"swf",				/^[\x43\x46]\x57\x53/],
-			["WebM",	"webm",				/^\x1A\x45\xDF\xA3/]],
-	Audio: [["MP3",     "mp3",              /^\x49\x44\x33/],
-			["AAC",     "aac",              /^\xFF[\xF1\xF9]/],
-			["FLAC",    "flac",             /^\x66\x4C\x61\x43\x00{3}\x22/],
-			["M4A",     "m4a",              /^\x00{3}\x20\x66\x74\x79\x70\x4D\x34\x41\x20/]],
-	Container: [["ZIP",   "zip|xpi|jar",      /^\x50\x4B\x03\x04/]]
+	Image:	   [["Bitmap",	"bmp",				/^\x42\x4D/],
+				["GIF",		"gif",				/^\x47\x49\x46\x38[\x37\x39]\x61/],
+				["Icon",	"ico",				/^\x00\x00\x01\x00/],
+				["JPEG",	"jp(?:eg|[eg])",	/^\xFF\xD8\xFF/],
+				["PNG",		"png",				/^\x89\x50\x4E\x47/],
+				["TIFF",	"tiff?",			/^(?:\x49\x49\x2A\x00|\x4D\x4D\x00\x2A)/]],
+	Media:	   [["Windows",	"asf|wm[av]",		/^\x30\x26\xB2\x75\x8E\x66\xCF\x11\xA6\xD9\x00\xAA\x00\x62\xCE\x6C/]],
+	Video:	   [["AVI",		"avi",				/^\x52\x49\x46\x46[\x00-\xFF]{4}\x41\x56\x49\x20\x4C\x49\x53\x54/],
+				["FLV",		"flv",				/^\x46\x4C\x56/],
+				["MOV",		"mov",				/^\x00{3}\x1C\x66\x74\x79\x70\x71\x74\x20\x20/],
+				["MPEG",	"mpe?g",			/^\x00\x00\x01[\xB0-\xBF]/],
+				["MPEG-4",	"mp4|m4v",			/^\x00{3}\x18\x66\x74\x79\x70(?:\x6D\x70\x34\x32|\x33\x67\x70\x35)|\x00{3}[\x14\x20]\x66\x74\x79\x70\x69\x73\x6F\x6D|\x00{3}\x1C\x66\x74\x79\x70\x46\x41\x43\x45/],
+				["SWF",		"swf",				/^[\x43\x46]\x57\x53/],
+				["WebM",	"webm",				/^\x1A\x45\xDF\xA3/]],
+	Audio:	   [["MP3",		"mp3",				/^\x49\x44\x33/],
+				["AAC",		"aac",				/^\xFF[\xF1\xF9]/],
+				["FLAC",	"flac",				/^\x66\x4C\x61\x43\x00{3}\x22/],
+				["M4A",		"m4a",				/^\x00{3}\x20\x66\x74\x79\x70\x4D\x34\x41\x20/]],
+	Container: [["ZIP",		"zip|xpi|jar",		/^\x50\x4B\x03\x04/]]
 	};
 
 ihg_Globals.downloadEmbeddedImages = null;
@@ -143,3 +144,6 @@ ihg_Globals.useLastModFromHeader = null;
 
 ihg_Globals.blacklistFilePath = null;
 ihg_Globals.blacklist = null;
+
+ihg_Globals.ConsoleWin = null;
+ihg_Globals.Console = null;
