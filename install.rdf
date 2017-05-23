@@ -10,10 +10,10 @@
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="{E4091D66-127C-11DB-903A-DE80D2EFDFE8}"
                    em:name="ImageHost Grabber"
-                   em:version="1.6.6.20140620"
+                   em:version="1.7.0"
                    em:creator="Cybormatt"
                    em:description="Downloads all the images hosted on many of the popular free image hosts."
-                   em:homepageURL="http://imagehost-grabber.com/"
+                   em:homepageURL="http://imagehost-grabber.eu/"
                    em:iconURL="chrome://imagegrabber/skin/images/imagegrabber.png"
                    em:optionsURL="chrome://imagegrabber/content/interfaces/options.xul">
     <em:translator>Queenie Fontaine [French]</em:translator>
@@ -24,7 +24,7 @@
     <em:targetApplication RDF:resource="rdf:#$dxLld3"/>
     <em:file RDF:resource="urn:mozilla:extension:file:imagegrabber.jar"/>
     <em:unpack>true</em:unpack>
-    <em:updateURL>http://imagehost-grabber.com/xpi_files/imagegrabber/beta/update.rdf</em:updateURL>
+    <em:updateURL>http://imagehost-grabber.eu/xpi_files/imagegrabber/beta/update.rdf</em:updateURL>
     <em:updateKey>MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCo9rfIHZsHy3OJQkGWS+tqElkqSmYt64g7N2BiLIbwD1uU/ZL+zOr4efNX6WNyzST3SFkXaVJHsY/PTKMCQWh0Kapvk0GaItrPFe5kXExCcRE/+Iv6Aic7HluYM6YPnx510s9xVq3S9SZTx/jKS2gBFEvo0ARh7fZi6sdbIjLP9wIDAQAB</em:updateKey>
 
     <em:localized>
