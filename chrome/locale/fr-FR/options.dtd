@@ -57,7 +57,7 @@
 <!ENTITY  disclaimer_line1 "Activer/Désactiver les options suivantes nécessitera un redémarrage de &brandShortName; afin de prendre effet.">
 <!ENTITY  disclaimer_line2 "À n'activer que temporairement pour tracer un événement spécifique, à désactiver immédiatement après.">
 <!ENTITY  disclaimer_line3 "Laisser ces options actives ralentira &brandShortName;, grignotera la mémoire, et encombrera l'espace disque.">
-<!ENTITY  read_disclaimer "Assurez-vous d\u0027avoir lu et compris l\u0027avertissement.">
+<!ENTITY  read_disclaimer "Assurez-vous d'avoir lu et compris l'avertissement.">
 <!ENTITY  alert_restart "Cela nécessite un redémarrage de &brandShortName;">
 <!ENTITY  enable_console_logging "Activer le journal de la console d'erreurs">
 <!ENTITY  enable_debugging_logging "Activer le journal des événements notifiés par ImageHost Grabber">

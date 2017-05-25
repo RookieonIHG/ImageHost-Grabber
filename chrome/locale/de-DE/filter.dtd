@@ -3,7 +3,7 @@
 
 <!ENTITY  target_folder.label "Target Folder">
 <!ENTITY  target_folder.tip "Browse for Target Folder">
-<!ENTITY  selectionCounter.value "__ von __ Bild ausgewählt;__ von __ Bildern ausgewählt">
+<!ENTITY  selectionCounter.value "__ von __ Bild ausgewÃ¤hlt;__ von __ Bildern ausgewÃ¤hlt">
 
 <!ENTITY  check "Check">
 <!ENTITY  uncheck "Uncheck">
