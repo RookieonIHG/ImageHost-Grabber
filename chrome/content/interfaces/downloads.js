@@ -1,40 +1,38 @@
 /****************************** Start of GPL Block ****************************
-*   ImageHost Grabber - Imagegrabber is a firefox extension designed to 
-*   download pictures from image hosts such as imagevenue, imagebeaver, and 
-*   others (see help file for a full list of supported hosts).
+*	ImageHost Grabber - Imagegrabber is a firefox extension designed to
+*	download pictures from image hosts such as imagevenue, imagebeaver, and
+*	others (see help file for a full list of supported hosts).
 *
-*   Copyright (C) 2007   Matthew McMullen.
-* 
-*   This program is free software; you can redistribute it and/or modify
-*   it under the terms of the GNU General Public License as published by
-*   the Free Software Foundation; either version 2 of the License, or
-*   (at your option) any later version.
+*	Copyright (C) 2007   Matthew McMullen.
 *
-*   This program is distributed in the hope that it will be useful,
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*   GNU General Public License for more details.
+*	This program is free software; you can redistribute it and/or modify
+*	it under the terms of the GNU General Public License as published by
+*	the Free Software Foundation; either version 2 of the License, or
+*	(at your option) any later version.
 *
-*   You should have received a copy of the GNU General Public License
-*   along with this program; if not, write to the Free Software
-*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*	This program is distributed in the hope that it will be useful,
+*	but WITHOUT ANY WARRANTY; without even the implied warranty of
+*	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+*	GNU General Public License for more details.
+*
+*	You should have received a copy of the GNU General Public License
+*	along with this program; if not, write to the Free Software
+*	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *
 ***************************  End of GPL Block *******************************/
 
 var content = window;
 content.window = window;
 
-var ihg_downloads_Globals = new Object();
-ihg_downloads_Globals.prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
 
 promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
 
 
 function onClose(event) {
 	if (typeof req_objs === "undefined" || req_objs.length == 0) return;
-	
+
 	var DLWindowSuppressCloseConfirm = document.getElementById("DLWindowSuppressCloseConfirm");
-	
+
 	var undelayed_confirm = false;
 	for (var i = req_objs.length; i--; ) {
 		try {
@@ -50,21 +48,21 @@ function onClose(event) {
 		if (req_objs[i].finished == false || req_objs[i].aborted == true) {
 			undelayed_confirm = true;
 		}
-		
+
 		if (i == 0 && undelayed_confirm == false) return;
 	}
-	
+
 	var buttonflag = promptService.BUTTON_TITLE_SAVE		 * promptService.BUTTON_POS_0 +
 					 promptService.BUTTON_TITLE_DONT_SAVE	 * promptService.BUTTON_POS_2 +
 					 promptService.BUTTON_TITLE_CANCEL		 * promptService.BUTTON_POS_1 +
 					 promptService.BUTTON_POS_1_DEFAULT;												// CANCEL by default
-	
+
 	if (undelayed_confirm == false)
 		buttonflag += promptService.BUTTON_DELAY_ENABLE;
 	else if (DLWindowSuppressCloseConfirm.value) return;
-	
+
 	var check = {value:DLWindowSuppressCloseConfirm.value};
-	
+
 	var ConfirmClose = promptService.confirmEx(
 		this,
 		null,
@@ -73,9 +71,9 @@ function onClose(event) {
 		null, null, null,																				// default button labels
 		ihg_Globals.strings.dont_bother_close_confirm,													// Checkbox label "Stop bothering me with confirm message !"
 		check);																							// Checkbox value; CANCEL=return(1)
-	
+
 	DLWindowSuppressCloseConfirm.value = check.value;
-	
+
 	switch (ConfirmClose) {
 		case 0:	killme();
 				if (saveSession() == true) return;
@@ -115,7 +113,7 @@ function saveSession(fileName) {
 		return;
 	}
 
-	var nsIFilePicker = Components.interfaces.nsIFilePicker;
+	const nsIFilePicker = Components.interfaces.nsIFilePicker;
 	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 	fp.init(window, null, nsIFilePicker.modeSave);
 	fp.displayDirectory = cacheDir;
@@ -145,16 +143,9 @@ function saveSession(fileName) {
 function loadSession() {
 	var tReqs = ihg_Functions.getDLCache();
 	if (tReqs == null) return;
-	// req_objs = tReqs;
-	
-	// var outBox = document.getElementById("outBox");
-	// var children = outBox.childNodes;
-	
-	// for (var i = children.length - 1; i >= 0; i--)
-		// outBox.removeChild(children[i]);
-	
+
 	ihg_Functions.initVars(true); // true to suppress directory selection dialog
-	
+
 	if (!this.req_objs) {
 		this.req_objs = tReqs;
 	} 
@@ -165,14 +156,8 @@ function loadSession() {
 		this.req_objs = new_array;
 		setUpLinkedList();
 	}
-	
+
 	ihg_Functions.addDownloadReqObjs(tReqs);
-	// for (var i = 0; i < tReqs.length; i++) {
-		// var m = tReqs[i].curLinkNum + 1;
-		// var page_stat = ihg_Globals.strings.page + " " + tReqs[i].pageNum + ": " + m + " " + ihg_Globals.strings.of + " " + tReqs[i].totLinkNum;
-		// ihg_Functions.addDownloadProgress(page_stat, tReqs[i].uniqID, tReqs[i].reqURL, tReqs[i].status);
-		// ihg_Functions.updateDownloadProgress(null, tReqs[i].uniqID, null, (tReqs[i].curProgress / tReqs[i].maxProgress) * 100, null);
-	// }
 }
 
 
@@ -188,12 +173,12 @@ function exportSession() {
 		if (!cacheDir.exists() || !cacheDir.isDirectory())
 			cacheDir.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
 	}
-	
-	var nsIFilePicker = Components.interfaces.nsIFilePicker;
+
+	const nsIFilePicker = Components.interfaces.nsIFilePicker;
 	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 	fp.init(window, null, nsIFilePicker.modeOpen);
 	fp.displayDirectory = cacheDir;
-		
+
 	var rv = fp.show();
 	if (rv == nsIFilePicker.returnCancel) return null;
 
@@ -233,13 +218,13 @@ function getTreeSelection() {
 		tree.view.selection.getRangeAt(t,start,end);
 		for (var v = start.value; v <= end.value; v++) daNodes.push(tree.view.getItemAtIndex(v));
 	}
-	
+
 	return daNodes;
 }
 
 
 function reset_retryCount() {
-	var maxRetries = ihg_downloads_Globals.prefManager.getIntPref("extensions.imagegrabber.numretries");
+	var maxRetries = ihg_Globals.prefManager.getIntPref("extensions.imagegrabber.numretries");
 
 	var daNodes = getTreeSelection();
 
@@ -252,7 +237,7 @@ function reset_retryCount() {
 
 
 function restart_child() {
-	var maxRetries = ihg_downloads_Globals.prefManager.getIntPref("extensions.imagegrabber.numretries");
+	var maxRetries = ihg_Globals.prefManager.getIntPref("extensions.imagegrabber.numretries");
 
 	var daNodes = getTreeSelection();
 
@@ -273,7 +258,7 @@ function restart_child() {
 function remove_child(back_space) {
 	var tree = document.getElementById("igTree");
 	var currentNode = tree.view.getItemAtIndex(tree.view.selection.currentIndex);
-	
+
 	var daNodes = getTreeSelection();
 
 	var removeList = new Array();
@@ -350,8 +335,8 @@ function clear_form() {
 			var someShit = daNode.nodeName;
 		}
 		catch(e) { continue; }
-		
-		
+
+
 		// Be cautious in performing this sort of conditional testing, as this assumes
 		// that req_objs[i].inprogress (and others) will always exist, and will always
 		// have a value of true or false.  If, for some reason, req_objs[i].inprogress
@@ -401,7 +386,7 @@ function delete_from_req_objs(removeList) {
 
 
 function killme() {
-	ihg_downloads_Globals.prefManager.setBoolPref("extensions.imagegrabber.killmenow", true);
+	ihg_Globals.prefManager.setBoolPref("extensions.imagegrabber.killmenow", true);
 
 	if (typeof req_objs === "undefined" || req_objs.length == 0) return;
 
@@ -425,7 +410,7 @@ function killme() {
 
 
 function reviveme() {
-	ihg_downloads_Globals.prefManager.setBoolPref("extensions.imagegrabber.killmenow", false);
+	ihg_Globals.prefManager.setBoolPref("extensions.imagegrabber.killmenow", false);
 
 	if (typeof req_objs === "undefined" || req_objs.length == 0) return;
 
@@ -521,7 +506,6 @@ function revealFile() {
 
 	var aLocalFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 	aLocalFile.initWithPath(req_objs[shit].dirSave);
-	aLocalFile.append(req_objs[shit].fileName);
 
 	aLocalFile.reveal();
 }
@@ -580,7 +564,7 @@ function doInvertSelection() {
 	for (var i = 0; i < tree.view.rowCount; i++) {
 		tree.view.selection.toggleSelect(i);
 	}
-	
+
 	tree.view.selection.currentIndex = idx;
 }
 
@@ -593,7 +577,7 @@ function setFocus() {
 
 
 function exportList() {
-	var nsIFilePicker = Components.interfaces.nsIFilePicker;
+	const nsIFilePicker = Components.interfaces.nsIFilePicker;
 	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);	
 	fp.init(this.window, null, nsIFilePicker.modeSave);
 	fp.appendFilters(nsIFilePicker.filterAll | nsIFilePicker.filterHTML);

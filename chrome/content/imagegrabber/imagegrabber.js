@@ -285,7 +285,7 @@ ihg_Functions.getDLCache = function getDLCache(fileName) {
 		cacheDir.initWithPath(ihg_Globals.lastSessionDir);
 	}
 	else {
-		var cacheDir =  Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
+		var cacheDir = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
 
 		cacheDir.append("ihg_cache");
 		if (!cacheDir.exists() || !cacheDir.isDirectory()) {
@@ -299,7 +299,7 @@ ihg_Functions.getDLCache = function getDLCache(fileName) {
 	}
 
 	if (!fileName) {
-		var nsIFilePicker = Components.interfaces.nsIFilePicker;
+		const nsIFilePicker = Components.interfaces.nsIFilePicker;
 		var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 		fp.init(window, null, nsIFilePicker.modeOpen);
 		fp.displayDirectory = cacheDir;
@@ -532,6 +532,8 @@ ihg_Functions.setUpReq = function setUpReq(objLinks) {
 
 			var req = new ihg_Classes.requestObj();
 
+			req.debugLog();
+
 			req.hostID = host_ID;
 			req.maxThreads = host_maxThreads;
 			req.downloadTimeout = host_downloadTimeout;
@@ -554,8 +556,6 @@ ihg_Functions.setUpReq = function setUpReq(objLinks) {
 			if (inner_link.match(/^http:\/\/[^\/]*bruce-juice\.com\//)) {
 				req.referer = req.originatingPage;
 				}
-
-			req.debugLog();
 
 			temp_array[count] = req;
 			temp_array[req.uniqID] = temp_array[count];
@@ -659,7 +659,7 @@ ihg_Functions.getIGPrefs = function getIGPrefs() {
 
 	ihg_Globals.fileExistsBehavior = ihg_Globals.prefManager.getCharPref("extensions.imagegrabber.fileexistsbehavior");
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.fileExistsBehavior is equal to: " + ihg_Globals.fileExistsBehavior + "\n");
-	
+
 	ihg_Globals.remove_duplicate_links = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.removeduplinks");
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.remove_duplicate_links is equal to: " + ihg_Globals.remove_duplicate_links + "\n");
 

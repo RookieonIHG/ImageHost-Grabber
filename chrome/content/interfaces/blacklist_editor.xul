@@ -4,20 +4,20 @@
 
 <dialog id="ig_blacklist_editor_win" title="&blacklist_editor.title;"
 		width="600" height="400" persist="sizemode height width screenX screenY"
-        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+		xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 		onload="onLoad();"
 		onunload="onUnLoad();"
-        buttons="accept,cancel"
-        buttonlabelaccept="&save;"
-        ondialogaccept="return doOK();">
+		buttons="accept,cancel"
+		buttonlabelaccept="&save;"
+		ondialogaccept="return doOK();">
 
 <stringbundleset id="stringbundleset">
-    <stringbundle id="imagegrabber-strings" src="chrome://imagegrabber/locale/imagegrabber.properties" />
+	<stringbundle id="imagegrabber-strings" src="chrome://imagegrabber/locale/imagegrabber.properties" />
 </stringbundleset>
 
 <script type="application/x-javascript" src="chrome://imagegrabber/content/interfaces/blacklist_editor.js"/>
 <script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/globals.js"/>
-<script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/imagegrabber.js"/>
+<!-- <script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/imagegrabber.js"/> -->
 <script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/debug.js"/>
 <script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/file_services.js"/>
 <script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/utils.js"/>
@@ -38,7 +38,7 @@
 				<splitter ordinal="2" class="tree-splitter"/>
 				<treecol ordinal="3" id="patternValue" label="&value;" persist="width ordinal" flex="3"/>
 			</treecols>
-  
+
 			<treechildren id="list" context="treeMenu" minwidth="200" minheight="100"/>
 		</tree>
 

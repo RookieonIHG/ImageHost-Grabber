@@ -478,7 +478,7 @@ function deleteHost() {
 
 
 function changeHostFile() {
-	var nsIFilePicker = Components.interfaces.nsIFilePicker;
+	const nsIFilePicker = Components.interfaces.nsIFilePicker;
 	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 
 
@@ -515,7 +515,7 @@ function onlineHostF() {
 
 function mergeHostFile(onlineXML) {
 	if (!onlineXML) {
-		var nsIFilePicker = Components.interfaces.nsIFilePicker;
+		const nsIFilePicker = Components.interfaces.nsIFilePicker;
 		var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 
 		var FpTitle=ihg_Globals.strings.pick_host_file;
@@ -550,7 +550,7 @@ function mergeHostFile(onlineXML) {
 		}
 
 	var overWriteMode = promptService.confirm(this, null, ihg_Globals.strings.overwrite_mode);
-			
+
 	for (var i=0; i < mergHosts.length; i++) {
 		for (var j=0; j < hostfile_Globals.hosts.length; j++) {
 			if (mergHosts[i].getAttribute("id") == hostfile_Globals.hosts[j].getAttribute("id")) {

@@ -52,16 +52,15 @@ ihg_Functions.getPicByRegExp = function getPicByRegExp(req) {
 
 	var imageElems = ihg_Functions.getImgTags(req.xmlhttp.responseText);
 	if (!imageElems) return null;
-	
+	imageElems = imageElems.filter(function(imgElem) {return regexp.test(imgElem)});
+
 	var the_url = "";
 
 	for (var n = 0; n < imageElems.length; n++) {
 		var curSource = ihg_Functions.getImgSrcFromTag(imageElems[n]);
 		if (curSource) {
-			if (imageElems[n].match(regexp)) {
-				var someURI = ihg_Globals.ioService.newURI(refURL, null, null);
-				the_url = someURI.resolve(curSource);
-			}
+			var someURI = ihg_Globals.ioService.newURI(refURL, null, null);
+			the_url = someURI.resolve(curSource);
 		}
 	}
 	return the_url;

@@ -2,7 +2,7 @@ var blacklistService = null;
 
 
 function onLoad() {
-	ihg_Functions.getIGPrefs();
+	ihg_Globals.blacklistFilePath = ihg_Globals.prefManager.getCharPref("extensions.imagegrabber.blacklistfilepath");
 
 	initData();
 	setFocus("blacklistTree");
@@ -41,7 +41,7 @@ function showList(pattList) {
 
 	while (list.firstChild) {
 		list.removeChild(list.firstChild);
-    }
+	}
 
 	for (var i = 0; i < pattList.length; i++) {
 		var treeItem = doc.createElement("treeitem");
@@ -189,7 +189,7 @@ function changeFile() {
 	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 
 	var title = ihg_Globals.strings.select_blacklist_file;
-		
+
 	fp.init(this, title, nsIFilePicker.modeOpen);
 	if (blacklistService.blacklistFile) {
 		fp.displayDirectory = blacklistService.blacklistFile.parent;
@@ -199,13 +199,13 @@ function changeFile() {
 	var res = fp.show();
 
 	if (res == nsIFilePicker.returnOK) {
- 		if (fp.file && (fp.file.path.length > 0)) {
+		if (fp.file && (fp.file.path.length > 0)) {
 			ihg_Globals.prefManager.setCharPref("extensions.imagegrabber.blacklistfilepath", fp.file.path);
 			ihg_Globals.blacklistFilePath = fp.file.path;
 
 			initData();
 		}
- 	}
+	}
 }
 
 

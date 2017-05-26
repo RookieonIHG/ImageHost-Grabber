@@ -24,9 +24,9 @@
 
 
 if (!String.prototype.trim) {						// String.trim is not natively available before FF3.5
-  String.prototype.trim = function () {
-    return this.replace(/^\s+|\s+$/g, '');
-  };
+	String.prototype.trim = function () {
+		return this.replace(/^\s+|\s+$/g, '');
+	};
 }
 
 var parse = stringify = function() { throw "IHG error: No JSON implementation available"; }
@@ -141,7 +141,7 @@ ihg_Functions.setDownloadDir = function setDownloadDir(FpTitle, initDir) {
 	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
-	var nsIFilePicker = Components.interfaces.nsIFilePicker;
+	const nsIFilePicker = Components.interfaces.nsIFilePicker;
 	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 
 	if(fp==null) {
@@ -163,17 +163,17 @@ ihg_Functions.setDownloadDir = function setDownloadDir(FpTitle, initDir) {
 		catch(ex) { ihg_Functions.LOG("In " + myself + ", could not initialize with a directory\n"); }
 
 		fp.init(top.window, FpTitle, nsIFilePicker.modeGetFolder);
-  		var res = fp.show();
+		var res = fp.show();
 		if (res == nsIFilePicker.returnOK) {
-  			if (fp.file && (fp.file.path.length > 0)) return fp.file.path;
-    			}
+			if (fp.file && (fp.file.path.length > 0)) return fp.file.path;
+			}
 		return false;
-  		}
+		}
 
-  	catch(ex) {
+	catch(ex) {
 		ihg_Functions.LOG("In " + myself + ", caught exception: " + ex + "\n");
-   		return false;
-  		}
+		return false;
+		}
 	} 
 
 
@@ -511,7 +511,7 @@ ihg_Functions.removeDuplicates = function removeDuplicates(docLinks, thumbLinks)
 
 ihg_Functions.restartFF = function restartFF() {
 	var nsIAppStartup = Components.interfaces.nsIAppStartup;
-    Components.classes["@mozilla.org/toolkit/app-startup;1"].getService(nsIAppStartup).quit(nsIAppStartup.eForceQuit | nsIAppStartup.eRestart);
+	Components.classes["@mozilla.org/toolkit/app-startup;1"].getService(nsIAppStartup).quit(nsIAppStartup.eForceQuit | nsIAppStartup.eRestart);
 }
 
 ihg_Functions.AlertPopup = function AlertPopup(title, message, listener, clickable) {

@@ -613,11 +613,11 @@ ul
 
 </div>
 
-<p class=MsoNormal>Many forums and blogs don't have the capacity to store
+<p class=MsoNormal>Many forums and blogs don’t have the capacity to store
 images on their own servers. Instead, posters are required to use a third-party
 host to share images. Many free image hosts exist, such as imagevenue,
 imagebam, and imageshack to serve the purposes of sharing images. However,
-these image hosts do not give direct links to stored images. Instead, what's
+these image hosts do not give direct links to stored images. Instead, what’s
 given are links to html pages that encapsulate the images. If you want to save
 an entire gallery of images that are hosted on these image hosts, simple tools
 like &quot;wget&quot; and &quot;downthemall&quot; will not suffice (at least
@@ -626,13 +626,13 @@ not without some serious scripting).</p>
 <p class=MsoNormal>ImageHost Grabber (IHG) is a powerful utility that makes the
 task of downloading these galleries a simple task. You can think of it as IHG
 doing all the work of &quot;open new link, right-click, save-as&quot;. But the
-functionality of IHG doesn't stop there.</p>
+functionality of IHG doesn’t stop there.</p>
 
 <p class=MsoNormal>IHG can automatically create the directories for you, and
 even prefix file names and directories so that images you download can be
 sorted chronologically and be sorted by the original page order. Years of
 research of download failure recovery has been implemented into IHG to ensure
-all available images are downloaded properly. If that wasn't enough, IHG can
+all available images are downloaded properly. If that wasn’t enough, IHG can
 even save a session to try again later. IHG also includes a special feature for
 forums that will allow you to download an entire thread of images. And last,
 but not least, IHG uses multiple downloads to increase the download rate of the
@@ -791,7 +791,7 @@ margin-left:.5in;margin-right:0in'>
 <p class=MsoNormal style='margin-left:.5in'>Open the &quot;Customize&quot; item
 under &quot;View-&gt;Toolbars&quot;, find the ImageHost Grabber toolbar button,
 and drag it to the toolbar where you want it to be located. For further help on
-this topic, check out Firefox's help file, or email me.</p>
+this topic, check out Firefox’s help file, or email me.</p>
 
 <br clear=all style='page-break-before:always'>
 
@@ -824,9 +824,9 @@ displayed on the page. The first part of the prefix is an eight character long,
 random alpha-numeric prefix that distinguishes the session. Each session will
 have a different prefix, even when running multiple sessions at a time. Also,
 when in thread sucker mode, each page will get a unique prefix. The second part
-is a number that corresponds to the picture's position on the page. The number
+is a number that corresponds to the picture’s position on the page. The number
 is padded with leading zeros so that non-logical sort algorithms can sort the
-files properly (i.e. pre-WinXP and UNIX flavored OS's).</p>
+files properly (i.e. pre-WinXP and UNIX flavored OS’s).</p>
 
 <p class=MsoNormal>&nbsp;</p>
 
@@ -954,7 +954,7 @@ border-bottom:none;border-right:none;padding:2.0pt 0in 0in 2.0pt;margin-left:
 <p class=MsoNormal style='margin-left:1.0in'>This option will allow you to
 remove duplicate links on the page. These are commonly found when a user
 comments on a gallery and quotes the images, thus producing duplicate links.
-If you're using the thread sucker, ImageHost Grabber will look at all the pages
+If you’re using the thread sucker, ImageHost Grabber will look at all the pages
 you are downloading for duplicate links.</p>
 
 <p class=MsoNormal>&nbsp;</p>
@@ -1068,16 +1068,16 @@ following conditions will cause a link to be retried:</p>
 
 <ul style='margin-left:.5in'>
 	<li class=MsoListParagraphCxSpFirst>incomplete request (but Firefox thinks it was complete)</li>
-	<li class=MsoListParagraphCxSpMiddle>request is taking too long (probably because the server gave up but Firefox didn't)</li>
+	<li class=MsoListParagraphCxSpMiddle>request is taking too long (probably because the server gave up but Firefox didn’t)</li>
 	<li class=MsoListParagraphCxSpMiddle>the request was cancelled by the server or by Firefox (for some un-godly reason)</li>
 	<li class=MsoListParagraphCxSpMiddle>there was some kind of error in the request</li>
-	<li class=MsoListParagraphCxSpLast>the server sent you a file, but it's not an image</li>
+	<li class=MsoListParagraphCxSpLast>the server sent you a file, but it’s not an image</li>
 </ul>
 
 <p class=MsoNormal style='margin-left:1.0in'>Also note that there are other
 cases where request is turned over to the retry function, but not because
 anything went wrong, but because an alternate URL was found. These other cases
-won't affect the retry count.</p>
+won’t affect the retry count.</p>
 
 <p class=MsoNormal>&nbsp;</p>
 
@@ -1111,11 +1111,11 @@ border-bottom:none;border-right:none;padding:2.0pt 0in 0in 2.0pt;margin-left:
 </div>
 
 <p class=MsoNormal style='margin-left:1.0in'>This option turns on the console
-logs. Use this if the extension doesn't work, or a feature of the extension
-doesn't work. This will record the fatal errors reported on the error console
+logs. Use this if the extension doesn’t work, or a feature of the extension
+doesn’t work. This will record the fatal errors reported on the error console
 into a log file that you can then send to the developer. This will decrease
-system performance slightly. This won't help you if the extension is working,
-but isn't doing what you expected it to do (that's called a logical error, and
+system performance slightly. This won’t help you if the extension is working,
+but isn’t doing what you expected it to do (that’s called a logical error, and
 is harder to debug). An example where you would want to enable this would be if
 you click on &quot;Get all pics on page&quot; and it does nothing.</p>
 
@@ -1135,13 +1135,13 @@ border-bottom:none;border-right:none;padding:2.0pt 0in 0in 2.0pt;margin-left:
 <p class=MsoNormal style='margin-left:1.0in'>This option turns on the
 debugging logs. Use this if the extension is working but is doing something
 different than what is expected. For instance, you click &quot;Get all pics on
-page&quot; and it downloads all the files, but the images it downloads aren't
+page&quot; and it downloads all the files, but the images it downloads aren’t
 the ones you wanted. This is called a logical error. This is much harder to
 debug than a syntax error (as described above). Because it is harder to debug,
 a very verbose output of the program execution is made. As a result, system
 performance will drop very noticeably. You should be careful with using this
 feature. Try to use a page with a small amount of images (i.e. 20 or less). And
-when you're done, copy the log to a local folder and clear the log. The log
+when you’re done, copy the log to a local folder and clear the log. The log
 file can get to several hundred kilobytes in a single run.</p>
 
 <p class=MsoNormal style='margin-left:1.0in'>Note: Firefox has to be restarted
@@ -1284,8 +1284,8 @@ margin-left:.5in;margin-right:0in'>
 
 <p class=MsoNormal style='margin-left:.5in'>This allows you to save all the
 items in the window to cache, which can be recalled later using the “Restore cached
-session” feature in the main ImageHost Grabber menu. This is helpful if you're
-having connection problems or whatever and you don't want to lose all the time
+session” feature in the main ImageHost Grabber menu. This is helpful if you’re
+having connection problems or whatever and you don’t want to lose all the time
 you put into building the download list.</p>
 
 <p class=MsoNormal>&nbsp;</p>
@@ -1410,7 +1410,7 @@ border-bottom:none;border-right:none;padding:2.0pt 0in 0in 2.0pt;margin-left:
 </div>
 
 <p class=MsoNormal style='margin-left:1.0in'>This feature will allow you to
-view the details of the request, such as where the file is being saved, the thumbnail's
+view the details of the request, such as where the file is being saved, the thumbnail’s
 URL, and the HTML associated with the thumbnail page.</p>
 
 <p class=MsoNormal>&nbsp;</p>
@@ -1549,7 +1549,7 @@ margin-left:.5in;margin-right:0in'>
 </div>
 
 <p class=MsoNormal style='margin-left:.5in'>This allows you to pick a host file
-other than the one residing in ImageHost Grabber's extension folder.</p>
+other than the one residing in ImageHost Grabber’s extension folder.</p>
 
 <p class=MsoNormal>&nbsp;</p>
 
@@ -1561,7 +1561,7 @@ margin-left:.5in;margin-right:0in'>
 </div>
 
 <p class=MsoNormal style='margin-left:.5in'>This uses the host file that
-resides in ImageHost Grabber's extension folder.</p>
+resides in ImageHost Grabber’s extension folder.</p>
 
 <p class=MsoNormal>&nbsp;</p>
 
@@ -1573,8 +1573,8 @@ margin-left:.5in;margin-right:0in'>
 </div>
 
 <p class=MsoNormal style='margin-left:.5in'>This will allow you to merge the
-entries in a host file (other than the one you're using) with the host file
-that you're currently using.</p>
+entries in a host file (other than the one you’re using) with the host file
+that you’re currently using.</p>
 
 <p class=MsoNormal>&nbsp;</p>
 

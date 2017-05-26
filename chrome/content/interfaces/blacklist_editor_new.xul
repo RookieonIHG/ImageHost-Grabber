@@ -5,11 +5,11 @@
 
 <dialog id="ig_blacklist_editor_new_win" title="&blacklist_editor_new.title;"
 		persist="height width"
-        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+		xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 		onload="onLoad();"
 		onunload="onUnLoad();"
-        buttons="accept,cancel"
-        ondialogaccept="return doOK();">
+		buttons="accept,cancel"
+		ondialogaccept="return doOK();">
 
 <script type="application/x-javascript" src="chrome://imagegrabber/content/interfaces/blacklist_editor_new.js"/>
 

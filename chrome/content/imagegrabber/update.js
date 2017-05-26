@@ -96,7 +96,7 @@ ihg_Functions.mergeHostFile = function mergeHostFile(onlineXML, hostFileObj) {
 
 	var hFile = hostFileObj.getHosts();
 	var hosts = hFile.getElementsByTagName("host");
-	
+
 	var tmpList = Array.map(mergHosts, function(host) {return host.getAttribute("id")}).sort();
 
 	for (var i = 0; i < tmpList.length; i++) {
@@ -108,10 +108,15 @@ ihg_Functions.mergeHostFile = function mergeHostFile(onlineXML, hostFileObj) {
 			}
 		}
 
-	var overWriteMode = false;
-	if (ihg_Globals.hostfMergeBehavior == "ask") overWriteMode = confirm(ihg_Globals.strings.overwrite_mode);
-	else if (ihg_Globals.hostfMergeBehavior == "overwrite") overWriteMode = true;
-			
+	// var overWriteMode = false;
+	// if (ihg_Globals.hostfMergeBehavior == "ask") overWriteMode = confirm(ihg_Globals.strings.overwrite_mode);
+	// else if (ihg_Globals.hostfMergeBehavior == "overwrite") overWriteMode = true;
+	switch(ihg_Globals.hostfMergeBehavior) {
+		case "ask":			var overWriteMode = promptService.confirm(null, null, ihg_Globals.strings.overwrite_mode); break;
+		case "overwrite":	var overWriteMode = true; break;
+		case "add":			var overWriteMode = false; break;
+		}
+
 	for (var i=0; i < mergHosts.length; i++) {
 		for (var j=0; j < hosts.length; j++) {
 			if (mergHosts[i].getAttribute("id") == hosts[j].getAttribute("id")) {

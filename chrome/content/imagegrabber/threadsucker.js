@@ -141,7 +141,7 @@ ihg_Functions.getRDun = function getRDun() {
 			tempLinks[i] = tempLinks[i].replace(/^\[embeddedImg\]/, "");
 			}
 
-		try  {
+		try {
 			var someURI = ihg_Globals.ioService.newURI(tempLinks[i], null, null);
 			}
 		catch(e) {
@@ -207,7 +207,7 @@ ihg_Functions.setUp_suckerReq = function setUp_suckerReq() {
 
 		var tmpURL = retval(threadsucker_Globals.threadURL);
 
-		if(tmpURL == "continue") continue;
+		if (tmpURL == "continue") continue;
 		if (!tmpURL){
 			ihg_Functions.updateDownloadStatus(ihg_Globals.strings.dont_know_how + " " + threadsucker_Globals.threadURL + ihg_Globals.strings.bailing);
 			return;

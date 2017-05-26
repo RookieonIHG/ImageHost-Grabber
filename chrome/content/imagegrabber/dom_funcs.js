@@ -1,23 +1,23 @@
 /****************************** Start of GPL Block ****************************
- *   ImageHost Grabber - Imagegrabber is a firefox extension designed to 
- *   download pictures from image hosts such as imagevenue, imagebeaver, and 
- *   others (see help file for a full list of supported hosts).
+ *	ImageHost Grabber - Imagegrabber is a firefox extension designed to
+ *	download pictures from image hosts such as imagevenue, imagebeaver, and
+ *	others (see help file for a full list of supported hosts).
  *
- *   Copyright (C) 2007   Matthew McMullen.
- * 
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
+ *	Copyright (C) 2007   Matthew McMullen.
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
+ *	This program is free software; you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation; either version 2 of the License, or
+ *	(at your option) any later version.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *	This program is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with this program; if not, write to the Free Software
+ *	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  ***************************  End of GPL Block *******************************/
 
@@ -33,16 +33,16 @@ ihg_Functions.getLinks = function getLinks(sometext) {
 
 	var filtered = sometext.replace(/\r?\n/g, " ");
 	filtered = filtered.match(re);
-	
+
 	var theLinks = [];
 	var caca = [];
 	ihg_Functions.LOG("In " + myself + ", fixing to find the links.\n");
-	
+
 	if (filtered) {
 		for (var j = 0; j < filtered.length; j++) {
 			if (filtered[j]) {
 				if (!ihg_Globals.downloadEmbeddedImages) theLinks[j] = filtered[j].match(/\bhref\s*=\s*('|").+?\1/i);
-	            else theLinks[j] = filtered[j].match(/\b(?:href|src)\s*=\s*('|").+?\1/i);
+				else theLinks[j] = filtered[j].match(/\b(?:href|src)\s*=\s*('|").+?\1/i);
 				if (theLinks[j]) {
 					var isEmbedded = (ihg_Globals.downloadEmbeddedImages && theLinks[j][0].match(/^src/i));
 					theLinks[j] = theLinks[j][0].split(/(?:href|src)\s*=\s*/i);
@@ -75,7 +75,7 @@ ihg_Functions.getImgSrcById = function getImgSrcById(sometext, theID){
 	filtered = filtered.match(/<img\b.+?>/ig);
 
 	var theLinks = new Array();
-		
+
 	// var re = new RegExp("\\bid\\s*=\\s*(\"|')?" + theID + "\\1[\\s>]");
 
 	ihg_Functions.LOG("In " + myself + ", fixing to find the image.\n");
@@ -95,7 +95,7 @@ ihg_Functions.getImgSrcById = function getImgSrcById(sometext, theID){
 		}
 
 	if(!caca) ihg_Functions.LOG("In " + myself + ", sometext is equal to: " + sometext + "\n");
-	ihg_Functions.LOG("In " + myself + ", caca is equal to: " + caca + "\n");	
+	ihg_Functions.LOG("In " + myself + ", caca is equal to: " + caca + "\n");
 	return caca;
 }
 
@@ -138,7 +138,7 @@ ihg_Functions.getImgSrcFromTag = function getImgSrcFromTag(sometext){
 	ihg_Functions.LOG("Entering " + myself + "\n");
 
 	var filtered = sometext;
-	
+
 	ihg_Functions.LOG("In " + myself + ", fixing to find the image.\n");
 	if (filtered) {
 		var theSrc = filtered.match(/\bsrc\s*=\s*("|')?(.+?)\1[\s>]/i);

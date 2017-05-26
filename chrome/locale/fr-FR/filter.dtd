@@ -10,15 +10,15 @@
 <!ENTITY  toggle "Inverser">
 
 <!ENTITY  simple "Simple:">
-<!ENTITY  it_allows_you_to_use_these_wildcards "Il vous permet d'utiliser ces caractères génériques:">
-<!ENTITY  matches_any_number_of_characters "* - Correspond à n'importe quel nombre de caractères.">
+<!ENTITY  it_allows_you_to_use_these_wildcards "Il vous permet d’utiliser ces caractères génériques:">
+<!ENTITY  matches_any_number_of_characters "* - Correspond à n’importe quel nombre de caractères.">
 <!ENTITY  matches_any_single_character "? - Correspond à tout caractère unique.">
 <!ENTITY  regular_expression "Expression régulière:">
 <!ENTITY  it_allows_you_to_create_a_regular_expression_using_js "Il vous permet de créer une expression régulière en utilisant le code JavaScript.">
 <!ENTITY  note_both_filters_are_case_insensitive "Note: les deux filtres sont insensibles à la casse.">
 
 <!ENTITY  url "URL">
-<!ENTITY  host_id "ID de l'hôte">
+<!ENTITY  host_id "ID de l’hôte">
 <!ENTITY  show_all "Afficher tout...">
 
 <!ENTITY  no_preview_available "Aucun aperçu disponible.">
