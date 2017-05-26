@@ -925,7 +925,7 @@ border-bottom:none;border-right:none;padding:2.0pt 0in 0in 2.0pt;margin-left:
 
 <p class=MsoNormal style='margin-left:1.0in'>This option allows you to
 suppress the dialog that asks you where to save the images. If you uncheck this
-option, images will be saved to the last directory that was used. </p>
+option, images will be saved to the last directory that was used.</p>
 
 <p class=MsoNormal>&nbsp;</p>
 
@@ -954,7 +954,7 @@ border-bottom:none;border-right:none;padding:2.0pt 0in 0in 2.0pt;margin-left:
 <p class=MsoNormal style='margin-left:1.0in'>This option will allow you to
 remove duplicate links on the page. These are commonly found when a user
 comments on a gallery and quotes the images, thus producing duplicate links.
-If you’re using the thread sucker, ImageHost Grabber will look at all the pages
+If you're using the thread sucker, ImageHost Grabber will look at all the pages
 you are downloading for duplicate links.</p>
 
 <p class=MsoNormal>&nbsp;</p>
@@ -1066,36 +1066,18 @@ border-bottom:none;border-right:none;padding:2.0pt 0in 0in 2.0pt;margin-left:
 many times it should retry each link before it gives up and moves on. The
 following conditions will cause a link to be retried:</p>
 
-<p class=MsoNormal>&nbsp;</p>
-
-<p class=MsoListParagraphCxSpFirst style='margin-left:1.25in;text-indent:-.25in'><span
-style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span>incomplete request (but Firefox thinks it was complete)</p>
-
-<p class=MsoListParagraphCxSpMiddle style='margin-left:1.25in;text-indent:-.25in'><span
-style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span>request is taking too long (probably because the server gave up
-but Firefox didn't)</p>
-
-<p class=MsoListParagraphCxSpMiddle style='margin-left:1.25in;text-indent:-.25in'><span
-style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span>the request was cancelled by the server or by Firefox (for some
-un-godly reason)</p>
-
-<p class=MsoListParagraphCxSpMiddle style='margin-left:1.25in;text-indent:-.25in'><span
-style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span>there was some kind of error in the request</p>
-
-<p class=MsoListParagraphCxSpLast style='margin-left:1.25in;text-indent:-.25in'><span
-style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span>the server sent you a file, but it's not an image</p>
-
-<p class=MsoNormal>&nbsp;</p>
+<ul style='margin-left:.5in'>
+	<li class=MsoListParagraphCxSpFirst>incomplete request (but Firefox thinks it was complete)</li>
+	<li class=MsoListParagraphCxSpMiddle>request is taking too long (probably because the server gave up but Firefox didn't)</li>
+	<li class=MsoListParagraphCxSpMiddle>the request was cancelled by the server or by Firefox (for some un-godly reason)</li>
+	<li class=MsoListParagraphCxSpMiddle>there was some kind of error in the request</li>
+	<li class=MsoListParagraphCxSpLast>the server sent you a file, but it's not an image</li>
+</ul>
 
 <p class=MsoNormal style='margin-left:1.0in'>Also note that there are other
 cases where request is turned over to the retry function, but not because
 anything went wrong, but because an alternate URL was found. These other cases
-won’t affect the retry count. </p>
+won't affect the retry count.</p>
 
 <p class=MsoNormal>&nbsp;</p>
 
@@ -1220,27 +1202,12 @@ margin-left:.5in;margin-right:0in'>
 
 </div>
 
-<p class=MsoListParagraphCxSpFirst style='margin-left:83.25pt;text-indent:-.25in'><span
-style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span>You can open the file after it has finished downloading by double
-clicking on the entry item</p>
-
-<p class=MsoListParagraphCxSpMiddle style='margin-left:83.25pt;text-indent:
--.25in'><span style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span>You can select multiple items in sequence by clicking on the
-first item in the sequence, hold the shift key, and click the last item in the
-sequence</p>
-
-<p class=MsoListParagraphCxSpMiddle style='margin-left:83.25pt;text-indent:
--.25in'><span style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span>You can select multiple items (not in sequence) by clicking on
-the first item, then while holding on the control key, click on each subsequent
-item to be selected</p>
-
-<p class=MsoListParagraphCxSpLast style='margin-left:83.25pt;text-indent:-.25in'><span
-style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-</span></span>You can perform actions on an item (or selection of items) by
-right clicking on that item (or any item in the selection)</p>
+<ul>
+	<li class=MsoListParagraphCxSpFirst>You can open the file after it has finished downloading by double clicking on the entry item</li>
+	<li class=MsoListParagraphCxSpMiddle>You can select multiple items in sequence by clicking on the first item in the sequence, hold the shift key, and click the last item in the sequence</li>
+	<li class=MsoListParagraphCxSpMiddle>You can select multiple items (not in sequence) by clicking on the first item, then while holding on the control key, click on each subsequent item to be selected</li>
+	<li class=MsoListParagraphCxSpLast>You can perform actions on an item (or selection of items) by right clicking on that item (or any item in the selection)</li>
+</ul>
 
 <p class=MsoNormal>&nbsp;</p>
 
@@ -1317,8 +1284,8 @@ margin-left:.5in;margin-right:0in'>
 
 <p class=MsoNormal style='margin-left:.5in'>This allows you to save all the
 items in the window to cache, which can be recalled later using the “Restore cached
-session” feature in the main ImageHost Grabber menu. This is helpful if you’re
-having connection problems or whatever and you don’t want to lose all the time
+session” feature in the main ImageHost Grabber menu. This is helpful if you're
+having connection problems or whatever and you don't want to lose all the time
 you put into building the download list.</p>
 
 <p class=MsoNormal>&nbsp;</p>
@@ -1582,7 +1549,7 @@ margin-left:.5in;margin-right:0in'>
 </div>
 
 <p class=MsoNormal style='margin-left:.5in'>This allows you to pick a host file
-other than the one residing in ImageHost Grabber’s extension folder.</p>
+other than the one residing in ImageHost Grabber's extension folder.</p>
 
 <p class=MsoNormal>&nbsp;</p>
 
@@ -1594,7 +1561,7 @@ margin-left:.5in;margin-right:0in'>
 </div>
 
 <p class=MsoNormal style='margin-left:.5in'>This uses the host file that
-resides in ImageHost Grabber’s extension folder.</p>
+resides in ImageHost Grabber's extension folder.</p>
 
 <p class=MsoNormal>&nbsp;</p>
 
@@ -1606,8 +1573,8 @@ margin-left:.5in;margin-right:0in'>
 </div>
 
 <p class=MsoNormal style='margin-left:.5in'>This will allow you to merge the
-entries in a host file (other than the one you’re using) with the host file
-that you’re currently using.</p>
+entries in a host file (other than the one you're using) with the host file
+that you're currently using.</p>
 
 <p class=MsoNormal>&nbsp;</p>
 
