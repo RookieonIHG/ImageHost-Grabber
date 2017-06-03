@@ -754,7 +754,7 @@ ihg_Functions.initVars = function initVars(skipDirDialog) {
 	ihg_Functions.LOG("In " + myself + ", about to call getIGPrefs().\n");
 	ihg_Functions.getIGPrefs();
 
-	if (ihg_Globals.showDLDir && !skipDirDialog) {
+	if ((ihg_Globals.lastDLDir == "") || (ihg_Globals.showDLDir && !skipDirDialog)) {
 		ihg_Functions.LOG("In " + myself + ", about to get ihg_Globals.baseDirSave\n");
 
 		ihg_Globals.baseDirSave = ihg_Functions.setDownloadDir(ihg_Globals.strings.setDownloadDir, ihg_Globals.lastDLDir);
@@ -762,11 +762,11 @@ ihg_Functions.initVars = function initVars(skipDirDialog) {
 			ihg_Functions.LOG("In " + myself + ", user cancelled the request.\n");
 			return false; }
 		ihg_Globals.prefManager.setCharPref("extensions.imagegrabber.lastdldir", ihg_Globals.baseDirSave);
-		ihg_Globals.lastDLDirHistory = ihg_Globals.lastDLDirHistory.filter(function (dldir) {return dldir != ihg_Globals.baseDirSave});
-		if (ihg_Globals.lastDLDirHistory.unshift(ihg_Globals.baseDirSave) > 8) ihg_Globals.lastDLDirHistory.pop();
-		ihg_Globals.prefManager.setCharPref("extensions.imagegrabber.lastdldirhistory", stringify(ihg_Globals.lastDLDirHistory));
 		}
 	else ihg_Globals.baseDirSave = ihg_Globals.lastDLDir;
+	ihg_Globals.lastDLDirHistory = ihg_Globals.lastDLDirHistory.filter(function (dldir) {return dldir != ihg_Globals.baseDirSave});
+	if (ihg_Globals.lastDLDirHistory.unshift(ihg_Globals.baseDirSave) > 8) ihg_Globals.lastDLDirHistory.pop();
+	ihg_Globals.prefManager.setCharPref("extensions.imagegrabber.lastdldirhistory", stringify(ihg_Globals.lastDLDirHistory));
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.baseDirSave is equal to: " + ihg_Globals.baseDirSave + "\n");
 
 	if (ihg_Globals.suckMode && !skipDirDialog) {

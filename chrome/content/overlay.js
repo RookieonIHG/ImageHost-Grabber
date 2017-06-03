@@ -29,8 +29,8 @@ function ihg_initOverlay() {
 	// This should work for Firefox v1.5 to v3.6
 	// It returns a file object initialized with the path where the extension is located
 	catch (e) {
-		let nsLocFile = Components.classes["@mozilla.org/extensions/manager;1"]
-						.getService(Components.interfaces.nsIExtensionManager).getInstallLocation(id).getItemLocation(id);
+		let ExtensionManager = Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces.nsIExtensionManager);
+		let nsLocFile = ExtensionManager.getInstallLocation(id).getItemLocation(id);
 		ihg_Globals.addonPath = nsLocFile.path;
 		ihgDefaultBranch.setCharPref("addonPath", ihg_Globals.addonPath);
 		ihgDefaultBranch.lockPref("addonPath");
@@ -70,7 +70,7 @@ function GetConsoleWindow() {
 
 function ihgConsoleWindow_onloaded()
 {
-    ihg_Globals.Console = ihg_Globals.ConsoleWin.Accessor;
+	ihg_Globals.Console = ihg_Globals.ConsoleWin.Accessor;
 }
 
 function ihg_toolbarButtonCommand(event) {

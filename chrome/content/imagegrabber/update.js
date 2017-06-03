@@ -22,6 +22,7 @@
  ***************************  End of GPL Block *******************************/
 
 
+promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
 
 
 ///////////////////////////////////////////////////////////
@@ -56,7 +57,7 @@ ihg_Functions.autoUpdate = function autoUpdate() {
 			
 				if (remoteLastMod > localLastMod) {
 					var conf = ihg_Globals.hostfUpdateConfirm;
-					if (!conf) conf = confirm(ihg_Globals.strings.updated_hostf_found + "\n" + ihg_Globals.strings.update_local_hostf);
+					if (!conf) conf = promptService.confirm(null, null, ihg_Globals.strings.updated_hostf_found + "\n" + ihg_Globals.strings.update_local_hostf);
 				
 					if (conf) {
 						req = new XMLHttpRequest();

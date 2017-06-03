@@ -38,18 +38,16 @@ ihg_Functions.getLinks = function getLinks(sometext) {
 	var caca = [];
 	ihg_Functions.LOG("In " + myself + ", fixing to find the links.\n");
 
+	re = ihg_Globals.downloadEmbeddedImages ? /\b(?:href|src)\s*=\s*('|")(.+?)\1/i : /\bhref\s*=\s*('|")(.+?)\1/i;
+
 	if (filtered) {
 		for (var j = 0; j < filtered.length; j++) {
 			if (filtered[j]) {
-				if (!ihg_Globals.downloadEmbeddedImages) theLinks[j] = filtered[j].match(/\bhref\s*=\s*('|").+?\1/i);
-				else theLinks[j] = filtered[j].match(/\b(?:href|src)\s*=\s*('|").+?\1/i);
+				theLinks[j] = filtered[j].match(re);
 				if (theLinks[j]) {
 					var isEmbedded = (ihg_Globals.downloadEmbeddedImages && theLinks[j][0].match(/^src/i));
-					theLinks[j] = theLinks[j][0].split(/(?:href|src)\s*=\s*/i);
-					theLinks[j][1] = theLinks[j][1].replace(/["']/g, "");
-					theLinks[j][1] = theLinks[j][1].replace(/&amp;/ig, '&');
 
-					var url = theLinks[j][1];
+					var url = theLinks[j][2].replace(/&amp;/ig, '&');
 					if (ihg_Globals.downloadEmbeddedImages && isEmbedded)
 						url = "[embeddedImg]" + url;
 					else
@@ -76,13 +74,10 @@ ihg_Functions.getImgSrcById = function getImgSrcById(sometext, theID){
 
 	var theLinks = new Array();
 
-	// var re = new RegExp("\\bid\\s*=\\s*(\"|')?" + theID + "\\1[\\s>]");
-
 	ihg_Functions.LOG("In " + myself + ", fixing to find the image.\n");
 	if (filtered) {
 		for (var j = 0; j < filtered.length; j++) {
 			if (filtered[j]) {
-				// if (re.test(filtered[j])) {
 				var idAttr = filtered[j].match(/\bid\s*=\s*("|')?(.+?)\1[\s>]/i);
 				if (idAttr && idAttr[2] == theID) {
 					theLinks[j] = filtered[j].match(/\bsrc\s*=\s*("|')?(.+?)\1[\s>]/i);

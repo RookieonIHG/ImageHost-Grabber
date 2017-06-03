@@ -39,13 +39,13 @@ ihg_Functions.CCallWrapper = function CCallWrapper(aObjectReference, aDelay, aMe
 	}
 
 ihg_Functions.CCallWrapper.prototype.execute = function() {
-	ihg_Functions.LOG("CCallWrapper with mId of " + this.mId + " and reqID of " + this.mReqId + " has timed out.  Executing the passed function\n");
+	ihg_Functions.LOG("CCallWrapper with mId of " + this.mId + " and reqID of " + this.mReqId + " has timed out. Executing the passed function '" + this.mMethodName + "'\n");
 	this.mObjectReference[this.mMethodName]();
 	delete ihg_Functions.CCallWrapper.mPendingCalls[this.mId];
 	};
 
 ihg_Functions.CCallWrapper.prototype.cancel = function() {
-	ihg_Functions.LOG("CCallWrapper object with mId of " + this.mId + " and reqID of " + this.mReqId + " cancelled.\n");
+	ihg_Functions.LOG("CCallWrapper object with mId of " + this.mId + " and reqID of " + this.mReqId + " cancelled.[" + this.mMethodName + "]\n");
 	clearTimeout(this.mTimerId);
 	delete ihg_Functions.CCallWrapper.mPendingCalls[this.mId];
 	};

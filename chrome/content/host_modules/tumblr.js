@@ -27,7 +27,7 @@ ihg_Functions.getTumblrPage = function getTumblrPage(pageURL, filterImages, time
 
 		for (var i = 0; i < tempLinks.length; i++) {
 			// Possibly add some code here to handle other javascript type links
-			var jsWrappedUrl = tempLinks[i].match(/javascript.+(\'|\")(http.+?)\1/);
+			var jsWrappedUrl = tempLinks[i].match(/javascript.+(\'|\")(https?.+?)\1/);
 			if (jsWrappedUrl) tempLinks[i] = jsWrappedUrl[2];
 
 			var isEmbedded = false;

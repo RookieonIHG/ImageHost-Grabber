@@ -135,9 +135,8 @@ ihg_Functions.getRDun = function getRDun() {
 		var jsWrappedUrl = tempLinks[i].match(/javascript.+(\'|\")(http.+?)\1/);
 		if (jsWrappedUrl) tempLinks[i] = jsWrappedUrl[2];
 
-		var isEmbedded = false;
-		if (tempLinks[i].match(/^\[embeddedImg\]/)) {
-			isEmbedded = true;
+		var isEmbedded = /^\[embeddedImg\]/.test(tempLinks[i]);
+		if (isEmbedded) {
 			tempLinks[i] = tempLinks[i].replace(/^\[embeddedImg\]/, "");
 			}
 
@@ -190,21 +189,19 @@ ihg_Functions.setUp_suckerReq = function setUp_suckerReq() {
 			}
 		}
 
-	var temp_array = new Array();
-	if (!tempThing) return temp_array; // It means we don't know how to handle this forum yet
+	if (!tempThing) return; // It means we don't know how to handle this forum yet
+
+	var cunt = tempThing.match(/function\((.+)\)/);
+	var aa = tempThing.replace(/[\n\f\r]/g, 'NEWLINE');
+	var bb = aa.match(/{(.+)}/)[1];
+	var cc = bb.replace(/NEWLINE/g, '\n');
+
+	var retval = new Function(cunt[1], cc);
 
 	var count = 0;
+	var temp_array = new Array();
 
 	while (threadsucker_Globals.linkIndex <= ihg_Globals.lastPage) {
-		var tmpURL = "";
-
-		var cunt = tempThing.match(/function\((.+)\)/);
-		var aa = tempThing.replace(/[\n\f\r]/g, 'NEWLINE');
-		var bb = aa.match(/{(.+)}/)[1];
-		var cc = bb.replace(/NEWLINE/g, '\n');
-
-		var retval = new Function(cunt[1], cc);
-
 		var tmpURL = retval(threadsucker_Globals.threadURL);
 
 		if (tmpURL == "continue") continue;

@@ -48,7 +48,7 @@
 		<row align="center">
 			<label control="tb_hostLabel" value="&host_label;"/>
 			<hbox align="center">
-				<textbox id="tb_hostLabel" flex="1"/>
+				<textbox id="tb_hostLabel" placeholder="Unique identifying label for the entry" flex="1"/>
 				<hbox onchange="validate(event.target);">
 					<checkbox id="cb_hostMaxThreads" label="&host_max_threads;" tooltip="host_max_threads-tip" oncommand="document.getElementById('tb_hostMaxThreads').disabled = !this.checked; validate(this);"/>
 					<textbox id="tb_hostMaxThreads" type="number" min="1" max="&maxThreads_HighLimit;" size="2" disabled="true"/>
@@ -59,7 +59,7 @@
 		</row>
 		<row align="center">
 			<label control="tb_urlPattern" value="&url_pattern;"/>
-			<textbox id="tb_urlPattern"/>
+			<textbox id="tb_urlPattern" placeholder="^https?:\/\/..."/>
 		</row>
 	</rows>
 </grid>
