@@ -1,3 +1,4 @@
+pref("extensions.imagegrabber.addonVersionPrevious", "");
 pref("extensions.imagegrabber.autorename", true);
 pref("extensions.imagegrabber.fileexistsbehavior", "rename");
 pref("extensions.imagegrabber.killmenow", false);

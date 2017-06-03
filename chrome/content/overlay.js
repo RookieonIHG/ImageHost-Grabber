@@ -22,6 +22,9 @@ function ihg_initOverlay() {
 			ihg_Globals.addonPath = addon.getResourceURI("").QueryInterface(Components.interfaces.nsIFileURL).file.path;
 			ihgDefaultBranch.setCharPref("addonPath", ihg_Globals.addonPath);
 			ihgDefaultBranch.lockPref("addonPath");
+			ihgDefaultBranch.setCharPref("addonVersionCurrent", addon.version);
+			ihgDefaultBranch.lockPref("addonVersionCurrent");
+			CheckUpdate();
 		}
 		AddonManager.getAddonByID(id, tempFunc);
 	}
@@ -34,6 +37,10 @@ function ihg_initOverlay() {
 		ihg_Globals.addonPath = nsLocFile.path;
 		ihgDefaultBranch.setCharPref("addonPath", ihg_Globals.addonPath);
 		ihgDefaultBranch.lockPref("addonPath");
+		let version = ExtensionManager.getItemForID(id).version;
+		ihgDefaultBranch.setCharPref("addonVersionCurrent", version);
+		ihgDefaultBranch.lockPref("addonVersionCurrent");
+		CheckUpdate();
 	}
 
 	ihgDefaultBranch.setCharPref("enable@startup", stringify({enableConLog: ihg_Globals.conLogOut, enableDebug: ihg_Globals.debugOut}));
@@ -71,6 +78,26 @@ function GetConsoleWindow() {
 function ihgConsoleWindow_onloaded()
 {
 	ihg_Globals.Console = ihg_Globals.ConsoleWin.Accessor;
+}
+
+function CheckUpdate() {
+	var versionComparator = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
+							.getService(Components.interfaces.nsIVersionComparator);
+
+	var ihgBranch = ihg_Globals.prefManager.getBranch("extensions.imagegrabber.");
+
+	let Prev = ihgBranch.getCharPref("addonVersionPrevious");
+	let Curr = ihgBranch.getCharPref("addonVersionCurrent");
+
+	if (versionComparator.compare(Curr, Prev) > 0) {
+		var default_hostFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+		default_hostFile.initWithPath(ihg_Globals.addonPath);
+		default_hostFile.append("hostf.xml");
+		if (default_hostFile.exists()) {
+			default_hostFile.lastModifiedTime = 0;
+			ihgBranch.setCharPref("addonVersionPrevious", Curr);
+		}
+	}
 }
 
 function ihg_toolbarButtonCommand(event) {

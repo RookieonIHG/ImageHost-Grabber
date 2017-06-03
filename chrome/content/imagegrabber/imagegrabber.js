@@ -54,6 +54,7 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 			ihg_Functions.LOG("In hostGrabber, call to function initVars failed for some reason.\n");
 			return;
 			}
+		if (ihg_Globals.hostfAutoUpdate && filterImages) ihg_Functions.autoUpdate();
 
 		try {
 			if (content.document.documentElement.outerHTML &&

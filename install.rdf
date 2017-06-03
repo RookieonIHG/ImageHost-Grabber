@@ -10,13 +10,15 @@
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="{E4091D66-127C-11DB-903A-DE80D2EFDFE8}"
                    em:name="ImageHost Grabber"
-                   em:version="1.7.0"
+                   em:version="1.7.0RC3"
                    em:creator="Cybormatt"
                    em:description="Downloads all the images hosted on many of the popular free image hosts."
                    em:homepageURL="http://imagehost-grabber.eu/"
                    em:iconURL="chrome://imagegrabber/skin/images/imagegrabber.png"
                    em:optionsURL="chrome://imagegrabber/content/interfaces/options.xul">
     <em:translator>Queenie Fontaine [French]</em:translator>
+    <em:translator>Jörn Reppenhagen [German]</em:translator>
+    <em:translator>Ricardo A. Rivas [Spanish]</em:translator>
     <em:contributor>Web Surfer</em:contributor>
     <em:contributor>blockout69</em:contributor>
     <em:contributor>nullptr</em:contributor>
@@ -28,6 +30,28 @@
     <em:updateKey>MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCo9rfIHZsHy3OJQkGWS+tqElkqSmYt64g7N2BiLIbwD1uU/ZL+zOr4efNX6WNyzST3SFkXaVJHsY/PTKMCQWh0Kapvk0GaItrPFe5kXExCcRE/+Iv6Aic7HluYM6YPnx510s9xVq3S9SZTx/jKS2gBFEvo0ARh7fZi6sdbIjLP9wIDAQAB</em:updateKey>
 
     <em:localized>
+      <Description>
+        <em:locale>de-DE</em:locale>
+        <em:name>ImageHost Grabber</em:name>
+        <em:creator>Cybormatt</em:creator>
+        <em:homepageURL>http://imagehost-grabber.com/</em:homepageURL>
+        <em:translator>Jörn Reppenhagen</em:translator>
+        <em:contributor>Web Surfer</em:contributor>
+        <em:contributor>blockout69</em:contributor>
+        <em:contributor>nullptr</em:contributor>
+        <em:contributor>Rookie</em:contributor>
+      </Description>
+      <Description>
+        <em:locale>es-ES</em:locale>
+        <em:name>ImageHost Grabber</em:name>
+        <em:creator>Cybormatt</em:creator>
+        <em:homepageURL>http://imagehost-grabber.com/</em:homepageURL>
+        <em:translator>Ricardo A. Rivas</em:translator>
+        <em:contributor>Web Surfer</em:contributor>
+        <em:contributor>blockout69</em:contributor>
+        <em:contributor>nullptr</em:contributor>
+        <em:contributor>Rookie</em:contributor>
+      </Description>
       <Description>
         <em:locale>fr-FR</em:locale>
         <em:name>ImageHost Grabber</em:name>
