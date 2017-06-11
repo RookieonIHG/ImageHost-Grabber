@@ -8,8 +8,9 @@
 		xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 		onload="onLoad();"
 		onunload="onUnLoad();"
-		buttons="accept,cancel"
-		ondialogaccept="return doOK();">
+		buttons="accept,cancel,extra1"
+		ondialogaccept="return doOK();"
+		ondialogextra1="doOK(true); this.close();">
 
 <stringbundleset id="stringbundleset">
     <stringbundle id="imagegrabber-strings" src="chrome://imagegrabber/locale/imagegrabber.properties" />
@@ -154,6 +155,7 @@
 		<hbox>
 			<spacer flex="1"/>
 			<button dlgtype="accept"/>
+			<button dlgtype="extra1" label="Pause"/>
 			<button dlgtype="cancel"/>
 		</hbox>
 	</vbox>

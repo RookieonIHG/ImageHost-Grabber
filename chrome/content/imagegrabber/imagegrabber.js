@@ -58,7 +58,7 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 
 		try {
 			if (content.document.documentElement.outerHTML &&
-				content.document.documentElement.outerHTML.match(/src="http:\/\/assets\.tumblr\.com\/assets\/scripts\/archive\/archive\.js/) &&
+				content.document.documentElement.outerHTML.match(/src="https?:\/\/assets\.tumblr\.com\/assets\/scripts\/archive\/archive\.js/) &&
 				content.document.URL.match(/\/archive/)) {
 				ihg_Functions.getTumblrPage(content.document.URL, filterImages);
 				return;
@@ -88,12 +88,12 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 	var time = new Date();
 	var x = time.getTime();
 
-	if (ihg_Globals.suckMode) var objLinks = ihg_Functions.setUpLinksOBJ(docLinks, filterImages);
-	else var objLinks = ihg_Functions.setUpLinksOBJ(docLinks, filterImages, thumbLinks);
+	if (ihg_Globals.suckMode) var [pause, objLinks] = ihg_Functions.setUpLinksOBJ(docLinks, filterImages);
+	else var [pause, objLinks] = ihg_Functions.setUpLinksOBJ(docLinks, filterImages, thumbLinks);
 
 	if (!objLinks) return;
 
-	var tmp_req_objs = ihg_Functions.setUpReq(objLinks);
+	var tmp_req_objs = ihg_Functions.setUpReq(pause, objLinks);
 	tmp_req_objs = ihg_Functions.setUpLinkedList(tmp_req_objs);
 
 	if (tmp_req_objs.length == 0) {
@@ -466,9 +466,9 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 
 	if (filterImages) {
 		var filtered = ihg_Functions.showFilterDialog(objLinks);
-		if (!filtered) return null;
+		if (!filtered) return [null, null];
 
-		objLinks = filtered.links;
+		return [filtered.pause, filtered.links];
 		}
 /* 
 	for (var z = 0; z < dirsToCreate.length; z++) {
@@ -477,7 +477,7 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 			}
 		}
  */
-	return objLinks;
+	return [false, objLinks];
 } //end of function
 
 
@@ -491,7 +491,7 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
  * Returns an array of request objects. 
  *
  */
-ihg_Functions.setUpReq = function setUpReq(objLinks) {
+ihg_Functions.setUpReq = function setUpReq(pause, objLinks) {
 	var dateString = ihg_Functions.getFormattedDate();
 	ihg_Globals.baseDirSave = ihg_Globals.prefManager.getCharPref("extensions.imagegrabber.lastdldir");
 
@@ -554,9 +554,13 @@ ihg_Functions.setUpReq = function setUpReq(objLinks) {
 			//if (inner_link.match(/boxtheclown/)) req.init = boxclown_init;
 
 			/* Set the referrer for those sites that require it */
-			if (inner_link.match(/^http:\/\/[^\/]*bruce-juice\.com\//)) {
+			if (inner_link.match(/^https?:\/\/[^\/]*bruce-juice\.com\//)) {
 				req.referer = req.originatingPage;
 				}
+
+			req.stopped = pause;
+			req.finished = pause;
+			req.aborted = pause;
 
 			temp_array[count] = req;
 			temp_array[req.uniqID] = temp_array[count];

@@ -5,12 +5,12 @@
   <RDF:Description RDF:about="rdf:#$dxLld3"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="1.5"
-                   em:maxVersion="30.*" />
+                   em:maxVersion="37.*" />
 
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="{E4091D66-127C-11DB-903A-DE80D2EFDFE8}"
                    em:name="ImageHost Grabber"
-                   em:version="1.7.0RC3"
+                   em:version="1.7.0RC4"
                    em:creator="Cybormatt"
                    em:description="Downloads all the images hosted on many of the popular free image hosts."
                    em:homepageURL="http://imagehost-grabber.eu/"
@@ -34,7 +34,7 @@
         <em:locale>de-DE</em:locale>
         <em:name>ImageHost Grabber</em:name>
         <em:creator>Cybormatt</em:creator>
-        <em:homepageURL>http://imagehost-grabber.com/</em:homepageURL>
+        <em:homepageURL>http://imagehost-grabber.eu/</em:homepageURL>
         <em:translator>Jörn Reppenhagen</em:translator>
         <em:contributor>Web Surfer</em:contributor>
         <em:contributor>blockout69</em:contributor>
@@ -45,7 +45,7 @@
         <em:locale>es-ES</em:locale>
         <em:name>ImageHost Grabber</em:name>
         <em:creator>Cybormatt</em:creator>
-        <em:homepageURL>http://imagehost-grabber.com/</em:homepageURL>
+        <em:homepageURL>http://imagehost-grabber.eu/</em:homepageURL>
         <em:translator>Ricardo A. Rivas</em:translator>
         <em:contributor>Web Surfer</em:contributor>
         <em:contributor>blockout69</em:contributor>
@@ -56,7 +56,7 @@
         <em:locale>fr-FR</em:locale>
         <em:name>ImageHost Grabber</em:name>
         <em:creator>Cybormatt</em:creator>
-        <em:homepageURL>http://imagehost-grabber.com/</em:homepageURL>
+        <em:homepageURL>http://imagehost-grabber.eu/</em:homepageURL>
         <em:description>Permet de télécharger toutes les images partagées sur de nombreux sites d'hébergement.</em:description>
         <em:translator>Queenie Fontaine</em:translator>
         <em:contributor>Web Surfer</em:contributor>

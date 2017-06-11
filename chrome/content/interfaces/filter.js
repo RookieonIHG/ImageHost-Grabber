@@ -137,7 +137,7 @@ function MaskHost(HostID_target) {
 }
 
 
-function doOK() {
+function doOK(queuePaused) {
 	var doc = this.document;
 	var newObjLinks = new LinksOBJ();
 	var currentId = 0;
@@ -179,7 +179,7 @@ function doOK() {
 	lastDLDirHistory.value = stringify(lastDLDirHistoryValue);
 	document.getElementById("lastDLDir").value = baseDirSave;
 
-	params.out = {links:newObjLinks};
+	params.out = {pause:queuePaused, links:newObjLinks};
 
 	return true;
 }
@@ -522,4 +522,5 @@ function updateCounter() {
 		value = ihgPlural.getFormatted(counter, getAttribute("_value"), [counter, tree.view.rowCount]);
 
 	doc.documentElement.getButton("accept").disabled = (counter == 0);
+	doc.documentElement.getButton("extra1").disabled = (counter == 0);
 }
