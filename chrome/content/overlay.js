@@ -139,7 +139,6 @@ function ihg_toolbarButtonCommand(event) {
 
 function ihg_toolbarButtonClick(event) {
 	if (isThread(content.document.location.href) == false) return;
-	
 	switch(event.button) {
 		//case 0:
 			// Left click
@@ -151,7 +150,7 @@ function ihg_toolbarButtonClick(event) {
 		//case 2:
 			// Right click
 			//break;
-		}
+	}
 }
 
 function isThread(URL) {
@@ -160,19 +159,16 @@ function isThread(URL) {
 		var fsFile = forumStyleFileObj.getForumStyles();
 		ihg_Globals.forums = fsFile.getElementsByTagName("forum");
 	}
-	
 	for (var i = 0; i < ihg_Globals.forums.length; i++) {
 		var uPatNode = ihg_Globals.forums[i].getElementsByTagName("urlpattern")[0];
 		var uPat = new RegExp(uPatNode.textContent);
 		if (URL.match(uPat)) return true;
 	}
-	
 	return false;
 }
 
 function ihg_showInToolsInit() {
 	if (this.state == 'open') return;
-
 	let showInTools = document.getElementById("showInTools").value;
 	document.getElementById('ihgSep').setAttribute('hidden', !showInTools);
 	document.getElementById('menu_IGtools').setAttribute('hidden', !showInTools);
@@ -180,11 +176,8 @@ function ihg_showInToolsInit() {
 
 function ihg_contextMenuInit() {
 	if (this.state == 'open') return;
-	
 	if (window.gContextMenu == null) return;
-	
 	var isLnk = gContextMenu.onLink;
-	
 	var sst = document.getElementById("suck_sel_thread");
 	if (isLnk && isThread(content.document.activeElement.href)) {
 		sst.setAttribute("disabled", false);

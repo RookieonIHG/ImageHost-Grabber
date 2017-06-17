@@ -21,13 +21,9 @@
  *
  ***************************  End of GPL Block *******************************/
 
-
-
-
 // CacheFileService constructor
 //
 // cacheFileID: a string representing the file
-
 ihg_Functions.CacheFileService = function CacheFileService(cacheFileID) {
 	if (!cacheFileID) throw "IHG error: cacheFileID is null in CacheFileService";
 
@@ -87,10 +83,7 @@ ihg_Functions.CacheFileService.prototype = {
 
 		return shitty;
 		}
-	}
-
-
-
+}
 
 ihg_Functions.forumStyleFileService = function forumStyleFileService() {
 	var myself = arguments.callee.name;
@@ -100,8 +93,7 @@ ihg_Functions.forumStyleFileService = function forumStyleFileService() {
 	forumStyleFile.initWithPath(ihg_Globals.addonPath);
 	forumStyleFile.append("forum_styles.xml");
 	this.forumStyleFile = forumStyleFile;
-	}
-
+}
 
 ihg_Functions.forumStyleFileService.prototype = {
 	getForumStyles : function forum_getForumStyles() {
@@ -118,8 +110,7 @@ ihg_Functions.forumStyleFileService.prototype = {
 		
 		return req.responseXML;
 		}
-	}
-
+}
 
 // The HostFileService class simply reads the data from the host file, then passes it along
 // as a XML document that can be parsed with the DOM (Document Object Model).
@@ -145,7 +136,7 @@ ihg_Functions.HostFileService = function HostFileService() {
 
 	this.hostFile = hostFile;
 	this.hostf_servers = hostf_servers;
-	}
+}
 
 
 ihg_Functions.HostFileService.prototype = {
@@ -162,7 +153,7 @@ ihg_Functions.HostFileService.prototype = {
 		req.send(null);
 		
 		return req.responseXML;
-		},
+	},
 		
 	getHostf_servers : function host_getHostf_servers() {
 		if( !this.hostf_servers.exists() ) return null;
@@ -174,11 +165,8 @@ ihg_Functions.HostFileService.prototype = {
 		req.send(null);
 		
 		return req.responseXML;
-		}
 	}
-
-
-
+}
 
 ihg_Functions.dlWinCacheService = function dlWinCacheService(cacheFilePath) {
 	if (!cacheFilePath) throw "IHG error: cacheFilePath is null in dlWinCacheService";
@@ -190,14 +178,12 @@ ihg_Functions.dlWinCacheService = function dlWinCacheService(cacheFilePath) {
 	cacheFile.initWithPath(cacheFilePath);
 	
 	this.cacheFile = cacheFile;
-	}
-
+}
 
 ihg_Functions.dlWinCacheService.prototype = {
 	writeCache : function dlWin_writeCache(req_objs) {
 		var newDocument = Components.classes["@mozilla.org/xml/xml-document;1"].createInstance(Components.interfaces.nsIDOMXMLDocument);
 		var newRoot = newDocument.createElement("root");
-
 
 		for(var i = 0; i < req_objs.length; i++) { 
 			var newReqObj = newDocument.createElement("reqObj");
@@ -245,10 +231,8 @@ ihg_Functions.dlWinCacheService.prototype = {
 		req.send(null);
 		
 		return req.responseXML;
-		}
 	}
-
-
+}
 
 ihg_Functions.blacklistService = function blacklistService() {
 	ihg_Functions.LOG("Entering " + arguments.callee.name + "\n");

@@ -21,9 +21,7 @@
  *
  ***************************  End of GPL Block *******************************/
 
-
 promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
-
 
 ///////////////////////////////////////////////////////////
 // Functions used to update the host file (hostf.xml)
@@ -90,7 +88,6 @@ ihg_Functions.autoUpdate = function autoUpdate() {
 	ihg_Functions.LOG("Exiting " + myself + "\n");
 }
 
-
 ihg_Functions.mergeHostFile = function mergeHostFile(onlineXML, hostFileObj) {
 	var mergFile = onlineXML;
 	var mergHosts = mergFile.getElementsByTagName("host");
@@ -138,8 +135,7 @@ ihg_Functions.mergeHostFile = function mergeHostFile(onlineXML, hostFileObj) {
 	ihg_Functions.sortHosts(hFile, hosts);
 	ihg_Functions.writeHosts(hostFileObj, hFile, hosts);
 	}
-	
-	
+
 ihg_Functions.sortHosts = function sortHosts(hFile, hosts) {
 	var tmpList = Array.map(hosts, function(host) {return host.getAttribute("id")}).sort();
 
@@ -152,8 +148,7 @@ ihg_Functions.sortHosts = function sortHosts(hFile, hosts) {
 			}
 		}
 	}
-	
-	
+
 ihg_Functions.writeHosts = function writeHosts(hostFileObj, hFile, hosts) {
 	var newRoot = hFile.createElement("root");
 	var newHosts = new Array();

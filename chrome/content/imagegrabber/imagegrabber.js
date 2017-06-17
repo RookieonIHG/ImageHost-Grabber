@@ -21,10 +21,7 @@
  *
  ***************************  End of GPL Block *******************************/
 
-
-
 promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
-
 
 /* function hostGrabber:
  *
@@ -40,6 +37,7 @@ promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].ge
  * Returns nothing.
  *
  */
+
 ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
@@ -134,7 +132,7 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 		if (!supPop) ig_dl_win.focus();
 		ihg_Functions.finishUp(tmp_req_objs);
 		}
-	} //end of hostGrabber function
+} //end of hostGrabber function
 
 
 ihg_Functions.getLinksAndImages = function getLinksAndImages(content, docLinks, thumbLinks) {
@@ -205,7 +203,6 @@ ihg_Functions.setupBlacklistData = function setupBlacklistData() {
 	return [stringList, regexpList];
 }
 
-
 ihg_Functions.isBlacklisted = function isBlacklisted(url, stringList, regexpList) {
 	if (stringList) {
 		var urlLowerCase = url.toLowerCase();
@@ -228,7 +225,6 @@ ihg_Functions.isBlacklisted = function isBlacklisted(url, stringList, regexpList
 	return false;
 }
 
-
 ihg_Functions.finishUp = function finishUp(req_objs) {
 	// if this is the event for the window load, re-assign the variable.
 	// pick something from the event class to identify it as an event.
@@ -248,8 +244,6 @@ ihg_Functions.finishUp = function finishUp(req_objs) {
 	
 	req_objs[0].queueHandler();
 	}
-
-
 
 ihg_Functions.showDLWin = function showDLWin(fileName) {
 	ihg_Functions.initVars(true); // true to suppress directory selection dialog
@@ -277,7 +271,6 @@ ihg_Functions.showDLWin = function showDLWin(fileName) {
 		return;
 	}
 }
-
 
 ihg_Functions.getDLCache = function getDLCache(fileName) {
 	var target;
@@ -357,8 +350,6 @@ ihg_Functions.getDLCache = function getDLCache(fileName) {
 	return req_objs;
 	}
 
-
-
 /* function setUpLinksOBJ:
  *
  * Takes one parameter:
@@ -369,6 +360,7 @@ ihg_Functions.getDLCache = function getDLCache(fileName) {
  * Returns an object of the LinksOBJ class.
  *
  */
+
 ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thumbLinks) {
 	var objLinks = new ihg_Functions.LinksOBJ();
 //	var dateString = ihg_Functions.getFormattedDate();
@@ -480,9 +472,6 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 	return [false, objLinks];
 } //end of function
 
-
-
-
 /* function setUpReq:
  *
  * Takes one parameter:
@@ -491,6 +480,7 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
  * Returns an array of request objects. 
  *
  */
+
 ihg_Functions.setUpReq = function setUpReq(pause, objLinks) {
 	var dateString = ihg_Functions.getFormattedDate();
 	ihg_Globals.baseDirSave = ihg_Globals.prefManager.getCharPref("extensions.imagegrabber.lastdldir");
@@ -569,7 +559,7 @@ ihg_Functions.setUpReq = function setUpReq(pause, objLinks) {
 		} // end of outer-for loop
 
 	return temp_array;
-	} // end of function
+} // end of function
 
 
 /* function setUpLinkedList:
@@ -584,6 +574,7 @@ ihg_Functions.setUpReq = function setUpReq(pause, objLinks) {
  * to other objects and not to html links.
  *
  */
+
 ihg_Functions.setUpLinkedList = function setUpLinkedList(req_objs) {
 	var lastObj = req_objs.length - 1;
 
@@ -602,8 +593,6 @@ ihg_Functions.setUpLinkedList = function setUpLinkedList(req_objs) {
 
 	return req_objs;
 	}
-	
-
 
 /* LinksOBJ class constructor:
  *
@@ -620,6 +609,7 @@ ihg_Functions.setUpLinkedList = function setUpLinkedList(req_objs) {
  *			used to handle the requests.
  *
  */
+
 ihg_Functions.LinksOBJ = function LinksOBJ() {
 	this.links = new Array();
 //	this.dirSave = new Array();
@@ -632,8 +622,6 @@ ihg_Functions.LinksOBJ = function LinksOBJ() {
 	// The following is added to give a proper referring url when downloading embedded images
 	this.originatingPage = new Array();
 	}
-
-
 
 ////////////////////////  Get imagegrabber preferences  ////////////////////////
 ihg_Functions.getIGPrefs = function getIGPrefs() {
@@ -741,8 +729,6 @@ ihg_Functions.getIGPrefs = function getIGPrefs() {
 	ihg_Functions.LOG("Exiting " + myself + "\n");
 	}
 
-
-
 //////////////////////   Initiliaze the variables //////////////////////////
 ihg_Functions.initVars = function initVars(skipDirDialog) {
 	var myself = arguments.callee.name;
@@ -806,7 +792,6 @@ ihg_Functions.initVars = function initVars(skipDirDialog) {
 	return true;
 	}
 
-
 ihg_Functions.showFilterDialog = function showFilterDialog(objLinks) {
 	var params = { inn:{links:objLinks, firstPage:ihg_Globals.firstPage, lastPage:ihg_Globals.lastPage}, out:null };
 	window.openDialog("chrome://imagegrabber/content/interfaces/filter.xul",
@@ -838,7 +823,6 @@ ihg_Functions.showPreferencesDialog = function showPreferencesDialog() {
 
 	window.openDialog(ihg_optionsURL, "", features);
 }
-
 
 ihg_Functions.showBlacklistDialog = function showBlacklistDialog() {
 	window.openDialog("chrome://imagegrabber/content/interfaces/blacklist_editor.xul", 

@@ -38,7 +38,6 @@
 	window.addEventListener("unload", ihg_destroyOverlay, false);
 </script>
 
-
 <preferences>
 	<preference id="showInTools" name="extensions.imagegrabber.showintools" type="bool" onchange="document.getElementById('menu_IGmain').setAttribute('hidden', this.value);"/>
 </preferences>

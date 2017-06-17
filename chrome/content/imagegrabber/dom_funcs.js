@@ -21,9 +21,6 @@
  *
  ***************************  End of GPL Block *******************************/
 
-
-
-
 /////////////////////////////    Used to get the links    /////////////////////////////
 ihg_Functions.getLinks = function getLinks(sometext) {
 	var myself = arguments.callee.name;
@@ -61,9 +58,6 @@ ihg_Functions.getLinks = function getLinks(sometext) {
 	return caca;
 }
 
-
-
-
 ////////////////////////////    Used to get an image source given the ID   /////////////////////////
 ihg_Functions.getImgSrcById = function getImgSrcById(sometext, theID){
 	var myself = arguments.callee.name;
@@ -94,10 +88,6 @@ ihg_Functions.getImgSrcById = function getImgSrcById(sometext, theID){
 	return caca;
 }
 
-
-
-
-
 ////////////////////////////    Used to get the frame tags    /////////////////////////
 ihg_Functions.getFrameTags = function getFrameTags(sometext){
 	var myself = arguments.callee.name;
@@ -110,9 +100,6 @@ ihg_Functions.getFrameTags = function getFrameTags(sometext){
 	return filtered;
 }
 
-
-
-
 ////////////////////////////    Used to get the image tags    /////////////////////////
 ihg_Functions.getImgTags = function getImgTags(sometext){
 	var myself = arguments.callee.name;
@@ -124,8 +111,6 @@ ihg_Functions.getImgTags = function getImgTags(sometext){
 	ihg_Functions.LOG("In " + myself + ", filtered is equal to: " + filtered + "\n");
 	return filtered;
 }
-
-
 
 //////////////////   Gets the image source from an image tag /////////////////
 ihg_Functions.getImgSrcFromTag = function getImgSrcFromTag(sometext){
@@ -146,9 +131,6 @@ ihg_Functions.getImgSrcFromTag = function getImgSrcFromTag(sometext){
 	if (theSrc) return theSrc[2];
 	else return null;
 }
-
-
-
 
 ///////////////////////////  Get the data in a <p> node  ///////////////////////////////
 ihg_Functions.getPNodeData = function getPNodeData(sometext){

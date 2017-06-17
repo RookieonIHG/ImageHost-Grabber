@@ -25,8 +25,6 @@ eTLDService = Components.classes["@mozilla.org/network/effective-tld-service;1"]
 
 windowWatcher = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
 
-
-
 /* requestObj class:  It's necessary to create a class that encompasses the XMLHttpRequest
  * class.  Each new instance of requestObj will create a new instance of XMLHttpRequest.
  * What this does is it allows the XMLHttpRequest object to access data that is not part

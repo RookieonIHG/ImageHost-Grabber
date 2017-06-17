@@ -85,15 +85,6 @@
 }]]></searchpattern>
 </forum>
 
-<!--<forum id="konachan">
-<urlpattern>^http:\/\/konachan\.com\/post(?:\?|\/)</urlpattern>
-<searchpattern><![CDATA[function(threadURL) {
-	var tmp = threadURL.replace(/page=\d+/, "page=" + threadsucker_Globals.linkIndex);
-	if (!tmp.match(/page=\d+/)) tmp = tmp + (tmp.match(/\?$/) ? "" : "&") + "page=" + threadsucker_Globals.linkIndex;
-	return tmp;
-}]]></searchpattern>
-</forum>-->
-
 <forum id="konachan.com">
 <urlpattern>^http:\/\/konachan\.com\/post(?:\?|\/)</urlpattern>
 <searchpattern><![CDATA[function(threadURL) {

@@ -21,8 +21,6 @@
  *
  ***************************  End of GPL Block *******************************/
 
-
-
 if (!String.prototype.trim) {						// String.trim is not natively available before FF3.5
 	String.prototype.trim = function () {
 		return this.replace(/^\s+|\s+$/g, '');
@@ -46,8 +44,6 @@ for (let propName in ihg_Globals.LinksByFileExt) {
 	extregexp.push(ihg_Globals.LinksByFileExt[propName].map(function([Name,patt,SOI]){return patt}).join("|"));
 	};
 var FileEXT = "\\.(?:" + extregexp.join("|") + ")$";
-
-
 
 ///////////////////////////////   Get the current page number //////////////////////////
 ihg_Functions.getCurPageNum = function getCurPageNum() {
@@ -80,9 +76,6 @@ ihg_Functions.getCurPageNum = function getCurPageNum() {
 	return getCurP[1];
 }
 
-
-
-
 /////////////////  Gets the last page number ////////////////////////
 ihg_Functions.getLastPageNum = function getLastPageNum() {
 	var myself = arguments.callee.name;
@@ -114,7 +107,6 @@ ihg_Functions.getLastPageNum = function getLastPageNum() {
 	return getLastP[1];
 }
 
-
 ihg_Functions.getFormattedDate = function getFormattedDate() {
 	var rightNow = new Date();
 	var month = rightNow.getMonth().toString();
@@ -135,7 +127,6 @@ ihg_Functions.getFormattedDate = function getFormattedDate() {
 
 	return someString;
 	}
-
 
 ihg_Functions.setDownloadDir = function setDownloadDir(FpTitle, initDir) {
 	var myself = arguments.callee.name;
@@ -175,10 +166,6 @@ ihg_Functions.setDownloadDir = function setDownloadDir(FpTitle, initDir) {
 		return false;
 		}
 	} 
-
-
-
-
 
 ihg_Functions.generateFName = function generateFName(reqObj, URLFile) { 
 	var myself = arguments.callee.name;
@@ -258,9 +245,6 @@ ihg_Functions.generateFName = function generateFName(reqObj, URLFile) {
 	return displayName;
 }
 
-
-
-
 ihg_Functions.getOutputFile = function getOutputFile(reqObj, URLFile) {
 	var displayName = null;
 
@@ -287,7 +271,7 @@ ihg_Functions.getOutputFile = function getOutputFile(reqObj, URLFile) {
 			
 		reqObj.overwrite = false;
 		}
-		
+
 	if (!displayName) {
 		// still no output file -> retry request
 		ihg_Functions.LOG("In function getOutputFile, can not get displayName from request header\n");
@@ -296,8 +280,6 @@ ihg_Functions.getOutputFile = function getOutputFile(reqObj, URLFile) {
 		reqObj.retry();
 		return null;
 		}
-
-	
 
 	// Initiate the local file object
 	var dir = reqObj.dirSave;
@@ -348,7 +330,6 @@ ihg_Functions.getOutputFile = function getOutputFile(reqObj, URLFile) {
 	return aLocalFile;
 }
 
-
 // special case: get file name from response header
 ihg_Functions.getFNameFromHeader = function getFNameFromHeader(reqObj, request) {
 	var displayName = null;
@@ -372,7 +353,6 @@ ihg_Functions.getFNameFromHeader = function getFNameFromHeader(reqObj, request) 
 
 	return displayName;
 }
-
 
 ihg_Functions.prefixFName = function prefixFName(reqObj, fname) {
 	var result = fname;
@@ -445,7 +425,6 @@ ihg_Functions.doStartDownload = function doStartDownload(reqObj, URLFile) {
 	aListener.reqObj = reqObj;
 	aListener.aFile = aLocalFile;
 
-
 	// Make a new resumable channel
 	var aResChan = ihg_Globals.ioService.newChannelFromURI(pic_uri);
 	if (!reqObj.notResumable) aResChan.QueryInterface(Components.interfaces.nsIResumableChannel);
@@ -474,7 +453,6 @@ ihg_Functions.doStartDownload = function doStartDownload(reqObj, URLFile) {
 	ihg_Functions.LOG("Exiting " + myself + "\n");
 	return 0;
 	}
-
 
 ihg_Functions.removeDuplicates = function removeDuplicates(docLinks, thumbLinks) {
 	var cleanDocLinks = new Array();
@@ -544,7 +522,6 @@ ihg_Functions.AlertPopup = function AlertPopup(title, message, listener, clickab
 		.playEventSound(0);
 }
 
-
 ihg_Functions.writeXMLDocumentToFile = function writeXMLDocumentToFile(XMLDocument, file) {
 	var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
 	foStream.init(file, 0x02 | 0x08 | 0x20, 0644, 0); // write only | create | truncate
@@ -558,7 +535,6 @@ ihg_Functions.writeXMLDocumentToFile = function writeXMLDocumentToFile(XMLDocume
 
 	converter.close();
 }
-
 
 ihg_Functions.removeAnonymizer = function removeAnonymizer(url) {
 	var res = url;

@@ -21,9 +21,6 @@
  *
  ***************************  End of GPL Block *******************************/
 
-
-
-
 ///////////////////////////   Global Variables ////////////////////////////////
 var ihg_Functions = new Object();
 var ihg_Globals = new Object();
@@ -100,7 +97,7 @@ ihg_Globals.LinksByFileExt = {
 				 ["JPEG",			"jp(?:eg|[eg])",	/^\xFF\xD8\xFF/],
 				 ["PNG",			"png",				/^\x89\x50\x4E\x47/],
 				 ["TIFF",			"tiff?",			/^(?:\x49\x49\x2A\x00|\x4D\x4D\x00\x2A)/],
-				 ["Virtual HD",		"vhd",				/^\x63\x6F\x6E\x65\x63\x74\x69\x78/]],
+				 ["Virtual HD",		"vhd",				/^\x63\x6F\x6E\x65\x63\x74\x69\x78/]] /*,
 	Media:		[["Windows",		"asf|wm[av]",		/^\x30\x26\xB2\x75\x8E\x66\xCF\x11\xA6\xD9\x00\xAA\x00\x62\xCE\x6C/]],
 	Video:		[["AVI",			"avi",				/^\x52\x49\x46\x46[\x00-\xFF]{4}\x41\x56\x49\x20\x4C\x49\x53\x54/],
 				 ["FLASH",			"flv",				/^\x46\x4C\x56/],
@@ -113,7 +110,7 @@ ihg_Globals.LinksByFileExt = {
 				 ["AAC",			"aac",				/^\xFF[\xF1\xF9]/],
 				 ["FLAC",			"flac",				/^\x66\x4C\x61\x43\x00{3}\x22/],
 				 ["M4A",			"m4a",				/^\x00{3}\x20\x66\x74\x79\x70\x4D\x34\x41\x20/]],
-	Container:	[["ZIP",			"zip|xpi|jar",		/^\x50\x4B(?:\x03\x04|\x05\x06|\x07\x08)/]]
+	Container:	[["ZIP",			"zip|xpi|jar",		/^\x50\x4B(?:\x03\x04|\x05\x06|\x07\x08)/]]*/
 	};
 
 ihg_Globals.downloadEmbeddedImages = null;

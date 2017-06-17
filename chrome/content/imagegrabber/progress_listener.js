@@ -21,7 +21,6 @@
 *
 ***************************  End of GPL Block *******************************/
 
-
 /* ihg_ProgressListener class:  This is the stream listener class for the channels used to download
 * our files.  It is primarily responsible for sending the downloaded chunks to the corresponding
 * files as the data becomes available.  Also, It is primarily responsible for monitoring the status 

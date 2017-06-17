@@ -1,4 +1,3 @@
-
 ihg_Functions.getTumblrPage = function getTumblrPage(pageURL, filterImages, time, targetLinks) {
 	var d = time || Math.round(new Date().getTime() / 1000.0);
 	var allLinks = targetLinks || [];

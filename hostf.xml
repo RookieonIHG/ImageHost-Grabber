@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <root>
 <host id=".">
-<urlpattern>http:\/\/www\.imagehost-grabber\.eu</urlpattern>
-<searchpattern>"1.7.0RC3"</searchpattern>
+<urlpattern>http:\/\/www\.imagehost-grabber\.org</urlpattern>
+<searchpattern>"1.7.0.2"</searchpattern>
 </host>
 </root>

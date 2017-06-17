@@ -21,9 +21,6 @@
  *
  ***************************  End of GPL Block *******************************/
 
-
-
-
 var threadsucker_Globals = new Object();
 
 threadsucker_Globals.threadURL = null;

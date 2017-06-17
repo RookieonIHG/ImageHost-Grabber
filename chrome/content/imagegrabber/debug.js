@@ -25,9 +25,7 @@ LogFile = null;
 MsgBuffer = [];
 promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
 
-
 //////////////////////  Initialize the logFile Object  //////////////////////
-
 ihg_Functions.initLogFile = function initLogFile() {
 	LogFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
 	LogFile.initWithPath(ihg_Globals.addonPath);
@@ -41,8 +39,6 @@ ihg_Functions.initLogFile = function initLogFile() {
 	// Create the log file if it's not already there
 	if( !(LogFile.exists()) )  LogFile.create(0, 0755);
 	}
-
-
 
 /****************************************************************************
  *	The following lines are the flags used for file-output.  These were
@@ -60,9 +56,7 @@ ihg_Functions.initLogFile = function initLogFile() {
  *	620 #define PR_EXCL         0x80
  ***************************************************************************/
 
-
 /////////////////  Dump to the log file  /////////////////////////////////
-
 ihg_Functions.Dump2LOG = function Dump2LOG( message ) {
 	var the_date = String(Date()).split(" ");
 	var dateForm = the_date[4] + " " + the_date[2] + " " + the_date[1] + " " + the_date[3];
@@ -96,33 +90,19 @@ ihg_Functions.Dump2LOG = function Dump2LOG( message ) {
 		}
 
 	ihg_Globals.fileOut.close();
-	}
-
-
-
-
+}
 
 /////////////////  Dump to the log file (for Debug)  /////////////////////
-
 ihg_Functions.LOG = function LOG( message ) {
 	if (ihg_Globals.debugOut) ihg_Functions.Dump2LOG(message);
-	}
-
-
-
-
+}
 
 /////////////////  Dump to the log file (for Console)  ///////////////////
-
 ihg_Functions.CON_LOG = function CON_LOG( message ) {
 	if (ihg_Globals.conLogOut) ihg_Functions.Dump2LOG(message);
-	}
-
-
-
+}
 
 /////////////////  Clears the log file    ///////////////////////
-
 ihg_Functions.clearLog = function clearLog() {
 	var f_perms = 0755;  // this is ignored on windows
 	var f_flags = 0x02 | 0x20;
@@ -135,14 +115,9 @@ ihg_Functions.clearLog = function clearLog() {
 	ihg_Globals.fileOut.close();
 
 	promptService.alert(null, null, ihg_Globals.strings.debug_log_cleared);
-	}
-
-
-
-
+}
 
 /////////////  Copys the log file to some location   //////////////
-
 ihg_Functions.copyLog = function copyLog() {
 	if (!LogFile || !LogFile.path) ihg_Functions.initLogFile();
 
@@ -163,13 +138,9 @@ ihg_Functions.copyLog = function copyLog() {
 		}
 
 	promptService.alert(null, null, ihg_Globals.strings.log_file_copied);
-	}
-
-
-
+}
 
 /////////////////////  Get the console messages  ////////////////////
-
 ihg_Functions.getConMsgs = function getConMsgs() {
 	if(!ihg_Globals.conLogOut) return;
 
@@ -184,13 +155,13 @@ ihg_Functions.getConMsgs = function getConMsgs() {
 	consoleService.registerListener(ihg_Globals.consoleListener);
 
 	for(var i=0; i < msgObj.length; i++) ihg_Functions.CON_LOG(msgObj[i].message + "\n");
-	}
+}
 
 /////////////////////  Unregister console listener  ////////////////////
 ihg_Functions.unregisterConsoleListener = function unregisterConsoleListener() {
 	var consoleService = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
 	consoleService.unregisterListener(ihg_Globals.consoleListener);
-	}
+}
 
 ///////////////  Listener for the error console  /////////////////////
 
@@ -203,4 +174,4 @@ ihg_Globals.consoleListener = {
 			}
 		return this;
 		}
-	}
+}

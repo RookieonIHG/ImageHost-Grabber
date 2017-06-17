@@ -23,8 +23,6 @@
 
 windowWatcher = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
 
-
-
 ihg_Functions.clearFromWin =  function clearFromWin(reqID, ignoreAutoClear) {
 	ig_dl_win = windowWatcher.getWindowByName("ig-dl_win", null);
 	if (!ig_dl_win) return;
@@ -65,7 +63,6 @@ ihg_Functions.clearFromWin =  function clearFromWin(reqID, ignoreAutoClear) {
 	
 	ihg_Functions.LOG("Exiting " + myself + "\n");
 }
-
 
 ihg_Functions.addDownloadReqObjs = function addDownloadReqObjs(req_objs) {
 	if (!req_objs || req_objs.length == 0) return;
@@ -141,7 +138,6 @@ ihg_Functions.addDownloadReqObjs = function addDownloadReqObjs(req_objs) {
 	ihg_Functions.LOG("Exiting " + myself + "\n");
 }
 
-
 ihg_Functions.addDownloadProgress = function addDownloadProgress(page_stat, some_id, fName, status_text) {
 	ig_dl_win = windowWatcher.getWindowByName("ig-dl_win", null);
 	if (!ig_dl_win) return;
@@ -187,7 +183,6 @@ ihg_Functions.addDownloadProgress = function addDownloadProgress(page_stat, some
 	ihg_Functions.LOG("Exiting " + myself + "\n");
 }
 
-
 /* first arg is the request id, or the id of the object you are trying to add.
  * the rest of the args are optional... they correspond to the fields that
  * are to be updated.  A null value will result in nothing being set for that
@@ -205,7 +200,6 @@ ihg_Functions.updateDownloadProgress = function updateDownloadProgress(page_stat
 	//try {	ig_dl_win.req_objs[some_id].status = status; }
 	//catch(e) { throw "IHG error: couldn't write status to req_objs in updateDownloadProgress"; }
 
-	
 	if (page_stat) {
 		var pStat = doc.getElementById("page_stat_" + some_id);
 		if (!pStat) throw "IHG error: pStat is null in updateDownloadProgress";
@@ -231,8 +225,7 @@ ihg_Functions.updateDownloadProgress = function updateDownloadProgress(page_stat
 		}
 
 	ihg_Functions.LOG("Exiting " + myself + "\n");
-	}
-
+}
 
 ihg_Functions.updateDownloadStatus = function updateDownloadStatus(someText) {
 	ig_dl_win = windowWatcher.getWindowByName("ig-dl_win", null);
@@ -245,8 +238,7 @@ ihg_Functions.updateDownloadStatus = function updateDownloadStatus(someText) {
 
 	var statLabel = doc.getElementById("statLabel");
 	statLabel.value = someText;
-	}
-	
+}
 	
 ihg_Functions.setFocus = function setFocus() {
 	ig_dl_win = windowWatcher.getWindowByName("ig-dl_win", null);
@@ -256,7 +248,6 @@ ihg_Functions.setFocus = function setFocus() {
 	tree.focus();
 	if (tree.view.rowCount > 0) tree.view.selection.select(0);
 }
-
 
 ihg_Functions.startCloseCountdown = function startCloseCountdown() {
 	ig_dl_win = windowWatcher.getWindowByName("ig-dl_win", null);
@@ -275,7 +266,6 @@ ihg_Functions.startCloseCountdown = function startCloseCountdown() {
 	if (ihg_Globals.closeInterval) clearInterval(ihg_Globals.closeInterval);
 	ihg_Globals.closeInterval = setInterval(ihg_Functions.closeWindow, 800);
 }
-
 
 ihg_Functions.closeWindow = function closeWindow() {
 	ig_dl_win = windowWatcher.getWindowByName("ig-dl_win", null);

@@ -3,13 +3,13 @@
 <?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
 
 <dialog id="ig_blacklist_editor_win" title="&blacklist_editor.title;"
-		width="600" height="400" persist="sizemode height width screenX screenY"
-		xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-		onload="onLoad();"
-		onunload="onUnLoad();"
-		buttons="accept,cancel"
-		buttonlabelaccept="&save;"
-		ondialogaccept="return doOK();">
+	width="600" height="400" persist="sizemode height width screenX screenY"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	onload="onLoad();"
+	onunload="onUnLoad();"
+	buttons="accept,cancel"
+	buttonlabelaccept="&save;"
+	ondialogaccept="return doOK();">
 
 <stringbundleset id="stringbundleset">
 	<stringbundle id="imagegrabber-strings" src="chrome://imagegrabber/locale/imagegrabber.properties" />

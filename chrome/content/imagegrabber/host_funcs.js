@@ -21,7 +21,6 @@
 *
 ***************************  End of GPL Block *******************************/
 
-
 ihg_Functions.getPicById = function getPicById(req) {
 	var toDieOrNot = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.killmenow");
 	if (toDieOrNot && !req.override_stop) return;
@@ -39,7 +38,6 @@ ihg_Functions.getPicById = function getPicById(req) {
 
 	return the_url;
 }
-
 
 ihg_Functions.getPicByRegExp = function getPicByRegExp(req) {
 	var toDieOrNot = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.killmenow");
@@ -65,7 +63,6 @@ ihg_Functions.getPicByRegExp = function getPicByRegExp(req) {
 	}
 	return the_url;
 }
-
 
 ihg_Functions.genericHostFunc = function genericHostFunc() {
 	var req = this.parent;
@@ -161,7 +158,6 @@ ihg_Functions.genericHostFunc = function genericHostFunc() {
 	ihg_Functions.LOG("In " + myself + ", fixing to start download\n");
 	ihg_Functions.doStartDownload(req, the_url);
 }
-
 
 ihg_Functions.getHostToUse = function getHostToUse(innerLink) {
 	var myself = arguments.callee.name;
