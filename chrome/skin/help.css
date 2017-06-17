@@ -22,14 +22,14 @@
 	font-family:"Calibri","sans-serif";}
 h1
 	{mso-style-link:"Heading 1 Char";
-	margin-top:10.0pt;
+	margin-top:0in;
 	margin-right:0in;
 	margin-bottom:0in;
 	margin-left:0in;
 	line-height:115%;
 	background:#4F81BD;
-	border:none;
-	padding:0in;
+	border:solid #4F81BD 3.0pt;
+	padding-top:10.0pt;
 	font-size:11.0pt;
 	font-family:"Calibri","sans-serif";
 	color:white;
@@ -37,14 +37,14 @@ h1
 	letter-spacing:.75pt;}
 h2
 	{mso-style-link:"Heading 2 Char";
-	margin-top:10.0pt;
+	margin-top:0in;
 	margin-right:0in;
 	margin-bottom:0in;
 	margin-left:0in;
 	line-height:115%;
 	background:#DBE5F1;
-	border:none;
-	padding:0in;
+	border:solid #DBE5F1 3.0pt;
+	padding-top:10.0pt;
 	font-size:11.0pt;
 	font-family:"Calibri","sans-serif";
 	text-transform:uppercase;
@@ -52,13 +52,17 @@ h2
 	font-weight:normal;}
 h3
 	{mso-style-link:"Heading 3 Char";
-	margin-top:15.0pt;
+	margin-top:0in;
 	margin-right:0in;
 	margin-bottom:0in;
 	margin-left:0in;
 	line-height:115%;
-	border:none;
-	padding:0in;
+	border-top:solid #4F81BD 1.0pt;
+	border-left:solid #4F81BD 1.0pt;
+	border-bottom:none;
+	border-right:none;
+	padding-top:15.0pt;
+	padding-left:2.0pt;
 	font-size:11.0pt;
 	font-family:"Calibri","sans-serif";
 	color:#243F60;
@@ -88,7 +92,8 @@ h5
 	margin-left:0in;
 	line-height:115%;
 	border:none;
-	padding:0in;
+	border-bottom:solid #4F81BD 1.0pt;
+	padding-bottom:1.0pt;
 	font-size:11.0pt;
 	font-family:"Calibri","sans-serif";
 	color:#365F91;
@@ -254,7 +259,7 @@ p.MsoListParagraphCxSpFirst, li.MsoListParagraphCxSpFirst, div.MsoListParagraphC
 	{margin-top:10.0pt;
 	margin-right:0in;
 	margin-bottom:0in;
-	margin-left:.5in;
+	margin-left:0in;
 	line-height:115%;
 	font-size:10.0pt;
 	font-family:"Calibri","sans-serif";}
@@ -262,7 +267,7 @@ p.MsoListParagraphCxSpMiddle, li.MsoListParagraphCxSpMiddle, div.MsoListParagrap
 	{margin-top:0in;
 	margin-right:0in;
 	margin-bottom:0in;
-	margin-left:.5in;
+	margin-left:0in;
 	line-height:115%;
 	font-size:10.0pt;
 	font-family:"Calibri","sans-serif";}
@@ -270,7 +275,7 @@ p.MsoListParagraphCxSpLast, li.MsoListParagraphCxSpLast, div.MsoListParagraphCxS
 	{margin-top:0in;
 	margin-right:0in;
 	margin-bottom:10.0pt;
-	margin-left:.5in;
+	margin-left:0in;
 	line-height:115%;
 	font-size:10.0pt;
 	font-family:"Calibri","sans-serif";}

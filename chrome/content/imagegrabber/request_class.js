@@ -110,6 +110,8 @@ ihg_Classes.requestObj = function requestObj() {
 ihg_Classes.requestObj.prototype = {
 	constructor : ihg_Classes.requestObj,
 
+	running : false,
+
 	curThread : 0,
 	curHostThread : 0,
 	curServerThread : 0,
@@ -369,7 +371,8 @@ ihg_Classes.requestObj.prototype = {
 					}
 
 				ihg_Functions.updateDownloadStatus(ihg_Globals.strings.all_done);
-				ihg_Functions.AlertPopup('Download Progress', 'Status: ' + ihg_Globals.strings.all_done, listener, true);
+				if (this.cp.running) ihg_Functions.AlertPopup('Download Progress', 'Status: ' + ihg_Globals.strings.all_done, listener, true);
+				this.cp.running = false;
 				}
 			}
 		},
@@ -423,6 +426,7 @@ ihg_Classes.requestObj.prototype = {
 		if (this.cp.hostTimer[this.hostID] != null) return;
 
 		this.inprogress = true;
+		this.cp.running = true;
 		this.cp.curThread++;
 		this.cp.curHostThread++;
 		this.cp.curServerThread++;
@@ -483,10 +487,8 @@ ihg_Classes.requestObj.prototype = {
 					if (req.regexp === "Embedded Image") {
 						var contLength = this.getResponseHeader("Content-Length");
 						if (contLength && contLength < req.minFileSize) { 
-							// req.abort(document.getElementById("imagegrabber-strings").getFormattedString("file_too_short", [req.minFileSize/1024]));
-							// setTimeout(function(){ ihg_Functions.clearFromWin(req.uniqID, true); }, 1000);
 							req.abort(ihg_Globals.strbundle.getFormattedString("file_too_short", [req.minFileSize/1024]));
-							setTimeout('ihg_Functions.clearFromWin("' + req.uniqID + '", true)', 1000);
+							setTimeout(function() ihg_Functions.clearFromWin(req.uniqID, true), 1000);
 							return;
 							}
 						}

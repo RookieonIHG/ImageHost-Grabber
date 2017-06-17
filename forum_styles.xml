@@ -1,5 +1,33 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <root>
+<forum id="Gettyimages">
+<urlpattern>http:\/\/www\.gettyimages\.[a-z]+?\/(?:detail|editorial)\/.+</urlpattern>
+<searchpattern><![CDATA[function(threadURL) {
+	return threadURL.match(/http:\/\/www\.gettyimages\.[a-z]+?\/(?:detail|editorial)\/.+(?:&page=\d+)?/) + "?page=" + (threadsucker_Globals.linkIndex);
+}]]></searchpattern>
+</forum>
+
+<forum id="cumonmy.com">
+<urlpattern>^http:\/\/(?:www\.)?cumonmy\.com\/index\.php\?\/tags\/[^\/]+(\/start-\d+)?$</urlpattern>
+<searchpattern><![CDATA[function(threadURL) {
+	return threadURL.replace(/(\/start-\d+)?$/,"\/start-") + 30*(threadsucker_Globals.linkIndex -1);
+}]]></searchpattern>
+</forum>
+
+<forum id="theplace2">
+<urlpattern>^http:\/\/www\.theplace2\.ru\/photos\/[^/]+\/(?:page\d+\/)?$</urlpattern>
+<searchpattern><![CDATA[function(threadURL) {
+	return threadURL.replace(/(?:page\d+)?$/,'page') + (threadsucker_Globals.linkIndex) + "\/";
+}]]></searchpattern>
+</forum>
+
+<forum id="hootersgirls.tumblr">
+<urlpattern>^http:\/\/hootersgirls\.tumblr\.com\/(?:page\/\d+)?$</urlpattern>
+<searchpattern><![CDATA[function(threadURL) {
+	return threadURL.replace(/(?:page\/\d+)?$/,'page/') + (threadsucker_Globals.linkIndex);
+}]]></searchpattern>
+</forum>
+
 <forum id="Studio31">
 <urlpattern>http:\/\/.+\.studio31\.org\/.+\/index\.php\?</urlpattern>
 <searchpattern><![CDATA[function(threadURL) {
@@ -43,7 +71,7 @@
 <urlpattern>^http:\/\/(?:www\.)?gelbooru\.com\/index\.php\?page=post&amp;s=list.+</urlpattern>
 <searchpattern><![CDATA[function(threadURL) {
 	var tmp = threadURL.replace(/&?pid=\d+/, "");
-	return tmp + "&pid=" + (threadsucker_Globals.linkIndex-1)*25;
+	return tmp + "&pid=" + (threadsucker_Globals.linkIndex-1)*42;
 }]]></searchpattern>
 </forum>
 
@@ -204,10 +232,10 @@
 </forum>
 
 <forum id="flickr group">
-<urlpattern>http:\/\/www\.flickr\.com\/groups\/.+\/$</urlpattern>
+<urlpattern>https?:\/\/www\.flickr\.com\/(?:groups|photos)\/(?:.+\/|.+\/.+\/)</urlpattern>
 <searchpattern><![CDATA[function(threadURL) {
-	var tmp = threadURL.replace(/page\d+\/$/, "page" + threadsucker_Globals.linkIndex + "/");
-	if (!tmp.match(/page\d+\/$/)) tmp = threadURL + "page" + threadsucker_Globals.linkIndex + "/";
+	var tmp = threadURL.replace(/\/page\d+(?=\/?$)/, "/page" + threadsucker_Globals.linkIndex);
+	if (!tmp.match(/page\d+\/?$/)) tmp = threadURL + "page" + threadsucker_Globals.linkIndex + "/";
 	return tmp;
 }]]></searchpattern>
 </forum>
@@ -314,7 +342,7 @@
 <forum id="SMF">
 <urlpattern>http:\/\/.+\/index\.php\?topic=\d+\.\d+</urlpattern>
 <searchpattern><![CDATA[function(threadURL) {
-	return threadURL.match(/http:\/\/.+\/index\.php\?topic=\d+\./) + threadsucker_Globals.linkIndex*25;
+	return threadURL.match(/http:\/\/.+\/index\.php\?topic=\d+\./) + threadsucker_Globals.linkIndex*15;
 }]]></searchpattern>
 </forum>
 

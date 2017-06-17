@@ -5,12 +5,12 @@
   <RDF:Description RDF:about="rdf:#$dxLld3"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="1.5"
-                   em:maxVersion="37.*" />
+                   em:maxVersion="40.*" />
 
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="{E4091D66-127C-11DB-903A-DE80D2EFDFE8}"
                    em:name="ImageHost Grabber"
-                   em:version="1.7.0RC4"
+                   em:version="1.7.0.1"
                    em:creator="Cybormatt"
                    em:description="Downloads all the images hosted on many of the popular free image hosts."
                    em:homepageURL="http://imagehost-grabber.eu/"

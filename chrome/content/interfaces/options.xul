@@ -42,11 +42,11 @@ function handleDLTimeoutControl() {
 	
 	if (cbDLTimeout.checked) {
 		tbDLTimeout.setAttribute("min", "1");
-	}
+		}
 	else {
 		tbDLTimeout.removeAttribute("min");
+		}
 	}
-}
 
 function checkRestart() {
 	let RestartApp_button = document.getElementById("restartApp");
@@ -62,8 +62,8 @@ function checkRestart() {
 
 function restartApp() {
 	let nsIAppStartup = Components.interfaces.nsIAppStartup;
-    Components.classes["@mozilla.org/toolkit/app-startup;1"].getService(nsIAppStartup).quit(nsIAppStartup.eForceQuit | nsIAppStartup.eRestart);
-}
+	Components.classes["@mozilla.org/toolkit/app-startup;1"].getService(nsIAppStartup).quit(nsIAppStartup.eForceQuit | nsIAppStartup.eRestart);
+	}
 
 // This function toggles the enabled state of a target element with ID
 // of 'targetId'.  The enabled state of the target element is dictated
@@ -76,20 +76,10 @@ function restartApp() {
 // This is a variable length function to allow multiple targetId's
 // i.e.:	toggleEnableState(controlId, invertState, targetId1, targetId2, ...)
 
-function toggleEnableState() {
-	var args = toggleEnableState.arguments;
-
-	var controlId = args[0];
-	var controlElem = document.getElementById(controlId);
-
-	var invertState = args[1];
-	var targetDisabled = invertState ? controlElem.checked : !controlElem.checked;
-
-	for (var i = 2; i < args.length; i++) {
-		var targetId = args[i];
-		var targetElem = document.getElementById(targetId);
-		targetElem.disabled = targetDisabled;
-		}
+function toggleEnableState(controlId, invertState, ...targetIds) {
+	var control = document.getElementById(controlId).checked;
+	var targetDisabled = invertState ? control : !control;
+	targetIds.forEach((targetId) => document.getElementById(targetId).disabled = targetDisabled);
 	}
 
 ]]>

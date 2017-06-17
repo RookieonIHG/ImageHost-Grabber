@@ -499,7 +499,7 @@ function onTreeClicked(event) {
 	// Get the row, column and child element at the point
 	var row = {}, col = {}, child = {};
 	tbo.getCellAt(event.clientX, event.clientY, row, col, child);
-	if (col.value.type != Components.interfaces.nsITreeColumn.TYPE_CHECKBOX) return;
+	if (!col.value || col.value.type != Components.interfaces.nsITreeColumn.TYPE_CHECKBOX) return;
 
 	var currentRow = tree.view.getItemAtIndex(row.value).firstChild;
 	var value = tbo.view.getCellValue(row.value, col.value);

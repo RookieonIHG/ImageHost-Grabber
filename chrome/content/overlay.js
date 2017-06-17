@@ -1,4 +1,35 @@
+Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
+
+var myWebProgressListener = {
+	oldURL: null,
+
+	processNewURL: function(aURI, aFlags) {
+		if (aURI.spec == this.oldURL) return;
+		if (aFlags & Components.interfaces.nsIWebProgressListener.LOCATION_CHANGE_SAME_DOCUMENT) return;
+
+		// now we know the page/document has changed...
+		let isForum = isThread(content.document.location.href);
+		document.getElementById('SuckThread').setAttribute('disabled', !isForum);
+		document.getElementById('suck_the_current_thread-tip').setAttribute('hidden', isForum);
+
+		this.oldURL = aURI.spec;
+	},
+
+	// nsIWebProgressListener
+	QueryInterface: XPCOMUtils.generateQI(["nsIWebProgressListener", "nsISupportsWeakReference"]),
+
+	onLocationChange: function(aProgress, aRequest, aURI, aFlags) {
+		this.processNewURL(aURI, aFlags);
+	},
+
+	onStateChange: function() {},
+	onProgressChange: function() {},
+	onStatusChange: function() {},
+	onSecurityChange: function() {}
+};
+
 function ihg_initOverlay() {
+	gBrowser.addProgressListener(myWebProgressListener);
 	document.getElementById("contentAreaContextMenu").addEventListener("popupshowing", ihg_contextMenuInit, false);
 	document.getElementById("menu_ToolsPopup").addEventListener("popupshowing", ihg_showInToolsInit, false);
 
@@ -51,6 +82,7 @@ function ihg_initOverlay() {
 }
 
 function ihg_destroyOverlay() {
+	gBrowser.removeProgressListener(myWebProgressListener);
 	document.getElementById("contentAreaContextMenu").removeEventListener("popupshowing", ihg_contextMenuInit, false);
 	document.getElementById("menu_ToolsPopup").removeEventListener("popupshowing", ihg_showInToolsInit, false);
 
@@ -142,7 +174,7 @@ function ihg_showInToolsInit() {
 	if (this.state == 'open') return;
 
 	let showInTools = document.getElementById("showInTools").value;
-	document.getElementById('igSep').setAttribute('hidden', !showInTools);
+	document.getElementById('ihgSep').setAttribute('hidden', !showInTools);
 	document.getElementById('menu_IGtools').setAttribute('hidden', !showInTools);
 }
 
