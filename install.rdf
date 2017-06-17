@@ -5,11 +5,15 @@
 	<RDF:Description RDF:about="rdf:#$dxLld3"
 		em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
 		em:minVersion="1.5"
-		em:maxVersion="42.*" />
+		em:maxVersion="99.*" />
+	<RDF:Description RDF:about="rdf:#$pmBrwsr"
+		em:id="{8de7fcbb-c55c-4fbe-bfc5-fc555c87dbc4}"
+		em:minVersion="25.0"
+		em:maxVersion="99.*" />
 	<RDF:Description RDF:about="urn:mozilla:install-manifest"
 		em:id="{E4091D66-127C-11DB-903A-DE80D2EFDFE8}"
 		em:name="ImageHost Grabber"
-		em:version="1.7.0.2"
+		em:version="1.7.0.3"
 		em:creator="Cybormatt"
 		em:description="Downloads images hosted on most of the popular image hosts."
 		em:homepageURL="http://imagehost-grabber.org/"
@@ -24,6 +28,7 @@
 		<em:contributor>Rookie</em:contributor>
 		<em:contributor>Greg</em:contributor>
 		<em:targetApplication RDF:resource="rdf:#$dxLld3"/>
+		<em:targetApplication RDF:resource="rdf:#$pmBrwsr"/>
 		<em:file RDF:resource="urn:mozilla:extension:file:imagegrabber.jar"/>
 		<em:unpack>true</em:unpack>
 		<em:updateURL>http://imagehost-grabber.org/xpi_files/imagegrabber/beta/update.rdf</em:updateURL>
