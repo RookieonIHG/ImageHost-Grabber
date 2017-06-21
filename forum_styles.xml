@@ -1,5 +1,43 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <root>
+<forum id="bellazon">
+<urlpattern>http:\/\/www\.bellazon\.com\/.+?(?:page-\d+)?$</urlpattern>
+<searchpattern><![CDATA[function(threadURL) {
+	return threadURL.replace(/\/(?:page-\d+)?$/, "\/page-" + (threadsucker_Globals.linkIndex));
+}]]></searchpattern>
+</forum>
+
+<forum id="anarchynation">
+<urlpattern>http:\/\/anarchynation\.org\/index\.php\/.+\.html</urlpattern>
+<searchpattern><![CDATA[function(threadURL) {
+	var urled = threadURL.match(/(http:\/\/anarchynation\.org\/index\.php\/[^\.]+)/);
+	return urled[1] + "." + 15*(threadsucker_Globals.linkIndex - 1) + ".html";
+}]]></searchpattern>
+</forum>
+
+<forum id="xeno-picturepub">
+<urlpattern>http:\/\/.+\/index\.php\?threads\/.+\.\d+\/</urlpattern>
+<searchpattern><![CDATA[function(threadURL) {
+	var tmp = threadURL.replace(/page-\d+/, "page-" + threadsucker_Globals.linkIndex);
+	if (!tmp.match(/page-\d+/)) tmp = threadURL + "page-" + threadsucker_Globals.linkIndex;
+	return tmp;
+	}]]></searchpattern>
+</forum>
+
+<forum id="eroticity">
+<urlpattern>^http:\/\/eroticity\.net\/threads\/[\w-]+</urlpattern>
+<searchpattern><![CDATA[function(threadURL) {
+	return threadURL.match(/http:\/\/eroticity.net\/threads\/[\w-]+/) + "\/page" + threadsucker_Globals.linkIndex;
+}]]></searchpattern>
+</forum>
+
+<forum id="listal">
+<urlpattern>^http:\/\/www\.listal\.com\/[^\/]+\/pictures(?:\/\/\d+)?$</urlpattern>
+<searchpattern><![CDATA[function(threadURL) {
+	return threadURL.replace(/(?:\/\/\d+)?$/, "//" + threadsucker_Globals.linkIndex);
+}]]></searchpattern>
+</forum>
+
 <forum id="Gettyimages">
 <urlpattern>http:\/\/www\.gettyimages\.[a-z]+?\/(?:detail|editorial)\/.+</urlpattern>
 <searchpattern><![CDATA[function(threadURL) {
@@ -263,10 +301,18 @@
 }]]></searchpattern>
 </forum>
 
-<forum id="pornbb">
+<forum id="pornbb.org">
 <urlpattern>http:\/\/.*pornbb\.org\/.+-t\d+(?:-\d+)?\.html</urlpattern>
 <searchpattern><![CDATA[function(threadURL) {
 	return threadURL.match(/http:\/\/.*pornbb\.org\/.+-t\d+/) + "-" + (threadsucker_Globals.linkIndex-1)*15 + ".html";
+}]]></searchpattern>
+</forum>
+
+<forum id="porn-bb.net">
+<urlpattern>http:\/\/porn-bb\.net\/[^\d]+t\d+\.html</urlpattern>
+<searchpattern><![CDATA[function(threadURL) {
+	var urled = threadURL.match(/(http:\/\/porn-bb\.net\/[^[0-9]+t\d+)/);
+	return urled[1] + "-" + 15*(threadsucker_Globals.linkIndex - 1) + ".html";
 }]]></searchpattern>
 </forum>
 

@@ -8,8 +8,6 @@
 
 <script type="application/x-javascript" src="chrome://imagegrabber/content/interfaces/console.js" />
 
-<vbox flex="1">
-	<listbox id="lstOutput" flex="1">
-	</listbox>
-</vbox>
+	<listbox id="lstOutput" style="font-family: courier; font-size: 8.0pt;" flex="1"/>
+
 </window>

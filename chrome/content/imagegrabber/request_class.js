@@ -1,23 +1,23 @@
 /****************************** Start of GPL Block ****************************
- *   ImageHost Grabber - Imagegrabber is a firefox extension designed to
- *   download pictures from image hosts such as imagevenue, imagebeaver, and
- *   others (see help file for a full list of supported hosts).
+ *	ImageHost Grabber - Imagegrabber is a firefox extension designed to
+ *	download pictures from image hosts such as imagevenue, imagebeaver, and
+ *	others (see help file for a full list of supported hosts).
  *
- *   Copyright (C) 2007   Matthew McMullen.
- * 
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
+ *	Copyright (C) 2007   Matthew McMullen.
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
+ *	This program is free software; you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation; either version 2 of the License, or
+ *	(at your option) any later version.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *	This program is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with this program; if not, write to the Free Software
+ *	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  ***************************  End of GPL Block *******************************/
 
@@ -94,12 +94,15 @@ ihg_Classes.requestObj = function requestObj() {
 
 	this.watch('reqURL', function(id, oldval, newval) {
 		let reqURI = ihg_Globals.ioService.newURI(newval, null, null);
-		try {
-			this.Server = eTLDService.getBaseDomain(reqURI);
+		if (reqURI && (reqURI.schemeIs('http') || reqURI.schemeIs('https'))) {
+			try {
+				this.Server = eTLDService.getBaseDomain(reqURI);
+				}
+			catch (e) {
+				this.Server = reqURI.host;
+				}
 			}
-		catch (e) {
-			this.Server = reqURI.host;
-			}
+		else this.Server = "";
 		return newval;
 		});
 	}
@@ -134,12 +137,15 @@ ihg_Classes.requestObj.prototype = {
 				", Property: " + a + ", Old Val: " + b + ", New Val: " + c + "\n");
 			if (a == 'reqURL') {
 				let reqURI = ihg_Globals.ioService.newURI(c, null, null);
-				try {
-					this.Server = eTLDService.getBaseDomain(reqURI);
+				if (reqURI && (reqURI.schemeIs('http') || reqURI.schemeIs('https'))) {
+					try {
+						this.Server = eTLDService.getBaseDomain(reqURI);
+						}
+					catch (e) {
+						this.Server = reqURI.host;
+						}
 					}
-				catch (e) {
-					this.Server = reqURI.host;
-					}
+				else this.Server = "";
 				}
 			return c;
 			}
@@ -234,6 +240,7 @@ ihg_Classes.requestObj.prototype = {
 		this.regexp = newHostToUse.hostFunc;
 
 		this.retry();
+		this.queueHandler();
 
 		ihg_Functions.LOG("Exiting function requestObj.requeue\n");
 		return;
@@ -348,7 +355,7 @@ ihg_Classes.requestObj.prototype = {
 		else {
 			if (this.countThreads() == 0) {
 				for (let hostID in this.cp.hostTimer) {
-					if (this.cp.hostTimer[hostID] != null)
+					if (this.cp.hostTimer[hostID] && this.cp.hostTimer[hostID] != null)
 						this.cp.hostTimer[hostID].cancel();
 					delete this.cp.hostTimer[hostID];
 					};
@@ -379,7 +386,7 @@ ihg_Classes.requestObj.prototype = {
 		var numThreads = 0;
 		var numHostThreads = 0;
 		var numServerThreads = 0;
-		
+
 		var nextReq = this.firstRequest;
 		while (nextReq) {
 			if (nextReq.inprogress) {
@@ -389,11 +396,11 @@ ihg_Classes.requestObj.prototype = {
 				}
 			nextReq = nextReq.nextRequest;
 			}
-		
+
 		this.cp.curThread = numThreads;
 		this.cp.curHostThread = numHostThreads;
 		this.cp.curServerThread = numServerThreads;
-		
+
 		return numThreads;
 		},
 
@@ -486,7 +493,7 @@ ihg_Classes.requestObj.prototype = {
 						var contLength = this.getResponseHeader("Content-Length");
 						if (contLength && contLength < req.minFileSize) { 
 							req.abort(ihg_Globals.strbundle.getFormattedString("file_too_short", [req.minFileSize/1024]));
-							setTimeout(function() ihg_Functions.clearFromWin(req.uniqID, true), 1000);
+							setTimeout(ihg_Functions.clearFromWin, 1000, req.uniqID, true);
 							return;
 							}
 						}

@@ -120,7 +120,7 @@ function MaskHost(HostID_target) {
 	var doc = this.document;
 	var tree = doc.getElementById("igLinksTree");
 	var HostIDidx = tree.columns.getNamedColumn("host").index;
-	
+
 	if (HostID_target.value == "") {
 		Array.forEach(doc.getElementById("host_list").childNodes, function(menuItem) {menuItem.setAttribute("checked", "true")});
 		Array.forEach(doc.getElementById("list").childNodes, function(req_row) {req_row.removeAttribute("hidden")});
@@ -132,7 +132,7 @@ function MaskHost(HostID_target) {
 				if (HostID_target.hasAttribute("checked")) req_row.removeAttribute("hidden");
 				else req_row.hidden = true;
 				});
-	
+
 	updateCounter();
 }
 
@@ -141,40 +141,26 @@ function doOK(queuePaused) {
 	var doc = this.document;
 	var newObjLinks = new LinksOBJ();
 	var currentId = 0;
-	
+
 	for (var i = firstPage; i <= lastPage; i++) {
-		// newObjLinks.links[i] = new Array();
-		// newObjLinks.dirSave[i] = new Array();
-		// newObjLinks.hostFunc[i] = new Array();
-		// newObjLinks.hostID[i] = new Array();
-		// newObjLinks.maxThreads[i] = new Array();
-		// newObjLinks.downloadTimeout[i] = new Array();
-		// newObjLinks.originatingPage[i] = new Array();
 		for (let ObjLinkProp in newObjLinks) {newObjLinks[ObjLinkProp][i] = new Array();};
-		
+
 		for (var j = 0; j < objLinks.links[i].length; j++, currentId++) {
 			if (doc.getElementById("req_" + currentId).getAttribute("hidden") == "true") continue;
-			
+
 			var shakespeare = doc.getElementById("tobeornottobe_" + currentId);
-			
+
 			if (shakespeare.getAttribute("value") == "true") {
-				// newObjLinks.links[i].push(objLinks.links[i][j]);
-				// newObjLinks.dirSave[i].push(objLinks.dirSave[i][j]);
-				// newObjLinks.hostFunc[i].push(objLinks.hostFunc[i][j]);
-				// newObjLinks.hostID[i].push(objLinks.hostID[i][j]);
-				// newObjLinks.maxThreads[i].push(objLinks.maxThreads[i][j]);
-				// newObjLinks.downloadTimeout[i].push(objLinks.downloadTimeout[i][j]);
-				// newObjLinks.originatingPage[i].push(objLinks.originatingPage[i][j]);
 				for (let ObjLinkProp in newObjLinks) {newObjLinks[ObjLinkProp][i].push(objLinks[ObjLinkProp][i][j]);};
 			}
-		
+
 		}
 	}
 
 	var baseDirSave = document.getElementById("DLDirList").label;
 	var lastDLDirHistory = document.getElementById("lastDLDirHistory");
 	var lastDLDirHistoryValue = parse(lastDLDirHistory.value);
-	lastDLDirHistoryValue = lastDLDirHistoryValue.filter(function (dldir) {return dldir != baseDirSave});
+	lastDLDirHistoryValue = lastDLDirHistoryValue.filter(dldir => dldir != baseDirSave);
 	if (lastDLDirHistoryValue.unshift(baseDirSave) > 8) lastDLDirHistoryValue.pop();
 	lastDLDirHistory.value = stringify(lastDLDirHistoryValue);
 	document.getElementById("lastDLDir").value = baseDirSave;
@@ -207,7 +193,7 @@ function doSetAll(value) {
 	var doc = this.document;
 	var tree = doc.getElementById("igLinksTree");
 	var CheckboxColIdx = tree.columns.getNamedColumn("tobeornottobe").index;
-	
+
 	for (var i = 0; i < tree.view.rowCount; i++) {  
 		var row = tree.view.getItemAtIndex(i).firstChild;
 		var shakespeare = row.childNodes[CheckboxColIdx];
@@ -215,7 +201,7 @@ function doSetAll(value) {
 		shakespeare.setAttribute("value", newVal);
 		row.setAttribute("properties", newVal ?"checked":"");
 	}
-	
+
 	updateCounter();
 }
 
@@ -223,14 +209,14 @@ function doSetAll(value) {
 function doInvertSelection() {
 	var doc = this.document;
 	var tree = doc.getElementById("igLinksTree");
-	
+
 	for (var i = 0; i < tree.view.rowCount; i++) {  
 		var shakespeare = doc.getElementById("tobeornottobe_" + i);
 		shakespeare.setAttribute("value", !(shakespeare.getAttribute("value") == "true"));
 		var row = doc.getElementById("row_" + i);
 		row.setAttribute("properties", shakespeare.getAttribute("value") == "true"?"checked":"");
 	}
-	
+
 	updateCounter();
 }
 
@@ -276,7 +262,7 @@ function applyCmd(cmd) {
 			}
 		}
 	}
-	
+
 	updateCounter();
 }
 
@@ -285,40 +271,40 @@ function applyFilter() {
 	var doc = this.document;
 	var tree = doc.getElementById("igLinksTree");
 	if (tree.view.rowCount == 0) return;
-	
+
 	var type = doc.getElementById("filterType");
 	var value = doc.getElementById("filterValue");
 	var filterOn = doc.getElementById("filterOn");
 	var filter = null;
-	
+
 	if (type.value == "simple") {
 		var tmp = value.value;
-		
+
 		// Stuff we need to escape before building the regex
 		tmp = tmp.replace(/\//g,"\\\/");
 		tmp = tmp.replace(/\./g,"\\.");
-		
+
 		// Wildcards: * ?
 		tmp = tmp.replace(/\*/g,".*");
 		tmp = tmp.replace(/\?/g,".");
-		
+
 		filter = new RegExp(tmp, "i");
 		}
 	else filter = new RegExp(value.value, "i");
-		
+
 	var currentId = 0;
-	
+
 	for (var i = firstPage; i <= lastPage; i++) {
 		for (var j = 0; j < objLinks.links[i].length; j++, currentId++) {
 			if (doc.getElementById("req_" + currentId).getAttribute("hidden") == "true") continue;
-			
+
 			var shakespeare = doc.getElementById("tobeornottobe_" + currentId);
 			var matched = false;
-			
+
 			var str = (filterOn.value == "url")?objLinks.links[i][j]:objLinks.hostID[i][j];
-			
+
 			matched = (str.search(filter) >= 0);
-			
+
 			shakespeare.setAttribute("value", matched);
 			var row = doc.getElementById("row_" + currentId);
 			row.setAttribute("properties", matched?"checked":"");
@@ -336,28 +322,28 @@ function chgPreview(initialChange) {
 	var prevLoc = document.getElementById("previewLoc");
 	// var pbox = document.getElementById("previewBox");
 	// var rbox = document.getElementById("rowHeightBox");
-	
+
 	var ss = 1;
 	var cssRules = document.styleSheets[ss].cssRules;
-	
+
 	var list = document.getElementById("list");
 	var numRows = list.childNodes.length;
-	
+
 
 	if (isChecked) {
 		var indices = new Array();
-		
+
 		for(var a = 0; a < cssRules.length; a++) {
 			if (cssRules[a].cssText.match(/-moz-tree-row /)) indices.push(a);
 			if (cssRules[a].cssText.match(/-moz-tree-image /)) indices.push(a);
 		}
-		
+
 		indices = indices.sort();
-		
+
 		for (var a = indices.length-1; a >= 0; a--) {
 			document.styleSheets[ss].deleteRule(indices[a]);
 		}
-				
+
 		for (var b = 0; b < numRows; b++) {
 			var treeCell = document.getElementById("url_" + b);
 			treeCell.setAttribute("src",null);
@@ -369,29 +355,29 @@ function chgPreview(initialChange) {
 	else {
 		if (initialChange) {
 			var indices = new Array();
-		
+
 			for(var a = 0; a < cssRules.length; a++) {
 				if (cssRules[a].cssText.match(/-moz-tree-row /)) indices.push(a);
 				if (cssRules[a].cssText.match(/-moz-tree-image /)) indices.push(a);
 			}
-		
+
 			indices = indices.sort();
-		
+
 			for (var a = indices.length-1; a >= 0; a--) {
 				document.styleSheets[ss].deleteRule(indices[a]);
 			}
 		}
-	
+
 		newVal = document.getElementById("rowHeightVal").value || "150";
 
 		rule1 = "treechildren::-moz-tree-row { height: "+newVal+"px; }";
 		rule2 = "treechildren::-moz-tree-image { height: "+(newVal-2)+"px; }";
 		document.styleSheets[ss].insertRule(rule1,0);
 		document.styleSheets[ss].insertRule(rule2,cssRules.length);
-	
+
 		//document.styleSheets[ss].insertRule("treechildren::-moz-tree-row { height: 150px; }",cssRules.length);
 		//document.styleSheets[ss].insertRule("treechildren::-moz-tree-image { height: 150px; }",cssRules.length);
-		
+
 		var currentId = 0;
 
 		for (var a = firstPage; a <= lastPage; a++) {
@@ -405,37 +391,37 @@ function chgPreview(initialChange) {
 		prevLoc.selectedIndex = 1;
 	}
 	list.hidden = true;
-	setTimeout("document.getElementById('list').hidden = false;",100);
+	setTimeout(() => {list.hidden = false;}, 0);
 }
 
 
 function chgRowHeight() {
 	var list = document.getElementById("list");
-	
+
 	var ss = 1;
 	var cssRules = document.styleSheets[ss].cssRules;
 	var indices = new Array();
-	
+
 	for(var a = 0; a < cssRules.length; a++) {
 		if (cssRules[a].cssText.match(/-moz-tree-row /)) indices.push(a);
 		if (cssRules[a].cssText.match(/-moz-tree-image /)) indices.push(a);
 	}
-	
+
 	indices = indices.sort();
-	
+
 	for (var a = indices.length-1; a >= 0; a--) {
 		document.styleSheets[ss].deleteRule(indices[a]);
 	}
 
 	newVal = document.getElementById("rowHeightVal").value || "150";
-	
+
 	rule1 = "treechildren::-moz-tree-row { height: "+newVal+"px; }";
 	rule2 = "treechildren::-moz-tree-image { height: "+(newVal-2)+"px; }";
 	document.styleSheets[ss].insertRule(rule1,0);
 	document.styleSheets[ss].insertRule(rule2,cssRules.length);
 
 	list.hidden = true;
-	setTimeout("document.getElementById('list').hidden = false;",100);
+	setTimeout(() => {list.hidden = false;}, 0);
 }
 
 
@@ -443,13 +429,13 @@ function changeImage() {
 	var doc = document;
 	var tree = doc.getElementById("igLinksTree");
 	if (tree.view.rowCount == 0) return;
-	
+
 	var current = tree.view.selection.currentIndex;
 	if (current >= 0) {
 		var current_treeItem = tree.view.getItemAtIndex(current);
 		for (current = 0; current_treeItem = current_treeItem.previousSibling; current++);
 		}
-	
+
 	var thumb = doc.getElementById("thumbnail");
 	var previewLabel = doc.getElementById("previewLabel");
 	if (!objLinks.thumbs[firstPage][current]) {
@@ -458,13 +444,13 @@ function changeImage() {
 		thumb.src = "";
 		return;
 	}
-	
+
 	previewLabel.selectedIndex = 1;
 	thumb.src = objLinks.thumbs[firstPage][current].src;
-	
+
 	var w = objLinks.thumbs[firstPage][current].width;
 	var h = objLinks.thumbs[firstPage][current].height;
-	
+
 	resizeImage(w, h);
 }
 
@@ -472,11 +458,11 @@ function changeImage() {
 function resizeImage(w, h) {
 	var doc = this.document;
 	var thumb = doc.getElementById("thumbnail");
-	
+
 	var maxSize = 140;
 	var currentW = w;
 	var currentH = h;
-	
+
 	if (w > maxSize) {
 		currentW = maxSize;
 		currentH = maxSize * h/w;
@@ -485,7 +471,7 @@ function resizeImage(w, h) {
 		currentW = maxSize * w/h;
 		currentH = maxSize;
 	}
-	
+
 	thumb.width = currentW;
 	thumb.height = currentH;
 }

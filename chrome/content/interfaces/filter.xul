@@ -13,7 +13,7 @@
 		ondialogextra1="doOK(true); this.close();">
 
 <stringbundleset id="stringbundleset">
-    <stringbundle id="imagegrabber-strings" src="chrome://imagegrabber/locale/imagegrabber.properties" />
+	<stringbundle id="imagegrabber-strings" src="chrome://imagegrabber/locale/imagegrabber.properties" />
 </stringbundleset>
 
 <preferences>
@@ -82,7 +82,7 @@
 		<splitter class="tree-splitter" ordinal="4"/>
 		<treecol id="host" label="&host_id;" context="host_list" flex="1" persist="width ordinal hidden" ordinal="5"/>
 	</treecols>
-  
+
 	<treechildren id="list" onclick="onTreeClicked(event);" context="filter_menu" minheight="100"/>
 
 </tree>

@@ -8,7 +8,7 @@
 	%optionsLIM;
 ]>
 
-<window title="&imagehost_grabber_download_progress;" id="ig_dl_win"  
+<window title="&imagehost_grabber_download_progress;" id="ig_dl_win"
 	width="640" height="480" persist="sizemode height width screenX screenY"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	onfocus="SetLayout();"
@@ -32,6 +32,7 @@
 <script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/utils.js" />
 <script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/update.js" />
 <script type="application/x-javascript" src="chrome://imagegrabber/content/host_modules/myspace.js" />
+<script type="application/x-javascript" src="chrome://imagegrabber/content/host_modules/tumblr.js" />
 <script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/debug.js" />
 
 <script>
@@ -49,6 +50,7 @@ function SetLayout() {
 </script>
 
 <preferences>
+	<preference id="hostfileloc" name="extensions.imagegrabber.hostfileloc" type="string" instantApply="true"/>
 	<preference id="DLWindowSuppressCloseConfirm" name="extensions.imagegrabber.dlwindowcloseconfirm" type="bool" inverted="true" instantApply="true"/>
 </preferences>
 
@@ -65,19 +67,19 @@ function SetLayout() {
 </keyset>
 
 <menupopup id="dl_menu">
-  <menuitem label="&open_file;" onclick="launchFile();" key="launchFile_cmd"/>
-  <menuitem label="&open_folder;" onclick="revealFile();" key="revealFile_cmd"/>
-  <menuseparator />
-  <menuitem label="&remove_from_list;" onclick="remove_child();" key="delete_cmd"/>
-  <menuseparator />
-  <menuitem label="&abort_download_request;" onclick="abort_child();"/>
-  <menuitem label="&retry_download_request;" onclick="retry_child();"/>
-  <menuseparator />
-  <menuitem label="&restart_download;" onclick="restart_child();"/>
-  <menuitem label="&reset_the_retry_count_to_zero;" onclick="reset_retryCount();"/>
-  <menuseparator />
-  <menuitem label="&open_url;" onclick="openReqUrls();" key="openReqUrls_cmd"/>
-  <menuitem label="&view_request_details;" onclick="view_details();" key="viewDetails_cmd"/>
+	<menuitem label="&open_file;" onclick="launchFile();" key="launchFile_cmd"/>
+	<menuitem label="&open_folder;" onclick="revealFile();" key="revealFile_cmd"/>
+	<menuseparator />
+	<menuitem label="&remove_from_list;" onclick="remove_child();" key="delete_cmd"/>
+	<menuseparator />
+	<menuitem label="&abort_download_request;" onclick="abort_child();"/>
+	<menuitem label="&retry_download_request;" onclick="retry_child();"/>
+	<menuseparator />
+	<menuitem label="&restart_download;" onclick="restart_child();"/>
+	<menuitem label="&reset_the_retry_count_to_zero;" onclick="reset_retryCount();"/>
+	<menuseparator />
+	<menuitem label="&open_url;" onclick="openReqUrls();" key="openReqUrls_cmd"/>
+	<menuitem label="&view_request_details;" onclick="view_details();" key="viewDetails_cmd"/>
 </menupopup>
 
 <script type="application/x-javascript" src="chrome://imagegrabber/content/interfaces/downloads.js" />

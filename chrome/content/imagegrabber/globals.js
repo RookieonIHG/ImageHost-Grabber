@@ -1,23 +1,23 @@
 /****************************** Start of GPL Block ****************************
- *   ImageHost Grabber - Imagegrabber is a firefox extension designed to 
- *   download pictures from image hosts such as imagevenue, imagebeaver, and 
- *   others (see help file for a full list of supported hosts).
+ *	ImageHost Grabber - Imagegrabber is a firefox extension designed to
+ *	download pictures from image hosts such as imagevenue, imagebeaver, and
+ *	others (see help file for a full list of supported hosts).
  *
- *   Copyright (C) 2007   Matthew McMullen.
- * 
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
+ *	Copyright (C) 2007   Matthew McMullen.
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
+ *	This program is free software; you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation; either version 2 of the License, or
+ *	(at your option) any later version.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *	This program is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with this program; if not, write to the Free Software
+ *	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  ***************************  End of GPL Block *******************************/
 
@@ -109,7 +109,9 @@ ihg_Globals.LinksByFileExt = {
 	Audio:		[["MP3",			"mp3",				/^\x49\x44\x33/],
 				 ["AAC",			"aac",				/^\xFF[\xF1\xF9]/],
 				 ["FLAC",			"flac",				/^\x66\x4C\x61\x43\x00{3}\x22/],
-				 ["M4A",			"m4a",				/^\x00{3}\x20\x66\x74\x79\x70\x4D\x34\x41\x20/]],
+				 ["M4A",			"m4a",				/^\x00{3}\x20\x66\x74\x79\x70\x4D\x34\x41\x20/],
+				 ["Midi",			"midi?",			/^\x4D\x54\x68\x64/],
+				 ["Ogg",			"og[agv]",			/^\x4F\x67\x67\x53/]],
 	Container:	[["ZIP",			"zip|xpi|jar",		/^\x50\x4B(?:\x03\x04|\x05\x06|\x07\x08)/]]*/
 	};
 

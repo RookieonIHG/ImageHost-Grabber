@@ -154,12 +154,6 @@ ihg_Functions.getRDun = function getRDun() {
 	req.inprogress = false;
 
 	ihg_Functions.clearFromWin(req.uniqID, true);
-	// var ig_dl_win_obj = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
-	// ig_dl_win = ig_dl_win_obj.getWindowByName("ig-dl_win", null);
-	// var doc = ig_dl_win.document;
-	// var outBox = doc.getElementById("outBox");
-	// var treeItem = doc.getElementById(req.uniqID);
-	// treeItem.parentNode.removeChild(treeItem);
 
 	req.queueHandler();
 }

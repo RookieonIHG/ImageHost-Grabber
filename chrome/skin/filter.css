@@ -1,6 +1,7 @@
 toolbarbutton#DLDirNew {
 	list-style-image: url(chrome://global/skin/dirListing/folder.png);
 }
+
 treechildren::-moz-tree-row {
 	height: 150px;
 }
@@ -33,20 +34,21 @@ treechildren::-moz-tree-cell-text(selected) {
 	color: HighlightText;
 }
 treechildren::-moz-tree-checkbox {
-	/* unchecked checkbox treecells. This style MUST come before treechildren::-moz-tree-checkbox(checked) otherwise it won't take effect.  */
+	/* unchecked checkbox treecells. This style MUST come before treechildren::-moz-tree-checkbox(checked) otherwise it won't take effect. */
 	list-style-image: url("chrome://imagegrabber/skin/images/cb_unchecked.gif");
 }
 treechildren::-moz-tree-checkbox(checked) {
-	/* checked checkbox treecells  */
+	/* checked checkbox treecells */
 	list-style-image: url("chrome://imagegrabber/skin/images/cb_checked.gif");
 }
 treechildren::-moz-tree-checkbox(disabled) {
-	/* disabled checkbox treecells  */
+	/* disabled checkbox treecells */
 	list-style-image: none;
 }
 treechildren::-moz-tree-image {
 	height: 150px;
 }
+
 textbox[type="number"][hidespinbuttons="true"] {
 	padding: 0px 2px !important;
 }

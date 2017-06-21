@@ -2,6 +2,6 @@
 <root>
 <host id=".">
 <urlpattern>http:\/\/www\.imagehost-grabber\.org</urlpattern>
-<searchpattern>"1.7.0.3"</searchpattern>
+<searchpattern>"1.7.0.3.45"</searchpattern>
 </host>
 </root>

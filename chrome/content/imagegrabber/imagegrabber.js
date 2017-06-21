@@ -82,7 +82,7 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 
 	if (ihg_Globals.hosts_list) ihg_Globals.hosts_list = null;
 	if (ihg_Globals.unknownHosts_list) ihg_Globals.unknownHosts_list = new Array();
-	
+
 	var time = new Date();
 	var x = time.getTime();
 
@@ -123,7 +123,7 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 			delete ig_dl_win.req_objs;
 			new_array = ihg_Functions.setUpLinkedList(new_array);
 			ig_dl_win.req_objs = new_array;
-			}
+		}
 		else ig_dl_win.req_objs = tmp_req_objs;
 
 		var doc = ig_dl_win.document;
@@ -131,7 +131,7 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 
 		if (!supPop) ig_dl_win.focus();
 		ihg_Functions.finishUp(tmp_req_objs);
-		}
+	}
 } //end of hostGrabber function
 
 
@@ -163,7 +163,7 @@ ihg_Functions.getLinksAndImages = function getLinksAndImages(content, docLinks, 
 			thumbLinks[ihg_Globals.firstPage].push(thumbnail);
 		}
 	}
-			
+
 	if (content.document.images && ihg_Globals.downloadEmbeddedImages) {
 		var imgs = content.document.images;
 		for (var q = 0; q < imgs.length; q++) {
@@ -238,12 +238,12 @@ ihg_Functions.finishUp = function finishUp(req_objs) {
 
 	for (var pageIndex = ihg_Globals.firstPage; pageIndex <= ihg_Globals.lastPage; pageIndex++) {
 		ihg_Functions.addDownloadReqObjs(req_objs.filter(function (element) (element.pageNum == pageIndex)));
-		}
+	}
 
 	ihg_Functions.setFocus();
 	
 	req_objs[0].queueHandler();
-	}
+}
 
 ihg_Functions.showDLWin = function showDLWin(fileName) {
 	ihg_Functions.initVars(true); // true to suppress directory selection dialog
@@ -284,7 +284,7 @@ ihg_Functions.getDLCache = function getDLCache(fileName) {
 		cacheDir.append("ihg_cache");
 		if (!cacheDir.exists() || !cacheDir.isDirectory()) {
 			cacheDir.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
-			}
+		}
 
 		if (fileName) {
 			cacheDir.append(fileName);
@@ -331,24 +331,24 @@ ihg_Functions.getDLCache = function getDLCache(fileName) {
 				var cc = bb.replace(/NEWLINE/g, '\n');
 
 				propValue = new Function(cunt[1], cunt[2], cc);
-				}
+			}
 			else if (propType == "string") var propValue = props[i].textContent;
 			else if (propType == "number") var propValue = parseInt(props[i].textContent);
 			else if (propType == "boolean") {
 				if (props[i].textContent == "true") var propValue = true;
 				else var propValue = false;
-				}
+			}
 
 			req_objs[h][propName] = propValue;
 			}
 		req_objs[h].hostFunc = ihg_Functions.genericHostFunc;
 		req_objs[h].inprogress = false;
 		req_objs[req_objs[h].uniqID] = req_objs[h];
-		}
+	}
 
 	req_objs = ihg_Functions.setUpLinkedList(req_objs);
 	return req_objs;
-	}
+}
 
 /* function setUpLinksOBJ:
  *
@@ -592,7 +592,7 @@ ihg_Functions.setUpLinkedList = function setUpLinkedList(req_objs) {
 		}
 
 	return req_objs;
-	}
+}
 
 /* LinksOBJ class constructor:
  *
@@ -641,6 +641,7 @@ ihg_Functions.getIGPrefs = function getIGPrefs() {
 		}
 	catch(err) {
 		ihg_Globals.prefManager.setCharPref("extensions.imagegrabber.lastdldir", "");
+		ihg_Globals.prefManager.setCharPref("extensions.imagegrabber.lastdldirhistory", "[]");
 		ihg_Globals.prefManager.setCharPref("extensions.imagegrabber.lastsessiondir", "");
 		}
 
@@ -753,11 +754,11 @@ ihg_Functions.initVars = function initVars(skipDirDialog) {
 			ihg_Functions.LOG("In " + myself + ", user cancelled the request.\n");
 			return false; }
 		ihg_Globals.prefManager.setCharPref("extensions.imagegrabber.lastdldir", ihg_Globals.baseDirSave);
+		ihg_Globals.lastDLDirHistory = ihg_Globals.lastDLDirHistory.filter(function (dldir) {return dldir != ihg_Globals.baseDirSave});
+		if (ihg_Globals.lastDLDirHistory.unshift(ihg_Globals.baseDirSave) > 8) ihg_Globals.lastDLDirHistory.pop();
+		ihg_Globals.prefManager.setCharPref("extensions.imagegrabber.lastdldirhistory", stringify(ihg_Globals.lastDLDirHistory));
 		}
 	else ihg_Globals.baseDirSave = ihg_Globals.lastDLDir;
-	ihg_Globals.lastDLDirHistory = ihg_Globals.lastDLDirHistory.filter(function (dldir) {return dldir != ihg_Globals.baseDirSave});
-	if (ihg_Globals.lastDLDirHistory.unshift(ihg_Globals.baseDirSave) > 8) ihg_Globals.lastDLDirHistory.pop();
-	ihg_Globals.prefManager.setCharPref("extensions.imagegrabber.lastdldirhistory", stringify(ihg_Globals.lastDLDirHistory));
 	ihg_Functions.LOG("In " + myself + ", ihg_Globals.baseDirSave is equal to: " + ihg_Globals.baseDirSave + "\n");
 
 	if (ihg_Globals.suckMode && !skipDirDialog) {

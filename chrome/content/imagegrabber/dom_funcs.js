@@ -122,14 +122,14 @@ ihg_Functions.getImgSrcFromTag = function getImgSrcFromTag(sometext){
 	ihg_Functions.LOG("In " + myself + ", fixing to find the image.\n");
 	if (filtered) {
 		var theSrc = filtered.match(/\bsrc\s*=\s*("|')?(.+?)\1[\s>]/i);
+		ihg_Functions.LOG("In " + myself + ", theSrc is equal to: " + theSrc + "\n");	
 		if (theSrc) {
-			theSrc[2] = theSrc[2].replace(/&amp;/ig, '&');
+			return theSrc[2].replace(/&amp;/ig, '&');
 		}
 	}
 
-	ihg_Functions.LOG("In " + myself + ", theSrc is equal to: " + theSrc + "\n");	
-	if (theSrc) return theSrc[2];
-	else return null;
+	ihg_Functions.LOG("In " + myself + ", no image 'src' found.\n");
+	return null;
 }
 
 ///////////////////////////  Get the data in a <p> node  ///////////////////////////////

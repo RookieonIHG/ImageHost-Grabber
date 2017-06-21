@@ -1,23 +1,23 @@
 /****************************** Start of GPL Block ****************************
- *   ImageHost Grabber - Imagegrabber is a firefox extension designed to 
- *   download pictures from image hosts such as imagevenue, imagebeaver, and 
- *   others (see help file for a full list of supported hosts).
+ *	ImageHost Grabber - Imagegrabber is a firefox extension designed to 
+ *	download pictures from image hosts such as imagevenue, imagebeaver, and 
+ *	others (see help file for a full list of supported hosts).
  *
- *   Copyright (C) 2007   Matthew McMullen.
- * 
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
+ *	Copyright (C) 2007   Matthew McMullen.
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
+ *	This program is free software; you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation; either version 2 of the License, or
+ *	(at your option) any later version.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *	This program is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with this program; if not, write to the Free Software
+ *	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  ***************************  End of GPL Block *******************************/
 
@@ -41,8 +41,8 @@ catch(e) {
 
 var extregexp = [];
 for (let propName in ihg_Globals.LinksByFileExt) {
-	extregexp.push(ihg_Globals.LinksByFileExt[propName].map(function([Name,patt,SOI]){return patt}).join("|"));
-	};
+	extregexp.push(ihg_Globals.LinksByFileExt[propName].map(([Name,patt,SOI]) => patt).join("|"));
+};
 var FileEXT = "\\.(?:" + extregexp.join("|") + ")$";
 
 ///////////////////////////////   Get the current page number //////////////////////////
@@ -53,17 +53,13 @@ ihg_Functions.getCurPageNum = function getCurPageNum() {
 	var getCurP;
 	var doc = content.document;
 	var classElems = doc.getElementsByTagName('td');
-	
-	for (var i=0; i < classElems.length; i++)
-		{
+
+	for (var i=0; i < classElems.length; i++) {
 		var tmpClass = classElems[i].getAttribute('class');
-		if (tmpClass)
-			{
-			if (tmpClass.match(/vbmenu_control/))
-				{
+		if (tmpClass) {
+			if (tmpClass.match(/vbmenu_control/)) {
 				var classHTML = classElems[i].innerHTML;
-				if (classHTML.match(/Page [0-9]+ of [0-9]+/))
-					{
+				if (classHTML.match(/Page [0-9]+ of [0-9]+/)) {
 					// The regexp remembers the first number and stores it
 					// in the element 1 of the array
 					getCurP = classHTML.match(/Page ([0-9]+) of [0-9]+/);
@@ -84,17 +80,13 @@ ihg_Functions.getLastPageNum = function getLastPageNum() {
 	var getLastP;
 	var doc = content.document;
 	var classElems = doc.getElementsByTagName('td');
-	
-	for (var i=0; i < classElems.length; i++)
-		{
+
+	for (var i=0; i < classElems.length; i++) {
 		var tmpClass = classElems[i].getAttribute('class');
-		if (tmpClass)
-			{
-			if (tmpClass.match(/vbmenu_control/))
-				{
+		if (tmpClass) {
+			if (tmpClass.match(/vbmenu_control/)) {
 				var classHTML = classElems[i].innerHTML;
-				if (classHTML.match(/Page [0-9]+ of [0-9]+/))
-					{
+				if (classHTML.match(/Page [0-9]+ of [0-9]+/)) {
 					// The regexp remembers the search for the number in the parenthesis
 					// and stores it in element 1 of the array
 					getLastP = classHTML.match(/Page [0-9]+ of ([0-9]+)/);
@@ -165,7 +157,7 @@ ihg_Functions.setDownloadDir = function setDownloadDir(FpTitle, initDir) {
 		ihg_Functions.LOG("In " + myself + ", caught exception: " + ex + "\n");
 		return false;
 		}
-	} 
+	}
 
 ihg_Functions.generateFName = function generateFName(reqObj, URLFile) { 
 	var myself = arguments.callee.name;
@@ -204,6 +196,8 @@ ihg_Functions.generateFName = function generateFName(reqObj, URLFile) {
 		else var displayName = pic_url.fileName;
 		}
 
+	displayName = decodeURIComponent(displayName);
+
 	if (displayName) {
 		if (!new RegExp(FileEXT,"i").test(displayName))
 			displayName += ".jpg";
@@ -226,10 +220,10 @@ ihg_Functions.generateFName = function generateFName(reqObj, URLFile) {
 		if (reqUrl.search(/imagevenue\.com\//) >= 0 || reqUrl.search(/fapomatic\.com\//) >= 0) {
 			var indxVal = displayName.indexOf("_");
 			if (indxVal != -1) displayName = displayName.substr(indxVal+1);
-			
+
 			// if (reqUrl.search(/imagevenue\.com\//) >= 0) displayName = displayName.replace(/(.+)_12[23]_\d+lo(\..{3,4})$/, "$1$2");
 			if (reqUrl.search(/imagevenue\.com\//) >= 0) displayName = displayName.replace(/\B_12[23]_\d+lo(?=\..{3,4}$)/, "");
-			
+
 			ihg_Functions.LOG("In " + myself + ", displayName is equal to: " + displayName + "\n");
 			}
 		else if (reqUrl.search(/imagehaven\.net\//) >= 0) {
@@ -241,7 +235,7 @@ ihg_Functions.generateFName = function generateFName(reqObj, URLFile) {
 
 	if (ihg_Globals.prefix_fileNames) displayName = ihg_Functions.prefixFName(reqObj, displayName);		
 	displayName = ihg_Functions.cutFName(displayName);
-	
+
 	return displayName;
 }
 
@@ -259,16 +253,16 @@ ihg_Functions.getOutputFile = function getOutputFile(reqObj, URLFile) {
 				displayName = mhp.getParameter(contDisp, "filename", "", true, {});
 				displayName = displayName.replace(/[\\/:*?"<>|,]/g, '').trim();
 				ihg_Functions.LOG("Filename(Response-Header): " + displayName + "\n");
-			
+
 				if (ihg_Globals.prefix_fileNames) displayName = ihg_Functions.prefixFName(reqObj, displayName);
 				}
 			}
-			
+
 		if (!displayName) {
 			displayName = ihg_Functions.generateFName(reqObj, URLFile);
 			ihg_Functions.LOG("Filename(URL): " + displayName + "\n");
 			}
-			
+
 		reqObj.overwrite = false;
 		}
 
@@ -303,7 +297,7 @@ ihg_Functions.getOutputFile = function getOutputFile(reqObj, URLFile) {
 		// This causes files to not overwrite themselves.  It's good... trust me
 		var postfix = 0;
 		var tmpDispName = "";
-		
+
 		while (aLocalFile.exists()) {
 			postfix++;
 			var strPostFix = postfix + "";
@@ -333,7 +327,7 @@ ihg_Functions.getOutputFile = function getOutputFile(reqObj, URLFile) {
 // special case: get file name from response header
 ihg_Functions.getFNameFromHeader = function getFNameFromHeader(reqObj, request) {
 	var displayName = null;
-		
+
 	try {
 		var httpChan = request.QueryInterface(Components.interfaces.nsIHttpChannel);
 		var contDisp = httpChan.getResponseHeader("Content-disposition");
@@ -356,14 +350,14 @@ ihg_Functions.getFNameFromHeader = function getFNameFromHeader(reqObj, request) 
 
 ihg_Functions.prefixFName = function prefixFName(reqObj, fname) {
 	var result = fname;
-	
+
 	var formatted = "";
 	var totLength = reqObj.totLinkNum.toString().length;
 	var curLength = reqObj.curLinkNum.toString().length;
 	for (var j=0; j < totLength - curLength; j++) formatted += "0";
 	formatted += reqObj.curLinkNum;
 	result = reqObj.uniqFN_prefix + "_" + formatted + "_" + result;
-	
+
 	return result;
 }
 
@@ -387,7 +381,7 @@ ihg_Functions.doStartDownload = function doStartDownload(reqObj, URLFile) {
 	var myself = arguments.callee.name;
 	ihg_Functions.LOG("Entering " + myself + "\n");
 	ihg_Functions.LOG("URLFile is equal to: " + URLFile + "\n");
-	
+
 	if (typeof(reqObj.regexp) == "string" && reqObj.regexp.match(/Embedded Image/)) var refURL = reqObj.originatingPage;
 	else var refURL = reqObj.reqURL;
 
@@ -400,7 +394,7 @@ ihg_Functions.doStartDownload = function doStartDownload(reqObj, URLFile) {
 	var pic_uri = ihg_Globals.ioService.newURI(URLFile,null,null);
 
 	var startPos = 0;
-	
+
 	var aLocalFile = ihg_Functions.getOutputFile(reqObj, URLFile);
 	if (aLocalFile == null) {
 		reqObj.abort(ihg_Globals.strings.could_not_initialize);
@@ -449,7 +443,7 @@ ihg_Functions.doStartDownload = function doStartDownload(reqObj, URLFile) {
 	// providing the same listener to handle the start/stop events
 	ihg_Functions.LOG("In " + myself + ", about to save the URI.\n");
 	aResChan.asyncOpen(aListener, null);
-  
+
 	ihg_Functions.LOG("Exiting " + myself + "\n");
 	return 0;
 	}
@@ -459,23 +453,23 @@ ihg_Functions.removeDuplicates = function removeDuplicates(docLinks, thumbLinks)
 	var cleanThumbLinks = new Array();
 
 	for (var i = ihg_Globals.firstPage; i <= ihg_Globals.lastPage; i++) {
- 		cleanDocLinks[i] = new Array();
- 		cleanThumbLinks[i] = new Array();
- 		loop:
- 		for (var j = 0; j < docLinks[i].length; j++) {
- 			for (var k = ihg_Globals.firstPage; k < cleanDocLinks.length; k++) {
- 				if (!ihg_Globals.remove_duplicate_links_across_pages) k = i;
- 				for (var l = 0; l < cleanDocLinks[k].length; l++) {
- 					if (cleanDocLinks[k][l] == docLinks[i][j]) {
+		cleanDocLinks[i] = new Array();
+		cleanThumbLinks[i] = new Array();
+		loop:
+		for (var j = 0; j < docLinks[i].length; j++) {
+			for (var k = ihg_Globals.firstPage; k < cleanDocLinks.length; k++) {
+				if (!ihg_Globals.remove_duplicate_links_across_pages) k = i;
+				for (var l = 0; l < cleanDocLinks[k].length; l++) {
+					if (cleanDocLinks[k][l] == docLinks[i][j]) {
 						if (thumbLinks) {
 							if (!cleanThumbLinks[k][l]) cleanThumbLinks[k][l] = thumbLinks[i][j];
 						}
- 						continue loop;
+						continue loop;
 					}
 				}
 			}
- 			cleanDocLinks[k-1][l] = docLinks[i][j];
- 			if (thumbLinks) cleanThumbLinks[k-1][l] = thumbLinks[i][j];
+			cleanDocLinks[k-1][l] = docLinks[i][j];
+			if (thumbLinks) cleanThumbLinks[k-1][l] = thumbLinks[i][j];
 		}
 		// The originating page is added to the end of docLinks array if
 		// IHG is run in thread sucker mode. We should NOT remove it.
@@ -500,7 +494,7 @@ ihg_Functions.AlertPopup = function AlertPopup(title, message, listener, clickab
 			.showAlertNotification(logo, title, message, clickable, 'cookie', listener, '');
 		}
 	catch(e) {
-		// prevents runtime error on platforms that don't implement nsIAlertsService, use alert.xul window instead
+		// prevents runtime error on platforms that don't implement nsIAlertsService (e.g. Mac OS w/o GROWL), use alert.xul window instead
 		var win = Components.classes['@mozilla.org/embedcomp/window-watcher;1']
 			.getService(Components.interfaces.nsIWindowWatcher)
 			.openWindow(null, 'chrome://global/content/alerts/alert.xul', '_alert_', 'chrome,titlebar=no,popup=yes', null);  

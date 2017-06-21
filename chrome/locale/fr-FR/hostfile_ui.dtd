@@ -2,8 +2,8 @@
 
 <!ENTITY  select_host "Sélectionner l’hébergeur...">
 
-<!ENTITY  host_label "Etiquette d’hôte">
-<!ENTITY  host_label.placeholder "Identifiant unique pour l'entrée">
+<!ENTITY  host_ID.label "Etiquette d’hôte">
+<!ENTITY  host_ID.placeholder "Identifiant unique pour l’entrée">
 <!ENTITY  host_max_threads "Nb. Max. requêtes">
 <!ENTITY  host_max_threads.tooltiptext "Nombre Max. de requêtes HTTP simultanées pour cet hébergeur.">
 <!ENTITY  host_max_threads.hint "Si activé, supplantera le paramètre global.">

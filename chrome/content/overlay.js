@@ -44,7 +44,7 @@ function ihg_initOverlay() {
 	 * thus, making it difficult to use in the file services.
 	 */
 	var id = ihg_Globals.addonID; // imagegrabber's ID
-	var ihgDefaultBranch = ihg_Globals.prefManager.getDefaultBranch("extensions.imagegrabber.");
+	var ihgDefaultBranch = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getDefaultBranch("extensions.imagegrabber.");
 
 	// For 4.0+ series
 	try {
@@ -139,6 +139,7 @@ function ihg_toolbarButtonCommand(event) {
 
 function ihg_toolbarButtonClick(event) {
 	if (isThread(content.document.location.href) == false) return;
+
 	switch(event.button) {
 		//case 0:
 			// Left click
@@ -159,16 +160,19 @@ function isThread(URL) {
 		var fsFile = forumStyleFileObj.getForumStyles();
 		ihg_Globals.forums = fsFile.getElementsByTagName("forum");
 	}
+
 	for (var i = 0; i < ihg_Globals.forums.length; i++) {
 		var uPatNode = ihg_Globals.forums[i].getElementsByTagName("urlpattern")[0];
 		var uPat = new RegExp(uPatNode.textContent);
 		if (URL.match(uPat)) return true;
 	}
+
 	return false;
 }
 
 function ihg_showInToolsInit() {
 	if (this.state == 'open') return;
+
 	let showInTools = document.getElementById("showInTools").value;
 	document.getElementById('ihgSep').setAttribute('hidden', !showInTools);
 	document.getElementById('menu_IGtools').setAttribute('hidden', !showInTools);
@@ -177,7 +181,9 @@ function ihg_showInToolsInit() {
 function ihg_contextMenuInit() {
 	if (this.state == 'open') return;
 	if (window.gContextMenu == null) return;
+
 	var isLnk = gContextMenu.onLink;
+
 	var sst = document.getElementById("suck_sel_thread");
 	if (isLnk && isThread(content.document.activeElement.href)) {
 		sst.setAttribute("disabled", false);

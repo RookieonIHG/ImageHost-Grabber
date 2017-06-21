@@ -1,25 +1,25 @@
 /****************************** Start of GPL Block ****************************
-*	ImageHost Grabber - Imagegrabber is a firefox extension designed to
-*	download pictures from image hosts such as imagevenue, imagebeaver, and
-*	others (see help file for a full list of supported hosts).
-*
-*	Copyright (C) 2007   Matthew McMullen.
-*
-*	This program is free software; you can redistribute it and/or modify
-*	it under the terms of the GNU General Public License as published by
-*	the Free Software Foundation; either version 2 of the License, or
-*	(at your option) any later version.
-*
-*	This program is distributed in the hope that it will be useful,
-*	but WITHOUT ANY WARRANTY; without even the implied warranty of
-*	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-*	GNU General Public License for more details.
-*
-*	You should have received a copy of the GNU General Public License
-*	along with this program; if not, write to the Free Software
-*	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*
-***************************  End of GPL Block *******************************/
+ *	ImageHost Grabber - Imagegrabber is a firefox extension designed to
+ *	download pictures from image hosts such as imagevenue, imagebeaver, and
+ *	others (see help file for a full list of supported hosts).
+ *
+ *	Copyright (C) 2007   Matthew McMullen.
+ *
+ *	This program is free software; you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation; either version 2 of the License, or
+ *	(at your option) any later version.
+ *
+ *	This program is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with this program; if not, write to the Free Software
+ *	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ ***************************  End of GPL Block *******************************/
 
 var content = window;
 content.window = window;
@@ -64,7 +64,7 @@ function onClose(event) {
 	var check = {value:DLWindowSuppressCloseConfirm.value};
 
 	var ConfirmClose = promptService.confirmEx(
-		this,
+		window,
 		null,
 		ihg_Globals.strbundle.getFormattedString("close_confirm_progress_window",[document.title]),
 		buttonflag,
@@ -168,7 +168,7 @@ function exportSession() {
 	}
 	else {
 		var cacheDir = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get("ProfD", Components.interfaces.nsIFile);
-		
+
 		cacheDir.append("ihg_cache");
 		if (!cacheDir.exists() || !cacheDir.isDirectory())
 			cacheDir.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
@@ -279,7 +279,7 @@ function remove_child(back_space) {
 		var containerItem = parentItem.parentNode;
 		if (containerItem.getAttribute("container")) {
 			if (!parentItem.hasChildNodes()) {
-				setTimeout('ihg_Functions.clearFromWin("' + containerItem.id + '", true)', 1000);
+				setTimeout(ihg_Functions.clearFromWin, 1000, containerItem.id, true);
 				}
 			}
 
@@ -359,7 +359,7 @@ function clear_form() {
 			var containerItem = parentItem.parentNode;
 			if (containerItem.getAttribute("container")) {
 				if (!parentItem.hasChildNodes()) {
-					setTimeout('ihg_Functions.clearFromWin("' + containerItem.id + '", true)', 1000);
+					setTimeout(ihg_Functions.clearFromWin, 1000, containerItem.id, true);
 					}
 				}
 			removeList.push(req_objs[i].uniqID);
@@ -402,7 +402,7 @@ function killme() {
 	}
 
 	for (let hostID in req_objs[0].cp.hostTimer) {
-		if (req_objs[0].cp.hostTimer[hostID] != null)
+		if (req_objs[0].cp.hostTimer[hostID] && req_objs[0].cp.hostTimer[hostID] != null)
 			req_objs[0].cp.hostTimer[hostID].cancel();
 		delete req_objs[0].cp.hostTimer[hostID];
 	};
@@ -443,11 +443,11 @@ function view_details() {
 	if (!detail_win) {
 		detail_win = detail_win_obj.openWindow(null, "chrome://imagegrabber/content/interfaces/req_details.xul", "ig-detail_win", "resizable,scrollbars=yes", null);
 		detail_win.reqObj = req_objs[shit];
-		detail_win.addEventListener("load", rightOn, false);
+		// detail_win.addEventListener("load", rightOn, false);
 	}
 	else {
 		detail_win.reqObj = req_objs[shit];
-		rightOn();
+		// rightOn();
 		detail_win.focus();
 	}
 }

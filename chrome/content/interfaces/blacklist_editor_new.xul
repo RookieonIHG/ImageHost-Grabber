@@ -6,12 +6,14 @@
 <dialog id="ig_blacklist_editor_new_win" title="&blacklist_editor_new.title;"
 		persist="height width"
 		xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-		onload="onLoad();"
-		onunload="onUnLoad();"
+		onload="$('patternValue').focus;"
+		onunload=""
 		buttons="accept,cancel"
-		ondialogaccept="return doOK();">
+		ondialogaccept="this.arguments[0].out = {type: $('patternType').value, value: $('patternValue').value}; return;">
 
-<script type="application/x-javascript" src="chrome://imagegrabber/content/interfaces/blacklist_editor_new.js"/>
+<script type="application/x-javascript">
+	var $ = (elemId) => this.document.getElementById(elemId);
+</script>
 
 <vbox flex="1">
 	<description value="&blacklist_editor_new.description;"/>
@@ -21,7 +23,7 @@
 	<vbox>
 		<hbox>
 			<label value="&blacklist_editor_new.type;" control="patternType"/>
-			<radiogroup id="patternType" oncommand="setFocus('patternValue');">
+			<radiogroup id="patternType" oncommand="$('patternValue').focus;">
 				<radio label="&string;" value="string"/>
 				<radio label="&regexp;" value="regexp"/>
 			</radiogroup>

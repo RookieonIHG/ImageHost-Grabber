@@ -1,9 +1,11 @@
 var blacklistService = null;
 
 function onLoad() {
+/* 
 	ihg_Globals.blacklistFilePath = ihg_Globals.prefManager.getCharPref("extensions.imagegrabber.blacklistfilepath");
 	initData();
 	setFocus("blacklistTree");
+ */
 }
 
 function onUnLoad() {
@@ -15,12 +17,14 @@ function initData() {
 	blacklistService = new ihg_Functions.blacklistService();
 
 	if (blacklistService.blacklistFile) {
-		var path = doc.getElementById("blacklistFilePath");
+		var path = doc.getElementById("tb_blacklistFilePath");
 		path.value = blacklistService.blacklistFile.path;
-	}	
+	}
 
 	ihg_Globals.blacklist = blacklistService.readList();
 	showList(ihg_Globals.blacklist);
+
+	setFocus("blacklistTree");
 }
 
 function setFocus(id) {
@@ -73,16 +77,10 @@ function checkTree() {
 	var tree = doc.getElementById("blacklistTree");
 
 	if (tree.view.rowCount == 0) {
-		doc.getElementById("modifyButton").disabled = true;
-		doc.getElementById("removeButton").disabled = true;
-		doc.getElementById("treeMenuModify").disabled = true;
-		doc.getElementById("treeMenuRemove").disabled = true;
+		doc.getElementById("treeIsEmpty").setAttribute('disabled', true);
 	}
 	else {
-		doc.getElementById("modifyButton").disabled = false;
-		doc.getElementById("removeButton").disabled = false;
-		doc.getElementById("treeMenuModify").disabled = false;
-		doc.getElementById("treeMenuRemove").disabled = false;
+		doc.getElementById("treeIsEmpty").removeAttribute('disabled');
 	}
 }
 
@@ -113,7 +111,7 @@ showNewDialog = function showNewDialog() {
 	window.openDialog("chrome://imagegrabber/content/interfaces/blacklist_editor_new.xul", 
 		"ig-filter_win", "chrome, dialog, modal, centerscreen, resizable", params);
 	return params.out;
-} 
+}
 
 function modifyPattern() {
 	var doc = this.document;
@@ -130,10 +128,11 @@ function modifyPattern() {
 	catch (ex) {
 		return;
 	}
-
 	var patternValue = currentItem.firstChild.childNodes[1].getAttribute("value");
+
 	var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"].getService(Components.interfaces.nsIPromptService);
-	var input = {value: patternValue};   
+
+	var input = {value: patternValue};
 	var check = {value: false};
 	var modified = promptService.prompt(this, ihg_Globals.appName, ihg_Globals.strings.enter_new_value,
 										input, null, check);
@@ -141,6 +140,7 @@ function modifyPattern() {
 	if (modified && input.value != "") {
 		currentItem.firstChild.childNodes[1].setAttribute("label", input.value);
 		currentItem.firstChild.childNodes[1].setAttribute("value", input.value);
+
 		ihg_Globals.blacklist[currentIndex].value = input.value;
 	}
 }
@@ -160,19 +160,20 @@ function removePattern() {
 	catch (ex) {
 		return;
 	}
-
 	var list = doc.getElementById("list");
 	list.removeChild(currentItem);
+
 	ihg_Globals.blacklist.splice(currentIndex, 1);
+
 	checkTree();
 	tree.view.selection.select(currentIndex);
 }
-
 
 function changeFile() {
 	var doc = this.document;
 	var nsIFilePicker = Components.interfaces.nsIFilePicker;
 	var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+
 	var title = ihg_Globals.strings.select_blacklist_file;
 
 	fp.init(this, title, nsIFilePicker.modeOpen);
@@ -181,12 +182,11 @@ function changeFile() {
 	}
 	fp.appendFilters(nsIFilePicker.filterXML);
 	fp.appendFilters(nsIFilePicker.filterAll);
-
 	var res = fp.show();
+
 	if (res == nsIFilePicker.returnOK) {
 		if (fp.file && (fp.file.path.length > 0)) {
-			ihg_Globals.prefManager.setCharPref("extensions.imagegrabber.blacklistfilepath", fp.file.path);
-			ihg_Globals.blacklistFilePath = fp.file.path;
+			this.document.getElementById("blacklistFilePath").value = fp.file.path;
 			initData();
 		}
 	}

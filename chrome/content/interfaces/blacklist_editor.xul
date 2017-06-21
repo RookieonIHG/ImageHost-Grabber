@@ -3,13 +3,13 @@
 <?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
 
 <dialog id="ig_blacklist_editor_win" title="&blacklist_editor.title;"
-	width="600" height="400" persist="sizemode height width screenX screenY"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-	onload="onLoad();"
-	onunload="onUnLoad();"
-	buttons="accept,cancel"
-	buttonlabelaccept="&save;"
-	ondialogaccept="return doOK();">
+		width="600" height="400" persist="sizemode height width screenX screenY"
+		xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+		onload="initData();"
+		onunload="onUnLoad();"
+		buttons="accept,cancel"
+		buttonlabelaccept="&save;"
+		ondialogaccept="return doOK();">
 
 <stringbundleset id="stringbundleset">
 	<stringbundle id="imagegrabber-strings" src="chrome://imagegrabber/locale/imagegrabber.properties" />
@@ -22,10 +22,25 @@
 <script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/file_services.js"/>
 <script type="application/x-javascript" src="chrome://imagegrabber/content/imagegrabber/utils.js"/>
 
+<preferences>
+	<preference id="blacklistFilePath" name="extensions.imagegrabber.blacklistfilepath" type="string" instantApply="true"/>
+</preferences>
+
+<broadcasterset>
+	<broadcaster id="treeIsEmpty"/>
+</broadcasterset>
+
+<commandset>
+	<command id="addPattern" label="&add;" accesskey="" oncommand="addPattern();"/>
+	<command id="modifyPattern" label="&modify;" accesskey="" oncommand="modifyPattern();" observes="treeIsEmpty"/>
+	<command id="removePattern" label="&remove;" accesskey="" oncommand="removePattern();" observes="treeIsEmpty"/>
+	<command id="changeFile" label="&change;" accesskey="" oncommand="changeFile();"/>
+</commandset>
+
 <menupopup id="treeMenu">
-	<menuitem label="&add;" onclick="addPattern();"/>
-	<menuitem id="treeMenuModify" label="&modify;" onclick="modifyPattern();"/>
-	<menuitem id="treeMenuRemove" label="&remove;" onclick="removePattern();"/>
+	<menuitem command="addPattern"/>
+	<menuitem id="treeMenuModify" label="&modify;" onclick="modifyPattern();" observes="treeIsEmpty"/>
+	<menuitem id="treeMenuRemove" label="&remove;" onclick="removePattern();" observes="treeIsEmpty"/>
 </menupopup>
 
 <vbox flex="1">
@@ -39,14 +54,14 @@
 				<treecol ordinal="3" id="patternValue" label="&value;" persist="width ordinal" flex="3"/>
 			</treecols>
 
-			<treechildren id="list" context="treeMenu" minwidth="200" minheight="100"/>
+			<treechildren id="list" context="treeMenu" ondblclick="modifyPattern();" minwidth="200" minheight="100"/>
 		</tree>
 
 		<vbox>
 			<spacer flex="1"/>
-			<button id="addButton" label="&add;" oncommand="addPattern();"/>
-			<button id="modifyButton" label="&modify;" oncommand="modifyPattern();"/>
-			<button id="removeButton" label="&remove;" oncommand="removePattern();"/>
+			<button command="addPattern"/>
+			<button id="modifyButton" command="modifyPattern"/>
+			<button id="removeButton" command="removePattern"/>
 			<spacer flex="1"/>
 		</vbox>
 	</hbox>
@@ -56,8 +71,8 @@
 	<vbox>
 		<label value="&blacklist_file_path;"/>
 		<hbox>
-			<textbox id="blacklistFilePath" readonly="true" flex="1"/>
-			<button label="&change;" oncommand="changeFile();"/>
+			<textbox id="tb_blacklistFilePath" readonly="true" flex="1"/>
+			<button command="changeFile"/>
 		</hbox>
 	</vbox>
 

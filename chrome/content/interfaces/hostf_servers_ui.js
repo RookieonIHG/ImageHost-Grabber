@@ -1,23 +1,23 @@
 /****************************** Start of GPL Block ****************************
- *   ImageHost Grabber - Imagegrabber is a firefox extension designed to 
- *   download pictures from image hosts such as imagevenue, imagebeaver, and 
- *   others (see help file for a full list of supported hosts).
+ *	ImageHost Grabber - Imagegrabber is a firefox extension designed to
+ *	download pictures from image hosts such as imagevenue, imagebeaver, and
+ *	others (see help file for a full list of supported hosts).
  *
- *   Copyright (C) 2007   Matthew McMullen.
- * 
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
+ *	Copyright (C) 2007   Matthew McMullen.
  *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
+ *	This program is free software; you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation; either version 2 of the License, or
+ *	(at your option) any later version.
  *
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *	This program is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with this program; if not, write to the Free Software
+ *	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  ***************************  End of GPL Block *******************************/
 
@@ -27,14 +27,12 @@ var hostf_servers_Globals = new Object();
 hostf_servers_Globals.hosts = null;
 hostf_servers_Globals.hFile = null;
 hostf_servers_Globals.hostFileObj = null;
-hostf_servers_Globals.addonPath = null;
-
 
 
 function HostFileService() {
+	var addonPath = document.getElementById("addonPath").value;
 	var hostf_servers = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-
-	hostf_servers.initWithPath(hostf_servers_Globals.addonPath);
+	hostf_servers.initWithPath(addonPath);
 	hostf_servers.append("hostf_servers.xml");
 
 	this.hostf_servers = hostf_servers;
@@ -59,17 +57,16 @@ HostFileService.prototype = {
 		
 		return req.responseXML;
 		}
-
 	}
 
 
 function setButtonsAccess() {
 	var servers_list = document.getElementById("tb_searchPattern");
-	
+
 	var upButton = document.getElementById("up");
 	var downButton = document.getElementById("down");
 	var removeButton = document.getElementById("remove");
-	
+
 	switch (servers_list.selectedCount) {
 		case 0:
 			upButton.disabled = downButton.disabled = removeButton.disabled = true;
@@ -87,8 +84,6 @@ function setButtonsAccess() {
 	}
 
 function loadHostFServersFile() {
-	hostf_servers_Globals.addonPath = document.getElementById("addonPath").value;
-
 	hostf_servers_Globals.hostFileObj = new HostFileService();
 	hostf_servers_Globals.hFile = hostf_servers_Globals.hostFileObj.getHostf_servers();
 	hostf_servers_Globals.hosts = hostf_servers_Globals.hFile.getElementsByTagName("server");
@@ -153,6 +148,6 @@ function moveHostFServer(UpDown) {
 function delHostFServer() {
 	var servers_list = document.getElementById("tb_searchPattern");
 	if (!servers_list.selectedItem) return;
-	
+
 	servers_list.removeItemAt(servers_list.selectedIndex);
 	}
