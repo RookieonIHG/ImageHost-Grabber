@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="windows-1252"?>
 <root>
 <host id=".">
-<urlpattern>http:\/\/hot-honeys\.com</urlpattern>
-<searchpattern>"1.7.0.4"</searchpattern>
+<urlpattern>https:\/\/imagehostgrabber\.com\/IHG\/hostf\/hostf.xml</urlpattern>
+<searchpattern>"1.7.0.4b"</searchpattern>
 </host>
 </root>
