@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://imagegrabber/skin/hostf_ui.css" type="text/css"?>
 <!DOCTYPE window [
 	<!ENTITY % hostfile_uiDTD SYSTEM "chrome://imagegrabber/locale/hostfile_ui.dtd">
 	%hostfile_uiDTD;
@@ -29,11 +30,11 @@
 <popupset>
 	<tooltip id="host_max_threads-tip">
 		<label value="&host_max_threads.tooltiptext;" class="tooltip-label"/>
-		<label value="&host_max_threads.hint;" style="font-style: italic;"/>
+		<label value="&host_max_threads.hint;" class="hint"/>
 	</tooltip>
 	<tooltip id="timeout-tip">
 		<label value="&timeout.tooltiptext;" class="tooltip-label"/>
-		<label value="&timeout.hint;" style="font-style: italic;"/>
+		<label value="&timeout.hint;" class="hint"/>
 	</tooltip>
 </popupset>
 
@@ -70,7 +71,7 @@
 	<menulist id="searchType" label="&select_func;" _label="&select_func;" oncommand="validate(this);"/>
 </hbox>
 
-<textbox id="tb_searchPattern" multiline="true" flex="1" rows="12" onkeydown="handleKeyDown(event);" oninput="validate(this);" style="padding: 0px 0px 0px 3px;" minheight="100"/>
+<textbox id="tb_searchPattern" multiline="true" flex="1" rows="12" onkeydown="handleKeyDown(event);" oninput="validate(this);" minheight="100"/>
 
 <separator/>
 

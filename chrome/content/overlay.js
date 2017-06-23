@@ -1,25 +1,23 @@
-Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
-
 var myWebProgressListener = {
 	oldURL: null,
 
-	processNewURL: function(aURI, aFlags) {
+	// nsIWebProgressListener
+	QueryInterface: function(iid) {
+		if (iid.equals(Components.interfaces.nsIWebProgressListener) || iid.equals(Components.interfaces.nsISupportsWeakReference))
+			return this;
+		throw Components.results.NS_NOINTERFACE;
+	},
+
+	onLocationChange: function(aProgress, aRequest, aURI, aFlags) {
 		if (aURI.spec == this.oldURL) return;
 		if (aFlags & Components.interfaces.nsIWebProgressListener.LOCATION_CHANGE_SAME_DOCUMENT) return;
 
 		// now we know the page/document has changed...
-		let isForum = isThread(content.document.location.href);
+		let isForum = isThread(aURI.spec);
 		document.getElementById('SuckThread').setAttribute('disabled', !isForum);
 		document.getElementById('suck_the_current_thread-tip').setAttribute('hidden', isForum);
 
 		this.oldURL = aURI.spec;
-	},
-
-	// nsIWebProgressListener
-	QueryInterface: XPCOMUtils.generateQI(["nsIWebProgressListener", "nsISupportsWeakReference"]),
-
-	onLocationChange: function(aProgress, aRequest, aURI, aFlags) {
-		this.processNewURL(aURI, aFlags);
 	},
 
 	onStateChange: function() {},
@@ -29,9 +27,9 @@ var myWebProgressListener = {
 };
 
 function ihg_initOverlay() {
-	gBrowser.addProgressListener(myWebProgressListener);
+	// gBrowser.addProgressListener(myWebProgressListener);
 	document.getElementById("contentAreaContextMenu").addEventListener("popupshowing", ihg_contextMenuInit, false);
-	document.getElementById("menu_ToolsPopup").addEventListener("popupshowing", ihg_showInToolsInit, false);
+	document.getElementById("menu_IGtools").parentNode.addEventListener("popupshowing", ihg_showInToolsInit, false);
 
 	/* Set the correct place for the ImageHost Grabber menu */
 	/* This could possibly be done with XBL to make it tidier */
@@ -75,6 +73,7 @@ function ihg_initOverlay() {
 	}
 
 	ihgDefaultBranch.setCharPref("enable@startup", stringify({enableConLog: ihg_Globals.conLogOut, enableDebug: ihg_Globals.debugOut}));
+	ihgDefaultBranch.lockPref("enable@startup");
 
 	// DEBUG CODE
 	// ihg_Globals.ConsoleWin = GetConsoleWindow();
@@ -82,9 +81,11 @@ function ihg_initOverlay() {
 }
 
 function ihg_destroyOverlay() {
+	try {ihg_Globals.ConsoleWin.close();}
+	catch (e) {}
 	gBrowser.removeProgressListener(myWebProgressListener);
 	document.getElementById("contentAreaContextMenu").removeEventListener("popupshowing", ihg_contextMenuInit, false);
-	document.getElementById("menu_ToolsPopup").removeEventListener("popupshowing", ihg_showInToolsInit, false);
+	document.getElementById("menu_IGtools").parentNode.removeEventListener("popupshowing", ihg_showInToolsInit, false);
 
 	if (ihg_Globals.conLogOut) ihg_Functions.unregisterConsoleListener();
 }
@@ -101,8 +102,9 @@ function GetConsoleWindow() {
 
 	if (!ihgConsoleWindow)
 	{
-		ihgConsoleWindow = nsIWindowWatcher.openWindow(null, "chrome://imagegrabber/content/interfaces/console.xul", "IhgConsoleWindow", "resizable,scrollbars=yes", winArgs);
+		ihgConsoleWindow = nsIWindowWatcher.openWindow(null, "chrome://imagegrabber/content/interfaces/console.xul", "IhgConsoleWindow", "dialog=no,resizable,scrollbars=yes", winArgs);
 	}
+	ihgConsoleWindow.focus();
 
 	return ihgConsoleWindow;
 }
@@ -113,6 +115,7 @@ function ihgConsoleWindow_onloaded()
 }
 
 function CheckUpdate() {
+	gBrowser.addProgressListener(myWebProgressListener);
 	var versionComparator = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
 							.getService(Components.interfaces.nsIVersionComparator);
 
@@ -122,8 +125,7 @@ function CheckUpdate() {
 	let Curr = ihgBranch.getCharPref("addonVersionCurrent");
 
 	if (versionComparator.compare(Curr, Prev) > 0) {
-		var default_hostFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
-		default_hostFile.initWithPath(ihg_Globals.addonPath);
+		var default_hostFile = ihgBranch.getComplexValue("addonPath", Components.interfaces.nsILocalFile);
 		default_hostFile.append("hostf.xml");
 		if (default_hostFile.exists()) {
 			default_hostFile.lastModifiedTime = 0;

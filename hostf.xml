@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="windows-1252"?>
+
 <root>
 <host id=".">
 <urlpattern>https:\/\/imagehostgrabber\.com\/IHG\/hostf\/hostf.xml</urlpattern>
