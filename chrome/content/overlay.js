@@ -6,7 +6,7 @@ var myWebProgressListener = {
 		if (iid.equals(Components.interfaces.nsIWebProgressListener) || iid.equals(Components.interfaces.nsISupportsWeakReference))
 			return this;
 		throw Components.results.NS_NOINTERFACE;
-	},
+		},
 
 	onLocationChange: function(aProgress, aRequest, aURI, aFlags) {
 		if (aURI.spec == this.oldURL) return;
@@ -18,13 +18,13 @@ var myWebProgressListener = {
 		document.getElementById('suck_the_current_thread-tip').setAttribute('hidden', isForum);
 
 		this.oldURL = aURI.spec;
-	},
+		},
 
 	onStateChange: function() {},
 	onProgressChange: function() {},
 	onStatusChange: function() {},
 	onSecurityChange: function() {}
-};
+	};
 
 function ihg_initOverlay() {
 	// gBrowser.addProgressListener(myWebProgressListener);
@@ -48,29 +48,26 @@ function ihg_initOverlay() {
 	try {
 		Components.utils.import("resource://gre/modules/AddonManager.jsm");
 		var tempFunc = function(addon) {
-			ihg_Globals.addonPath = addon.getResourceURI("").QueryInterface(Components.interfaces.nsIFileURL).file.path;
-			ihgDefaultBranch.setCharPref("addonPath", ihg_Globals.addonPath);
+			ihgDefaultBranch.setComplexValue("addonPath", Components.interfaces.nsILocalFile, addon.getResourceURI("").QueryInterface(Components.interfaces.nsIFileURL).file);
 			ihgDefaultBranch.lockPref("addonPath");
 			ihgDefaultBranch.setCharPref("addonVersionCurrent", addon.version);
 			ihgDefaultBranch.lockPref("addonVersionCurrent");
 			CheckUpdate();
-		}
+			}
 		AddonManager.getAddonByID(id, tempFunc);
-	}
+		}
 
 	// This should work for Firefox v1.5 to v3.6
 	// It returns a file object initialized with the path where the extension is located
 	catch (e) {
 		let ExtensionManager = Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces.nsIExtensionManager);
-		let nsLocFile = ExtensionManager.getInstallLocation(id).getItemLocation(id);
-		ihg_Globals.addonPath = nsLocFile.path;
-		ihgDefaultBranch.setCharPref("addonPath", ihg_Globals.addonPath);
+		ihgDefaultBranch.setComplexValue("addonPath", Components.interfaces.nsILocalFile, ExtensionManager.getInstallLocation(id));
 		ihgDefaultBranch.lockPref("addonPath");
 		let version = ExtensionManager.getItemForID(id).version;
 		ihgDefaultBranch.setCharPref("addonVersionCurrent", version);
 		ihgDefaultBranch.lockPref("addonVersionCurrent");
 		CheckUpdate();
-	}
+		}
 
 	ihgDefaultBranch.setCharPref("enable@startup", stringify({enableConLog: ihg_Globals.conLogOut, enableDebug: ihg_Globals.debugOut}));
 	ihgDefaultBranch.lockPref("enable@startup");
@@ -78,7 +75,7 @@ function ihg_initOverlay() {
 	// DEBUG CODE
 	// ihg_Globals.ConsoleWin = GetConsoleWindow();
 	// END DEBUG CODE
-}
+	}
 
 function ihg_destroyOverlay() {
 	try {ihg_Globals.ConsoleWin.close();}
@@ -88,7 +85,7 @@ function ihg_destroyOverlay() {
 	document.getElementById("menu_IGtools").parentNode.removeEventListener("popupshowing", ihg_showInToolsInit, false);
 
 	if (ihg_Globals.conLogOut) ihg_Functions.unregisterConsoleListener();
-}
+	}
 
 function GetConsoleWindow() {
 	var nsIWindowWatcher = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
@@ -96,23 +93,21 @@ function GetConsoleWindow() {
 
 	var winArgs = {
 		Callback : ihgConsoleWindow_onloaded
-	}
+		}
 
 	winArgs.wrappedJSObject = winArgs;
 
 	if (!ihgConsoleWindow)
-	{
 		ihgConsoleWindow = nsIWindowWatcher.openWindow(null, "chrome://imagegrabber/content/interfaces/console.xul", "IhgConsoleWindow", "dialog=no,resizable,scrollbars=yes", winArgs);
-	}
+
 	ihgConsoleWindow.focus();
 
 	return ihgConsoleWindow;
-}
+	}
 
-function ihgConsoleWindow_onloaded()
-{
+function ihgConsoleWindow_onloaded() {
 	ihg_Globals.Console = ihg_Globals.ConsoleWin.Accessor;
-}
+	}
 
 function CheckUpdate() {
 	gBrowser.addProgressListener(myWebProgressListener);
@@ -130,14 +125,14 @@ function CheckUpdate() {
 		if (default_hostFile.exists()) {
 			default_hostFile.lastModifiedTime = 0;
 			ihgBranch.setCharPref("addonVersionPrevious", Curr);
+			}
 		}
 	}
-}
 
 function ihg_toolbarButtonCommand(event) {
 	if (event.target.id == "imagehostgrabber-toolbarbutton")
 		ihg_Functions.hostGrabber(null, false);
-}
+	}
 
 function ihg_toolbarButtonClick(event) {
 	if (isThread(content.document.location.href) == false) return;
@@ -153,24 +148,24 @@ function ihg_toolbarButtonClick(event) {
 		//case 2:
 			// Right click
 			//break;
+		}
 	}
-}
 
 function isThread(URL) {
 	if (ihg_Globals.forums == null) {
 		var forumStyleFileObj = new ihg_Functions.forumStyleFileService();
 		var fsFile = forumStyleFileObj.getForumStyles();
 		ihg_Globals.forums = fsFile.getElementsByTagName("forum");
-	}
+		}
 
 	for (var i = 0; i < ihg_Globals.forums.length; i++) {
 		var uPatNode = ihg_Globals.forums[i].getElementsByTagName("urlpattern")[0];
 		var uPat = new RegExp(uPatNode.textContent);
 		if (URL.match(uPat)) return true;
-	}
+		}
 
 	return false;
-}
+	}
 
 function ihg_showInToolsInit() {
 	if (this.state == 'open') return;
@@ -178,7 +173,7 @@ function ihg_showInToolsInit() {
 	let showInTools = document.getElementById("showInTools").value;
 	document.getElementById('ihgSep').setAttribute('hidden', !showInTools);
 	document.getElementById('menu_IGtools').setAttribute('hidden', !showInTools);
-}
+	}
 
 function ihg_contextMenuInit() {
 	if (this.state == 'open') return;
@@ -190,9 +185,9 @@ function ihg_contextMenuInit() {
 	if (isLnk && isThread(content.document.activeElement.href)) {
 		sst.setAttribute("disabled", false);
 		sst.removeAttribute("tooltip");
-	}
+		}
 	else {
 		sst.setAttribute("disabled", true);
 		sst.setAttribute("tooltip", "suck_the_current_thread-tip");
+		}
 	}
-}

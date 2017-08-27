@@ -126,7 +126,7 @@ ihg_Classes.requestObj.prototype = {
 	// Syntax:
 	// init  :	reqObj.cp.hostTimer[hostID] = new ihg_Functions.CCallWrapper(...);
 	// clear :	reqObj.cp.hostTimer[hostID] = null;
-	// cancel:	reqObj.cp.hostTimer[hostID].cancel();
+	// cancel:	reqObj.cp.hostTimer[hostID].cancel(); delete reqObj.cp.hostTimer[hostID];
 	hostTimer : [],
 
 	debugLog : function req_debugLog () {
@@ -239,7 +239,11 @@ ihg_Classes.requestObj.prototype = {
 		this.downloadTimeout = newHostToUse.downloadTimeout;
 		this.regexp = newHostToUse.hostFunc;
 
-		this.retry();
+		if (this.xmlhttp && this.xmlhttp.channel.URI.spec == newPageUrl)
+			this.xmlhttp.onload();
+		else
+			this.retry();
+
 		this.queueHandler();
 
 		ihg_Functions.LOG("Exiting function requestObj.requeue\n");
@@ -370,6 +374,7 @@ ihg_Classes.requestObj.prototype = {
 							case "alertfinished":
 								ihg_Globals.autoCloseWindow = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.autoclosewindow");
 								if (ihg_Globals.autoCloseWindow) ihg_Functions.startCloseCountdown();
+							case "alertshow":
 							default:break;
 							}
 						}
@@ -442,12 +447,12 @@ ihg_Classes.requestObj.prototype = {
 			//These two lines allow for on-the-fly adaptation
 			ihg_Globals.maxRetries = ihg_Globals.prefManager.getIntPref("extensions.imagegrabber.numretries");
 			this.retryNum = ihg_Globals.maxRetries;
-		}
+			}
 
 		if (!this.xmlhttp) {
 			this.xmlhttp = new XMLHttpRequest();
 			this.xmlhttp.parent = this;
-		}
+			}
 
 		if (typeof this.regexp === "string" && (this.regexp === "LINK2FILE" || /^REPLACE: ["']/.test(this.regexp)))
 			this.xmlhttp.open("GET", encodeURI('about:blank'), true);
@@ -456,7 +461,7 @@ ihg_Classes.requestObj.prototype = {
 
 		try {
 			this.xmlhttp.channel.QueryInterface(Components.interfaces.nsIHttpChannelInternal).forceAllowThirdPartyCookie = true;
-		}
+			}
 		catch(e) { /* Requires Gecko 1.9.2 */ }
 
 		if (this.referer) this.xmlhttp.setRequestHeader("Referer", this.referer);
@@ -481,24 +486,23 @@ ihg_Classes.requestObj.prototype = {
 
 		if (this.readyState == Components.interfaces.nsIXMLHttpRequest.HEADERS_RECEIVED) {
 			if (this.status >= 400 && this.status < 500) {
-				req.abort(ihg_Globals.strbundle.getFormattedString("http_status_code", [this.status]));
-				return;
+				return req.abort(ihg_Globals.strings.http_status_code([this.status]));
 				}
-	
+
 			var contType = this.getResponseHeader("Content-type");
 			if (!contType) return;
 			if (contType.match(/image\/.+/)) {
 				if (req.minFileSize > 0) {
 					if (req.regexp === "Embedded Image") {
 						var contLength = this.getResponseHeader("Content-Length");
-						if (contLength && contLength < req.minFileSize) { 
-							req.abort(ihg_Globals.strbundle.getFormattedString("file_too_short", [req.minFileSize/1024]));
+						if (contLength && contLength < req.minFileSize) {
+							req.abort(ihg_Globals.strings.file_too_short([req.minFileSize/1024]));
 							setTimeout(ihg_Functions.clearFromWin, 1000, req.uniqID, true);
 							return;
 							}
 						}
 					}
-				
+
 				this.onload = null;
 				req.callwrapper.cancel();
 				this.abort();

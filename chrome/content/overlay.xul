@@ -39,7 +39,6 @@
 </script>
 
 <preferences>
-	<preference id="blacklistFilePath" name="extensions.imagegrabber.blacklistfilepath"	type="string"	instantApply="true"/>
 	<preference id="showInTools" name="extensions.imagegrabber.showintools" type="bool" onchange="document.getElementById('menu_IGmain').setAttribute('hidden', this.value);"/>
 </preferences>
 

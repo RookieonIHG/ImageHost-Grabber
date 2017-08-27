@@ -1,7 +1,7 @@
 var objLinks;
 var firstPage; 
 var lastPage;
-var params = window.arguments[0];
+var params = "arguments" in window && window.arguments.length >= 1 && window.arguments[0];
 
 ihgPlural = {};
 
@@ -28,7 +28,7 @@ function onLoad() {
 		}
 	ihgPlural.getFormatted = function(aNum, aWords, anArray) {
 		let words = ihgPlural.get(aNum, aWords);
-		anArray.forEach(function(value) {words = words.replace(/%S|\b__\b/, value);});
+		anArray.forEach(value => words = words.replace(/%S|\b__\b/, value));
 		return words;
 		}
 

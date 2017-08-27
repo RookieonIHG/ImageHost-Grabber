@@ -34,9 +34,9 @@ function rightOn() {
 	this.document.getElementById("readyState").value = reqObj.xmlhttp.readyState;
 	try {
 		this.document.getElementById("statusText").value = reqObj.xmlhttp.statusText;
-	}
+		}
 	catch(e) { }
 	this.document.getElementById("responseText").value = reqObj.xmlhttp.responseText;
-}
+	}
 
 this.watch('reqObj', (a, b, c) => {setTimeout(rightOn, 0); return c});

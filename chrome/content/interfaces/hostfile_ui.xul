@@ -23,8 +23,7 @@
 ]]></script>
 
 <preferences>
-	<preference id="addonPath"	 name="extensions.imagegrabber.addonPath" type="string"/>
-	<preference id="hostfileloc" name="extensions.imagegrabber.hostfileloc" type="string" instantApply="true"/>
+	<preference id="hostfileloc" name="extensions.imagegrabber.hostfileloc" type="file" instantApply="true"/>
 </preferences>
 
 <popupset>
@@ -38,7 +37,7 @@
 	</tooltip>
 </popupset>
 
-<menulist id="theList" label="&select_host;" _label="&select_host;" oncommand="fillTBs(this.value);"/>
+<menulist id="theList" label="&select_host;" _label="&select_host;" oncommand="Fill_Form(this.value);"/>
 
 <grid>
 	<columns>
