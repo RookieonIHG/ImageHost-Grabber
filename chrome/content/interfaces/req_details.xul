@@ -51,7 +51,7 @@ const gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper
 
 <vbox flex="1">
 	<label value="&response_text;"/>
-	<textbox flex="1" multiline="true" id="responseText" readonly="true"/>
+	<textbox id="responseText" flex="1" multiline="true" readonly="true"/>
 </vbox>
 
 </window>

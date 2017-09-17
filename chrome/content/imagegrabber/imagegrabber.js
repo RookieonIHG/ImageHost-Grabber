@@ -77,7 +77,7 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 	ihg_Functions.LOG("In hostGrabber, docLinks is equal to: " + docLinks.toSource() + "\n");
 
 	if (ihg_Globals.lastHost.urlPattern) {
-		ihg_Globals.lastHost = { hostID : null, maxThreads : null, downloadTimeout : null, urlPattern : null, searchPattern : null };
+		ihg_Globals.lastHost = { hostID : null, maxThreads : null, downloadTimeout : null, urlPattern : null, POSTData: null, searchPattern : null };
 		}
 
 	if (ihg_Globals.hosts_list) ihg_Globals.hosts_list = null;
@@ -95,7 +95,7 @@ ihg_Functions.hostGrabber = function hostGrabber(docLinks, filterImages) {
 	tmp_req_objs = ihg_Functions.setUpLinkedList(tmp_req_objs);
 
 	if (tmp_req_objs.length == 0) {
-		promptService.alert(null, null, ihg_Globals.strings.no_images_or_links_found);
+		promptService.alert(null, ihg_Globals.appName, ihg_Globals.strings.no_images_or_links_found);
 		ihg_Functions.updateDownloadStatus(ihg_Globals.strings.running);
 		ihg_Globals.autoCloseWindow = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.autoclosewindow");
 		if (ihg_Globals.autoCloseWindow) ihg_Functions.startCloseCountdown();
@@ -319,7 +319,7 @@ ihg_Functions.getDLCache = function getDLCache(fileName) {
 			var propType = props[i].getAttribute("type");
 
 			var propName = props[i].getAttribute("id");
-			if (propName.match(/^uniqID_\d+/)) continue;
+			if (/^uniqID_\d+$/.test(propName)) continue;
 			propName = propName.match(/(.+)_\d+/)[1];
 
 			if (propType == "function") {
@@ -402,7 +402,7 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 
 			var theHostToUse, targetURL;
 			if (isEmbedded) {
-				theHostToUse = {hostID: "Embedded Image", maxThreads: 0, downloadTimeout: 0, hostFunc: "Embedded Image"};
+				theHostToUse = {hostID: "Embedded Image", maxThreads: 0, downloadTimeout: 0, POSTData: null, hostFunc: "Embedded Image"};
 				targetURL = isEmbedded[1];
 				}
 			else {
@@ -426,6 +426,7 @@ ihg_Functions.setUpLinksOBJ = function setUpLinksOBJ(docLinks, filterImages, thu
 				objLinks.hostID[i][t_count] = theHostToUse.hostID;
 				objLinks.maxThreads[i][t_count] = theHostToUse.maxThreads;
 				objLinks.downloadTimeout[i][t_count] = theHostToUse.downloadTimeout;
+				objLinks.POSTData[i][t_count] = theHostToUse.POSTData;
 /* 
 				// Create an instance of the local file object
 				var aFile = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
@@ -519,6 +520,7 @@ ihg_Functions.setUpReq = function setUpReq(pause, objLinks) {
 			var host_ID = objLinks.hostID[i][j];
 			var host_maxThreads = objLinks.maxThreads[i][j];
 			var host_downloadTimeout = objLinks.downloadTimeout[i][j];
+			var host_POSTData = objLinks.POSTData[i][j];
 			var host_func = objLinks.hostFunc[i][j];
 
 			var req = new ihg_Classes.requestObj();
@@ -528,6 +530,7 @@ ihg_Functions.setUpReq = function setUpReq(pause, objLinks) {
 			req.hostID = host_ID;
 			req.maxThreads = host_maxThreads;
 			req.downloadTimeout = host_downloadTimeout;
+			req.POSTData = host_POSTData;
 			req.regexp = host_func;
 			req.hostFunc = ihg_Functions.genericHostFunc;
 
@@ -611,13 +614,14 @@ ihg_Functions.setUpLinkedList = function setUpLinkedList(req_objs) {
  */
 
 ihg_Functions.LinksOBJ = function LinksOBJ() {
-	this.links = new Array();
-//	this.dirSave = new Array();
-	this.hostFunc = new Array();
-	this.thumbs = new Array();
-	this.hostID = new Array();
-	this.maxThreads = new Array();
-	this.downloadTimeout = new Array();
+	this.links = [];
+//	this.dirSave = [];
+	this.hostFunc = [];
+	this.thumbs = [];
+	this.hostID = [];
+	this.maxThreads = [];
+	this.downloadTimeout = [];
+	this.POSTData = [];
 
 	// The following is added to give a proper referring url when downloading embedded images
 	this.originatingPage = new Array();

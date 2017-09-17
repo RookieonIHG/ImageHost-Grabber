@@ -61,6 +61,12 @@
 			<label control="tb_urlPattern" value="&url_pattern;"/>
 			<textbox id="tb_urlPattern" placeholder="^https?:\/\/..."/>
 		</row>
+		<row align="center">
+			<label control="tb_POSTData" value="&POSTData.label;"/>
+			<textbox id="tb_POSTData" placeholder="&POSTData.placeholder;" disabled="true">
+				<checkbox id="cb_POSTData" oncommand="document.getElementById('tb_POSTData').disabled = !this.checked; validate(this);"/>
+			</textbox>
+		</row>
 	</rows>
 </grid>
 

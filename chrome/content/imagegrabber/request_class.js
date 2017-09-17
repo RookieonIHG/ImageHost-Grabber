@@ -43,6 +43,7 @@ ihg_Classes.requestObj = function requestObj() {
 	this.hostID = null;
 	this.maxThreads = 0;
 	this.downloadTimeout = 0;
+	this.POSTData = null;
 	this.regexp = null;
 	this.retryNum = 0;
 	this.dirSave = "";
@@ -237,9 +238,10 @@ ihg_Classes.requestObj.prototype = {
 		this.hostID = newHostToUse.hostID;
 		this.maxThreads = newHostToUse.maxThreads;
 		this.downloadTimeout = newHostToUse.downloadTimeout;
+		this.POSTData = newHostToUse.POSTData;
 		this.regexp = newHostToUse.hostFunc;
 
-		if (this.xmlhttp && this.xmlhttp.channel.URI.spec == newPageUrl)
+		if (this.xmlhttp && this.xmlhttp.channel.URI.spec == newPageUrl && this.POSTData == null)
 			this.xmlhttp.onload();
 		else
 			this.retry();
@@ -454,7 +456,17 @@ ihg_Classes.requestObj.prototype = {
 			this.xmlhttp.parent = this;
 			}
 
-		if (typeof this.regexp === "string" && (this.regexp === "LINK2FILE" || /^REPLACE: ["']/.test(this.regexp)))
+		var POSTData = null;
+		if (this.POSTData) {
+			var groups = this.reqURL.match(this.POSTData.urlPattern);
+				POSTData = this.POSTData.POSTData;
+			for (var i = groups.length; i--;) {
+				POSTData = POSTData.replace(new RegExp("\\$" + i + "(?=\\D|$)", "g"), groups[i]);
+				}
+			this.xmlhttp.open("POST", this.reqURL, true);
+			this.xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+			}
+		else if (typeof this.regexp === "string" && (this.regexp === "LINK2FILE" || /^REPLACE: ["']/.test(this.regexp)))
 			this.xmlhttp.open("GET", encodeURI('about:blank'), true);
 		else
 			this.xmlhttp.open("GET", this.reqURL, true);
@@ -468,7 +480,7 @@ ihg_Classes.requestObj.prototype = {
 		this.xmlhttp.onreadystatechange = this.init2;
 		this.xmlhttp.onload = this.hostFunc;
 		this.xmlhttp.onerror = this.errHandler;
-		this.xmlhttp.send(null);
+		this.xmlhttp.send(POSTData);
 
 		var req_timeout = ihg_Globals.reqTimeout;  // timeout is in milliseconds
 

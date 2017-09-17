@@ -193,6 +193,7 @@ function validate(inputItem) {
 	var valid_Host = true;
 
 	if (['hostLabel','urlPattern','searchPattern'].some(inputTB => (document.getElementById("tb_" + inputTB).value == ""))) valid_Host = false;
+	if (document.getElementById("cb_POSTData").checked && ((document.getElementById("tb_POSTData").value == null) || (document.getElementById("tb_POSTData").value == ""))) valid_Host = false;
 
 	if (valid_Host) {
 		document.getElementById("but_updateFile").disabled = !(document.getElementById('theList').selectedItem);
@@ -252,6 +253,14 @@ function Fill_Form(idx) {
 
 	var up_tbout = document.getElementById("tb_urlPattern");
 	up_tbout.value = uPat;
+
+	var pd_tbout = document.getElementById("tb_POSTData");
+	var POSTData = uPatNode && uPatNode.getAttribute("POSTData");
+
+	var cbPOSTData = document.getElementById("cb_POSTData");
+	cbPOSTData.checked = (POSTData != null) ? true : false;
+	pd_tbout.disabled = !cbPOSTData.checked;
+	pd_tbout.value = POSTData || "";
 
 	var sp_tbout = document.getElementById("tb_searchPattern");
 	if (!/^function\b/.test(sPat)) sp_tbout.value = sPat.replace(/\\\\/g, "\\");
@@ -331,8 +340,10 @@ function updateHostFile(newHost) {
 	if (!/^function\b/.test(searchPattern)) searchPattern = searchPattern.replace(/\\(?!\")/g, "\\\\");
 	var maxThreads = document.getElementById("tb_hostMaxThreads").value;
 	var timeout = document.getElementById("tb_downloadTimeout").value;
+	var POSTData = document.getElementById("tb_POSTData").value;
 	var cb_maxThreads = document.getElementById("cb_hostMaxThreads").checked;
 	var cb_timeout = document.getElementById("cb_downloadTimeout").checked;
+	var cb_POSTData = document.getElementById("cb_POSTData").checked;
 
 	var menupopup = document.getElementById("theList");
 
@@ -349,6 +360,9 @@ function updateHostFile(newHost) {
 	else currentHost.setAttribute("Timeout", timeout);
 
 	uPatNode.textContent = urlPattern;
+
+	if (cb_POSTData == false) uPatNode.removeAttribute("POSTData");
+	else uPatNode.setAttribute("POSTData", POSTData);
 
 	if (/^function\b/.test(searchPattern)) {
 		var cData = hostfile_Globals.hFile.createCDATASection(searchPattern);
@@ -596,6 +610,9 @@ function resetTextBoxes() {
 	document.getElementById("tb_downloadTimeout").reset();
 
 	document.getElementById("tb_urlPattern").reset();
+	document.getElementById("cb_POSTData").checked = false;
+	document.getElementById("tb_POSTData").disabled = true;
+	document.getElementById("tb_POSTData").reset();
 	document.getElementById("tb_searchPattern").reset();
 	document.getElementById("tb_hostFileLoc").reset();
 

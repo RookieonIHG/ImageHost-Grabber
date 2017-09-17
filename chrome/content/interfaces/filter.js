@@ -172,13 +172,14 @@ function doOK(queuePaused) {
 
 
 function LinksOBJ() {
-	this.links = new Array();
-//	this.dirSave = new Array();
-	this.hostFunc = new Array();
-	this.hostID = new Array();
-	this.maxThreads = new Array();
-	this.downloadTimeout = new Array();
-	this.originatingPage = new Array();
+	this.links = [];
+//	this.dirSave = [];
+	this.hostFunc = [];
+	this.hostID = [];
+	this.maxThreads = [];
+	this.downloadTimeout = [];
+	this.POSTData = [];
+	this.originatingPage = [];
 }
 
 

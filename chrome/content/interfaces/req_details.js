@@ -32,6 +32,15 @@ function rightOn() {
 	this.document.getElementById("regexp").value = reqObj.regexp;
 	this.document.getElementById("dirSave").value = reqObj.dirSave;
 	this.document.getElementById("readyState").value = reqObj.xmlhttp.readyState;
+	this.document.getElementById("reqURL").setAttribute("tooltiptext", reqObj.hostID);
+	if (reqObj.POSTData) {
+		var groups = reqObj.reqURL.match(reqObj.POSTData.urlPattern);
+		var POSTData = reqObj.POSTData.POSTData;
+		for (var i = groups.length; i--;) {
+			POSTData = POSTData.replace(new RegExp("\\$" + i + "(?=\\D|$)", "g"), groups[i]);
+			}
+		this.document.getElementById("regexp").setAttribute("tooltiptext", reqObj.POSTData.urlPattern + "\n" + POSTData);
+		}
 	try {
 		this.document.getElementById("statusText").value = reqObj.xmlhttp.statusText;
 		}
