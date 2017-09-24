@@ -146,5 +146,5 @@ ihg_Globals.useLastModFromHeader = null;
 
 ihg_Globals.blacklist = null;
 
-ihg_Globals.ConsoleWin = ihg_Globals.windowWatcher.getWindowByName("IhgConsoleWindow", null);
+ihg_Globals.ConsoleWin = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher).getWindowByName("IhgConsoleWindow", null);
 ihg_Globals.Console = ihg_Globals.ConsoleWin ? ihg_Globals.ConsoleWin.Accessor : {Write: () => {}, WriteLine: () => {}};
