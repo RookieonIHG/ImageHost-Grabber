@@ -175,15 +175,6 @@ ihg_Functions.getHostToUse = function getHostToUse(innerLink) {
 		}
 
 	if (!ihg_Globals.hosts_list) {
-		// Initialize an instance of the host file class
-		var hostFileObj = new ihg_Functions.HostFileService();
-
-		// Get the XML document representation of the host file
-		var hFile = hostFileObj.getHosts();
-		
-		// Get all the "hosts" as an array.  This is a DOM procedure.
-		ihg_Globals.hosts_list = hFile.getElementsByTagName("host");
-		
 		ihg_Functions.createExceptionsList();
 		}
 
@@ -306,6 +297,15 @@ ihg_Functions.getHostToUse = function getHostToUse(innerLink) {
 	*/
 ihg_Functions.createExceptionsList = function createExceptionsList() {
 	ihg_Functions.LOG("Entering " + arguments.callee.name + "\n");
+
+	// Initialize an instance of the host file class
+	var hostFileObj = new ihg_Functions.HostFileService();
+
+	// Get the XML document representation of the host file
+	var hFile = hostFileObj.getHosts();
+
+	// Get all the "hosts" as an array.  This is a DOM procedure.
+	ihg_Globals.hosts_list = hFile.getElementsByTagName("host");
 
 	ihg_Globals.exceptions_list = [[], []];
 	let [RegExps_List, Domains_List] = ihg_Globals.exceptions_list;
