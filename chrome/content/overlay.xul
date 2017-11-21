@@ -56,7 +56,7 @@
 	<command id="Blacklist" label="&blacklist_editor.label;" accesskey="&blacklist_editor.accesskey;" oncommand="ihg_Functions.showBlacklistDialog();"/>
 	<command id="ProgressWin" label="&show_dl_window.label;" accesskey="&show_dl_window.accesskey;" oncommand="ihg_Functions.showDLWin('dlwin_exit_state');"/>
 	<command id="Options" label="&options.label;" accesskey="&options.accesskey;" oncommand="ihg_Functions.showPreferencesDialog();"/>
-	<command id="Help" label="&help.label;" accesskey="&help.accesskey;" oncommand="openDialog('chrome://imagegrabber/locale/help.html', '', 'dialog=no,close,resizable,scrollbars,minimizable,width=800,height=600')"/>
+	<command id="Help" label="&help.label;" accesskey="&help.accesskey;" oncommand="openDialog('chrome://imagegrabber/locale/help.xhtml', '', 'dialog=no,close,resizable,scrollbars,minimizable,width=800,height=600')"/>
 </commandset>
 
 <popupset>
