@@ -1,0 +1,12 @@
+treechildren::-moz-tree-row(even) {
+	background-color: #F0F0FF;
+}
+treechildren::-moz-tree-checkbox {
+	/* unchecked checkbox treecells. This style MUST come before treechildren::-moz-tree-checkbox(checked) otherwise it won't take effect. */
+	list-style-image: url("chrome://imagegrabber/skin/images/String-RegExp.png");
+	-moz-image-region: rect(  0px, 48px, 24px,  0px);
+}
+treechildren::-moz-tree-checkbox(checked) {
+	/* checked checkbox treecells */
+	-moz-image-region: rect( 24px, 48px, 48px,  0px);
+}
