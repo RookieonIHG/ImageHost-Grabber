@@ -3,6 +3,6 @@
 <root>
 <host id=".">
 <urlpattern>https:\/\/imagehostgrabber\.com\/IHG\/hostf\/hostf.xml</urlpattern>
-<searchpattern>"1.7.0.4b"</searchpattern>
+<searchpattern>"1.7.0.4c"</searchpattern>
 </host>
 </root>

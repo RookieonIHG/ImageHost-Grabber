@@ -21,6 +21,29 @@
 *
 ***************************  End of GPL Block *******************************/
 
+
+
+ihg_Functions.sendPOSTRequest = function sendPOSTRequest(pageUrl, PostData, callback) {
+	var req = new XMLHttpRequest();
+	req.open("POST", pageUrl, true);
+	req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+	req.send(PostData);
+
+	return new Promise(
+		(resolve, reject) => {
+			req.onload = function() {
+				if (this.status === 200) resolve({pageData: this.responseText, pageUrl: this.channel.URI.spec});
+				else reject(this.status);
+				};
+			req.onerror = function() {
+				reject(Error("Network Error"));
+				};
+			}
+		)
+	.then(response => (callback && callback instanceof Function) ? callback(response.pageData, response.pageUrl) : response)
+	}
+
+
 ihg_Functions.getPicById = function getPicById(req) {
 	var toDieOrNot = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.killmenow");
 	if (toDieOrNot && !req.override_stop) return;
@@ -77,56 +100,45 @@ ihg_Functions.genericHostFunc = function genericHostFunc() {
 	var pageData = this.responseText, pageUrl = req.reqURL, the_url = null;
 
 	if (typeof req.regexp === "function") {
-		var retVal = req.regexp(pageData, pageUrl);
+		Promise.resolve(req.regexp(pageData, pageUrl))
+		.then(retVal => {
+			if (retVal.imgUrl) retVal.imgUrl = retVal.imgUrl.replace(/&amp;/g, '&');
+			if (retVal.fileName) req.baseFileName = retVal.fileName;
+			if (retVal.referer) req.referer = retVal.referer;
 
-		if (retVal.imgUrl) retVal.imgUrl = retVal.imgUrl.replace(/&amp;/g, '&');
-		if (retVal.fileName) req.baseFileName = retVal.fileName;
-		if (retVal.referer) req.referer = retVal.referer;
-
-		if (retVal.status === "OK") {
-			var someURI = ihg_Globals.ioService.newURI(pageUrl, null, null);
-			the_url = someURI.resolve(retVal.imgUrl);
-			}
-		else if (retVal.status === "ABORT") {
-			req.abort(ihg_Globals.strings.cant_find_image);
-			return;
-			}
-		else if (retVal.status === "RETRY") {
-			if (retVal.imgUrl) {
-				req.reqURL = retVal.imgUrl;
-				req.retryNum++;
+			if (retVal.status === "OK") {
+				var someURI = ihg_Globals.ioService.newURI(pageUrl, null, null);
+				the_url = someURI.resolve(retVal.imgUrl);
+				ihg_Functions.doStartDownload(req, the_url);
 				}
-			req.retry();
-			return;
-			}
-		else if (retVal.status === "REQUEUE") {
-			var newPageUrl = retVal.imgUrl;
-			// var newHostToUse = ihg_Functions.getHostToUse(newPageUrl);
-			// if (!newHostToUse) {
-				// ihg_Functions.updateDownloadStatus(ihg_Globals.strings.cant_find_new_host);
-				// throw "IHG error: can't find new host function for requeue in genericHostFunc";
-				// req.abort(ihg_Globals.strings.cant_find_new_host);
-				// return;
-			// }
-
-			// req.regexp = newHostToUse.hostFunc;
-
-			// req.reqURL = newPageUrl;
-			// req.retryNum++;
-
-			// req.retry();
-			req.requeue(newPageUrl);
-			return;
-			}
-		else if (retVal.status === "REDIRECT") {
-			if (this.channel.URI.spec == this.channel.originalURI.spec) {
-				req.abort("REDIRECTION failed...");
-				return;
+			else if (retVal.status === "ABORT") {
+				req.abort(ihg_Globals.strings.cant_find_image);
 				}
-			var newPageUrl = this.channel.URI.spec;
-			req.requeue(newPageUrl);
-			return;
-			}
+			else if (retVal.status === "RETRY") {
+				if (retVal.imgUrl) {
+					req.reqURL = retVal.imgUrl;
+					req.retryNum++;
+					}
+				req.retry();
+				}
+			else if (retVal.status === "REQUEUE") {
+				var newPageUrl = retVal.imgUrl;
+				ihg_Functions.updateDownloadProgress(null, req.uniqID, newPageUrl, null, "REQUEUE");
+				req.requeue(newPageUrl);
+				}
+			else if (retVal.status === "REDIRECT") {
+				if (req.xmlhttp.channel.URI.spec != req.xmlhttp.channel.originalURI.spec) {
+					var newPageUrl = req.xmlhttp.channel.URI.spec;
+					ihg_Functions.updateDownloadProgress(null, req.uniqID, newPageUrl, null, "REDIRECT");
+					req.requeue(newPageUrl);
+					}
+				else req.abort("REDIRECTION failed...");
+				}
+			})
+		.catch(eStatus => {
+			req.abort(eStatus instanceof Error ? eStatus : ihg_Globals.strings.http_status_code([eStatus]));
+			});
+		return;
 		}
 
 	else if (typeof req.regexp === "string") {
