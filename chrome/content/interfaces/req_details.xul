@@ -5,7 +5,8 @@
 <window title="&imagehost_grabber_request_details;" id="igRequestDetails"
 	width="910" height="480" persist="sizemode height width screenX screenY"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-	onload="rightOn();document.getElementById('req_response').selectedIndex = (document.getElementById('togResponse').checked ? 0 : 1);">
+	onload="rightOn(); document.getElementById('req_response').selectedIndex = (document.getElementById('togResponse').checked ? 0 : 1);
+			Object.defineProperty(this, 'reqObj', {get: () => this._reqObj, set: val => { this._reqObj = val; rightOn()}} );">
 
 <script>
 const gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].getService(Components.interfaces.nsIClipboardHelper);

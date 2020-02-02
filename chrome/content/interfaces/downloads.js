@@ -440,18 +440,10 @@ function view_details() {
 	if (!shit.match(/^req_/)) return;
 
 	var detail_win_obj = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
-	var detail_win = detail_win_obj.getWindowByName("ig-detail_win", null);
-
-	if (!detail_win) {
-		detail_win = detail_win_obj.openWindow(null, "chrome://imagegrabber/content/interfaces/req_details.xul", "ig-detail_win", "resizable,scrollbars=yes", null);
-		detail_win.reqObj = req_objs[shit];
-		// detail_win.addEventListener("load", rightOn, false);
-		}
-	else {
-		detail_win.reqObj = req_objs[shit];
-		// rightOn();
-		detail_win.focus();
-		}
+	var detail_win = detail_win_obj.getWindowByName("ig-detail_win", null) ||
+					 detail_win_obj.openWindow(null, "chrome://imagegrabber/content/interfaces/req_details.xul", "ig-detail_win", "resizable,scrollbars=yes", null);
+	detail_win.reqObj = req_objs[shit];
+	detail_win.focus();
 	}
 
 

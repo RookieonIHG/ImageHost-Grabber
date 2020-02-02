@@ -109,7 +109,7 @@ function rightOn() {
 	temp_responseText = temp_responseText.replace(/<!(?=--)[^]*?-->/g, "");					// no comment...
 	temp_responseText = temp_responseText.replace(/<!\[CDATA\[[^]*?\]\]>/g, "");			// no markup here, just raw text so...
 	var htmltag_regexp = /<\/(?:h[1-6]|[a-z]+)\s*>|<(?:h[1-6]|[a-z]+)(?:[\s/]+[\w-:]+(?:\s*=\s*(?:("|')[^]*?\1[^\w\s>]*|[^\s"'<>]+))?)*\s*\/?>/ig;
-	var	tags = temp_responseText.match(htmltag_regexp);
+	var	tags = temp_responseText.match(htmltag_regexp) || [];
 	tags.push("</FileBoundary>");
 	var openElemsStack = ["fileboundary"];
 	var indent = 0;
@@ -309,5 +309,3 @@ detailsView.prototype = {
 	performActionOnRow: function(action, index) { },
 	performActionOnCell: function(action, index, column) { }
 	}
-
-this.watch('reqObj', (a, b, c) => {setTimeout(rightOn, 0); return c});

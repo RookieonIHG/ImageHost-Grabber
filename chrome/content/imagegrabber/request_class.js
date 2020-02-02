@@ -37,7 +37,7 @@ ihg_Classes.requestObj = function requestObj() {
 	this.uniqID = "req_" + (Math.floor(1e9 * (1 + Math.random()))).toString().substring(1);
 	// These are the properties that need to be set (by someone) for each instance of the class
 	this.origURL = "";
-	this.reqURL = "";
+	this._reqURL = "";
 	this.Server = "";
 	this.hostFunc = new Function();
 	this.hostID = null;
@@ -92,20 +92,6 @@ ihg_Classes.requestObj = function requestObj() {
 	this.progListener = new Object();
 
 	this.xmlhttp = null;
-
-	this.watch('reqURL', function(id, oldval, newval) {
-		let reqURI = ihg_Globals.ioService.newURI(newval, null, null);
-		if (reqURI && (reqURI.schemeIs('http') || reqURI.schemeIs('https'))) {
-			try {
-				this.Server = eTLDService.getBaseDomain(reqURI);
-				}
-			catch (e) {
-				this.Server = reqURI.host;
-				}
-			}
-		else this.Server = "";
-		return newval;
-		});
 	}
 
 
@@ -130,32 +116,46 @@ ihg_Classes.requestObj.prototype = {
 	// cancel:	reqObj.cp.hostTimer[hostID].cancel(); delete reqObj.cp.hostTimer[hostID];
 	hostTimer : [],
 
+	watch : function(prop, handler) {
+		var propVal = this[prop];
+		delete this[prop];
+		Object.defineProperty(this, prop, {
+									get: ()  => { return propVal },
+									set: val => { return propVal = handler.call(this, prop, propVal, val) }
+									});
+		},
+
 	debugLog : function req_debugLog () {
 		if (!ihg_Globals.debugOut) return;
 
-		function var_out(a,b,c) {
+		function var_out(prop, oldVal, newVal) {
 			ihg_Functions.LOG("In requestObj with uniqID of " + this.uniqID +
-				", Property: " + a + ", Old Val: " + b + ", New Val: " + c + "\n");
-			if (a == 'reqURL') {
-				let reqURI = ihg_Globals.ioService.newURI(c, null, null);
-				if (reqURI && (reqURI.schemeIs('http') || reqURI.schemeIs('https'))) {
-					try {
-						this.Server = eTLDService.getBaseDomain(reqURI);
-						}
-					catch (e) {
-						this.Server = reqURI.host;
-						}
-					}
-				else this.Server = "";
-				}
-			return c;
+				", Property: " + prop + ", Old Val: " + oldVal + ", New Val: " + newVal + "\n");
+			return newVal;
 			}
-		this.watch('reqURL', var_out);
+		this.watch('_reqURL', var_out);
 		this.watch('Server', var_out);
 		this.watch('retryNum', var_out);
 		this.watch('curLinkNum', var_out);
 		this.watch('finished', var_out);
 		this.watch('inprogress', var_out);
+		},
+
+	get reqURL() {
+		return this._reqURL;
+		},
+	set reqURL(reqURL) {
+		this._reqURL = reqURL;
+		let reqURI = ihg_Globals.ioService.newURI(this._reqURL, null, null);
+		if (reqURI && (reqURI.schemeIs('http') || reqURI.schemeIs('https'))) {
+			try {
+				this.Server = eTLDService.getBaseDomain(reqURI);
+				}
+			catch (e) {
+				this.Server = reqURI.host;
+				}
+			}
+		else this.Server = "";
 		},
 
 	abort : function req_abort(additional_message) {
