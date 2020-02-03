@@ -37,7 +37,7 @@ ihg_Classes.requestObj = function requestObj() {
 	this.uniqID = "req_" + (Math.floor(1e9 * (1 + Math.random()))).toString().substring(1);
 	// These are the properties that need to be set (by someone) for each instance of the class
 	this.origURL = "";
-	this._reqURL = "";
+// 	this.reqURL = "";
 	this.Server = "";
 	this.hostFunc = new Function();
 	this.hostID = null;
@@ -117,9 +117,10 @@ ihg_Classes.requestObj.prototype = {
 	hostTimer : [],
 
 	watch : function(prop, handler) {
-		var propVal = this[prop];
+		var propVal = this[prop], enumerableProp = prop in this;
 		delete this[prop];
 		Object.defineProperty(this, prop, {
+									enumerable : enumerableProp,
 									get: ()  => { return propVal },
 									set: val => { return propVal = handler.call(this, prop, propVal, val) }
 									});
