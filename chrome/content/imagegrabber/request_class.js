@@ -34,10 +34,18 @@ windowWatcher = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].ge
  * had a bad tendency of losing the data that was assigned to it on the fly.
  */
 ihg_Classes.requestObj = function requestObj() {
-	this.uniqID = "req_" + (Math.floor(1e9 * (1 + Math.random()))).toString().substring(1);
+	Object.defineProperty(this, 'uniqID', {
+		writable: true,
+		value: "req_" + (Math.floor(1e9 * (1 + Math.random()))).toString().substring(1)
+		});
 	// These are the properties that need to be set (by someone) for each instance of the class
 	this.origURL = "";
 // 	this.reqURL = "";
+	Object.defineProperty(this, '_reqURL', {
+		writable: true,
+		configurable: true,
+		value: ""
+		});
 	this.Server = "";
 	this.hostFunc = new Function();
 	this.hostID = null;
@@ -62,6 +70,12 @@ ihg_Classes.requestObj = function requestObj() {
 	this.callwrapper = new Object();
 
 	this.cp = this.constructor.prototype; // make a convenient shortcut to the prototype
+	Object.defineProperties(this.cp, {
+		running 		: { writable: true, value : false},
+		curThread 		: { writable: true, value : 0},
+		curHostThread 	: { writable: true, value : 0},
+		curServerThread : { writable: true, value : 0},
+		});
 
 	this.finished = false;
 	this.inprogress = false;
@@ -98,12 +112,6 @@ ihg_Classes.requestObj = function requestObj() {
 ihg_Classes.requestObj.prototype = {
 	constructor : ihg_Classes.requestObj,
 
-	running : false,
-
-	curThread : 0,
-	curHostThread : 0,
-	curServerThread : 0,
-
 	// A host is "locked" when the host has a "Timeout" attribute and is waiting to
 	// start the next download or set of downloads.
 	
@@ -117,13 +125,13 @@ ihg_Classes.requestObj.prototype = {
 	hostTimer : [],
 
 	watch : function(prop, handler) {
-		var propVal = this[prop], enumerableProp = prop in this;
-		delete this[prop];
-		Object.defineProperty(this, prop, {
-									enumerable : enumerableProp,
-									get: ()  => { return propVal },
-									set: val => { return propVal = handler.call(this, prop, propVal, val) }
-									});
+		var propVal = this[prop], IsEnumerableProp = prop in this && this.propertyIsEnumerable(prop);
+		if (delete this[prop])
+			Object.defineProperty(this, prop, {
+										enumerable : IsEnumerableProp,
+										get: ()  => { return propVal },
+										set: val => { return propVal = handler.call(this, prop, propVal, val) }
+										});
 		},
 
 	debugLog : function req_debugLog () {
@@ -134,6 +142,7 @@ ihg_Classes.requestObj.prototype = {
 				", Property: " + prop + ", Old Val: " + oldVal + ", New Val: " + newVal + "\n");
 			return newVal;
 			}
+
 		this.watch('_reqURL', var_out);
 		this.watch('Server', var_out);
 		this.watch('retryNum', var_out);
