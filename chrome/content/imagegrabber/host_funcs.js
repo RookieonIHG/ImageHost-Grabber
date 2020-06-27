@@ -222,20 +222,21 @@ ihg_Functions.getHostToUse = function getHostToUse(innerLink) {
 			ihg_Functions.LOG(tempThing + "\n");
 
 			// If the searchpattern is a function, dynamically create a function for it
-			if (tempThing.search(/^function/) >= 0) {
-				var cunt = tempThing.match(/function\((.+?),(.+?)\)/);
+			if (/^function\b/.test(tempThing)) {
+				var cunt = tempThing.match(/function\((\s*\w+\s*,\s*\w+\s*)\)/);
+				cunt = cunt.map(item => item.replace(/[\t\n\r\f]/g,''));
 				ihg_Functions.LOG(cunt.toSource() + "\n");
 
-				var aa = tempThing.replace(/[\n\f\r]/g, 'NEWLINE');
+				var aa = tempThing.replace(/[ \t]*(?:\r\n|[\n\f\r])/g, '_NEWLINE_');
 				ihg_Functions.LOG(aa + "\n");
 
-				var bb = aa.match(/{(.+)}/)[1];
+				var bb = aa.match(/{(?:_NEWLINE_)*(.+)}/)[1];
 				ihg_Functions.LOG(bb + "\n");
 
-				var cc = bb.replace(/NEWLINE/g, '\n');
+				var cc = bb.replace(/_NEWLINE_/g, '\n');
 				ihg_Functions.LOG(cc + "\n");
 
-				retval = new Function(cunt[1], cunt[2], cc);
+				retval = new Function(cunt[1], cc.replace(/\s*$/, ''));
 				ihg_Functions.LOG(retval.toSource() + "\n");
 				}
 			// Otherwise, return the value as a string, minus the surrounding quotes and

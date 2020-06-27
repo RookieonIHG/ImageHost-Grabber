@@ -320,24 +320,22 @@ ihg_Functions.getDLCache = function getDLCache(fileName) {
 
 			var propName = props[i].getAttribute("id");
 			if (/^uniqID_\d+$/.test(propName)) continue;
-			propName = propName.match(/(.+)_\d+/)[1];
+			propName = propName.match(/(.+)_\d+$/)[1];
 
 			if (propType == "function") {
 				var tempThing = props[i].textContent;
-				var cunt = tempThing.match(/function anonymous\((.+),(.+)\)/);
+				var cunt = tempThing.match(/function anonymous\((\s*\w+\s*,\s*\w+\s*)\)/);
+				cunt = cunt.map(item => item.replace(/[\t\n\r\f]/g,''));
 
-				var aa = tempThing.replace(/[\n\f\r]/g, 'NEWLINE');
-				var bb = aa.match(/{(.+)}/)[1];
-				var cc = bb.replace(/NEWLINE/g, '\n');
+				var aa = tempThing.replace(/[ \t]*(?:\r\n|[\n\f\r])/g, '_NEWLINE_');
+				var bb = aa.match(/{(?:_NEWLINE_)*(.+)}/)[1];
+				var cc = bb.replace(/_NEWLINE_/g, '\n');
 
-				propValue = new Function(cunt[1], cunt[2], cc);
+				var propValue = new Function(cunt[1], cc.replace(/\s*$/, ''));
 				}
 			else if (propType == "string") var propValue = props[i].textContent;
 			else if (propType == "number") var propValue = parseInt(props[i].textContent);
-			else if (propType == "boolean") {
-				if (props[i].textContent == "true") var propValue = true;
-				else var propValue = false;
-				}
+			else if (propType == "boolean") var propValue = (props[i].textContent == "true") ? true : false;
 
 			req_objs[h][propName] = propValue;
 			}
