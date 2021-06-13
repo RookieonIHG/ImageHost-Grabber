@@ -188,13 +188,13 @@ ihg_Functions.dlWinCacheService.prototype = {
 
 			for (var j in req_objs[i]) {
 				var x = typeof(req_objs[i][j]); 
-				if ( (x != "object" && x != "function") || j == "regexp" ) {
+				if ( (x != "object" && x != "function") || j == "regexp" || j == "POSTData" ) {
 					var newProp = newDocument.createElement("prop");
 					newProp.setAttribute("id", j + "_" + i);
 					newProp.setAttribute("type", x);
 
-					if (req_objs[i][j].toString().match(/function/)) newProp.appendChild(newDocument.createCDATASection(req_objs[i][j]));
-					else newProp.appendChild(newDocument.createTextNode(req_objs[i][j]));
+					if (req_objs[i][j] && req_objs[i][j].toString().match(/function/)) newProp.appendChild(newDocument.createCDATASection(req_objs[i][j]));
+					else newProp.appendChild(newDocument.createTextNode( x == "object" ? req_objs[i][j] && (req_objs[i][j]).toSource() : req_objs[i][j]));
 
 					newReqObj.appendChild(newDocument.createTextNode("\n"));
 					newReqObj.appendChild(newProp);

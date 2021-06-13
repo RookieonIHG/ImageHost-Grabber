@@ -244,7 +244,7 @@ ihg_Functions.getHostToUse = function getHostToUse(innerLink) {
 			// originally used so the eval statement would interpret the data properly.  Now
 			// they are useless, but they will be kept for compatibility purposes.
 			else {
-				retval = tempThing.match(/\"(.+)"/)[1].replace(/\\\\/g, '\\');
+				retval = tempThing.match(/"(.+)"/)[1].replace(/\\\\/g, '\\');
 				ihg_Functions.LOG(retval + "\n");
 				}
 

@@ -335,6 +335,7 @@ ihg_Functions.getDLCache = function getDLCache(fileName) {
 				}
 			else if (propType == "string") var propValue = props[i].textContent;
 			else if (propType == "number") var propValue = parseInt(props[i].textContent);
+			else if (propType == "object") var propValue = eval(props[i].textContent);
 			else if (propType == "boolean") var propValue = (props[i].textContent == "true") ? true : false;
 
 			req_objs[h][propName] = propValue;

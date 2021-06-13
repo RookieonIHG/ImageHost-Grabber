@@ -446,7 +446,7 @@ function view_details() {
 	detail_win.focus();
 	}
 
-
+/* 
 function rightOn() {
 	var detail_win_obj = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
 	var detail_win = detail_win_obj.getWindowByName("ig-detail_win", null);
@@ -467,7 +467,7 @@ function rightOn() {
 	catch(e) { }
 	detail_win.document.getElementById("responseText").value = reqObj.xmlhttp.responseText;
 	}
-
+ */
 
 function launchFile() {	
 	var igTree = document.getElementById("igTree");
