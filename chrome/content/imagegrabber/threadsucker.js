@@ -71,9 +71,9 @@ ihg_Functions.leechThread = function leechThread(activeElement) {
 
 
 	var ig_dl_win_obj = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
-	ig_dl_win = ig_dl_win_obj.getWindowByName("ig-dl_win", null);
+	var ig_dl_win = ig_dl_win_obj.getWindowByName("ig-dl_win", null);
 	if (!ig_dl_win) {
-		ig_dl_win = ig_dl_win_obj.openWindow(null, "chrome://imagegrabber/content/interfaces/downloads.xul", "ig-dl_win", "resizable,scrollbars=yes", null);
+		var ig_dl_win = ig_dl_win_obj.openWindow(null, "chrome://imagegrabber/content/interfaces/downloads.xul", "ig-dl_win", "resizable,scrollbars=yes", null);
 		ig_dl_win.onload = ihg_Functions.finishUp2;
 		}
 	else {
@@ -112,10 +112,13 @@ ihg_Functions.getRDun = function getRDun() {
 	var toDieOrNot = ihg_Globals.prefManager.getBoolPref("extensions.imagegrabber.killmenow");
 	if (toDieOrNot) return;
 
+	if (this.channel.URI.spec != this.channel.originalURI.spec) {
+		req.retry();
+		return;
+		};
+
 	var ref_url = req.reqURL;
 	var pageData = this.responseText;
-
-	// ihg_Globals.Console.WriteLine("------------>\n\n" + pageData + "\n\n------------>");
 
 	var pageNum = req.pageNum;
 
